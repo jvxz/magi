@@ -40,12 +40,6 @@ export default defineNuxtConfig({
     ],
   },
 
-  experimental: {
-    typedPages: true,
-    typescriptPlugin: true,
-    viteEnvironmentApi: true,
-  },
-
   fonts: {
     defaults: {
       preload: true,
@@ -53,12 +47,22 @@ export default defineNuxtConfig({
     },
   },
 
+  i18n: {
+    defaultLocale: 'en',
+  },
+
+  icon: {
+    provider: 'server',
+  },
+
   imports: {
     dirs: [
-      '~/app/utils/**/*.ts',
+      '~/utils/**/*.ts',
       '~/composables/**/*.ts',
+      './shared/**/*.ts',
     ],
     presets: [
+      { package: 'ufo' },
       { package: 'scule' },
       {
         from: 'evlog',
@@ -82,6 +86,7 @@ export default defineNuxtConfig({
     'nuxt-vitalizer',
     'evlog/nuxt',
     '@compodium/nuxt',
+    '@nuxtjs/i18n',
   ],
 
   nitro: {
@@ -100,12 +105,16 @@ export default defineNuxtConfig({
     preset: 'bun',
   },
 
+  routeRules: {
+    '/app/**': {
+      appLayout: 'app',
+    },
+  },
+
   security: {
     headers: {
       contentSecurityPolicy: {
-        'img-src': [
-          'data:',
-        ],
+        'img-src': false,
       },
     },
     rateLimiter: process.env.NODE_ENV === 'production' ? undefined : false,
