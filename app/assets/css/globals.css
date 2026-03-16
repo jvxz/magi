@@ -7,7 +7,7 @@
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --primary: oklch(69.46% 0.08218 153.517);
+  --primary: oklch(46.511% 0.05097 153.263);
   --accent: var(--primary);
   --ring: var(--primary);
 
@@ -77,8 +77,8 @@ html {
 }
 
 body {
-  @apply bg-background text-foreground font-sans text-pretty min-h-screen underline-offset-2 font-normal;
-  letter-spacing: 0.0075em;
+  @apply bg-background text-foreground font-sans text-pretty min-h-screen underline-offset-2 font-normal tracking-normal;
+  /* letter-spacing: 0.0075em; */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

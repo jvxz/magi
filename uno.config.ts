@@ -3,7 +3,9 @@ import { presetAnimations } from 'unocss-preset-animations'
 
 export default defineConfig({
   presets: [
-    presetWind4(),
+    presetWind4({
+      preflights: { reset: false },
+    }),
     presetAnimations,
   ],
   theme: {
@@ -38,10 +40,13 @@ export default defineConfig({
     },
     fontWeight: {
       medium: '550',
-      normal: '450',
+      normal: '460',
     },
     spacing: {
       DEFAULT: '0.235rem',
+    },
+    tracking: {
+      normal: '0.022em',
     },
   },
   transformers: [transformerDirectives({ throwOnMissing: false })],
