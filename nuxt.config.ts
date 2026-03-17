@@ -102,7 +102,6 @@ export default defineNuxtConfig({
         },
       ],
     },
-    preset: 'bun',
   },
 
   routeRules: {
