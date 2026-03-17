@@ -49,7 +49,7 @@ export default defineConfig({
       DEFAULT: '0.235rem',
     },
     tracking: {
-      normal: '0.022em',
+      normal: '0.01em',
     },
   },
   transformers: [transformerDirectives({ throwOnMissing: false })],
