@@ -43,7 +43,7 @@ export default defineConfig({
     },
     fontWeight: {
       medium: '550',
-      normal: '460',
+      normal: '425',
     },
     spacing: {
       DEFAULT: '0.235rem',
