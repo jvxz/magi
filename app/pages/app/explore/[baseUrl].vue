@@ -5,18 +5,25 @@ definePageMeta({
 })
 
 const route = useRoute()
+const baseUrl = computed({
+  get: () => {
+    if (typeof route.params.baseUrl === 'string')
+      return route.params.baseUrl
 
-const baseUrl = computed(() => {
-  if (typeof route.params.baseUrl === 'string')
-    return route.params.baseUrl
-
-  return route.params.baseUrl?.[0]
+    return route.params.baseUrl?.[0]
+  },
+  set: value => navigateTo({
+    name: 'explore',
+    params: { baseUrl: value },
+  }),
 })
 
-const { getPublicRooms } = useMatrix(baseUrl)
+const { getPublicRooms } = usePublicRooms(baseUrl)
 const { data: publicRooms, error, pending } = getPublicRooms({
   lazy: true,
 })
+
+const servers = useLocalStorage('explore:servers', () => ['matrix.org', 'mozilla.org', 'unredacted.org'])
 
 const params = useUrlSearchParams<{ q: string }>('history', {
   removeFalsyValues: true,
@@ -26,19 +33,44 @@ const params = useUrlSearchParams<{ q: string }>('history', {
 <template>
   <NuxtLayout name="app">
     <template #aside>
+      <div class="p-1 flex flex-col gap-1">
+        <UToggleGroupRoot
+          v-model="baseUrl"
+          class="flex flex-col gap-1 w-full"
+          required
+        >
+          <UToggleGroupItem
+            v-for="server in servers"
+            :key="server"
+            :value="server"
+            class="text-base px-4 text-left h-12 w-full justify-start"
+          >
+            {{ server }}
+          </UToggleGroupItem>
+        </UToggleGroupRoot>
+        <UDialogRoot>
+          <UDialogTrigger as-child>
+            <UButton
+              variant="soft"
+              class="text-base px-4 h-12 w-full"
+            >
+              <Icon name="mingcute:add-line" class="" />
+              Add server
+            </UButton>
+          </UDialogTrigger>
+          <UDialogContent>
+            <p>Hello</p>
+          </UDialogContent>
+        </UDialogRoot>
+      </div>
     </template>
 
     <template #header>
-      <div class="px-6 grid grid-cols-3 h-full items-center">
+      <div class="px-6 grid grid-cols-2 h-full items-center">
         <div class="flex gap-2 items-center">
           <Icon name="mingcute:server-2-line" />
           <p>{{ baseUrl }}</p>
           <USpinner v-if="pending" class="size-4" />
-        </div>
-
-        <div class="text-sm text-muted-foreground mx-auto flex gap-2 items-center">
-          <Icon name="mingcute:information-line" class="h-1lh" />
-          <p>Some rooms may hide images to guests</p>
         </div>
 
         <div class="ml-auto">
