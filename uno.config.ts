@@ -1,4 +1,4 @@
-import { defineConfig, presetWind4, transformerDirectives } from 'unocss'
+import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { presetAnimations } from 'unocss-preset-animations'
 
 export default defineConfig({
@@ -49,6 +49,9 @@ export default defineConfig({
       medium: '550',
       normal: '425',
     },
+    radius: {
+      DEFAULT: 'var(--radius)',
+    },
     spacing: {
       'DEFAULT': '0.235rem',
       'header-height': '4rem',
@@ -58,5 +61,5 @@ export default defineConfig({
       normal: '0.015em',
     },
   },
-  transformers: [transformerDirectives({ throwOnMissing: false })],
+  transformers: [transformerVariantGroup(), transformerDirectives({ throwOnMissing: false })],
 })

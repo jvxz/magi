@@ -1,7 +1,7 @@
 @import '@unocss/reset/tailwind-v4.css';
 
 :root {
-  --radius: 0.3rem;
+  --radius: 0.5rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: calc(var(--radius) + 2px);
@@ -30,7 +30,7 @@
   --border: oklch(0.86 0 0);
   --input: oklch(from var(--background) calc(l * 0.99) c h);
 
-  --overlay: oklch(0 0 0 / 0.5);
+  --overlay: oklch(0% 0 0 / 0.725);
 }
 
 .dark {
@@ -45,7 +45,7 @@
   --secondary: oklch(0.32 0 0);
   --secondary-foreground: oklch(0.97 0 0);
   --muted: oklch(from var(--background) calc(l * 1.55) c h);
-  --muted-foreground: oklch(60.84% 0.012 280.33);
+  --muted-foreground: oklch(74.55% 0.0086 278.59);
   --accent-foreground: oklch(0.97 0 0);
   --danger: oklch(0.62 0.22 27);
   --danger-foreground: oklch(0.985 0 0);
