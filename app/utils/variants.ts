@@ -78,3 +78,34 @@ export const alertVariants = cva(
   },
 )
 export type AlertVariants = VariantProps<typeof alertVariants>
+
+export const toggleVariants = cva(
+  cn(
+    interactiveStyles.base,
+    'p-0 data-[state=on]:text-accent-foreground data-[state=on]:bg-accent',
+  ),
+  {
+    defaultVariants: {
+      size: 'default',
+      variant: 'default',
+    },
+    variants: {
+      size: {
+        default: [interactiveStyles.size.default, 'text-sm'],
+        lg: [interactiveStyles.size.lg, 'text-sm'],
+        sm: [interactiveStyles.size.sm, 'text-sm'],
+      },
+      variant: {
+        default: cn([
+          interactiveStyles.variant.ghost,
+          'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:bg-muted! data-[state=on]:text-foreground',
+        ]),
+        outline: [
+          interactiveStyles.variant.outline,
+          'data-[state=on]:bg-muted data-[state=on]:border-primary/30 m-0',
+        ],
+      },
+    },
+  },
+)
+export type ToggleVariants = VariantProps<typeof toggleVariants>
