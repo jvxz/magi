@@ -11,36 +11,39 @@ interface ButtonProps {
 }
 
 const props = defineProps<ButtonProps>()
+
+const loading = computed(() => toValue(props.isLoading))
 </script>
 
 <template>
   <Slot
     v-if="asChild"
-    :disabled="toValue(disabled) || toValue(props.isLoading)"
+    :disabled="toValue(disabled) || loading"
     :class="cn(
       buttonVariants({ variant, size }),
       props.class,
-      props.isLoading && 'grid text-transparent [grid-template-areas:stack]',
+      loading && 'pointer-events-none',
       toValue(disabled) && 'pointer-events-none',
     )"
+    :aria-busy="loading || undefined"
   >
     <slot />
   </Slot>
   <button
     v-else
-    :disabled="toValue(disabled) || toValue(props.isLoading)"
+    :disabled="toValue(disabled) || loading"
     :class="cn(
       buttonVariants({ variant, size }),
       props.class,
-      toValue(props.isLoading) && 'not-[.spinner]:text-transparent',
       toValue(disabled) && 'pointer-events-none',
     )"
+    :aria-busy="loading || undefined"
   >
     <USpinner
-      v-if="toValue(props.isLoading)"
+      v-if="loading"
       :invert="true"
-      class="inset-0 left-1/2 top-1/2 absolute !size-4.5 -translate-x-1/2 -translate-y-1/2"
+      class="shrink-0 size-4.5"
     />
-    <slot />
+    <span v-else class="contents"><slot /></span>
   </button>
 </template>
