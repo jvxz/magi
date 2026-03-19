@@ -97,6 +97,7 @@ export default defineNuxtConfig({
     'evlog/nuxt',
     '@compodium/nuxt',
     '@nuxtjs/i18n',
+    '@nuxtjs/device',
   ],
 
   nitro: {
