@@ -98,6 +98,7 @@ export default defineNuxtConfig({
     '@compodium/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/device',
+    '@regle/nuxt',
   ],
 
   nitro: {
