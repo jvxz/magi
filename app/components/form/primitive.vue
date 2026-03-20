@@ -1,12 +1,22 @@
-<script lang="ts" setup>
-defineProps<{
+<script lang="ts">
+export interface FormPrimitiveProps {
   label: string
   class?: string
   required?: boolean
-  error?: string
-}>()
+  error?: string | string[] | undefined
+}
+</script>
+
+<script lang="ts" setup>
+const props = defineProps<FormPrimitiveProps>()
 
 const id = useId()
+const errorMessage = computed(() => {
+  if (Array.isArray(props.error))
+    return props.error[0]
+
+  return props.error
+})
 </script>
 
 <template>
@@ -20,14 +30,16 @@ const id = useId()
         <span v-if="required" class="text-danger">*</span>
       </ULabel>
       <p
-        v-if="error"
-        :title="error"
+        v-if="errorMessage"
+        :title="errorMessage"
         class="text-xs text-danger text-end max-w-2/3 truncate"
       >
-        {{ error }}
+        {{ errorMessage }}
       </p>
     </div>
-    <slot :id />
+    <Slot :id :data-error="errorMessage ? '' : undefined">
+      <slot />
+    </Slot>
     <div v-if="$slots.footer" class="text-xs text-muted-foreground text-end">
       <slot name="footer" />
     </div>
