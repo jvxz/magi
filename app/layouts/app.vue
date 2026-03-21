@@ -35,7 +35,7 @@ const [DefineHeader, Header] = createReusableTemplate()
           class="bg-background shrink-0 min-h-screen top-0 sticky"
           size-unit="px"
         >
-          <div class="flex w-full">
+          <div class="flex w-full relative">
             <LayoutAppAside />
             <div class="flex flex-col w-full">
               <div class="p-4 border-b flex h-header-height items-center">
@@ -45,6 +45,7 @@ const [DefineHeader, Header] = createReusableTemplate()
               </div>
               <slot name="aside" />
             </div>
+            <LayoutAppUserCard />
           </div>
         </SplitterPanel>
         <SplitterResizeHandle id="aside-extra-splitter-resize-handle" class="group relative">
