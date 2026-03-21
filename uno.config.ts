@@ -12,6 +12,9 @@ export default defineConfig({
     ['scrollbar-gutter-stable', {
       'scrollbar-gutter': 'stable',
     }],
+    ['text-clip', {
+      'text-box': 'trim-both cap alphabetic',
+    }],
   ],
   safelist: ['group'],
   theme: {
@@ -57,6 +60,12 @@ export default defineConfig({
       'DEFAULT': '0.235rem',
       'header-height': '4rem',
       'page-y-padding': '6rem',
+    },
+    text: {
+      '2xs': {
+        fontSize: '0.7rem',
+        lineHeight: '0.875rem',
+      },
     },
     tracking: {
       normal: '0.015em',
