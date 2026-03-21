@@ -1,38 +1,58 @@
+import type { ICreateClientOpts, LoginRequest as MatrixLoginRequest } from 'matrix-js-sdk'
 import { createClient } from 'matrix-js-sdk'
-import { UAParser } from 'ua-parser-js'
+
+type AuthPayload = Pick<ICreateClientOpts, 'baseUrl' | 'deviceId' | 'refreshToken' | 'userId' | 'accessToken'>
+
+interface PasswordLoginRequest extends MatrixLoginRequest {
+  type: 'm.login.password'
+  identifier: MatrixLoginRequest['identifier']
+  token?: never
+  password: string
+}
+
+interface TokenLoginRequest extends MatrixLoginRequest {
+  type: 'm.login.token'
+  identifier?: never
+  token: string
+  password?: never
+}
+
+export type LoginRequest = Prettify<PasswordLoginRequest | TokenLoginRequest>
 
 export function useAuth() {
   const { userAgent } = useDevice()
+  const idb = useIdb()
+  const clientStore = useClientStore()
 
-  async function login(opts: {
-    username: string
-    homeserver: string
-    password: string
-  }) {
+  async function login(req: LoginRequest) {
     try {
-      const homeserver = withHttps(opts.homeserver)
+      const homeserver = await resolveBaseUrl(withHttps(req.baseUrl))
 
       const tempClient = createClient({
         baseUrl: homeserver,
       })
 
-      const { getBrowser, getDevice } = new UAParser(userAgent)
+      const deviceId = createDeviceId(userAgent)
 
       const loginRes = await tempClient.loginRequest({
-        device_id: `Decoy on ${getBrowser()} (${getDevice()})`,
-        identifier: {
-          type: 'm.id.user',
-          user: opts.username,
-        },
-        password: opts.password,
+        ...req,
+        device_id: deviceId,
         refresh_token: true,
-        type: 'm.login.password',
       })
 
       const authedClient = createClient({
         accessToken: loginRes.access_token,
         baseUrl: homeserver,
-        deviceId: loginRes.device_id,
+        deviceId: createDeviceId(userAgent),
+        refreshToken: loginRes.refresh_token,
+        userId: loginRes.user_id,
+      })
+
+      clientStore.client = authedClient
+      await idb.setItem('auth', {
+        accessToken: loginRes.access_token,
+        baseUrl: homeserver,
+        deviceId: createDeviceId(userAgent),
         refreshToken: loginRes.refresh_token,
         userId: loginRes.user_id,
       })
@@ -44,7 +64,40 @@ export function useAuth() {
     }
   }
 
+  async function loginPersisted() {
+    const auth = await idb.getItem<AuthPayload>('auth')
+    if (!auth)
+      return
+
+    const client = createClient({
+      ...auth,
+      tokenRefreshFunction: async (refreshToken) => {
+        const res = await client.refreshToken(refreshToken)
+
+        return {
+          accessToken: res.access_token,
+          expiry: res.expires_in_ms
+            ? new Date(Date.now() + res.expires_in_ms)
+            : undefined,
+          refreshToken: res.refresh_token,
+        }
+      },
+    })
+
+    return client
+  }
+
+  async function logout() {
+    await idb.removeItem('auth')
+    const clientStore = useClientStore()
+    clientStore.$reset()
+
+    return reloadNuxtApp({ path: '/login' })
+  }
+
   return {
     login,
+    loginPersisted,
+    logout,
   }
 }
