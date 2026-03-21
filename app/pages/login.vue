@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { required } from '@regle/rules'
 
+definePageMeta({
+  middleware: 'auth',
+})
+
 const homeservers = ['matrix.org', 'matrix.4d2.org', 'matrix.oblak.be']
 
 const { r$ } = useRegle(
@@ -16,7 +20,7 @@ const { r$ } = useRegle(
   },
 )
 
-const runCheck = useDebounceFn(async () => r$.$value.homeserver?.trim() ? checkHomeserver(r$.$value.homeserver.trim()) : false, 300)
+const runCheck = useDebounceFn(async () => r$.$value.homeserver?.trim() ? validateHomeserver(r$.$value.homeserver.trim(), true) : false, 300)
 const { data: isHomeserverValid, error: homeserverError, execute, pending } = useAsyncData(
   runCheck,
   {
@@ -30,11 +34,19 @@ const { data: isHomeserverValid, error: homeserverError, execute, pending } = us
 
 const { login } = useAuth()
 const { error: loginError, execute: handleLogin, isLoading: loginPending } = useMutation(
-  () => login({
-    homeserver: r$.$value.homeserver,
-    password: r$.$value.password,
-    username: r$.$value.username,
-  }),
+  async () => {
+    await login({
+      baseUrl: r$.$value.homeserver,
+      identifier: {
+        type: 'm.id.user',
+        user: r$.$value.username,
+      },
+      password: r$.$value.password,
+      type: 'm.login.password',
+    })
+
+    return navigateTo('/app')
+  },
   {
     resetOnExecute: true,
   },
@@ -122,18 +134,17 @@ watch(() => r$.$value.homeserver, () => {
               :error="r$.password.$errors"
               @keydown.enter="handleLogin"
             />
+            <UButton
+              :is-loading="loginPending"
+              :disabled="!isHomeserverValid || r$.$invalid"
+              class="w-full"
+              variant="default"
+              type="submit"
+              size="lg"
+            >
+              <p>Log In</p>
+            </UButton>
           </form>
-          <UButton
-            :is-loading="loginPending"
-            :disabled="!isHomeserverValid || r$.$invalid"
-            class="w-full"
-            variant="default"
-            type="submit"
-            size="lg"
-            @click="handleLogin"
-          >
-            <p>Log In</p>
-          </UButton>
         </div>
       </div>
     </div>
