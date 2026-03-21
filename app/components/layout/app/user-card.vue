@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { getUserAvatar, userInfo } = useUser()
+const { getUserAvatar, me } = useUser()
 
 const { data: avatarUrl, pending } = getUserAvatar('self')
 </script>
@@ -14,14 +14,14 @@ const { data: avatarUrl, pending } = getUserAvatar('self')
           </UAvatar>
           <div class="flex-col size-full -translate-y-0.5 ">
             <p class="text-sm font-medium">
-              {{ userInfo?.displayName }}
+              {{ me?.displayName }}
             </p>
             <div class="overflow-hidden relative h-0.6lh w-full *:duration-150 *:ease">
               <p class="text-2xs text-muted-foreground absolute bottom-0 group-hover:bottom-1lh">
-                {{ userInfo?.presence ? upperFirst(userInfo?.presence) : 'Offline' }}
+                {{ me?.presence ? upperFirst(me?.presence) : 'Offline' }}
               </p>
               <p class="text-2xs text-muted-foreground absolute top-1lh group-hover:top-0">
-                {{ userInfo?.userId }}
+                {{ me?.userId }}
               </p>
             </div>
           </div>

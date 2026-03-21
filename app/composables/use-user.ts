@@ -2,7 +2,7 @@ export function useUser() {
   const clientStore = useClientStore()
   const nuxtApp = useNuxtApp()
 
-  const { data: userInfo } = useAsyncData(() => `userInfo:${clientStore.client.getUserId()}`, async () => {
+  const { data: me } = useAsyncData(() => `userInfo:${clientStore.client.getUserId()}`, async () => {
     const id = clientStore.client.getUserId()!
     return clientStore.client.getUser(id)
   }, {
@@ -42,6 +42,6 @@ export function useUser() {
 
   return {
     getUserAvatar,
-    userInfo,
+    me,
   }
 }
