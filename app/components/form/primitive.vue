@@ -30,7 +30,7 @@ const errorMessage = computed(() => {
         {{ label }}
         <span v-if="required" class="text-danger">*</span>
       </ULabel>
-      <USpinner
+      <LazyUSpinner
         v-if="isLoading"
         class="shrink-0 size-4.5"
       />
