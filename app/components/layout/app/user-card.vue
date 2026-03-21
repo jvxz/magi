@@ -1,28 +1,7 @@
 <script lang="ts" setup>
-const clientStore = useClientStore()
+const { getUserAvatar } = useUser()
 
-const { data: avatarUrl, pending } = useAsyncData(`userAvatar:${clientStore.client.getUserId()}`, async () => {
-  const { avatar_url } = await clientStore.client.getProfileInfo(clientStore.client.getUserId()!)
-  if (!avatar_url)
-    return
-
-  const url = mxcToHttps(avatar_url, {
-    allowDirectLinks: false,
-    allowRedirects: true,
-    baseUrl: clientStore.client.getHomeserverUrl(),
-    height: 32,
-    resizeMethod: 'scale',
-    useAuthentication: true,
-    width: 32,
-  })
-
-  if (!url)
-    return
-
-  const res = await fetchAuthed(url, clientStore.client, { rawResponseBody: true })
-
-  return URL.createObjectURL(res)
-})
+const { data: avatarUrl, pending } = getUserAvatar('self')
 </script>
 
 <template>
