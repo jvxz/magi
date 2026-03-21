@@ -1,12 +1,16 @@
 <template>
-  <NuxtLink
-    :to="{
-      name: 'explore',
-      params: { baseUrl: 'matrix.org' },
-    }"
+  <UButton
+    variant="soft"
+    class="rounded-xl flex size-12 items-center justify-center"
+    as-child
   >
-    <button class="rounded-xl bg-muted flex size-12 items-center justify-center">
+    <NuxtLink
+      :to="{
+        name: 'explore',
+        params: { baseUrl: 'matrix.org' },
+      }"
+    >
       <Icon name="mingcute:home-3-fill" class="text-foreground size-6" />
-    </button>
-  </NuxtLink>
+    </NuxtLink>
+  </UButton>
 </template>
