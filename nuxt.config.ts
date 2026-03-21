@@ -101,9 +101,15 @@ export default defineNuxtConfig({
     '@regle/nuxt',
     '@pinia/nuxt',
     '@nuxt/hints',
+    'nitro-cloudflare-dev',
   ],
 
   nitro: {
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true,
+    },
+
     imports: {
       dirs: [
         './server/schema/*',
@@ -116,6 +122,8 @@ export default defineNuxtConfig({
         },
       ],
     },
+
+    preset: 'cloudflare_module',
   },
 
   routeRules: {
