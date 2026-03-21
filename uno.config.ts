@@ -40,6 +40,7 @@ export default defineConfig({
     },
     duration: {
       DEFAULT: '92.5ms',
+      long: '150ms',
     },
     font: {
       mono: 'Paper Mono',
