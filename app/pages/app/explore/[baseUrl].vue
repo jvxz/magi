@@ -19,9 +19,7 @@ const baseUrl = computed({
 })
 
 const { getPublicRooms } = usePublicRooms(baseUrl)
-const { data: publicRooms, error, pending } = getPublicRooms({
-  lazy: true,
-})
+const { data: publicRooms, error, pending } = getPublicRooms({ lazy: true })
 
 const servers = useLocalStorage('explore:servers', () => ['matrix.org', 'mozilla.org', 'unredacted.org'])
 
@@ -70,7 +68,7 @@ const params = useUrlSearchParams<{ q: string }>('history', {
         <div class="flex gap-2 items-center">
           <Icon name="mingcute:server-2-line" />
           <p>{{ baseUrl }}</p>
-          <USpinner v-if="pending" class="size-4" />
+          <LazyUSpinner v-if="pending" class="size-4" />
         </div>
 
         <div class="ml-auto">
