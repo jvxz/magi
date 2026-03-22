@@ -2,6 +2,7 @@
 
 import type { ModuleOptions } from '@vite-pwa/nuxt'
 import process from 'node:process'
+import { appMeta } from '../../shared/utils/constants'
 
 const scope = '/'
 
