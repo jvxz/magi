@@ -1,0 +1,63 @@
+// https://github.com/antfu/vitesse-nuxt/blob/main/app/config/pwa.ts
+
+import type { ModuleOptions } from '@vite-pwa/nuxt'
+import process from 'node:process'
+
+const scope = '/'
+
+export const pwa: ModuleOptions = {
+  base: scope,
+  devOptions: {
+    enabled: process.env.VITE_PLUGIN_PWA === 'true',
+    navigateFallback: scope,
+    suppressWarnings: true,
+  },
+  manifest: {
+    description: appMeta.description,
+    id: scope,
+    name: appMeta.name,
+    scope,
+    short_name: appMeta.name,
+    theme_color: '#5865F2',
+  },
+  registerType: 'autoUpdate',
+  registerWebManifestInRouteRules: true,
+  scope,
+  workbox: {
+    cleanupOutdatedCaches: true,
+    globPatterns: ['**/*.{js,css,html,txt,png,ico,svg}'],
+    navigateFallback: '/',
+    navigateFallbackDenylist: [/^\/api\//],
+    runtimeCaching: [
+      {
+        handler: 'CacheFirst',
+        options: {
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+          cacheName: 'google-fonts-cache',
+          expiration: {
+            maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+            maxEntries: 10,
+          },
+        },
+        urlPattern: /^https:\/\/fonts.googleapis.com\/.*/i,
+      },
+      {
+        handler: 'CacheFirst',
+        options: {
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+          cacheName: 'gstatic-fonts-cache',
+          expiration: {
+            maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+            maxEntries: 10,
+          },
+        },
+        urlPattern: /^https:\/\/fonts.gstatic.com\/.*/i,
+      },
+    ],
+  },
+  writePlugin: true,
+}

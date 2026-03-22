@@ -1,4 +1,6 @@
-import { name as pkgName, version as pkgVersion } from './package.json'
+import { pwa } from './app/config/pwa'
+import { version } from './package.json'
+import { appMeta } from './shared/utils/constants'
 
 export default defineNuxtConfig({
   app: {
@@ -29,8 +31,8 @@ export default defineNuxtConfig({
 
   evlog: {
     env: {
-      service: pkgName,
-      version: pkgVersion,
+      service: appMeta.name,
+      version,
     },
     exclude: [
       '**/_**',
@@ -41,7 +43,10 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: true,
+    // when using generate, payload js assets included in sw precache manifest
+    // but missing on offline, disabling extraction it until fixed
+    payloadExtraction: false,
+    renderJsonPayloads: true,
     typedPages: true,
     typescriptPlugin: true,
   },
@@ -51,10 +56,6 @@ export default defineNuxtConfig({
       preload: true,
       weights: ['100 900'],
     },
-  },
-
-  future: {
-    compatibilityVersion: 5,
   },
 
   i18n: {
@@ -68,6 +69,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: [
       '~/utils/**/*.ts',
+      '~/config/**/*.ts',
       '~/composables/**/*.ts',
       './shared/**/*.ts',
     ],
@@ -102,6 +104,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/hints',
     'nitro-cloudflare-dev',
+    '@vite-pwa/nuxt',
   ],
 
   nitro: {
@@ -126,6 +129,8 @@ export default defineNuxtConfig({
     preset: 'cloudflare_module',
   },
 
+  pwa,
+
   routeRules: {
     '/app/**': { appMiddleware: 'auth', ssr: false },
     '/login': { appMiddleware: 'auth', ssr: false },
@@ -142,6 +147,6 @@ export default defineNuxtConfig({
   },
 
   site: {
-    name: pkgName,
+    name: appMeta.name,
   },
 })
