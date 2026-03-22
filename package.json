@@ -6,6 +6,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:pwa": "VITE_PLUGIN_PWA=true nuxt dev",
     "generate": "nuxt generate",
     "preview": "pnpm run build && wrangler dev",
     "postinstall": "nuxt prepare",
@@ -22,6 +23,7 @@
     "@nuxtjs/i18n": "10.2.3",
     "@nuxtjs/seo": "3.4.0",
     "@pinia/nuxt": "0.11.3",
+    "@vite-pwa/nuxt": "^1.1.1",
     "@vueuse/nuxt": "14.2.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -57,6 +59,9 @@
     "unocss": "^66.6.7",
     "unocss-preset-animations": "^1.3.0",
     "vite": "^8.0.1",
+    "workbox-core": "^7.4.0",
+    "workbox-precaching": "^7.4.0",
+    "workbox-routing": "^7.4.0",
     "wrangler": "^4.76.0"
   }
 }
