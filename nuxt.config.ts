@@ -126,6 +126,10 @@ export default defineNuxtConfig({
       ],
     },
 
+    prerender: {
+      crawlLinks: true,
+    },
+
     preset: 'cloudflare_module',
   },
 
