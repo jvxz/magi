@@ -28,12 +28,10 @@ const src = computed(
     :class="!room && 'animate-pulse border'"
   >
     <div class="h-full inset-0 absolute">
-      <LazyNuxtImg
-        v-if="src"
-        :auto-sizes="true"
-        thumbhash="thumbhash"
-        :src="src"
-        :data-loaded="room ? 'true' : 'false'"
+      <Img
+        :size="32"
+        :alt="room?.name"
+        :src
         class="bg-primary size-full scale-120 object-cover blur-xl -m-px data-[loaded=false]:bg-card-2 -translate-y-1/3 data-[loaded=false]:blur-none"
       />
     </div>
