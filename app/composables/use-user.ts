@@ -1,47 +1,59 @@
+import { ClientEvent } from 'matrix-js-sdk'
+
 export function useUser() {
-  const clientStore = useClientStore()
-  const nuxtApp = useNuxtApp()
+  const { client } = useMatrixClient()
 
-  const { data: me } = useAsyncData(() => `userInfo:${clientStore.client.getUserId()}`, async () => {
-    const id = clientStore.client.getUserId()!
-    return clientStore.client.getUser(id)
+  const { data: me, execute: forceRefreshMe, pending: mePending } = useAsyncData(() => `userInfo:${client.value.getUserId()}`, async () => {
+    const id = client.value.getUserId()!
+    const user = client.value.getUser(id)
+    const profile = await client.value.getProfileInfo(id)
+
+    return {
+      ...user,
+      avatarUrl: profile.avatar_url ?? user?.avatarUrl,
+      displayName: profile.displayname ?? user?.displayName,
+    }
   }, {
-    getCachedData: key => getClientData(key, nuxtApp),
-    immediate: true,
-    watch: [() => clientStore.client.getUserId()],
+    immediate: false,
   })
+  const refreshMe = useThrottleFn(forceRefreshMe, 60000)
 
-  const getUserAvatar = (userId: MaybeRefOrGetter<'self' | string & {}>) => useAsyncData(() => `userAvatar:${userId}`, async () => {
-    const id = userId === 'self' ? clientStore.client.getUserId()! : toValue(userId)
+  const getAvatarUrl = (userId: MaybeRefOrGetter<'self' | string & {}>) => useAsyncData(() => `userAvatar:${userId}`, async () => {
+    const id = userId === 'self' ? client.value.getSafeUserId() : toValue(userId)
 
-    const { avatar_url } = await clientStore.client.getProfileInfo(id)
+    const { avatar_url } = await client.value.getProfileInfo(id, 'avatar_url')
     if (!avatar_url)
       return
 
-    const url = mxcToHttps(avatar_url, {
+    return mxcToHttps(avatar_url, {
       allowDirectLinks: false,
       allowRedirects: true,
-      baseUrl: clientStore.client.getHomeserverUrl(),
+      baseUrl: client.value.getHomeserverUrl(),
       height: 32,
       resizeMethod: 'scale',
       useAuthentication: true,
       width: 32,
     })
-
-    if (!url)
-      return
-
-    const res = await fetchAuthed(url, clientStore.client, { rawResponseBody: true })
-
-    return URL.createObjectURL(res)
   }, {
-    getCachedData: key => getClientData(key, nuxtApp),
+    getCachedData: getClientData,
     immediate: true,
     watch: [() => toValue(userId)],
   })
 
+  // watch client user for updates
+  onMounted(() => {
+    client.value.on(ClientEvent.Sync, () => refreshMe())
+
+    onScopeDispose(() => {
+      client.value.off(ClientEvent.Sync, () => refreshMe())
+    })
+  })
+
   return {
-    getUserAvatar,
+    forceRefreshMe,
+    getAvatarUrl,
     me,
+    mePending,
+    refreshMe,
   }
 }
