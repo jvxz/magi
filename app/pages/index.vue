@@ -1,3 +1,10 @@
-<script lang="ts" setup>
-definePageMeta({ middleware: () => navigateTo('/app') })
-</script>
+<template>
+  <div class="flex flex-col gap-2 h-screen items-center justify-center">
+    <p>Decoy</p>
+    <UButton as-child>
+      <NuxtLink to="/login">
+        Login
+      </NuxtLink>
+    </UButton>
+  </div>
+</template>
