@@ -25,6 +25,7 @@ const loaded = shallowRef(false)
     :height="size ?? height ?? 400"
     :src="(error || !loaded || !src) ? IMG_PLACEHOLDER_URL : src"
     :class="cn('select-none', !loaded && 'bg-muted', $props.class)"
+    :data-loaded="loaded ? 'true' : 'false'"
     @load="(e) => {
       loaded = true
       onLoad?.(e)
