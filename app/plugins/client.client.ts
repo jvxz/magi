@@ -2,15 +2,15 @@ export default defineNuxtPlugin({
   parallel: true,
   setup: async () => {
     const { loginPersisted } = useAuth()
-    const clientStore = useClientStore()
+    const { client } = useMatrixClient()
 
     const persistedClient = await loginPersisted()
 
     if (persistedClient) {
-      clientStore.client = persistedClient
+      client.value = persistedClient
       const sw = await getServiceWorker()
       if (sw)
-        await sendSessionToSw(clientStore.client.getHomeserverUrl(), clientStore.client.getAccessToken() ?? undefined)
+        await sendSessionToSw(client.value.getHomeserverUrl(), client.value.getAccessToken() ?? undefined)
     }
   },
 })

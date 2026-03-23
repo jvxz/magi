@@ -6,14 +6,14 @@ const props = defineProps<{
   room: IPublicRoomsChunkRoom | undefined
 }>()
 
-const clientStore = useClientStore()
+const { client } = useMatrixClient()
 
 const src = computed(
   () => (props.room && props.room.avatar_url)
     ? mxcToHttps(props.room.avatar_url, {
       allowDirectLinks: false,
       allowRedirects: true,
-      baseUrl: clientStore.client.getHomeserverUrl(),
+      baseUrl: client.value.getHomeserverUrl(),
       height: 32,
       resizeMethod: 'scale',
       useAuthentication: true,
@@ -37,7 +37,7 @@ const { data: imageData } = useAsyncData(() => `avatar:${props.room?.room_id}`, 
       queryParams[k] = v
     })
 
-    const blob = await clientStore.client.http.authedRequest<Blob>(
+    const blob = await client.value.http.authedRequest<Blob>(
       Method.Get,
       url.pathname,
       queryParams,

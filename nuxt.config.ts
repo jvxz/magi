@@ -101,7 +101,6 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/device',
     '@regle/nuxt',
-    '@pinia/nuxt',
     '@nuxt/hints',
     'nitro-cloudflare-dev',
     '@vite-pwa/nuxt',

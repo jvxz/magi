@@ -22,7 +22,7 @@ export type LoginRequest = Prettify<PasswordLoginRequest | TokenLoginRequest>
 export function useAuth() {
   const { userAgent } = useDevice()
   const idb = useIdb()
-  const clientStore = useClientStore()
+  const { client } = useMatrixClient()
 
   async function login(req: LoginRequest) {
     try {
@@ -48,7 +48,7 @@ export function useAuth() {
         userId: loginRes.user_id,
       })
 
-      clientStore.client = authedClient
+      client.value = authedClient
       await idb.setItem<AuthPayload>('auth', {
         accessToken: loginRes.access_token,
         baseUrl: homeserver,
@@ -90,8 +90,8 @@ export function useAuth() {
 
   async function logout() {
     await idb.removeItem('auth')
-    const clientStore = useClientStore()
-    clientStore.$reset()
+    const { reset } = useMatrixClient()
+    reset()
 
     return reloadNuxtApp({ path: '/login' })
   }
