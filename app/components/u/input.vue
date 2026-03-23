@@ -31,7 +31,6 @@ const inputClass = computed(() => cn(
   <input
     v-if="!props.leadingIcon"
     v-model="modelValue"
-    data-1p-ignore
     v-bind="$attrs"
     :class="inputClass"
   >
@@ -40,7 +39,6 @@ const inputClass = computed(() => cn(
     <input
       v-model="modelValue"
       v-bind="$attrs"
-      data-1p-ignore
       class="ps-8"
       :class="[inputClass]"
     >
