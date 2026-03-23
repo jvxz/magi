@@ -128,7 +128,7 @@ watch(() => r$.$value.homeserver, () => {
             <FormInput
               v-model:model-value="r$.$value.password"
               label="Password"
-              type="password"
+              type="current-password"
               required
               :ui="{ input: 'w-full h-10', container: 'w-full' }"
               :error="r$.password.$errors"
