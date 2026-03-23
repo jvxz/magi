@@ -13,18 +13,18 @@ Decoy is a **Matrix.org client** built with Nuxt 4. Core priorities: **security,
 
 | Layer | Package |
 |---|---|
-| Framework | Nuxt 4 (`future.compatibilityVersion: 5`) |
+| Framework | Nuxt 4 |
 | CSS | UnoCSS (`presetWind4`) — Tailwind v4-compatible |
 | UI Primitives | `reka-ui` — headless, Radix-style |
 | Variant Styling | `class-variance-authority` (CVA) |
 | Class Merging | `cn()` from `~/utils/cn.ts` → `clsx` + `tailwind-merge` |
 | Matrix Protocol | `matrix-js-sdk` (client-side only) |
-| App state (Matrix client) | Pinia (`@pinia/nuxt`) — `useClientStore` |
-| Session persistence | `unstorage` (IndexedDB driver) via `useIdb()` |
+| App state (Matrix client) | VueUse `createGlobalState` — `useMatrixClient()` (`shallowRef<MatrixClient>`) |
+| Session persistence | `unstorage` (IndexedDB driver) — `idb` from `~/utils/idb.ts` |
 | Reactivity Utils | `@vueuse/nuxt` (auto-imported) |
 | Form Validation | `@regle/nuxt` |
 | Schema Validation | `zod` (server routes only) |
-| i18n | `@nuxtjs/i18n` |
+| Images | `@nuxt/image` + `@unlazy/nuxt` (lazy load, blur / thumbhash) |
 | Icons | `@nuxt/icon` with `@iconify-json/mingcute` |
 | Logging | `evlog` |
 | Security | `nuxt-security` (CSP, rate limiting) |
@@ -38,14 +38,14 @@ Decoy is a **Matrix.org client** built with Nuxt 4. Core priorities: **security,
 app/
   components/u/          # Custom UI component library (UButton, UDialog, etc.)
   components/form/       # FormPrimitive, FormInput wrappers
-  composables/           # use-auth.ts, use-client.ts (Pinia store), use-idb.ts, use-public-rooms.ts, etc.
+  composables/           # use-auth.ts, use-matrix-client.ts, use-public-rooms.ts, etc.
   layouts/app.vue        # Main app shell (Reka SplitterGroup aside layout)
   pages/                 # File-based routing (typedPages: true)
   middleware/            # auth.ts — /app vs /login based on logged-in client
   plugins/
-    matrix.client.ts     # Anonymous MatrixClient at MATRIX_BASE_URL → $matrix
-    client.client.ts     # Restores session into useClientStore (loginPersisted + IDB)
+    matrix.client.ts     # Hydrates `useMatrixClient()` from IDB via `useAuth().loginPersisted()`
   utils/
+    idb.ts               # unstorage IndexedDB (`idb`) for session payload
     cn.ts                # Class merging utility
     matrix/              # validateHomeserver, resolveBaseUrl, mxcToHttps, parseMatrixError, createDeviceId, getClientConfig
     styles.ts            # Shared CVA token objects (interactiveStyles, staticStyles, etc.)
@@ -60,18 +60,18 @@ shared/utils/            # assert.ts, constants.ts (MATRIX_BASE_URL), object.ts,
 
 ## Matrix SDK Rules
 
-**Authenticated UI and data fetching** — use the Pinia client, not a new `createClient()`:
+**Authenticated UI and data fetching** — use `useMatrixClient()`, not a new `createClient()`:
 
 ```ts
-const clientStore = useClientStore()
-await clientStore.client.someMethod()
+const { client } = useMatrixClient()
+await client.value.someMethod()
 ```
 
-The store holds a `shallowRef<MatrixClient>`. It is set in `useAuth().login()`, reset on logout, and hydrated from IndexedDB in `client.client.ts` via `loginPersisted()`.
+`client` is a `shallowRef<MatrixClient>`. It is set in `useAuth().login()`, reset on logout, and hydrated from IndexedDB in `plugins/matrix.client.ts` via `loginPersisted()`.
 
-**Anonymous / default homeserver** — `matrix.client.ts` still provides `$matrix` (`useNuxtApp().$matrix`): a client pinned to `MATRIX_BASE_URL` from `~/shared/utils/constants.ts`. Prefer `useClientStore().client` whenever the user is logged in.
+**Anonymous / default homeserver** — `use-matrix-client.ts` seeds `client` with `createClient({ baseUrl: MATRIX_BASE_URL })` from `~/shared/utils/constants.ts`. After login, `client.value` is the authenticated client.
 
-**Where `createClient()` is allowed** — `use-auth.ts` (temporary client for `loginRequest`, then authenticated client), `use-client.ts` (initial placeholder and `$reset`), and `plugins/matrix.client.ts`. Avoid ad hoc `createClient()` in components or random composables.
+**Where `createClient()` is allowed** — `use-auth.ts` (temporary client for `loginRequest`, then authenticated client) and `use-matrix-client.ts` (initial placeholder and `reset()`). `plugins/matrix.client.ts` assigns the hydrated client from `loginPersisted()`; it does not construct ad hoc clients. Avoid `createClient()` in components or random composables.
 
 **Client-side only** — matrix-js-sdk must never run on the server. Use `.client.ts` plugin naming and `server: false` in `useAsyncData`/`useFetch` for Matrix calls.
 
@@ -85,11 +85,11 @@ catch (error) {
 }
 ```
 
-**Media URLs** — convert `mxc://` with `mxcToHttps()` from `~/utils/matrix/mxc-to-https.ts`. Pass `baseUrl: client.getHomeserverUrl()` when the MXC is from the user’s homeserver. Never embed raw `mxc://` in templates. Authenticated media (e.g. thumbnails) may need an authed fetch (e.g. `client.http.authedRequest` + blob URL) instead of a plain `<img>` URL.
+**Media URLs** — convert `mxc://` with `mxcToHttps()` from `~/utils/matrix/mxc-to-https.ts`. Pass `baseUrl: client.getHomeserverUrl()` when the MXC is from the user’s homeserver. Never embed raw `mxc://` in templates. Some endpoints require auth; then use `client.http.authedRequest` + blob URL (or another pattern that sends the session). Public/HTTPS-backed avatars can use `NuxtImg` with resolved URLs and `@unlazy/nuxt` props (e.g. `thumbhash`) where applicable.
 
 **Homeserver validation** — use `validateHomeserver()` from `~/utils/matrix/validate-homeserver.ts` (AutoDiscovery-based) before trusting user-supplied homeserver input. Login resolves the final base URL with `resolveBaseUrl()` from `~/utils/matrix/resolve-base-url.ts`.
 
-**Routing** — `routeRules` attach the `auth` middleware to `/app/**` and `/login` (client-side). Middleware checks `useClientStore().client.getUserId()`.
+**Routing** — `routeRules` attach the `auth` middleware to `/app/**` and `/login` (client-side). Middleware checks `getUserId()` on `useMatrixClient().client.value`.
 
 **E2EE** — when implementing encrypted room support, initialize crypto **before** calling `client.startClient()`. Never log or expose access tokens, device keys, or key backup secrets.
 
@@ -100,9 +100,9 @@ catch (error) {
 Use `useMutation` (wraps VueUse `useAsyncState`) for async operations that mutate state:
 
 ```ts
-const clientStore = useClientStore()
+const { client } = useMatrixClient()
 const { state, isLoading, error, execute } = useMutation(async () => {
-  return await clientStore.client.someOperation()
+  return await client.value.someOperation()
 }, { onMutate: (prev) => { /* optimistic update */ } })
 ```
 
@@ -160,7 +160,8 @@ import { cn } from '~/utils/cn'
 ## Performance
 
 - `nuxt-vitalizer` is active — avoid layout shifts (CLS) by sizing media elements explicitly
-- Prefer `shallowRef` / `shallowReactive` for large Matrix data structures (room lists, event timelines); the Matrix client in Pinia is already a `shallowRef`
+- `@unlazy/nuxt` integrates with `@nuxt/image` for lazy loading and placeholder blur (e.g. thumbhash) — prefer it for heavy image grids
+- Prefer `shallowRef` / `shallowReactive` for large Matrix data structures (room lists, event timelines); the Matrix client in `useMatrixClient()` is already a `shallowRef`
 - Use `createSharedComposable` for composables that should share state across the app (see `use-global-keys.ts`)
 - Splitter panel state is persisted in cookies — avoid re-initializing layout on navigation
 - Server-side icon rendering is enabled (`icon.provider: 'server'`) — no icon flash on load
@@ -171,6 +172,6 @@ import { cn } from '~/utils/cn'
 
 - CSP is configured via `nuxt-security` — do not add `img-src: *` or inline scripts
 - Rate limiting is enabled in production; disabled in dev
-- Persisted session tokens live in **IndexedDB** via `useIdb()` / unstorage — do not duplicate them in `localStorage`, query strings, or logs
+- Persisted session tokens live in **IndexedDB** via `idb` (`~/utils/idb.ts`) / unstorage — do not duplicate them in `localStorage`, query strings, or logs
 - Always validate user-supplied homeserver URLs with `validateHomeserver()` (and resolve with `resolveBaseUrl()` for login) before use
 - Sanitize any Matrix event content before rendering (XSS risk in `m.text` body, HTML format)
