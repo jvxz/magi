@@ -10,7 +10,8 @@ export interface ImgProps extends ImgHTMLAttributes {
   size?: number
 }
 
-defineProps<ImgProps>()
+// remove prefix prop from vue’s inherited HTML attrs
+const { prefix, ...props } = defineProps<ImgProps>()
 
 const error = shallowRef(false)
 const loaded = shallowRef(false)
@@ -18,7 +19,7 @@ const loaded = shallowRef(false)
 
 <template>
   <img
-    v-bind="$props"
+    v-bind="props"
     :loading="loading ?? 'lazy'"
     :alt="alt ?? fallbackAlt ?? 'Unknown image'"
     :width="size ?? width ?? 400"
