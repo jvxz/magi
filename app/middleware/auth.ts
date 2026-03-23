@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
 
   const { client } = useMatrixClient()
-  const unauthed = client.value.isGuest()
+  const unauthed = !client.value.getUserId()
 
   if (unauthed && to.path.includes('/app'))
     return navigateTo('/login')
