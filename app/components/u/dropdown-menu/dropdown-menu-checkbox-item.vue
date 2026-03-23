@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { DropdownMenuCheckboxItemEmits, DropdownMenuCheckboxItemProps } from 'reka-ui';
-import type { HTMLAttributes } from 'vue';
-import { useForwardPropsEmits } from 'reka-ui';
+import type { DropdownMenuCheckboxItemEmits, DropdownMenuCheckboxItemProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+import { useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<DropdownMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<DropdownMenuCheckboxItemEmits>()
@@ -19,7 +19,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       props.class,
     )"
   >
-    <span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+    <span class="flex size-3.5 pointer-events-none items-center left-2 justify-center absolute">
       <DropdownMenuItemIndicator>
         <Icon name="mingcute:check-line" class="size-4" />
       </DropdownMenuItemIndicator>

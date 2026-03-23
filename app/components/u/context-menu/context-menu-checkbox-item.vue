@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ContextMenuCheckboxItemEmits, ContextMenuCheckboxItemProps } from 'reka-ui';
-import type { HTMLAttributes } from 'vue';
-import { reactiveOmit } from '@vueuse/core';
-import { useForwardPropsEmits } from 'reka-ui';
+import type { ContextMenuCheckboxItemEmits, ContextMenuCheckboxItemProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+import { reactiveOmit } from '@vueuse/core'
+import { useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<ContextMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<ContextMenuCheckboxItemEmits>()
@@ -20,7 +20,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       props.class,
     )"
   >
-    <span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+    <span class="flex size-3.5 pointer-events-none items-center left-2 justify-center absolute">
       <ContextMenuItemIndicator>
         <Icon name="mingcute:check-line" class="!size-4" />
       </ContextMenuItemIndicator>

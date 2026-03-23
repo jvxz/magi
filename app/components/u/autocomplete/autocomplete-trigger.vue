@@ -28,7 +28,7 @@ const forwarded = useForwardProps(delegatedProps)
     )"
   >
     <slot>
-      <Icon name="mingcute:down-line" class="text-muted-foreground size-3! translate-y-0.5" />
+      <Icon name="mingcute:down-line" class="text-muted-foreground translate-y-0.5 size-3!" />
     </slot>
   </AutocompleteTrigger>
 </template>
