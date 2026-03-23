@@ -94,7 +94,6 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'nuxt-vitalizer',
     'evlog/nuxt',
-    '@compodium/nuxt',
     '@nuxtjs/device',
     '@regle/nuxt',
     '@nuxt/hints',
