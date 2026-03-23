@@ -104,6 +104,7 @@ export default defineNuxtConfig({
     '@nuxt/hints',
     'nitro-cloudflare-dev',
     '@vite-pwa/nuxt',
+    '@unlazy/nuxt',
   ],
 
   nitro: {
