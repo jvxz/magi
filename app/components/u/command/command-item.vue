@@ -16,14 +16,13 @@ const { allGroups, allItems, filterState } = useCommand()
 const groupContext = useCommandGroup()
 
 const isRender = computed(() => {
-  if (!filterState.search) {
+  if (!filterState.search)
     return true
-  }
+
   else {
     const filteredCurrentItem = filterState.filtered.items.get(id)
-    if (filteredCurrentItem === undefined) {
+    if (filteredCurrentItem === undefined)
       return true
-    }
 
     return filteredCurrentItem > 0
   }
@@ -39,12 +38,11 @@ onMounted(() => {
 
   const groupId = groupContext?.id
   if (groupId) {
-    if (!allGroups.value.has(groupId)) {
+    if (!allGroups.value.has(groupId))
       allGroups.value.set(groupId, new Set([id]))
-    }
-    else {
+
+    else
       allGroups.value.get(groupId)?.add(id)
-    }
   }
 })
 onUnmounted(() => {

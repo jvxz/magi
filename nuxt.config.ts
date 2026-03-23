@@ -58,7 +58,6 @@ export default defineNuxtConfig({
     },
   },
 
-
   icon: {
     provider: 'server',
   },

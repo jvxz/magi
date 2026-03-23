@@ -6,16 +6,14 @@ export function onPaste(fn: (data: string | File) => void, options?: { disabled?
   let file: File | undefined
 
   function handlePaste(e: ClipboardEvent) {
-    if (options?.disabled?.value || isFocusedOnField.value) {
+    if (options?.disabled?.value || isFocusedOnField.value)
       return
-    }
 
     if (e.clipboardData) {
       if (e.clipboardData.files.length > 0) {
         file = e.clipboardData.files[0]
-        if (file) {
+        if (file)
           fn(file)
-        }
       }
 
       text = e.clipboardData.getData('text')

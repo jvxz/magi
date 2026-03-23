@@ -20,8 +20,8 @@ const { filterState } = useCommand()
 </script>
 
 <template>
-  <div class="flex h-12 items-center gap-2 border-b px-4" cmdk-input-wrapper>
-    <Icon name="mingcute:search-line" class="size-4 shrink-0 subpixel-antialiased opacity-50" />
+  <div class="px-4 border-b flex gap-2 h-12 items-center" cmdk-input-wrapper>
+    <Icon name="mingcute:search-line" class="opacity-50 shrink-0 size-4 subpixel-antialiased" />
     <ListboxFilter
       v-bind="{ ...forwardedProps, ...$attrs }"
       v-model="filterState.search"

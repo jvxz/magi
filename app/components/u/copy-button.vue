@@ -42,7 +42,7 @@ function copyValue(value: string) {
         :animate="animate"
         :exit="exit"
         :transition="transition"
-        class="absolute h-5"
+        class="h-5 absolute"
       >
         <Icon
           name="mingcute:check-line"
@@ -55,7 +55,7 @@ function copyValue(value: string) {
         :animate="animate"
         :exit="exit"
         :transition="transition"
-        class="absolute h-5"
+        class="h-5 absolute"
       >
         <Icon name="mingcute:copy-line" class="!size-4" />
       </motion.div>
