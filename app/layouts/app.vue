@@ -35,15 +35,19 @@ const [DefineHeader, Header] = createReusableTemplate()
           class="bg-background shrink-0 min-h-screen top-0 sticky"
           size-unit="px"
         >
-          <div class="flex w-full relative">
-            <LayoutAppAside />
-            <div class="flex flex-col w-full">
-              <div class="p-4 border-b flex h-header-height items-center">
-                <h2 class="text-lg font-medium">
-                  {{ asideTitle ?? upperFirst($route.name) }}
-                </h2>
+          <div class="flex flex-col size-full">
+            <div class="flex flex-1 w-full relative">
+              <LayoutAppAside />
+              <div class="flex flex-col w-full">
+                <div class="p-4 border-b flex h-header-height items-center">
+                  <h2 class="text-lg font-medium">
+                    {{ asideTitle ?? upperFirst($route.name) }}
+                  </h2>
+                </div>
+                <div class="pb-3 overflow-y-auto">
+                  <slot name="aside" />
+                </div>
               </div>
-              <slot name="aside" />
             </div>
             <LayoutAppUserCard />
           </div>
