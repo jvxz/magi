@@ -55,6 +55,8 @@ export function useAuth() {
       })
       client.value = authedClient
 
+      await client.value.startClient()
+
       sendSessionToSw(authPayload.baseUrl, authPayload.accessToken)
 
       return authedClient
