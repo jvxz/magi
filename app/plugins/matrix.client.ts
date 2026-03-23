@@ -8,6 +8,7 @@ export default defineNuxtPlugin({
 
     if (persistedClient) {
       client.value = persistedClient
+      await client.value.startClient()
 
       const sw = await getServiceWorker()
       if (sw)
