@@ -11,8 +11,10 @@ export const pwa: ModuleOptions = {
   devOptions: {
     enabled: process.env.VITE_PLUGIN_PWA === 'true',
     navigateFallback: scope,
-    suppressWarnings: true,
+    suppressWarnings: false,
+    type: 'module',
   },
+  filename: 'sw.ts',
   manifest: {
     description: appMeta.description,
     id: scope,
@@ -24,9 +26,11 @@ export const pwa: ModuleOptions = {
   registerType: 'autoUpdate',
   registerWebManifestInRouteRules: true,
   scope,
+  srcDir: '.',
+  strategies: 'injectManifest',
   workbox: {
     cleanupOutdatedCaches: true,
-    globPatterns: ['**/*.{js,css,html,txt,png,ico,svg}'],
+    globPatterns: ['**/*.{js,css,html,png,ico,svg}'],
     navigateFallback: '/',
     navigateFallbackDenylist: [/^\/api\//],
     runtimeCaching: [

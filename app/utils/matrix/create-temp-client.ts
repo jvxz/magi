@@ -1,5 +1,6 @@
+import type { ICreateClientOpts } from 'matrix-js-sdk'
 import { createClient } from 'matrix-js-sdk'
 
-export function createTempClient(baseUrl: string) {
-  return createClient({ baseUrl })
+export function createTempClient(baseUrl: string, opts?: Omit<ICreateClientOpts, 'baseUrl'>) {
+  return createClient({ baseUrl, ...opts })
 }
