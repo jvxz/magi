@@ -58,9 +58,6 @@ export default defineNuxtConfig({
     },
   },
 
-  i18n: {
-    defaultLocale: 'en',
-  },
 
   icon: {
     provider: 'server',
@@ -98,7 +95,6 @@ export default defineNuxtConfig({
     'nuxt-vitalizer',
     'evlog/nuxt',
     '@compodium/nuxt',
-    '@nuxtjs/i18n',
     '@nuxtjs/device',
     '@regle/nuxt',
     '@nuxt/hints',

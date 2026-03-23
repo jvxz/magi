@@ -69,7 +69,7 @@ const src = computed(
           class="size-1lh"
         />
         <p class="h-1lh">
-          <span v-if="room" class="font-medium tabular-nums">{{ $n(room.num_joined_members) }}</span> {{ room ? "members" : "" }}
+          <span v-if="room" class="font-medium tabular-nums">{{ room.num_joined_members }}</span> {{ room ? "members" : "" }}
         </p>
       </div>
     </div>
