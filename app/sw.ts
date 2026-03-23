@@ -53,7 +53,7 @@ self.addEventListener('fetch', (e) => {
       const headers = new Headers(e.request.headers)
       headers.set('Authorization', `Bearer ${activeSession.accessToken}`)
 
-      const req = new Request(e.request, { headers })
+      const req = new Request(e.request.url, { ...e.request, headers })
 
       return fetch(req)
     }
