@@ -147,6 +147,7 @@ export default defineNuxtConfig({
       },
     },
     rateLimiter: process.env.NODE_ENV === 'production' ? undefined : false,
+    sri: false,
   },
 
   site: {
