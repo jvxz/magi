@@ -1,7 +1,7 @@
-import type { ICreateClientOpts, LoginRequest as MatrixLoginRequest } from 'matrix-js-sdk'
-import { createClient } from 'matrix-js-sdk'
+import type { ICreateClientOpts, LoginRequest as MatrixLoginRequest, TokenRefreshFunction } from 'matrix-js-sdk'
+import { createClient, MatrixError, TokenRefreshLogoutError } from 'matrix-js-sdk'
 
-type AuthPayload = Pick<ICreateClientOpts, 'baseUrl' | 'deviceId' | 'refreshToken' | 'userId' | 'accessToken'> & { expiresAt?: number }
+export type AuthPayload = Pick<ICreateClientOpts, 'baseUrl' | 'deviceId' | 'refreshToken' | 'userId' | 'accessToken'> & { expiresAt?: number }
 
 interface PasswordLoginRequest extends MatrixLoginRequest {
   type: 'm.login.password'
@@ -21,7 +21,6 @@ export type LoginRequest = Prettify<PasswordLoginRequest | TokenLoginRequest>
 
 export function useAuth() {
   const { userAgent } = useDevice()
-  const idb = useIdb()
   const { client } = useMatrixClient()
 
   async function login(req: LoginRequest) {
@@ -40,27 +39,28 @@ export function useAuth() {
         refresh_token: true,
       })
 
-      const authedClient = createClient({
+      const authPayload: AuthPayload = {
         accessToken: loginRes.access_token,
         baseUrl: homeserver,
-        deviceId: createDeviceId(userAgent),
-        refreshToken: loginRes.refresh_token,
-        userId: loginRes.user_id,
-      })
-
-      client.value = authedClient
-      await idb.setItem<AuthPayload>('auth', {
-        accessToken: loginRes.access_token,
-        baseUrl: homeserver,
-        deviceId: createDeviceId(userAgent),
+        deviceId,
         expiresAt: loginRes.expires_in_ms ? Date.now() + loginRes.expires_in_ms : undefined,
         refreshToken: loginRes.refresh_token,
         userId: loginRes.user_id,
+      }
+      await idb.setItem<AuthPayload>('auth', authPayload)
+
+      const authedClient = createClient({
+        ...authPayload,
+        tokenRefreshFunction: createTokenRefreshFunction(),
       })
+      client.value = authedClient
+
+      sendSessionToSw(authPayload.baseUrl, authPayload.accessToken)
 
       return authedClient
     }
     catch (error) {
+      sendSessionToSw()
       throw new Error(parseMatrixError(error, { fallbackMessage: 'An unexpected error occurred' }))
     }
   }
@@ -71,21 +71,16 @@ export function useAuth() {
       if (!auth || !auth.accessToken)
         return
 
-      if (auth.refreshToken && auth.expiresAt && Date.now() >= auth.expiresAt - 60_000) {
-        const tempClient = createTempClient(withHttps(auth.baseUrl))
-        const refreshed = await tempClient.refreshToken(auth.refreshToken)
-        return createClient({
-          accessToken: refreshed.access_token,
-          baseUrl: auth.baseUrl,
-          deviceId: auth.deviceId,
-          refreshToken: refreshed.refresh_token,
-          userId: auth.userId,
-        })
-      }
+      sendSessionToSw(auth.baseUrl, auth.accessToken)
 
-      return createClient(auth)
+      return createClient({
+        ...auth,
+        tokenRefreshFunction: createTokenRefreshFunction(),
+      })
     }
-    catch {}
+    catch (error) {
+      console.error('loginPersisted failed', error)
+    }
   }
 
   async function logout() {
@@ -94,6 +89,52 @@ export function useAuth() {
     reset()
 
     return reloadNuxtApp({ path: '/login' })
+  }
+
+  function createTokenRefreshFunction(): TokenRefreshFunction {
+    return async (refreshToken: string) => {
+      try {
+        const auth = await idb.getItem<AuthPayload>('auth')
+        if (!auth)
+          throw new TokenRefreshLogoutError()
+
+        const tempClient = createTempClient(withHttps(auth.baseUrl), {
+          accessToken: auth.accessToken,
+          refreshToken,
+        })
+        const refreshed = await tempClient.refreshToken(refreshToken)
+
+        const expiresAt = refreshed.expires_in_ms ? Date.now() + refreshed.expires_in_ms : undefined
+
+        const payload = {
+          ...auth,
+          accessToken: refreshed.access_token,
+          expiresAt,
+          refreshToken: refreshed.refresh_token,
+        }
+        await idb.setItem<AuthPayload>('auth', payload)
+
+        return {
+          accessToken: refreshed.access_token,
+          expiry: expiresAt ? new Date(expiresAt) : undefined,
+          refreshToken: refreshed.refresh_token,
+        }
+      }
+      catch (error) {
+        if (error instanceof TokenRefreshLogoutError)
+          throw error
+        if (error instanceof MatrixError) {
+          if (error.isRateLimitError())
+            throw error
+          if (error.errcode === 'M_UNKNOWN_TOKEN') {
+            await logout()
+            throw new TokenRefreshLogoutError()
+          }
+          throw error
+        }
+        throw error
+      }
+    }
   }
 
   return {
