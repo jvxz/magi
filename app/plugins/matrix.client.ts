@@ -3,15 +3,12 @@ export default defineNuxtPlugin({
   setup: async () => {
     const { loginPersisted } = useAuth()
     const { client } = useMatrixClient()
-    // const { forceRefreshMe } = useUser()
 
     const persistedClient = await loginPersisted()
 
     if (persistedClient) {
       client.value = persistedClient
       await client.value.startClient()
-
-      // await forceRefreshMe()
 
       const sw = await getServiceWorker()
       if (sw)
