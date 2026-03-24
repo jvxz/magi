@@ -1,0 +1,358 @@
+{
+  "U badge": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-badge",
+    "body": ["<UBadge>", "  $1", "</UBadge>"],
+    "description": "UBadge"
+  },
+  "U button": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-button",
+    "body": ["<UButton>", "  $1", "</UButton>"],
+    "description": "UButton"
+  },
+  "U button card": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-button-card",
+    "body": ["<UButtonCard>", "  $1", "</UButtonCard>"],
+    "description": "UButtonCard"
+  },
+  "U copy button": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-copy-button",
+    "body": ["<UCopyButton :value=\"$1\" />"],
+    "description": "UCopyButton (icon-only; pass value ref/getter)"
+  },
+  "U hold button": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-hold-button",
+    "body": ["<UHoldButton @onComplete=\"$1\">", "  $2", "</UHoldButton>"],
+    "description": "UHoldButton (emits onComplete)"
+  },
+  "U input": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-input",
+    "body": ["<UInput v-model=\"$1\" />"],
+    "description": "UInput"
+  },
+  "U kbd": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-kbd",
+    "body": ["<UKbd>$1</UKbd>"],
+    "description": "UKbd"
+  },
+  "U label": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-label",
+    "body": ["<ULabel for=\"$1\">$2</ULabel>"],
+    "description": "ULabel"
+  },
+  "U separator": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-separator",
+    "body": ["<USeparator />"],
+    "description": "USeparator"
+  },
+  "U skeleton": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-skeleton",
+    "body": ["<USkeleton class=\"$1\" />"],
+    "description": "USkeleton"
+  },
+  "U slider": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-slider",
+    "body": ["<USlider v-model=\"$1\" />"],
+    "description": "USlider"
+  },
+  "U spinner": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-spinner",
+    "body": ["<USpinner />"],
+    "description": "USpinner"
+  },
+  "U switch": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-switch",
+    "body": ["<USwitch v-model=\"$1\" />"],
+    "description": "USwitch"
+  },
+  "U toggle": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-toggle",
+    "body": ["<UToggle />"],
+    "description": "UToggle"
+  },
+  "U alert": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-alert",
+    "body": [
+      "<UAlertRoot>",
+      "  <UAlertTitle>$1</UAlertTitle>",
+      "  <UAlertDescription>$2</UAlertDescription>",
+      "</UAlertRoot>"
+    ],
+    "description": "Alert anatomy (UAlertRoot)"
+  },
+  "U alert dialog": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-alert-dialog",
+    "body": [
+      "<UAlertDialogRoot>",
+      "  <UAlertDialogTrigger as-child>",
+      "    <UButton>$1</UButton>",
+      "  </UAlertDialogTrigger>",
+      "  <UAlertDialogContent>",
+      "    <UAlertDialogHeader>",
+      "      <UAlertDialogTitle>$2</UAlertDialogTitle>",
+      "      <UAlertDialogDescription>$3</UAlertDialogDescription>",
+      "    </UAlertDialogHeader>",
+      "    <UAlertDialogFooter>",
+      "      <UAlertDialogCancel />",
+      "      <UAlertDialogAction />",
+      "    </UAlertDialogFooter>",
+      "  </UAlertDialogContent>",
+      "</UAlertDialogRoot>"
+    ],
+    "description": "Alert dialog anatomy (portal+overlay in UAlertDialogContent)"
+  },
+  "U autocomplete": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-autocomplete",
+    "body": [
+      "<UAutocompleteRoot>",
+      "  <UAutocompleteAnchor>",
+      "    <UAutocompleteInput />",
+      "    <UAutocompleteTrigger>",
+      "      $1",
+      "    </UAutocompleteTrigger>",
+      "  </UAutocompleteAnchor>",
+      "  <UAutocompleteContent>",
+      "    <UAutocompleteViewport>",
+      "      <UAutocompleteEmpty />",
+      "      <UAutocompleteGroup>",
+      "        <UAutocompleteItem />",
+      "      </UAutocompleteGroup>",
+      "    </UAutocompleteViewport>",
+      "  </UAutocompleteContent>",
+      "</UAutocompleteRoot>"
+    ],
+    "description": "Autocomplete anatomy (see login.vue)"
+  },
+  "U avatar": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-avatar",
+    "body": [
+      "<UAvatar>",
+      "  <UAvatarImage :src=\"$1\" :alt=\"$2\" />",
+      "  <UAvatarFallback>$3</UAvatarFallback>",
+      "</UAvatar>"
+    ],
+    "description": "Avatar anatomy"
+  },
+  "U card": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-card",
+    "body": [
+      "<UCard>",
+      "  <UCardHeader>",
+      "    <UCardTitle>$1</UCardTitle>",
+      "    <UCardDescription>$2</UCardDescription>",
+      "  </UCardHeader>",
+      "  $3",
+      "  <UCardFooter>$4</UCardFooter>",
+      "</UCard>"
+    ],
+    "description": "Card anatomy"
+  },
+  "U command": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-command",
+    "body": [
+      "<UCommandRoot>",
+      "  <UCommandInput />",
+      "  <UCommandList>",
+      "    <UCommandEmpty />",
+      "    <UCommandGroup heading=\"$1\">",
+      "      <UCommandItem>",
+      "        $2",
+      "        <UCommandShortcut />",
+      "      </UCommandItem>",
+      "    </UCommandGroup>",
+      "  </UCommandList>",
+      "</UCommandRoot>"
+    ],
+    "description": "Command palette (inline UCommandRoot)"
+  },
+  "U command dialog": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-command-dialog",
+    "body": [
+      "<UCommandDialog>",
+      "  <UCommandInput />",
+      "  <UCommandList>",
+      "    <UCommandEmpty />",
+      "    <UCommandGroup heading=\"$1\">",
+      "      <UCommandItem>",
+      "        $2",
+      "        <UCommandShortcut />",
+      "      </UCommandItem>",
+      "    </UCommandGroup>",
+      "  </UCommandList>",
+      "</UCommandDialog>"
+    ],
+    "description": "Command dialog (UCommandDialog wraps dialog + UCommandRoot)"
+  },
+  "U context menu": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-context-menu",
+    "body": [
+      "<UContextMenu>",
+      "  <UContextMenuTrigger />",
+      "  <UContextMenuContent>",
+      "    <UContextMenuLabel />",
+      "    <UContextMenuItem />",
+      "    <UContextMenuGroup>",
+      "      <UContextMenuItem />",
+      "    </UContextMenuGroup>",
+      "    <UContextMenuCheckboxItem />",
+      "    <UContextMenuRadioGroup>",
+      "      <UContextMenuRadioItem />",
+      "    </UContextMenuRadioGroup>",
+      "    <UContextMenuSub>",
+      "      <UContextMenuSubTrigger />",
+      "      <UContextMenuSubContent />",
+      "    </UContextMenuSub>",
+      "    <UContextMenuSeparator />",
+      "  </UContextMenuContent>",
+      "</UContextMenu>"
+    ],
+    "description": "Context menu anatomy (portal in UContextMenuContent)"
+  },
+  "U dialog": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-dialog",
+    "body": [
+      "<UDialogRoot>",
+      "  <UDialogTrigger as-child>",
+      "    <UButton>$1</UButton>",
+      "  </UDialogTrigger>",
+      "  <UDialogContent>",
+      "    <UDialogHeader>",
+      "      <UDialogTitle>$2</UDialogTitle>",
+      "      <UDialogDescription>$3</UDialogDescription>",
+      "    </UDialogHeader>",
+      "    $4",
+      "    <UDialogFooter>",
+      "      <UDialogClose as-child>",
+      "        <UButton variant=\"outline\">Cancel</UButton>",
+      "      </UDialogClose>",
+      "    </UDialogFooter>",
+      "  </UDialogContent>",
+      "</UDialogRoot>"
+    ],
+    "description": "Dialog anatomy (portal+overlay in UDialogContent; built-in close on content)"
+  },
+  "U dialog scroll": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-dialog-scroll",
+    "body": [
+      "<UDialogRoot>",
+      "  <UDialogTrigger as-child>",
+      "    <UButton>$1</UButton>",
+      "  </UDialogTrigger>",
+      "  <UDialogScrollContent>",
+      "    <UDialogHeader>",
+      "      <UDialogTitle>$2</UDialogTitle>",
+      "      <UDialogDescription>$3</UDialogDescription>",
+      "    </UDialogHeader>",
+      "    $4",
+      "  </UDialogScrollContent>",
+      "</UDialogRoot>"
+    ],
+    "description": "Dialog with UDialogScrollContent"
+  },
+  "U dropdown menu": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-dropdown-menu",
+    "body": [
+      "<UDropdownMenuRoot>",
+      "  <UDropdownMenuTrigger as-child>",
+      "    <UButton>$1</UButton>",
+      "  </UDropdownMenuTrigger>",
+      "  <UDropdownMenuContent>",
+      "    <UDropdownMenuLabel />",
+      "    <UDropdownMenuItem />",
+      "    <UDropdownMenuGroup>",
+      "      <UDropdownMenuItem />",
+      "    </UDropdownMenuGroup>",
+      "    <UDropdownMenuCheckboxItem />",
+      "    <UDropdownMenuRadioGroup>",
+      "      <UDropdownMenuRadioItem />",
+      "    </UDropdownMenuRadioGroup>",
+      "    <UDropdownMenuSub>",
+      "      <UDropdownMenuSubTrigger />",
+      "      <UDropdownMenuSubContent />",
+      "    </UDropdownMenuSub>",
+      "    <UDropdownMenuSeparator />",
+      "  </UDropdownMenuContent>",
+      "</UDropdownMenuRoot>"
+    ],
+    "description": "Dropdown menu anatomy (portal in UDropdownMenuContent; no arrow component)"
+  },
+  "U hover card": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-hover-card",
+    "body": [
+      "<UHoverCardRoot>",
+      "  <UHoverCardTrigger as-child>",
+      "    <UButton variant=\"ghost\">$1</UButton>",
+      "  </UHoverCardTrigger>",
+      "  <UHoverCardContent>",
+      "    $2",
+      "  </UHoverCardContent>",
+      "</UHoverCardRoot>"
+    ],
+    "description": "Hover card anatomy (portal in UHoverCardContent)"
+  },
+  "U tabs": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-tabs",
+    "body": [
+      "<UTabsRoot>",
+      "  <UTabsList>",
+      "    <UTabsTrigger value=\"$1\">$2</UTabsTrigger>",
+      "  </UTabsList>",
+      "  <UTabsContent value=\"$1\">",
+      "    $3",
+      "  </UTabsContent>",
+      "</UTabsRoot>"
+    ],
+    "description": "Tabs anatomy"
+  },
+  "U toggle group": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-toggle-group",
+    "body": [
+      "<UToggleGroupRoot>",
+      "  <UToggleGroupItem value=\"$1\">$2</UToggleGroupItem>",
+      "</UToggleGroupRoot>"
+    ],
+    "description": "Toggle group anatomy"
+  },
+  "U tooltip": {
+    "scope": "vue,vue-html,html",
+    "prefix": "u-tooltip",
+    "body": [
+      "<UTooltipRoot>",
+      "  <UTooltipTrigger as-child>",
+      "    <UButton variant=\"ghost\" size=\"icon\">$1</UButton>",
+      "  </UTooltipTrigger>",
+      "  <UTooltipContent>",
+      "    $2",
+      "  </UTooltipContent>",
+      "</UTooltipRoot>"
+    ],
+    "description": "Tooltip anatomy (UTooltipProvider is global in app.vue)"
+  }
+}
