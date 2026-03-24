@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TooltipContentEmits, TooltipContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { useForwardPropsEmits } from 'reka-ui'
+import { TooltipArrow, useForwardPropsEmits } from 'reka-ui'
 
 defineOptions({
   inheritAttrs: false,
@@ -22,14 +22,54 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <TooltipPortal>
     <TooltipContent
       v-bind="{ ...forwarded, ...$attrs }"
+      id="tooltip-content"
       :class="cn(
         staticStyles.base,
         staticStyles.variant.default,
-        'z-50 animate-in p-0 px-3 py-1.5 text-sm text-balance data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=delayed-open]:fade-in-0 data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-2',
+        'will-change-transform will-change-opacity z-50 p-0 bg-card-2 px-3 py-1.5 text-sm text-balance font-medium',
         props.class,
       )"
     >
       <slot />
+      <TooltipArrow
+        rounded
+        class="translate-y-px scale-140 fill-card-2 stroke-border"
+      />
     </TooltipContent>
   </TooltipPortal>
 </template>
+
+<style>
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes tooltip-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+#tooltip-content[data-state='instant-open'] {
+  animation: tooltip-in 75ms ease;
+}
+#tooltip-content[data-state='delayed-open'] {
+  animation: tooltip-in 75ms ease;
+}
+
+#tooltip-content[data-state='closed'] {
+  animation: tooltip-out 75ms ease;
+}
+</style>

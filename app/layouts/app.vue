@@ -6,7 +6,7 @@ defineProps<{
 }>()
 
 const layout = useCookie<number[]>('splitter:appAside', {
-  default: () => [300, 240],
+  default: () => [400, 240],
 })
 
 const [DefineHeader, Header] = createReusableTemplate()
@@ -19,8 +19,9 @@ const [DefineHeader, Header] = createReusableTemplate()
     </div>
   </DefineHeader>
 
+  <SettingsDialog />
+
   <div class="flex h-screen relative *:shrink-0">
-    <LayoutAppAside />
     <main class="bg-card flex-1 shrink h-full">
       <SplitterGroup
         id="aside-extra-splitter-group"
@@ -31,17 +32,27 @@ const [DefineHeader, Header] = createReusableTemplate()
         <SplitterPanel
           id="aside-extra-splitter-panel-1"
           :default-size="layout[0]"
-          :min-size="240"
-          :max-size="400"
+          :min-size="360"
+          :max-size="500"
           class="bg-background shrink-0 min-h-screen top-0 sticky"
           size-unit="px"
         >
-          <div class="p-4 border-b flex h-header-height items-center">
-            <h2 class="text-lg font-medium">
-              {{ asideTitle ?? upperFirst($route.name) }}
-            </h2>
+          <div class="flex flex-col size-full">
+            <div class="flex flex-1 w-full relative">
+              <LayoutAppAside />
+              <div class="flex flex-col w-full">
+                <div class="p-4 border-b flex h-header-height items-center">
+                  <h2 class="text-lg font-medium">
+                    {{ asideTitle ?? upperFirst($route.name) }}
+                  </h2>
+                </div>
+                <div class="pb-3 overflow-y-auto">
+                  <slot name="aside" />
+                </div>
+              </div>
+            </div>
+            <LayoutAppUserCard />
           </div>
-          <slot name="aside" />
         </SplitterPanel>
         <SplitterResizeHandle id="aside-extra-splitter-resize-handle" class="group relative">
           <div class="bg-muted-foreground opacity-75 h-full w-1.5 pointer-events-none transition-all duration-75 delay-150 ease-in-out inset-0 absolute z-10 z-100 group-data-[state=inactive]:opacity-0 group-data-[state=inactive]:w-0.5 -translate-x-1/2 group-data-[state=inactive]:delay-0" />
@@ -61,5 +72,11 @@ const [DefineHeader, Header] = createReusableTemplate()
         </SplitterPanel>
       </SplitterGroup>
     </main>
+    <div
+      class="bg-red-500 h-header-height bottom-0 absolute"
+      :style="{
+        width: `calc(${layout[0]}px + 75px)px`,
+      }"
+    ></div>
   </div>
 </template>

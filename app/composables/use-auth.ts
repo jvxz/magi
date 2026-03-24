@@ -22,6 +22,7 @@ export type LoginRequest = Prettify<PasswordLoginRequest | TokenLoginRequest>
 export function useAuth() {
   const { userAgent } = useDevice()
   const { client } = useMatrixClient()
+  const { forceRefreshMe } = useUser()
 
   async function login(req: LoginRequest) {
     try {
@@ -56,6 +57,7 @@ export function useAuth() {
       client.value = authedClient
 
       await client.value.startClient()
+      void forceRefreshMe()
 
       sendSessionToSw(authPayload.baseUrl, authPayload.accessToken)
 
