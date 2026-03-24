@@ -58,7 +58,7 @@ export default defineConfig({
     },
     spacing: {
       'DEFAULT': '0.235rem',
-      'header-height': '4rem',
+      'header-height': '3rem',
       'page-y-padding': '6rem',
     },
     text: {
