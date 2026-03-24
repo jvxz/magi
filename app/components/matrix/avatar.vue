@@ -5,7 +5,7 @@ const props = defineProps<Omit<ImgProps, 'src' | 'alt'> & {
   user: {
     avatarUrl?: string
     displayName?: string
-  }
+  } | undefined
   square?: boolean
 }>()
 
@@ -13,10 +13,10 @@ const { client } = useMatrixClient()
 
 const reducedMotion = usePreferredReducedMotion()
 const src = computed(() => {
-  if (!props.user.avatarUrl)
+  if (!props.user?.avatarUrl)
     return IMG_PLACEHOLDER_URL
 
-  if (isMxc(props.user.avatarUrl)) {
+  if (isMxc(props.user?.avatarUrl)) {
     return mxcToHttps(props.user.avatarUrl, {
       allowRedirects: true,
       animated: reducedMotion.value !== 'reduce',
@@ -35,8 +35,8 @@ const src = computed(() => {
 <template>
   <Img
     v-bind="props"
-    :key="user.avatarUrl"
-    :alt="user.displayName"
+    :key="user?.avatarUrl"
+    :alt="user?.displayName"
     :src
     :class="cn(!square && 'rounded-full', props.class)"
   />
