@@ -1,0 +1,22 @@
+<script lang="ts" setup>
+const { me } = useUser()
+</script>
+
+<template>
+  <div class="p-4 bg-background shrink-0 w-64">
+    <UButton variant="ghost" class="group gap-3.5 text-foreground font-normal p-3 h-[4.25rem] w-full items-center justify-between">
+      <MatrixAvatar
+        :user="me"
+        :size="48"
+        class="shrink-0"
+      />
+      <div class="flex flex-col h-full w-full justify-evenly *:w-fit">
+        <span class="font-medium">{{ me?.displayName }}</span>
+        <span class="text-muted-foreground group-hover:text-foreground">
+          Edit Profile
+          <Icon name="mingcute:pencil-fill" class="h-0.6lh" />
+        </span>
+      </div>
+    </UButton>
+  </div>
+</template>
