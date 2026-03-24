@@ -19,6 +19,8 @@ const [DefineHeader, Header] = createReusableTemplate()
     </div>
   </DefineHeader>
 
+  <SettingsDialog />
+
   <div class="flex h-screen relative *:shrink-0">
     <main class="bg-card flex-1 shrink h-full">
       <SplitterGroup
