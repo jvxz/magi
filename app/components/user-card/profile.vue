@@ -3,7 +3,7 @@ const { me } = useUser()
 </script>
 
 <template>
-  <div class="px-1.75 shrink-0 py-1.25 rounded-sm flex gap-2 h-full flex-1 cursor-pointer duration-150 items-center -mx-1.75 -my-1.25 hover:bg-white/7.5">
+  <div class="px-1.75 py-1.25 rounded-sm flex flex-1 shrink-0 gap-2 h-full cursor-pointer duration-150 items-center -mx-1.75 -my-1.25 hover:bg-white/7.5">
     <MatrixAvatar
       v-if="me"
       loading="eager"

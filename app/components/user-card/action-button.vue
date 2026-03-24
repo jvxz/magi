@@ -12,7 +12,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="flex w-fit gap-px items-center">
+  <div class="flex gap-px w-fit items-center">
     <UTooltipRoot>
       <UTooltipTrigger as-child>
         <UButton

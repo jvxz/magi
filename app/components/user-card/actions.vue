@@ -12,8 +12,12 @@
     />
     <UTooltipRoot>
       <UTooltipTrigger as-child>
-        <UButton variant="ghost" size="icon" class="group/btn">
-          <Icon name="mingcute:settings-4-fill" class="size-5 group-hover/btn:rotate-180 duration-0 motion-reduce:duration-0! group-hover/btn:duration-1100 ease" />
+        <UButton
+          variant="ghost"
+          size="icon"
+          class="group/btn"
+        >
+          <Icon name="mingcute:settings-4-fill" class="size-5 duration-0 ease group-hover/btn:rotate-180 group-hover/btn:duration-1100 motion-reduce:duration-0!" />
         </UButton>
       </UTooltipTrigger>
       <UTooltipContent>
