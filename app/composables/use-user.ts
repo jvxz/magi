@@ -1,4 +1,3 @@
-import { ClientEvent } from 'matrix-js-sdk'
 
 export function useUser() {
   const { client } = useMatrixClient()
@@ -38,15 +37,6 @@ export function useUser() {
     getCachedData: getClientData,
     immediate: true,
     watch: [() => toValue(userId)],
-  })
-
-  // watch client user for updates
-  onMounted(() => {
-    client.value.on(ClientEvent.Sync, () => refreshMe())
-
-    onScopeDispose(() => {
-      client.value.off(ClientEvent.Sync, () => refreshMe())
-    })
   })
 
   return {
