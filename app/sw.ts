@@ -24,25 +24,6 @@ let activeSession: {
   accessToken?: string
 } | undefined
 
-self.addEventListener('message', (e) => {
-  const res = SwMessageSchema.safeParse(e.data)
-  if (!res.success)
-    return console.warn('Unknown message sent to service worker: ', e.data)
-
-  const { payload, type } = res.data
-
-  switch (type) {
-    case 'session': {
-      activeSession = {
-        accessToken: payload.accessToken ?? undefined,
-        baseUrl: payload.baseUrl ?? undefined,
-      }
-    }
-  }
-})
-
-const MEDIA_PATHS = ['/_matrix/client/v1/media/download/', '/_matrix/client/v1/media/thumbnail/']
-
 const matrixMediaStrategy = new CacheFirst({
   cacheName: 'media',
   plugins: [
@@ -63,6 +44,33 @@ const matrixMediaStrategy = new CacheFirst({
   ],
 })
 
+self.addEventListener('message', async (e) => {
+  const res = SwMessageSchema.safeParse(e.data)
+  if (!res.success)
+    return console.warn('Unknown message sent to service worker: ', e.data)
+
+  const { payload, type } = res.data
+
+  switch (type) {
+    case 'session': {
+      activeSession = {
+        accessToken: payload.accessToken ?? undefined,
+        baseUrl: payload.baseUrl ?? undefined,
+      }
+      break
+    }
+    case 'cache': {
+      switch (payload.action) {
+        case 'evict': {
+          const cache = await caches.open(payload.cacheName)
+          await cache.delete(payload.url)
+        }
+      }
+    }
+  }
+})
+
+const MEDIA_PATHS = ['/_matrix/client/v1/media/download/', '/_matrix/client/v1/media/thumbnail/']
 function isMediaRequest(req: Request) {
   try {
     const { hostname: reqHostname, pathname } = new URL(req.url)

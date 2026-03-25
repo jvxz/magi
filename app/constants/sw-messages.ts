@@ -5,6 +5,11 @@ export const SwMessageSchema = z.union([
     accessToken: z.string().nullish(),
     baseUrl: z.string().nullish(),
   })),
+  makeMessage('cache', z.object({
+    action: z.union([z.literal('evict')]),
+    cacheName: z.string(),
+    url: z.string(),
+  })),
 ])
 
 export type SwMessage = z.infer<typeof SwMessageSchema>
