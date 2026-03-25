@@ -1,4 +1,3 @@
-
 export function useUser() {
   const { client } = useMatrixClient()
 
