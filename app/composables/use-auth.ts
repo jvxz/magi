@@ -155,7 +155,7 @@ export function useAuth() {
 }
 
 async function sendSessionToSw(baseUrl?: string, accessToken?: string) {
-  messageSw('session', {
+  await messageSw('session', {
     accessToken,
     baseUrl,
   })
