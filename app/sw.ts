@@ -3,7 +3,10 @@
 /// <reference lib="WebWorker" />
 /// <reference types="vite/client" />
 import { clientsClaim } from 'workbox-core'
+import { ExpirationPlugin } from 'workbox-expiration'
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
+import { CacheFirst } from 'workbox-strategies'
+import { SwMessageSchema } from './constants/sw-messages'
 
 declare let self: ServiceWorkerGlobalScope
 
@@ -21,11 +24,56 @@ let activeSession: {
   accessToken?: string
 } | undefined
 
-self.addEventListener('message', (e) => {
-  if (e.data.type === 'session') {
-    return activeSession = {
-      accessToken: e.data.payload.accessToken,
-      baseUrl: e.data.payload.baseUrl,
+const matrixMediaStrategy = new CacheFirst({
+  cacheName: 'media',
+  plugins: [
+    {
+      requestWillFetch: async ({ request }) => {
+        if (!activeSession || !activeSession.accessToken)
+          return request
+
+        const headers = new Headers(request.headers)
+        headers.set('Authorization', `Bearer ${activeSession.accessToken}`)
+
+        return new Request(request, { headers })
+      },
+    },
+    new ExpirationPlugin({
+      maxAgeSeconds: 3600,
+      maxEntries: 250,
+    }),
+  ],
+})
+
+self.addEventListener('message', async (e) => {
+  const res = SwMessageSchema.safeParse(e.data)
+  if (!res.success)
+    return console.warn('Unknown message sent to service worker: ', e.data)
+
+  const { payload, type } = res.data
+
+  switch (type) {
+    case 'session': {
+      activeSession = {
+        accessToken: payload.accessToken ?? undefined,
+        baseUrl: payload.baseUrl ?? undefined,
+      }
+      break
+    }
+    case 'cache': {
+      switch (payload.action) {
+        case 'evict': {
+          const cache = await caches.open(payload.cacheName)
+
+          if (payload.urls === 'all')
+            await caches.delete(payload.cacheName)
+
+          else {
+            for (const url of payload.urls)
+              await cache.delete(url)
+          }
+        }
+      }
     }
   }
 })
@@ -45,19 +93,6 @@ function isMediaRequest(req: Request) {
 }
 
 self.addEventListener('fetch', (e) => {
-  if (isMediaRequest(e.request)) {
-    const res = async () => {
-      if (!activeSession || !activeSession.accessToken)
-        return fetch(e.request)
-
-      const headers = new Headers(e.request.headers)
-      headers.set('Authorization', `Bearer ${activeSession.accessToken}`)
-
-      const req = new Request(e.request.url, { ...e.request, headers })
-
-      return fetch(req)
-    }
-
-    return e.respondWith(res())
-  }
+  if (isMediaRequest(e.request))
+    return e.respondWith(matrixMediaStrategy.handle(e))
 })

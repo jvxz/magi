@@ -74,6 +74,10 @@ export default defineNuxtConfig({
       { package: 'ufo' },
       { package: 'scule' },
       {
+        from: 'zod',
+        imports: [{ as: 'z', name: '*' }],
+      },
+      {
         from: 'evlog',
         imports: ['createError'],
         priority: 2,

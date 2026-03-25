@@ -92,6 +92,12 @@ export function useAuth() {
     const { reset } = useMatrixClient()
     reset()
 
+    await messageSw('cache', {
+      action: 'evict',
+      cacheName: 'media',
+      urls: 'all',
+    })
+
     return reloadNuxtApp({ path: '/login' })
   }
 
@@ -146,4 +152,11 @@ export function useAuth() {
     loginPersisted,
     logout,
   }
+}
+
+async function sendSessionToSw(baseUrl?: string, accessToken?: string) {
+  await messageSw('session', {
+    accessToken,
+    baseUrl,
+  })
 }
