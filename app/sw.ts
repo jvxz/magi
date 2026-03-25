@@ -35,7 +35,7 @@ const matrixMediaStrategy = new CacheFirst({
         const headers = new Headers(request.headers)
         headers.set('Authorization', `Bearer ${activeSession.accessToken}`)
 
-        return new Request(request.url, { ...request, headers })
+        return new Request(request, { headers })
       },
     },
     new ExpirationPlugin({
