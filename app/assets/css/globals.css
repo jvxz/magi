@@ -52,24 +52,6 @@
   --border: oklch(28.3% 0.0091 285.81);
   --input: oklch(from var(--background) calc(l * 1.35) c h);
 }
-/* .dark {
-  --background: oklch(17% 0.01 var(--chroma));
-  --foreground: oklch(from var(--background) calc(l * 5.4) c h);
-  --card: oklch(from var(--background) calc(l * 1.2) c h);
-  --card-foreground: oklch(0.97 0 0);
-  --popover: oklch(0.2 0 0);
-  --popover-foreground: oklch(0.74 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.32 0 0);
-  --secondary-foreground: oklch(0.97 0 0);
-  --muted: oklch(from var(--background) calc(l * 1.55) c h);
-  --muted-foreground: oklch(from var(--muted) calc(l * 2.75) c h);
-  --accent-foreground: oklch(0.97 0 0);
-  --danger: oklch(0.62 0.22 27);
-  --danger-foreground: oklch(0.985 0 0);
-  --border: oklch(from var(--background) calc(l * 1.75) c h);
-  --input: oklch(from var(--background) calc(l * 1.35) c h);
-} */
 
 @utility scrollbar-fancy {
   scrollbar-color: var(--border) var(--background);
