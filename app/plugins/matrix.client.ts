@@ -14,8 +14,12 @@ export default defineNuxtPlugin({
       await refreshMe()
 
       const sw = await getServiceWorker()
-      if (sw)
-        await sendSessionToSw(client.value.getHomeserverUrl(), client.value.getAccessToken() ?? undefined)
+      if (sw) {
+        await messageSw('session', {
+          accessToken: client.value.getHomeserverUrl(),
+          baseUrl: client.value.getAccessToken(),
+        })
+      }
     }
   },
 })

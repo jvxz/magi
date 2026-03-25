@@ -147,3 +147,10 @@ export function useAuth() {
     logout,
   }
 }
+
+async function sendSessionToSw(baseUrl?: string, accessToken?: string) {
+  messageSw('session', {
+    accessToken,
+    baseUrl,
+  })
+}
