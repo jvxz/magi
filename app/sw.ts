@@ -4,6 +4,7 @@
 /// <reference types="vite/client" />
 import { clientsClaim } from 'workbox-core'
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
+import { SwMessageSchema } from './constants/sw-messages'
 
 declare let self: ServiceWorkerGlobalScope
 
@@ -22,10 +23,18 @@ let activeSession: {
 } | undefined
 
 self.addEventListener('message', (e) => {
-  if (e.data.type === 'session') {
-    return activeSession = {
-      accessToken: e.data.payload.accessToken,
-      baseUrl: e.data.payload.baseUrl,
+  const res = SwMessageSchema.safeParse(e.data)
+  if (!res.success)
+    return console.warn('Unknown message sent to service worker: ', e.data)
+
+  const { payload, type } = res.data
+
+  switch (type) {
+    case 'session': {
+      activeSession = {
+        accessToken: payload.accessToken ?? undefined,
+        baseUrl: payload.baseUrl ?? undefined,
+      }
     }
   }
 })
