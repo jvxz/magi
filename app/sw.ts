@@ -3,7 +3,9 @@
 /// <reference lib="WebWorker" />
 /// <reference types="vite/client" />
 import { clientsClaim } from 'workbox-core'
+import { ExpirationPlugin } from 'workbox-expiration'
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
+import { CacheFirst } from 'workbox-strategies'
 import { SwMessageSchema } from './constants/sw-messages'
 
 declare let self: ServiceWorkerGlobalScope
@@ -40,6 +42,27 @@ self.addEventListener('message', (e) => {
 })
 
 const MEDIA_PATHS = ['/_matrix/client/v1/media/download/', '/_matrix/client/v1/media/thumbnail/']
+
+const matrixMediaStrategy = new CacheFirst({
+  cacheName: 'media',
+  plugins: [
+    {
+      requestWillFetch: async ({ request }) => {
+        if (!activeSession || !activeSession.accessToken)
+          return request
+
+        const headers = new Headers(request.headers)
+        headers.set('Authorization', `Bearer ${activeSession.accessToken}`)
+
+        return new Request(request.url, { ...request, headers })
+      },
+    },
+    new ExpirationPlugin({
+      maxAgeSeconds: 3600,
+    }),
+  ],
+})
+
 function isMediaRequest(req: Request) {
   try {
     const { hostname: reqHostname, pathname } = new URL(req.url)
@@ -54,19 +77,6 @@ function isMediaRequest(req: Request) {
 }
 
 self.addEventListener('fetch', (e) => {
-  if (isMediaRequest(e.request)) {
-    const res = async () => {
-      if (!activeSession || !activeSession.accessToken)
-        return fetch(e.request)
-
-      const headers = new Headers(e.request.headers)
-      headers.set('Authorization', `Bearer ${activeSession.accessToken}`)
-
-      const req = new Request(e.request.url, { ...e.request, headers })
-
-      return fetch(req)
-    }
-
-    return e.respondWith(res())
-  }
+  if (isMediaRequest(e.request))
+    return e.respondWith(matrixMediaStrategy.handle(e))
 })
