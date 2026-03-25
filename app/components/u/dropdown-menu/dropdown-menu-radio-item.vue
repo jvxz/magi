@@ -22,7 +22,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   >
     <span class="flex size-3.5 pointer-events-none items-center left-2 justify-center absolute">
       <DropdownMenuItemIndicator>
-        <Icon name="mingcute:dot-circle-line" class="size-2 fill-current" />
+        <Icon name="tabler:circle-dot" class="size-2 fill-current" />
       </DropdownMenuItemIndicator>
     </span>
     <slot />

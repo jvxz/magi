@@ -31,7 +31,7 @@ const { open } = useSettingsDialog()
                 'inline-flex size-8 items-center justify-center opacity-70',
               )"
             >
-              <Icon name="mingcute:close-line" class="size-5" />
+              <Icon name="tabler:x" class="size-5" />
               <span class="sr-only">Close</span>
             </DialogClose>
           </header>

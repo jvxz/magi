@@ -36,7 +36,7 @@ defineEmits<{
           class="text-danger rounded-l-none bg-danger/10 w-3.5 transition-colors duration-150 ease active:text-danger hover:text-danger active:bg-danger/20 hover:bg-danger/20"
           @click="$emit('arrowClick')"
         >
-          <Icon name="mingcute:down-line" class="size-5" />
+          <Icon name="tabler:chevron-down" class="size-5" />
         </UButton>
         <UTooltipContent>
           {{ arrowLabel }}

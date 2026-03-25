@@ -6,7 +6,7 @@
       class=""
     >
       <NuxtLink to="/app/me">
-        <Icon name="mingcute:message-2-fill" class="text-foreground size-6" />
+        <Icon name="tabler:message-2-filled" class="text-foreground size-6" />
       </NuxtLink>
     </LayoutAppAsideButton>
   </div>

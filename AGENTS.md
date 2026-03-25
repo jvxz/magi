@@ -25,7 +25,7 @@ Decoy is a **Matrix.org client** built with Nuxt 4. Core priorities: **security,
 | Form Validation | `@regle/nuxt` |
 | Schema Validation | `zod` (server routes only) |
 | Images | `@nuxt/image` + `@unlazy/nuxt` (lazy load, blur / thumbhash) |
-| Icons | `@nuxt/icon` with `@iconify-json/mingcute` |
+| Icons | `@nuxt/icon` with `@iconify-json/tabler` |
 | Logging | `evlog` |
 | Security | `nuxt-security` (CSP, rate limiting) |
 | DX | `@nuxt/hints` |

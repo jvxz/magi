@@ -24,7 +24,7 @@ const forwarded = useForwardProps(delegatedProps)
     )"
   >
     <slot>
-      <Icon name="mingcute:close-line" class="text-muted-foreground size-3.5" />
+      <Icon name="tabler:x" class="text-muted-foreground size-3.5" />
     </slot>
   </AutocompleteCancel>
 </template>

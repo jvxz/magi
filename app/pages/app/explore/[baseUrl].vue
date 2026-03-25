@@ -52,7 +52,7 @@ const params = useUrlSearchParams<{ q: string }>('history', {
               variant="soft"
               class="text-base px-4 h-12 w-full justify-start"
             >
-              <Icon name="mingcute:add-line" class="" />
+              <Icon name="tabler:plus" class="" />
               Add server
             </UButton>
           </UDialogTrigger>
@@ -66,7 +66,7 @@ const params = useUrlSearchParams<{ q: string }>('history', {
     <template #header>
       <div class="px-6 grid grid-cols-2 h-full items-center">
         <div class="flex gap-2 items-center">
-          <Icon name="mingcute:server-2-line" />
+          <Icon name="tabler:server-2" />
           <p>{{ baseUrl }}</p>
           <LazyUSpinner v-if="pending" class="size-4" />
         </div>
@@ -76,7 +76,7 @@ const params = useUrlSearchParams<{ q: string }>('history', {
             v-model="params.q"
             class="w-64"
             placeholder="Search"
-            leading-icon="mingcute:search-line"
+            leading-icon="tabler:search"
           />
         </div>
       </div>

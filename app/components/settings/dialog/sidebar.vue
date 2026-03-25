@@ -14,7 +14,7 @@ const { me } = useUser()
         <span class="font-medium">{{ me?.displayName }}</span>
         <span class="text-muted-foreground group-hover:text-foreground">
           Edit Profile
-          <Icon name="mingcute:pencil-fill" class="h-0.6lh" />
+          <Icon name="tabler:pencil-filled" class="h-0.6lh" />
         </span>
       </div>
     </UButton>

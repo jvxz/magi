@@ -86,7 +86,7 @@ watch(() => r$.$value.homeserver, () => {
               <UAutocompleteAnchor class="border-muted bg-card h-10 group-data-[error]:border-danger">
                 <UAutocompleteInput :show-icon="false" />
                 <UAutocompleteTrigger>
-                  <Icon name="mingcute:down-line" class="text-muted-foreground size-3.25!" />
+                  <Icon name="tabler:chevron-down" class="text-muted-foreground size-3.25!" />
                 </UAutocompleteTrigger>
               </UAutocompleteAnchor>
               <UAutocompleteContent hide-when-empty>

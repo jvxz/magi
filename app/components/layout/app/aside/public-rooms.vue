@@ -6,7 +6,7 @@
         params: { baseUrl: 'matrix.org' },
       }"
     >
-      <Icon name="mingcute:compass-fill" class="text-foreground size-6" />
+      <Icon name="tabler:compass-filled" class="text-foreground size-6" />
     </NuxtLink>
   </LayoutAppAsideButton>
 </template>

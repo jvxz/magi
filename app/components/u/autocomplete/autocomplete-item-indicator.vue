@@ -17,7 +17,7 @@ const forwarded = useForwardProps(delegatedProps)
     :class="cn('ml-auto', props.class)"
   >
     <slot>
-      <Icon name="mingcute:check-line" class="size-3!" />
+      <Icon name="tabler:check" class="size-3!" />
     </slot>
   </AutocompleteItemIndicator>
 </template>

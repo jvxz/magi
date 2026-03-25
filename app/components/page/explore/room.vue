@@ -64,7 +64,7 @@ const src = computed(
       <div class="text-xs text-muted-foreground pt-4 flex gap-2 items-center">
         <Icon
           v-if="room"
-          name="mingcute:user-2-fill"
+          name="tabler:user-filled"
           class="size-1lh"
         />
         <p class="h-1lh">
