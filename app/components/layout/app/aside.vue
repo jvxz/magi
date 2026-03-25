@@ -1,6 +1,9 @@
 <template>
-  <aside class="p-4 border-r flex shrink-0 flex-col gap-4 items-center top-0 sticky">
-    <div class="grow" />
-    <LayoutAppAsidePublicRooms />
+  <aside class="shrink-0 w-20 top-0 sticky">
+    <LayoutAppAsideDms />
+    <USeparator class="mx-auto mb-[2px] w-1/2!" />
+    <div class="py-2.5 flex flex-col items-center">
+      <LayoutAppAsidePublicRooms />
+    </div>
   </aside>
 </template>

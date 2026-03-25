@@ -9,6 +9,8 @@ const layout = useCookie<number[]>('splitter:appAside', {
   default: () => [400, 240],
 })
 
+const slots = useSlots()
+
 const [DefineHeader, Header] = createReusableTemplate()
 </script>
 
@@ -21,8 +23,9 @@ const [DefineHeader, Header] = createReusableTemplate()
 
   <SettingsDialog />
 
-  <div class="flex h-screen relative *:shrink-0">
-    <main class="bg-card flex-1 shrink h-full">
+  <div class="flex flex-col h-screen relative">
+    <LayoutAppHeader />
+    <main class="bg-card flex-1 h-fit">
       <SplitterGroup
         id="aside-extra-splitter-group"
         direction="horizontal"
@@ -34,17 +37,24 @@ const [DefineHeader, Header] = createReusableTemplate()
           :default-size="layout[0]"
           :min-size="360"
           :max-size="500"
-          class="bg-background shrink-0 min-h-screen top-0 sticky"
+          class="bg-background shrink-0 top-0 sticky"
           size-unit="px"
         >
-          <div class="flex flex-col size-full">
-            <div class="flex flex-1 w-full relative">
+          <div class="flex flex-col h-full">
+            <div class="flex flex-1 shrink w-full relative">
               <LayoutAppAside />
-              <div class="flex flex-col w-full">
-                <div class="p-4 border-b flex h-header-height items-center">
-                  <h2 class="text-lg font-medium">
-                    {{ asideTitle ?? upperFirst($route.name) }}
-                  </h2>
+              <div class="border-l border-t rounded-tl-xl flex flex-col w-full">
+                <div
+                  class="border-b flex h-[49px] items-center"
+                  :class="{
+                    'px-4': !slots['aside-header'],
+                  }"
+                >
+                  <slot name="aside-header">
+                    <h2 class="text-lg font-medium">
+                      {{ asideTitle ?? upperFirst($route.name) }}
+                    </h2>
+                  </slot>
                 </div>
                 <div class="pb-3 overflow-y-auto">
                   <slot name="aside" />
@@ -62,7 +72,7 @@ const [DefineHeader, Header] = createReusableTemplate()
           :default-size="layout[1]"
           size-unit="px"
         >
-          <div class="flex flex-col h-full">
+          <div class="border-t flex flex-col h-full">
             <Header v-if="$slots.header">
               <slot name="header" />
             </Header>

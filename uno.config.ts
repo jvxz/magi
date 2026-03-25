@@ -9,12 +9,18 @@ export default defineConfig({
     presetAnimations,
   ],
   rules: [
-    ['scrollbar-gutter-stable', {
-      'scrollbar-gutter': 'stable',
-    }],
-    ['text-clip', {
-      'text-box': 'trim-both cap alphabetic',
-    }],
+    [
+      'scrollbar-gutter-stable',
+      {
+        'scrollbar-gutter': 'stable',
+      },
+    ],
+    [
+      'text-clip',
+      {
+        'text-box': 'trim-both cap alphabetic',
+      },
+    ],
   ],
   safelist: ['group'],
   theme: {
@@ -57,8 +63,9 @@ export default defineConfig({
       DEFAULT: 'var(--radius)',
     },
     spacing: {
+      'app-header-height': '2rem',
       'DEFAULT': '0.235rem',
-      'header-height': '3rem',
+      'header-height': '49px',
       'page-y-padding': '6rem',
     },
     text: {

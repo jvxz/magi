@@ -28,11 +28,12 @@ const src = computed(
     :class="!room && 'animate-pulse border'"
   >
     <div class="h-full inset-0 absolute">
-      <Img
+      <LazyImg
         :size="32"
         :alt="room?.name"
         :src
-        class="bg-primary size-full scale-120 object-cover blur-xl -m-px data-[loaded=false]:bg-card-2 -translate-y-1/3 data-[loaded=false]:blur-none"
+        class="size-full scale-120 object-cover -m-px -translate-y-1/3 data-[error=false]:blur-xl"
+        :do-placeholder="false"
       />
     </div>
 
