@@ -21,10 +21,11 @@ const src = computed(() => {
       allowRedirects: true,
       animated: reducedMotion.value !== 'reduce',
       baseUrl: client.value.getHomeserverUrl(),
-      height: props.size ?? props.width ?? 400,
+      // don't adhere to size prop to allow caching; url doesn't match when size is different
+      height: 400,
       resizeMethod: 'scale',
       useAuthentication: true,
-      width: props.size ?? props.width ?? 400,
+      width: 400,
     })
   }
 
