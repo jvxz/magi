@@ -16,8 +16,8 @@ export default defineNuxtPlugin({
       const sw = await getServiceWorker()
       if (sw) {
         await messageSw('session', {
-          accessToken: client.value.getHomeserverUrl(),
-          baseUrl: client.value.getAccessToken(),
+          accessToken: client.value.getAccessToken(),
+          baseUrl: client.value.getHomeserverUrl(),
         })
       }
     }
