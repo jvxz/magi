@@ -67,6 +67,7 @@ export default defineNuxtConfig({
       '~/utils/**/*.ts',
       '~/config/**/*.ts',
       '~/composables/**/*.ts',
+      '~/constants/**/*.ts',
       './shared/**/*.ts',
     ],
     presets: [
