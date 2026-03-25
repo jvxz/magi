@@ -123,6 +123,7 @@ export function useAuth() {
           refreshToken: refreshed.refresh_token,
         }
         await idb.setItem<AuthPayload>('auth', payload)
+        await sendSessionToSw(payload.baseUrl, payload.accessToken)
 
         return {
           accessToken: refreshed.access_token,
