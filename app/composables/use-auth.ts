@@ -92,6 +92,12 @@ export function useAuth() {
     const { reset } = useMatrixClient()
     reset()
 
+    await messageSw('cache', {
+      action: 'evict',
+      cacheName: 'media',
+      urls: 'all',
+    })
+
     return reloadNuxtApp({ path: '/login' })
   }
 

@@ -8,7 +8,10 @@ export const SwMessageSchema = z.union([
   makeMessage('cache', z.object({
     action: z.union([z.literal('evict')]),
     cacheName: z.string(),
-    url: z.string(),
+    urls: z.union([
+      z.literal('all'),
+      z.array(z.string()),
+    ]),
   })),
 ])
 

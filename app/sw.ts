@@ -40,6 +40,7 @@ const matrixMediaStrategy = new CacheFirst({
     },
     new ExpirationPlugin({
       maxAgeSeconds: 3600,
+      maxEntries: 250,
     }),
   ],
 })
@@ -63,7 +64,14 @@ self.addEventListener('message', async (e) => {
       switch (payload.action) {
         case 'evict': {
           const cache = await caches.open(payload.cacheName)
-          await cache.delete(payload.url)
+
+          if (payload.urls === 'all')
+            await caches.delete(payload.cacheName)
+
+          else {
+            for (const url of payload.urls)
+              await cache.delete(url)
+          }
         }
       }
     }
