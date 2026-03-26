@@ -1,6 +1,6 @@
-declare module "matrix-js-sdk" {
+declare module 'matrix-js-sdk' {
   interface AccountDataEvents {
-    "m.direct": Record<string, string[]>;
+    'm.direct': Record<string, string[]>
   }
 }
 
