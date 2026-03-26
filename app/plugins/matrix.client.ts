@@ -1,6 +1,9 @@
+import { ClientEvent } from 'matrix-js-sdk'
+
 export default defineNuxtPlugin({
   order: 0,
   setup: async () => {
+    // init client
     const { loginPersisted } = useAuth()
     const { client } = useMatrixClient()
     const { refreshMe } = useUser()
@@ -20,6 +23,26 @@ export default defineNuxtPlugin({
           baseUrl: client.value.getHomeserverUrl(),
         })
       }
+    }
+
+    // status watchers
+    const status = useState(
+      'matrix:status',
+      () => ({
+        isDataSynced: false,
+      }),
+    )
+
+    const toggleDataSynced = () => status.value.isDataSynced = true
+    client.value.on(ClientEvent.Sync, toggleDataSynced)
+    whenever(() => status.value.isDataSynced, () => client.value.off(ClientEvent.Sync, toggleDataSynced))
+
+    return {
+      provide: {
+        matrix: {
+          status,
+        },
+      },
     }
   },
 })
