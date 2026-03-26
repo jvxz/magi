@@ -14,7 +14,7 @@ const { data: directRooms } = useDirectRooms()
     <UToggleGroupItem
       :key="value"
       :value="value"
-      class="flex w-full items-center h-2.25lh!"
+      class="flex w-full gap-3 items-center h-2.25lh!"
     >
       <LazyIcon
         v-if="icon && !avatarUrl"
@@ -25,7 +25,7 @@ const { data: directRooms } = useDirectRooms()
         v-else-if="avatarUrl"
         :alt="label"
         :src="avatarUrl"
-        class="rounded-full size-1.5lh"
+        class="rounded-full size-8"
       />
       <span class="font-medium">{{ label }}</span>
     </UToggleGroupItem>
@@ -56,12 +56,14 @@ const { data: directRooms } = useDirectRooms()
       </div>
     </div>
 
-    <Toggle
-      v-for="directRoom in directRooms"
-      :key="directRoom.roomId"
-      :label="directRoom.name"
-      :value="directRoom.roomId"
-      :avatar-url="directRoom.avatarUrl"
-    />
+    <div class="flex flex-col gap-1 w-full">
+      <Toggle
+        v-for="directRoom in directRooms"
+        :key="directRoom.roomId"
+        :label="directRoom.name"
+        :value="directRoom.roomId"
+        :avatar-url="directRoom.avatarUrl"
+      />
+    </div>
   </UToggleGroupRoot>
 </template>
