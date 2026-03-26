@@ -15,6 +15,24 @@ definePageMeta({
         </UButton>
       </div>
     </template>
+
+    <template #aside>
+      <div class="p-1">
+        <PageMeAsideButtons />
+      </div>
+    </template>
+
+    <template #header>
+      <div class="px-6 flex gap-2 h-full items-center">
+        <div class="flex gap-2 items-center">
+          <Icon name="tabler:door" />
+          <p>
+            Recent rooms
+          </p>
+        </div>
+      </div>
+    </template>
+
     <p>dms</p>
   </NuxtLayout>
 </template>
