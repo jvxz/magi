@@ -15,6 +15,7 @@
     "lint": "eslint --ignore-pattern AGENTS.md"
   },
   "dependencies": {
+    "@matrix-org/matrix-sdk-crypto-wasm": "^18.0.0",
     "@nuxt/fonts": "0.14.0",
     "@nuxt/hints": "1.0.2",
     "@nuxt/icon": "2.2.1",
