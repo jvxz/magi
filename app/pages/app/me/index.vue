@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 definePageMeta({
-  name: 'me'
+  name: 'me',
 })
 </script>
 
