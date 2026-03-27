@@ -14,18 +14,17 @@ export function getDirectRooms(client: MatrixClient) {
 
   const { event } = data
 
-  const directRooms: {
-    userId: string
-    roomId: string
-  }[] = []
-  for (const [userId, roomIds] of objectEntries(event.content)) {
-    if (!roomIds.length || !roomIds[0])
+  const directRooms: Room[] = []
+  for (const [, roomIds] of objectEntries(event.content)) {
+    const roomId = roomIds[0]
+    if (!roomIds.length || !roomId)
       continue
 
-    directRooms.push({
-      roomId: roomIds[0],
-      userId,
-    })
+    const room = client.getRoom(roomId)
+    if (!room)
+      continue
+
+    directRooms.push(room)
   }
 
   return directRooms
@@ -46,7 +45,7 @@ export function getRoomAvatarUrl({ client, room, size = 32, useAuthentication = 
       allowRedirects: true,
       baseUrl: client.getHomeserverUrl(),
       height: size,
-      resizeMethod: 'scale',
+      resizeMethod: 'crop',
       useAuthentication,
       width: size,
     }) ?? undefined
@@ -64,7 +63,7 @@ export function getDirectRoomAvatarUrl({ client, room, size = 32, useAuthenticat
     allowRedirects: true,
     baseUrl: client.getHomeserverUrl(),
     height: size,
-    resizeMethod: 'scale',
+    resizeMethod: 'crop',
     useAuthentication,
     width: size,
   })
