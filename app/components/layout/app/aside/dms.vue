@@ -3,7 +3,7 @@
     <LayoutAppAsideButton
       as-child
       tooltip="Direct Messages"
-      class=""
+      class="relative"
     >
       <NuxtLink to="/app/me">
         <Icon name="tabler:message-2-filled" class="text-foreground size-6" />
