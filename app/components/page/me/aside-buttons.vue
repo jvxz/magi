@@ -6,7 +6,15 @@ const [DefineToggle, Toggle] = createReusableTemplate<{
   avatarUrl?: string
 }>()
 
-const { data: directRooms } = useDirectRooms()
+const { state: directRooms } = useDirectRooms()
+
+const route = useRoute()
+const toggleValue = shallowRef('index')
+const toggle = computed({
+  // fallback to "recent rooms" button if no param is present
+  get: () => ('directRoomId' in route.params) ? route.params.directRoomId : 'index',
+  set: (v: string) => toggleValue.value = v,
+})
 </script>
 
 <template>
@@ -14,28 +22,41 @@ const { data: directRooms } = useDirectRooms()
     <UToggleGroupItem
       :key="value"
       :value="value"
-      class="flex w-full gap-3 items-center h-2.25lh!"
+      class="flex gap-3 w-full items-center h-2.25lh!"
+      as-child
     >
-      <LazyIcon
-        v-if="icon && !avatarUrl"
-        :name="icon"
-        class="size-1lh"
-      />
-      <LazyImg
-        v-else-if="avatarUrl"
-        :alt="label"
-        :src="avatarUrl"
-        class="rounded-full size-8"
-      />
-      <span class="font-medium">{{ label }}</span>
+      <NuxtLink
+        :to="
+          value === 'index'
+            ? { name: 'me' }
+            : {
+              name: 'direct-room',
+              params: {
+                directRoomId: value,
+              },
+            }"
+      >
+        <LazyIcon
+          v-if="icon && !avatarUrl"
+          :name="icon"
+          class="size-1lh"
+        />
+        <LazyImg
+          v-else-if="avatarUrl"
+          :alt="label"
+          :src="avatarUrl"
+          class="rounded-full size-8"
+        />
+        <span class="font-medium">{{ label }}</span>
+      </NuxtLink>
     </UToggleGroupItem>
   </DefineToggle>
 
-  <UToggleGroupRoot class="p-2 flex flex-col gap-2 w-full">
+  <UToggleGroupRoot v-model:model-value="toggle" class="p-2 flex flex-col gap-2 w-full">
     <Toggle
       label="Recent rooms"
       icon="tabler:door"
-      value="recent-rooms"
+      value="index"
     />
 
     <div class="w-full space-y-2">
