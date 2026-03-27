@@ -1,9 +1,8 @@
 export function useDirectRooms() {
   const { client } = useMatrixClient()
-  const { me } = useUser()
   const { $matrix } = useNuxtApp()
 
-  const asyncData = useAsyncData(() => `directRooms:${me.value?.userId}`, async () => {
+  const asyncState = useAsyncState(async () => {
     const directRooms = getDirectRooms(client.value)
 
     return await Promise.all(directRooms.map(async (directRoom) => {
@@ -18,11 +17,11 @@ export function useDirectRooms() {
         avatarUrl,
       }
     }))
-  }, {
+  }, undefined, {
     immediate: true,
-    server: false,
-    watch: [() => $matrix.status.value.isDataSynced],
   })
 
-  return asyncData
+  watch(() => $matrix.status.value.isDataSynced, asyncState.executeImmediate)
+
+  return asyncState
 }
