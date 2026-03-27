@@ -125,10 +125,6 @@ export default defineNuxtConfig({
       ],
     },
 
-    prerender: {
-      crawlLinks: true,
-    },
-
     preset: 'cloudflare_module',
   },
 
@@ -144,13 +140,31 @@ export default defineNuxtConfig({
     headers: {
       contentSecurityPolicy: {
         'img-src': false,
+        'script-src': import.meta.dev
+          ? false
+          : [
+              '\'self\'',
+              'https:',
+              '\'unsafe-inline\'',
+              '\'strict-dynamic\'',
+              '\'nonce-{{nonce}}\'',
+              '\'wasm-unsafe-eval\'',
+            ],
       },
     },
-    rateLimiter: process.env.NODE_ENV === 'production' ? undefined : false,
+    rateLimiter: import.meta.dev ? false : undefined,
     sri: false,
   },
 
   site: {
     name: appMeta.name,
+  },
+
+  vite: {
+    optimizeDeps: {
+      exclude: [
+        '@matrix-org/matrix-sdk-crypto-wasm',
+      ],
+    },
   },
 })

@@ -4,14 +4,12 @@ export default defineNuxtPlugin({
   order: 0,
   setup: async () => {
     // init client
-    const { loginPersisted } = useAuth()
     const { client } = useMatrixClient()
     const { refreshMe } = useUser()
 
-    const persistedClient = await loginPersisted()
-
-    if (persistedClient) {
-      client.value = persistedClient
+    const authPayload = await idb.get<AuthPayload>('auth')
+    if (authPayload) {
+      client.value = await createAuthedClient(authPayload)
 
       await client.value.startClient()
       await refreshMe()

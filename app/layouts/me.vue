@@ -33,6 +33,6 @@ definePageMeta({
       </div>
     </template>
 
-    <p>dms</p>
+    <slot />
   </NuxtLayout>
 </template>
