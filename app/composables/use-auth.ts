@@ -20,8 +20,8 @@ interface TokenLoginRequest extends MatrixLoginRequest {
 export type LoginRequest = Prettify<PasswordLoginRequest | TokenLoginRequest>
 
 export function useAuth() {
-  const { client } = useMatrixClient()
-  const { forceRefreshMe } = useUser()
+  const { initAuthedClient } = useMatrixClient()
+  const { $matrix } = useNuxtApp()
 
   async function login(req: LoginRequest) {
     try {
@@ -46,13 +46,8 @@ export function useAuth() {
       }
       await idb.setItem<AuthPayload>('auth', authPayload)
 
-      const authedClient = await createAuthedClient(authPayload)
-      client.value = authedClient
-
-      await client.value.startClient()
-      void forceRefreshMe()
-
-      sendSessionToSw(authPayload.baseUrl, authPayload.accessToken)
+      const authedClient = await initAuthedClient(false)
+      $matrix.status.value.isAuthed = true
 
       return authedClient
     }
@@ -62,23 +57,8 @@ export function useAuth() {
     }
   }
 
-  async function logout() {
-    await idb.removeItem('auth')
-    const { reset } = useMatrixClient()
-    reset()
-
-    await messageSw('cache', {
-      action: 'evict',
-      cacheName: 'media',
-      urls: 'all',
-    })
-
-    return reloadNuxtApp({ path: '/login' })
-  }
-
   return {
     login,
-    logout,
   }
 }
 
