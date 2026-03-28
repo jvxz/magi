@@ -7,15 +7,12 @@ const props = defineProps<{
 
 const { client } = useMatrixClient()
 
-const avatar = getRoomAvatarUrl({client:client.value,
-  room: props.room,
-  useAuthentication: true,
-  size: 96
+const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 96, useAuthentication: true,
 })
 </script>
 
 <template>
-  <LayoutAppAsideButton class="size-11 p-0 overflow-hidden" :tooltip="room.name">
+  <LayoutAppAsideButton class="p-0 size-11 overflow-hidden" :tooltip="room.name">
     <Img
       :src="avatar"
       :alt="room.name"
