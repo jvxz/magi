@@ -5,7 +5,6 @@ const { me } = useUser()
 <template>
   <div class="px-1.75 py-1.25 rounded-sm flex flex-1 shrink-0 gap-2 h-full cursor-pointer duration-150 items-center -mx-1.75 -my-1.25 hover:bg-white/7.5">
     <MatrixAvatar
-      v-if="me"
       loading="eager"
       fetchpriority="high"
       :user="me"
