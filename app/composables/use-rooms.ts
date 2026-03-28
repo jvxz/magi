@@ -1,12 +1,36 @@
-export const useRooms = createUnrefFn((type: 'direct' | 'all' | 'non-direct' = 'non-direct') => {
+import type { Room } from 'matrix-js-sdk'
+
+export function useRooms(_type: MaybeRefOrGetter<'direct' | 'space' | 'all' | 'non-direct'>) {
   const { client } = useMatrixClient()
-  if (type === 'all')
-    return client.value.getRooms()
+  const { onSync } = useMatrixHooks()
+  const type = () => toValue(_type)
 
-  const allRooms = client.value.getRooms()
-  const directRooms = getDirectRooms(client.value)
+  const get = () => {
+    if (type() === 'all')
+      return client.value.getRooms()
 
-  return allRooms.filter((room) => {
-    return (type === 'direct' ? directRooms.includes(room) : !directRooms.includes(room)) && room.isSpaceRoom()
-  })
-})
+    const allRooms = client.value.getRooms()
+    const directRooms = getDirectRooms(client.value)
+    if (!directRooms)
+      return
+
+    return allRooms.filter((room) => {
+      const isDirect = directRooms.includes(room)
+      const isSpace = room.isSpaceRoom()
+
+      if (type() === 'space')
+        return isSpace && !isDirect
+
+      if (type() === 'direct')
+        return !isSpace && isDirect
+
+      return !isSpace && isDirect
+    })
+  }
+
+  const rooms = shallowRef<Room[] | undefined>(get())
+
+  onSync(() => rooms.value = get())
+
+  return rooms
+}
