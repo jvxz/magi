@@ -45,7 +45,7 @@ const [DefineHeader, Header] = createReusableTemplate()
               <LayoutAppAside />
               <div class="border-l border-t rounded-tl-xl flex flex-col w-full">
                 <div
-                  class="border-b flex h-[49px] items-center"
+                  class="border-b flex shrink-0 h-[49px] items-center"
                   :class="{
                     'px-4': !slots['aside-header'],
                   }"
