@@ -71,8 +71,8 @@ export default defineNuxtConfig({
       './shared/**/*.ts',
     ],
     presets: [
+      { ignore: ['isEqual'], package: 'es-toolkit' },
       { package: 'ufo' },
-      { package: 'scule' },
       {
         from: 'zod',
         imports: [{ as: 'z', name: '*' }],
