@@ -1,19 +1,25 @@
 import type { MatrixClient, TokenRefreshFunction } from 'matrix-js-sdk'
-import { createClient as _createClient, IndexedDBCryptoStore, IndexedDBStore, MatrixError, TokenRefreshLogoutError } from 'matrix-js-sdk'
+import { createClient, IndexedDBCryptoStore, IndexedDBStore, MatrixError, TokenRefreshLogoutError } from 'matrix-js-sdk'
+
+const getCryptoDbName = (userId: string) => `${userId}-crypto`
 
 export async function createAuthedClient(auth: AuthPayload) {
+  assert(!!auth.userId, 'No user ID found in auth payload when creating authed client')
+
   const idbStore = new IndexedDBStore({
-    dbName: 'matrix',
+    dbName: auth.userId,
     indexedDB,
     localStorage,
   })
 
-  const idbCryptoStore = new IndexedDBCryptoStore(indexedDB, 'matrix-crypto')
+  const cryptoDbName = getCryptoDbName(auth.userId)
 
-  const client = _createClient({
+  const idbLegacyCryptoStore = new IndexedDBCryptoStore(indexedDB, cryptoDbName)
+
+  const client = createClient({
     accessToken: auth.accessToken,
     baseUrl: auth.baseUrl,
-    cryptoStore: idbCryptoStore,
+    cryptoStore: idbLegacyCryptoStore,
     deviceId: auth.deviceId,
     store: idbStore,
     timelineSupport: true,
@@ -22,8 +28,8 @@ export async function createAuthedClient(auth: AuthPayload) {
   })
 
   await idbStore.startup()
+  await client.initRustCrypto({ cryptoDatabasePrefix: cryptoDbName })
 
-  await client.initRustCrypto()
   client.setMaxListeners(50)
 
   return client
@@ -79,6 +85,14 @@ function createTokenRefreshFunction(): TokenRefreshFunction {
   }
 }
 
+export function startClient(client: MatrixClient) {
+  return client.startClient({
+    initialSyncLimit: 8,
+    lazyLoadMembers: true,
+    threadSupport: true
+  })
+}
+
 export async function logoutClient(client: MatrixClient) {
   await messageSw('session', {})
   await messageSw('cache', {
@@ -91,7 +105,7 @@ export async function logoutClient(client: MatrixClient) {
 
   await client.logout().catch(() => {})
 
-  await client.clearStores()
+  await client.clearStores({ cryptoDatabasePrefix: getCryptoDbName(client.getSafeUserId()) })
   await idb.clear()
 
   return reloadNuxtApp({ path: '/' })
