@@ -1,39 +1,31 @@
-import { ClientEvent } from 'matrix-js-sdk'
+import { SyncState } from 'matrix-js-sdk'
 
 export default defineNuxtPlugin({
   order: 0,
   setup: async () => {
+    const status = useMatrixStatus()
+    const { onSync } = useMatrixHooks()
+
     // init client
-    const { client } = useMatrixClient()
-    const { refreshMe } = useUser()
+    const { client, initAuthedClient } = useMatrixClient()
 
     const authPayload = await idb.get<AuthPayload>('auth')
     if (authPayload) {
-      client.value = await createAuthedClient(authPayload)
-
-      await client.value.startClient()
-      await refreshMe()
-
-      const sw = await getServiceWorker()
-      if (sw) {
-        await messageSw('session', {
-          accessToken: client.value.getAccessToken(),
-          baseUrl: client.value.getHomeserverUrl(),
-        })
+      const authedClient = await initAuthedClient(false)
+      if (!authedClient) {
+        console.error('Unable to get authed client. Logging out...')
+        logoutClient(client.value)
       }
+
+      else
+        status.value.isAuthed = true
     }
 
-    // status watchers
-    const status = useState(
-      'matrix:status',
-      () => ({
-        isDataSynced: false,
-      }),
-    )
-
-    const toggleDataSynced = () => status.value.isDataSynced = true
-    client.value.on(ClientEvent.Sync, toggleDataSynced)
-    whenever(() => status.value.isDataSynced, () => client.value.off(ClientEvent.Sync, toggleDataSynced))
+    // process isDataSynced status when client changes
+    onSync((syncState, _prevState) => {
+      if (syncState === SyncState.Prepared)
+        status.value.isDataSynced = true
+    })
 
     return {
       provide: {
