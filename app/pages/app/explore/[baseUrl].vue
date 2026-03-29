@@ -84,6 +84,12 @@ const params = useUrlSearchParams<{ q: string }>('history', {
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
+  <LayoutAppSlot name="aside-header">
+    <div class="p-2.5 px-4 flex size-full items-center">
+      <p>Explore</p>
+    </div>
+  </LayoutAppSlot>
+
   <div
     class="py-page-y-padding h-full scrollbar-gutter-stable"
     :class="publicRooms ? 'overflow-y-auto' : 'overflow-y-hidden'"
