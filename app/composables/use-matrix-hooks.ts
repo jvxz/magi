@@ -2,15 +2,14 @@ import type { ClientEventHandlerMap, EmittedEvents, Listener, MatrixClient } fro
 import { ClientEvent } from 'matrix-js-sdk'
 
 type EmitterListener<T extends EmittedEvents = EmittedEvents> = Listener<EmittedEvents, ClientEventHandlerMap, T>
-type EmitterListenerParams<T extends EmittedEvents = EmittedEvents> = Parameters<EmitterListener<T>>
 
-const syncHook = createEventHook<EmitterListenerParams<ClientEvent.Sync>>()
+const syncHook = createEventHook<Parameters<EmitterListener<ClientEvent.Sync>>>()
 
 export const useMatrixHooks = createSharedComposable(() => {
   const { client } = useMatrixClient()
 
   watch(client, (current, prev) => {
-    createListener(ClientEvent.Sync, syncHook.trigger, { current, prev })
+    bindListener(ClientEvent.Sync, syncHook.trigger, { current, prev })
   }, { immediate: true })
 
   return {
@@ -18,7 +17,7 @@ export const useMatrixHooks = createSharedComposable(() => {
   }
 })
 
-function createListener<T extends EmittedEvents>(event: T, listener: EmitterListener<T>, clients: { current: MatrixClient, prev: MatrixClient | undefined }) {
+function bindListener<T extends EmittedEvents>(event: T, listener: EmitterListener<T>, clients: { current: MatrixClient, prev: MatrixClient | undefined }) {
   clients.current.on<T>(event, listener)
 
   if (clients.prev)
