@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 definePageMeta({
+  layout: 'app',
   middleware: ['explore'],
   name: 'explore',
 })
@@ -29,41 +30,41 @@ const params = useUrlSearchParams<{ q: string }>('history', {
 </script>
 
 <template>
-  <NuxtLayout name="app">
-    <template #aside>
-      <div class="p-1 flex flex-col gap-1">
-        <UToggleGroupRoot
-          v-model="baseUrl"
-          class="flex flex-col gap-1 w-full"
-          required
+  <LayoutAppSlot name="aside">
+    <div class="p-2.5 flex flex-col gap-2.5">
+      <UToggleGroupRoot
+        v-model="baseUrl"
+        class="flex flex-col gap-2.5 w-full"
+        required
+      >
+        <UToggleGroupItem
+          v-for="server in servers"
+          :key="server"
+          :value="server"
+          class="text-base px-4 text-left h-12 w-full justify-start"
         >
-          <UToggleGroupItem
-            v-for="server in servers"
-            :key="server"
-            :value="server"
-            class="text-base px-4 text-left h-12 w-full justify-start"
+          {{ server }}
+        </UToggleGroupItem>
+      </UToggleGroupRoot>
+      <UDialogRoot>
+        <UDialogTrigger as-child>
+          <UButton
+            variant="soft"
+            class="text-base px-4 h-12 w-full justify-start"
           >
-            {{ server }}
-          </UToggleGroupItem>
-        </UToggleGroupRoot>
-        <UDialogRoot>
-          <UDialogTrigger as-child>
-            <UButton
-              variant="soft"
-              class="text-base px-4 h-12 w-full justify-start"
-            >
-              <Icon name="tabler:plus" class="" />
-              Add server
-            </UButton>
-          </UDialogTrigger>
-          <UDialogContent>
-            <p>Hello</p>
-          </UDialogContent>
-        </UDialogRoot>
-      </div>
-    </template>
+            <Icon name="tabler:plus" class="" />
+            Add server
+          </UButton>
+        </UDialogTrigger>
+        <UDialogContent>
+          <p>Hello</p>
+        </UDialogContent>
+      </UDialogRoot>
+    </div>
+  </LayoutAppSlot>
 
-    <template #header>
+  <LayoutAppSlot name="page-header">
+    <LayoutAppPageHeader>
       <div class="px-6 grid grid-cols-2 h-full items-center">
         <div class="flex gap-2 items-center">
           <Icon name="tabler:server-2" />
@@ -80,28 +81,28 @@ const params = useUrlSearchParams<{ q: string }>('history', {
           />
         </div>
       </div>
-    </template>
+    </LayoutAppPageHeader>
+  </LayoutAppSlot>
 
-    <div
-      class="py-page-y-padding h-full scrollbar-gutter-stable"
-      :class="publicRooms ? 'overflow-y-auto' : 'overflow-y-hidden'"
-    >
-      <div class="mx-auto container gap-4 grid grid-cols-4 max-w-screen-xl">
-        <template v-if="!error && publicRooms">
-          <PageExploreRoom
-            v-for="room in publicRooms.chunk"
-            :key="room.room_id"
-            :room="room"
-          />
-        </template>
-        <template v-else-if="!error && !publicRooms">
-          <PageExploreRoom
-            v-for="(_, i) in Array.from({ length: 16 })"
-            :key="i"
-            :room="undefined"
-          />
-        </template>
-      </div>
+  <div
+    class="py-page-y-padding h-full scrollbar-gutter-stable"
+    :class="publicRooms ? 'overflow-y-auto' : 'overflow-y-hidden'"
+  >
+    <div class="mx-auto container gap-4 grid grid-cols-4 max-w-screen-xl">
+      <template v-if="!error && publicRooms">
+        <PageExploreRoom
+          v-for="room in publicRooms.chunk"
+          :key="room.room_id"
+          :room="room"
+        />
+      </template>
+      <template v-else-if="!error && !publicRooms">
+        <PageExploreRoom
+          v-for="(_, i) in Array.from({ length: 16 })"
+          :key="i"
+          :room="undefined"
+        />
+      </template>
     </div>
-  </NuxtLayout>
+  </div>
 </template>

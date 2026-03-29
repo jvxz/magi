@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 definePageMeta({
-  layout: 'room',
+  layout: 'app',
   middleware: ({ params }) => {
     if (('roomId' in params) && !params.roomId) {
       return navigateTo({
