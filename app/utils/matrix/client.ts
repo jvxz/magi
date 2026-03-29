@@ -21,6 +21,7 @@ export async function createAuthedClient(auth: AuthPayload) {
     baseUrl: auth.baseUrl,
     cryptoStore: idbLegacyCryptoStore,
     deviceId: auth.deviceId,
+    refreshToken: auth.refreshToken,
     store: idbStore,
     timelineSupport: true,
     tokenRefreshFunction: createTokenRefreshFunction(),
@@ -29,6 +30,11 @@ export async function createAuthedClient(auth: AuthPayload) {
 
   await idbStore.startup()
   await client.initRustCrypto({ cryptoDatabasePrefix: cryptoDbName })
+
+  await messageSw('session', {
+    accessToken: auth.accessToken,
+    baseUrl: auth.baseUrl,
+  })
 
   client.setMaxListeners(50)
 
@@ -89,7 +95,7 @@ export function startClient(client: MatrixClient) {
   return client.startClient({
     initialSyncLimit: 8,
     lazyLoadMembers: true,
-    threadSupport: true
+    threadSupport: true,
   })
 }
 
