@@ -2,29 +2,19 @@
 import { SplitterGroup, SplitterPanel } from 'reka-ui'
 
 defineProps<{
-  asideTitle?: string
+  appHeaderTitle?: string
 }>()
 
 const layout = useCookie<number[]>('splitter:appAside', {
   default: () => [400, 240],
 })
-
-const slots = useSlots()
-
-const [DefineHeader, Header] = createReusableTemplate()
 </script>
 
 <template>
-  <DefineHeader v-slot="{ $slots }">
-    <div class="border-b bg-card shrink-0 h-header-height w-full top-0 sticky z-20">
-      <component :is="$slots.default" />
-    </div>
-  </DefineHeader>
-
   <SettingsDialog />
 
   <div class="flex flex-col h-screen relative">
-    <LayoutAppHeader />
+    <LayoutAppHeader :title="appHeaderTitle" />
     <main class="bg-card flex-1 h-fit">
       <SplitterGroup
         id="aside-extra-splitter-group"
@@ -44,20 +34,11 @@ const [DefineHeader, Header] = createReusableTemplate()
             <div class="flex flex-1 shrink w-full relative">
               <LayoutAppAside />
               <div class="border-l border-t rounded-tl-xl flex flex-col w-full">
-                <div
-                  class="border-b flex shrink-0 h-[49px] items-center"
-                  :class="{
-                    'px-4': !slots['aside-header'],
-                  }"
-                >
-                  <slot name="aside-header">
-                    <h2 class="text-lg font-medium">
-                      {{ asideTitle ?? upperFirst($route.name) }}
-                    </h2>
-                  </slot>
+                <div class="border-b flex shrink-0 h-[49px] items-center">
+                  <div id="app-aside-header" class="size-full" />
                 </div>
                 <div class="pb-3 overflow-y-auto">
-                  <slot name="aside" />
+                  <div id="app-aside" />
                 </div>
               </div>
             </div>
@@ -73,20 +54,17 @@ const [DefineHeader, Header] = createReusableTemplate()
           size-unit="px"
         >
           <div class="border-t flex flex-col h-full">
-            <Header v-if="$slots.header">
-              <slot name="header" />
-            </Header>
-
+            <div id="app-page-header" />
             <slot />
           </div>
         </SplitterPanel>
       </SplitterGroup>
     </main>
-    <div
+    <!-- <div
       class="bg-red-500 h-header-height bottom-0 absolute"
       :style="{
         width: `calc(${layout[0]}px + 75px)px`,
       }"
-    ></div>
+    ></div> -->
   </div>
 </template>
