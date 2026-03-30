@@ -17,7 +17,7 @@ const { open } = useSettingsDialog()
         @close-auto-focus.prevent
       >
         <div class="flex">
-          <SettingsDialogSidebar />
+          <LazySettingsDialogSidebar />
           <header class="pe-2.5 ps-4 border-b flex flex-1 h-header-height items-center">
             <DialogTitle class="font-medium">
               My Account
