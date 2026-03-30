@@ -19,9 +19,9 @@ const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 
   >
     <NuxtLink
       :to="{
-        name: 'room',
+        name: 'space-browse',
         params: {
-          roomId: room.roomId,
+          spaceId: room.roomId,
         },
       }"
     >
