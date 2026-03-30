@@ -1,6 +1,6 @@
 import type { MatrixClient, MatrixEvent, Room } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
-import { EventTimeline } from 'matrix-js-sdk'
+import { EventTimeline, EventType, KnownMembership } from 'matrix-js-sdk'
 
 interface MDirect extends MatrixEvent {
   event: {
@@ -108,4 +108,21 @@ export async function getSpaceRooms(client: MatrixClient, space: Room, nextBatch
     nextBatchToken: res.next_batch,
     rooms: res.rooms,
   }
+}
+
+export function getJoinedRooms(client: MatrixClient, space: Room | undefined) {
+  const events = space?.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(EventType.SpaceChild)
+  if (!events)
+    return []
+
+  const joined: Room[] = []
+  for (const event of events) {
+    const roomData = client.getRoom(event.getStateKey())
+    if (!roomData || roomData.getMyMembership() !== KnownMembership.Join)
+      continue
+
+    joined.push(roomData)
+  }
+
+  return joined
 }
