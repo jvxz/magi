@@ -1,4 +1,6 @@
 import type { MatrixClient, MatrixEvent, Room } from 'matrix-js-sdk'
+import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
+import { EventTimeline } from 'matrix-js-sdk'
 
 interface MDirect extends MatrixEvent {
   event: {
@@ -10,7 +12,7 @@ interface MDirect extends MatrixEvent {
 export function getDirectRooms(client: MatrixClient) {
   const data = client.getAccountData('m.direct') as MDirect | undefined
   if (!data)
-    throw new Error('Failed to get direct rooms. This function should only be called after the account data is synced.')
+    return []
 
   const { event } = data
 
@@ -67,4 +69,43 @@ export function getDirectRoomAvatarUrl({ client, room, size = 32, useAuthenticat
     useAuthentication,
     width: size,
   })
+}
+
+export interface RoomsWithBatchToken {
+  nextBatchToken?: string
+  rooms: IHierarchyRoom[]
+}
+
+export async function getSpaceRooms(client: MatrixClient, space: Room, nextBatchToken?: string): Promise<RoomsWithBatchToken> {
+  if (!space.isSpaceRoom()) {
+    return {
+      nextBatchToken: undefined,
+      rooms: [],
+    }
+  }
+
+  const spaceState = space.getLiveTimeline().getState(EventTimeline.FORWARDS)
+  if (!spaceState) {
+    console.warn('No room state found when getting space children')
+    return {
+      nextBatchToken: undefined,
+      rooms: [],
+    }
+  }
+
+  if (!nextBatchToken) {
+    const res = await client.getRoomHierarchy(space.roomId, 50)
+
+    return {
+      nextBatchToken: res.next_batch,
+      rooms: res.rooms,
+    }
+  }
+
+  const res = await client.getRoomHierarchy(space.roomId, 50, undefined, false, nextBatchToken)
+
+  return {
+    nextBatchToken: res.next_batch,
+    rooms: res.rooms,
+  }
 }
