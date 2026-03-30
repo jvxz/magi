@@ -33,8 +33,8 @@ const { data: isHomeserverValid, error: homeserverError, execute, pending } = us
 )
 
 const { login } = useAuth()
-const { error: loginError, execute: handleLogin, isLoading: loginPending } = useMutation(
-  async () => {
+const { error: loginError, isPending: loginPending, mutate: handleLogin } = useMutation({
+  mutationFn: async () => {
     await login({
       baseUrl: r$.$value.homeserver,
       identifier: {
@@ -47,10 +47,7 @@ const { error: loginError, execute: handleLogin, isLoading: loginPending } = use
 
     return navigateTo('/app')
   },
-  {
-    resetOnExecute: true,
-  },
-)
+})
 
 watch(() => r$.$value.homeserver, () => {
   homeserverError.value = undefined
