@@ -104,6 +104,7 @@ export default defineNuxtConfig({
     'nitro-cloudflare-dev',
     '@vite-pwa/nuxt',
     '@unlazy/nuxt',
+    '@peterbud/nuxt-query',
   ],
 
   nitro: {
@@ -126,6 +127,20 @@ export default defineNuxtConfig({
     },
 
     preset: 'cloudflare_module',
+  },
+
+  nuxtQuery: {
+    autoImports: ['useMutation', 'useQueryClient'],
+    devtools: true,
+    queryClientOptions: {
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: true,
+          // 1 hour
+          staleTime: 1000 * 60 * 60,
+        },
+      },
+    },
   },
 
   pwa,
