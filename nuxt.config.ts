@@ -179,6 +179,15 @@ export default defineNuxtConfig({
     optimizeDeps: {
       exclude: [
         '@matrix-org/matrix-sdk-crypto-wasm',
+        'workbox-core',
+        'workbox-expiration',
+        'workbox-precaching',
+        'workbox-strategies',
+        'zod',
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'workbox-window',
+        'es-toolkit',
       ],
     },
   },
