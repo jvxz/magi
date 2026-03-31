@@ -22,10 +22,14 @@ export default defineConfig({
           environmentOptions: {
             nuxt: {
               domEnvironment: 'happy-dom',
+
+              mock: {
+                indexedDb: true,
+              },
               rootDir: fileURLToPath(new URL('.', import.meta.url)),
             },
           },
-          include: ['test/nuxt/*.{test,spec}.ts'],
+          include: ['test/nuxt/**/*.{test,spec}.ts'],
           name: 'nuxt',
         },
       }),
