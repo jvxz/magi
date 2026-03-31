@@ -31,7 +31,6 @@ const value = computed(() => resolveRoomListTabValue(route as RouteLocationRaw, 
     v-bind="forwarded"
     :model-value="value"
     :class="cn('p-2.5 flex flex-col gap-[2px] w-full *:w-full *:justify-start', props.class)"
-    @update:model-value="console.log('modelValue: ', $event)"
   >
     <slot />
   </ToggleGroupRoot>
