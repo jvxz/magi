@@ -5,7 +5,7 @@
       tooltip="Direct Messages"
       class="relative"
     >
-      <NuxtLink to="/app/me">
+      <NuxtLink :to="{ name: 'me' }">
         <Icon name="tabler:message-2-filled" class="text-foreground size-6" />
       </NuxtLink>
     </LayoutAppAsideButton>
