@@ -97,13 +97,10 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     '@nuxtjs/color-mode',
     'nuxt-vitalizer',
-    'evlog/nuxt',
-    '@nuxtjs/device',
     '@regle/nuxt',
     '@nuxt/hints',
     'nitro-cloudflare-dev',
     '@vite-pwa/nuxt',
-    '@unlazy/nuxt',
     '@peterbud/nuxt-query',
   ],
 
