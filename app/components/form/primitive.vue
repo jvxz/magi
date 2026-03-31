@@ -33,6 +33,7 @@ const errorMessage = computed(() => {
       <LazyUSpinner
         v-if="isLoading"
         class="shrink-0 size-4.5"
+        :data-testid="`loading-spinner-${label}`"
       />
       <p
         v-else-if="errorMessage"
