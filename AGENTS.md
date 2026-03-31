@@ -5,30 +5,57 @@ alwaysApply: true
 
 # Decoy — AI Agent Context
 
-Decoy is a **Matrix.org client** built with Nuxt 4. Core priorities: **security, end-to-end encryption, performance, and UX**.
+Decoy is a **Matrix.org client** built with Nuxt 4. Core priorities: **security, end-to-end encryption, performance, and UX**. Production target is **Cloudflare Workers** (Nitro `cloudflare_module` + Wrangler).
+
+---
+
+## Commands
+
+Use **pnpm** (package manager for this repo).
+
+| Script | Purpose |
+|--------|---------|
+| `pnpm dev` | Nuxt dev with PWA plugin enabled (`VITE_PLUGIN_PWA=true`) |
+| `pnpm dev:no-pwa` | Nuxt dev without PWA |
+| `pnpm build` | Production Nuxt build |
+| `pnpm generate` | Static generation (`nuxt generate`) |
+| `pnpm preview` | Build then `wrangler dev --port 3000` |
+| `pnpm deploy` | Build then `wrangler deploy` |
+| `pnpm cf-typegen` | `wrangler types` |
+| `pnpm lint` | ESLint (`AGENTS.md` is ignored via `--ignore-pattern`) |
+| `pnpm postinstall` | `nuxt prepare` |
+
+There is **no** `test` script in `package.json` today.
+
+**Do not** start the dev server (`pnpm dev`, etc.) unless the user explicitly asks — they often run it locally.
 
 ---
 
 ## Tech Stack
 
-| Layer | Package |
-|---|---|
-| Framework | Nuxt 4 |
-| CSS | UnoCSS (`presetWind4`) — Tailwind v4-compatible |
-| UI Primitives | `reka-ui` — headless, Radix-style |
-| Variant Styling | `class-variance-authority` (CVA) |
-| Class Merging | `cn()` from `~/utils/cn.ts` → `clsx` + `tailwind-merge` |
-| Matrix Protocol | `matrix-js-sdk` (client-side only) |
+| Layer | Package / notes |
+|-------|------------------|
+| Framework | Nuxt `^4.4.x` |
+| CSS | UnoCSS (`presetWind4`) — Tailwind v4-compatible utilities |
+| UI primitives | `reka-ui` (Nuxt module `reka-ui/nuxt`) |
+| Variant styling | `class-variance-authority` (CVA) |
+| Class merging | `cn()` from `~/utils/cn.ts` → `clsx` + `tailwind-merge` |
+| Matrix | `matrix-js-sdk` (client-side only); `@matrix-org/matrix-sdk-crypto-wasm` for crypto (E2EE path) |
 | App state (Matrix client) | VueUse `createGlobalState` — `useMatrixClient()` (`shallowRef<MatrixClient>`) |
 | Session persistence | `unstorage` (IndexedDB driver) — `idb` from `~/utils/idb.ts` |
-| Reactivity Utils | `@vueuse/nuxt` (auto-imported) |
-| Form Validation | `@regle/nuxt` |
-| Schema Validation | `zod` (server routes only) |
-| Images | `@nuxt/image` + `@unlazy/nuxt` (lazy load, blur / thumbhash) |
-| Icons | `@nuxt/icon` with `@iconify-json/tabler` |
-| Logging | `evlog` |
-| Security | `nuxt-security` (CSP, rate limiting) |
-| DX | `@nuxt/hints` |
+| Vue utilities | `@vueuse/nuxt` (auto-imported) |
+| Forms | `@regle/nuxt` (devDependency; Regle validation) |
+| Schema validation | `zod` — client presets import `z.*`; server Nitro imports use `z` |
+| Server API helpers | Nitro auto-imports `h3` helpers (e.g. `createError`, `readValidatedBody`) — see `server/utils/validate-body-zod.ts` |
+| Data fetching (client) | `@peterbud/nuxt-query` (TanStack Query) — `useMutation`, `useQueryClient` auto-imported; `useQuery` wrapper in `~/composables/use-query.ts` |
+| Images | `@nuxt/image`; app wrapper `~/components/img.vue` (lazy loading, placeholder styling) |
+| Fonts | `@nuxt/fonts` |
+| Icons | `@nuxt/icon` with `@iconify-json/tabler` (`icon.provider: 'server'`) |
+| SEO | `@nuxtjs/seo` |
+| PWA | `@vite-pwa/nuxt` — config `app/config/pwa.ts`, inject manifest `app/sw.ts`; dev PWA only when `VITE_PLUGIN_PWA=true` |
+| Security | `nuxt-security` (CSP, rate limiting in prod) |
+| DX | `@nuxt/hints`, `nitro-cloudflare-dev` |
+| Cloudflare | `wrangler`; Nitro `preset: 'cloudflare_module'` |
 
 ---
 
@@ -36,24 +63,39 @@ Decoy is a **Matrix.org client** built with Nuxt 4. Core priorities: **security,
 
 ```
 app/
-  components/u/          # Custom UI component library (UButton, UDialog, etc.)
-  components/form/       # FormPrimitive, FormInput wrappers
-  composables/           # use-auth.ts, use-matrix-client.ts, use-public-rooms.ts, etc.
-  layouts/app.vue        # Main app shell (Reka SplitterGroup aside layout)
-  pages/                 # File-based routing (typedPages: true)
-  middleware/            # auth.ts — /app vs /login based on logged-in client
+  assets/css/globals.css    # Theme tokens (oklch), global styles
+  components/
+    form/                     # FormPrimitive, FormInput
+    layout/app/               # Shell: aside, header, room list integration
+    matrix/                   # Matrix-specific UI (e.g. avatar)
+    page/                     # Page-scoped blocks (explore, me)
+    settings/                 # Settings dialog
+    u/                        # Design system (UButton, UDialog, …)
+    user-card/
+  composables/                # use-auth, use-matrix-client, use-query, use-public-rooms, …
+  config/pwa.ts               # @vite-pwa/nuxt options
+  constants/                  # App constants (e.g. SW messages)
+  layouts/app.vue             # Main app layout (Reka SplitterGroup aside)
+  middleware/
+    auth.ts                   # /app/** and /login — logged-in vs login
+    explore.ts                # Normalizes explore `baseUrl` param (used by explore page)
+  pages/                      # File-based routes (`typedPages: true`)
   plugins/
-    matrix.client.ts     # Hydrates `useMatrixClient()` from IDB via `useAuth().loginPersisted()`
+    matrix.client.ts          # Hydrates `useMatrixClient()` from IDB via `useAuth().loginPersisted()`
+    dev.client.ts             # Dev-only helpers (e.g. color-mode shortcut)
+  sw.ts                       # Service worker (injectManifest)
   utils/
-    idb.ts               # unstorage IndexedDB (`idb`) for session payload
-    cn.ts                # Class merging utility
-    matrix/              # validateHomeserver, resolveBaseUrl, mxcToHttps, parseMatrixError, createDeviceId, getClientConfig
-    styles.ts            # Shared CVA token objects (interactiveStyles, staticStyles, etc.)
-    variants.ts          # CVA definitions for buttonVariants, badgeVariants, etc.
+    idb.ts                    # unstorage IndexedDB for session payload
+    cn.ts, styles.ts, variants.ts
+    matrix/                   # validateHomeserver, resolveBaseUrl, mxcToHttps, parseMatrixError, …
+    nuxt/, regle/, sw/
 server/
-  api/                   # Nitro API routes
-  utils/                 # validate-body-zod, validate-query-zod
-shared/utils/            # assert.ts, constants.ts (MATRIX_BASE_URL), object.ts, $error.ts ($Error class)
+  api/                        # Nitro routes
+  utils/                      # validate-body-zod, validate-query-zod
+shared/utils/                 # assert, constants (MATRIX_BASE_URL, appMeta), $error, …
+wrangler.jsonc                # Cloudflare Workers config
+uno.config.ts                 # UnoCSS (presetWind4, animations)
+eslint.config.mjs
 ```
 
 ---
@@ -71,7 +113,7 @@ await client.value.someMethod()
 
 **Anonymous / default homeserver** — `use-matrix-client.ts` seeds `client` with `createClient({ baseUrl: MATRIX_BASE_URL })` from `~/shared/utils/constants.ts`. After login, `client.value` is the authenticated client.
 
-**Where `createClient()` is allowed** — `use-auth.ts` (temporary client for `loginRequest`, then authenticated client) and `use-matrix-client.ts` (initial placeholder and `reset()`). `plugins/matrix.client.ts` assigns the hydrated client from `loginPersisted()`; it does not construct ad hoc clients. Avoid `createClient()` in components or random composables.
+**Where `createClient()` is allowed** — `use-auth.ts` (temporary client for `loginRequest`, then authenticated client), `use-matrix-client.ts` (initial placeholder and `reset()`), and `~/utils/matrix/create-temp-client.ts` where explicitly intended. `plugins/matrix.client.ts` assigns the hydrated client from `loginPersisted()`; it does not construct ad hoc clients. Avoid `createClient()` in components or random composables.
 
 **Client-side only** — matrix-js-sdk must never run on the server. Use `.client.ts` plugin naming and `server: false` in `useAsyncData`/`useFetch` for Matrix calls.
 
@@ -85,11 +127,11 @@ catch (error) {
 }
 ```
 
-**Media URLs** — convert `mxc://` with `mxcToHttps()` from `~/utils/matrix/mxc-to-https.ts`. Pass `baseUrl: client.getHomeserverUrl()` when the MXC is from the user’s homeserver. Never embed raw `mxc://` in templates. Some endpoints require auth; then use `client.http.authedRequest` + blob URL (or another pattern that sends the session). Public/HTTPS-backed avatars can use `NuxtImg` with resolved URLs and `@unlazy/nuxt` props (e.g. `thumbhash`) where applicable.
+**Media URLs** — convert `mxc://` with `mxcToHttps()` from `~/utils/matrix/mxc-to-https.ts`. Pass `baseUrl: client.getHomeserverUrl()` when the MXC is from the user’s homeserver. Never embed raw `mxc://` in templates. Authenticated media: `~/utils/matrix/fetch-authed.ts` / `client.http.authedRequest` + blob URL (or equivalent). For ordinary images, prefer `~/components/img.vue` or `@nuxt/image` with resolved HTTPS URLs.
 
 **Homeserver validation** — use `validateHomeserver()` from `~/utils/matrix/validate-homeserver.ts` (AutoDiscovery-based) before trusting user-supplied homeserver input. Login resolves the final base URL with `resolveBaseUrl()` from `~/utils/matrix/resolve-base-url.ts`.
 
-**Routing** — `routeRules` attach the `auth` middleware to `/app/**` and `/login` (client-side). Middleware checks `getUserId()` on `useMatrixClient().client.value`.
+**Routing** — `routeRules` attach the `auth` middleware to `/app/**` and `/login` (client-side, `ssr: false`). Middleware checks `getUserId()` on `useMatrixClient().client.value`. `/playground` uses `appLayout: false`.
 
 **E2EE** — when implementing encrypted room support, initialize crypto **before** calling `client.startClient()`. Never log or expose access tokens, device keys, or key backup secrets.
 
@@ -97,14 +139,9 @@ catch (error) {
 
 ## Composable Patterns
 
-Use `useMutation` (wraps VueUse `useAsyncState`) for async operations that mutate state:
+Use `useMutation` (from `@peterbud/nuxt-query` / TanStack Query) for async operations that mutate state.
 
-```ts
-const { client } = useMatrixClient()
-const { state, isLoading, error, execute } = useMutation(async () => {
-  return await client.value.someOperation()
-}, { onMutate: (prev) => { /* optimistic update */ } })
-```
+Use `useQuery` from `~/composables/use-query.ts` when you need TanStack `useQuery` with extra `watch` sources.
 
 Use `useAsyncData` with `server: false` and `getCachedData` for client-side Matrix fetches (see `use-public-rooms.ts`).
 
@@ -117,23 +154,17 @@ Components in `app/components/u/` are the design system. Use them first before c
 **Variants** live in `~/utils/variants.ts` using CVA. Shared tokens are in `~/utils/styles.ts` (`interactiveStyles`, `staticStyles`, `popoverStyles`).
 
 ```ts
-// ✅ Extend existing variant tokens
 import { cva } from 'class-variance-authority'
 import { interactiveStyles } from '~/utils/styles'
 
 const myVariants = cva(`${interactiveStyles.base} ...`, { variants: { ... } })
 ```
 
-**Class merging** — always use `cn()`:
-
-```ts
-import { cn } from '~/utils/cn'
-// <div :class="cn('base-class', props.class, conditionalClass && 'extra')" />
-```
+**Class merging** — always use `cn()` from `~/utils/cn`.
 
 **`asChild`** — use Reka's `<Slot>` to delegate rendering when a component supports `asChild` (see `UButton`).
 
-**Heavy UI** — prefer `Lazy*` component prefixes (e.g. `LazyUSpinner`, `LazyNuxtImg`) where appropriate to defer loading.
+**Heavy UI** — prefer `Lazy*` component prefixes (e.g. `LazyUSpinner`) where appropriate to defer loading.
 
 ---
 
@@ -141,36 +172,37 @@ import { cn } from '~/utils/cn'
 
 - Use `presetWind4` utility classes (Tailwind v4 syntax)
 - Prefer CSS variable-backed theme tokens: `bg-background`, `text-foreground`, `border-border`, `bg-card`, `text-muted`, `bg-primary`, `text-primary-foreground`, etc.
-- Colors are `oklch()`-based in `app/assets/css/globals.css`. Never hardcode hex/rgb colors inline — reference theme tokens.
+- Colors are `oklch()`-based in `app/assets/css/globals.css`. Do not hardcode hex/rgb colors inline — use theme tokens.
 - Use `transformerVariantGroup` for grouped variants: `hover:(bg-muted text-foreground)`
 - Dark mode is class-based (`.dark {}`) via `@nuxtjs/color-mode` with cookie storage
 - Add `// @unocss-include` at the top of non-Vue files that contain UnoCSS class strings
 
 ---
 
-## TypeScript Conventions
+## TypeScript & Auto-Imports
 
-- `typedPages: true` is enabled — use typed route names/params from `useRouter()`/`navigateTo()`
-- Auto-imports are active for: `~/composables/**`, `~/utils/**`, `~/shared/**`, VueUse, `ufo`, `scule`, `evlog.createError`
+- `typedPages: true` — use typed route names/params from `useRouter()` / `navigateTo()`
+- Nuxt `imports.dirs`: `~/utils/**`, `~/config/**`, `~/composables/**`, `~/constants/**`, plus `./shared/**/*.ts`
+- Import presets in `nuxt.config.ts`: `es-toolkit` (excluding `isEqual`), `ufo`, `zod` as `z.*`
 - Prefer `MaybeRefOrGetter<T>` for props that accept both raw values and refs
-- Export interfaces from `<script lang="ts">` blocks in `.vue` files when types need to be shared
+- Export interfaces from `<script lang="ts">` in `.vue` files when types need to be shared
 
 ---
 
 ## Performance
 
 - `nuxt-vitalizer` is active — avoid layout shifts (CLS) by sizing media elements explicitly
-- `@unlazy/nuxt` integrates with `@nuxt/image` for lazy loading and placeholder blur (e.g. thumbhash) — prefer it for heavy image grids
-- Prefer `shallowRef` / `shallowReactive` for large Matrix data structures (room lists, event timelines); the Matrix client in `useMatrixClient()` is already a `shallowRef`
+- Prefer `shallowRef` / `shallowReactive` for large Matrix data structures; the Matrix client in `useMatrixClient()` is already a `shallowRef`
 - Use `createSharedComposable` for composables that should share state across the app (see `use-global-keys.ts`)
 - Splitter panel state is persisted in cookies — avoid re-initializing layout on navigation
-- Server-side icon rendering is enabled (`icon.provider: 'server'`) — no icon flash on load
+- Server-side icon rendering (`icon.provider: 'server'`) reduces icon flash on load
+- Vite `optimizeDeps.exclude` includes heavy or prebundling-unfriendly deps (e.g. crypto WASM, Workbox, zod) — avoid fighting that list without reason
 
 ---
 
 ## Security
 
-- CSP is configured via `nuxt-security` — do not add `img-src: *` or inline scripts
+- CSP is configured via `nuxt-security` — do not widen `img-src` to `*` or allow unsafe inline scripts casually
 - Rate limiting is enabled in production; disabled in dev
 - Persisted session tokens live in **IndexedDB** via `idb` (`~/utils/idb.ts`) / unstorage — do not duplicate them in `localStorage`, query strings, or logs
 - Always validate user-supplied homeserver URLs with `validateHomeserver()` (and resolve with `resolveBaseUrl()` for login) before use
