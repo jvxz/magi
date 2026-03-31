@@ -7,8 +7,12 @@ definePageMeta({
         name: 'me',
       })
     }
+    const lastRouteKey = getLastSpaceRouteKey(to.params.spaceId)
+    const lastRoute = localStorage.getItem(lastRouteKey)
 
-    // TODO: add middlware to go to last-visited room
+    if (to.name === 'space' && lastRoute)
+      return navigateTo(lastRoute)
+
     if (to.name !== 'space-browse' && !('roomId' in to.params)) {
       return navigateTo({
         name: 'space-browse',
@@ -17,6 +21,8 @@ definePageMeta({
         },
       })
     }
+
+    localStorage.setItem(lastRouteKey, to.path)
   },
   name: 'space',
 })

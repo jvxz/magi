@@ -1,14 +1,20 @@
 import type { Room } from 'matrix-js-sdk'
 
-export function useRoom(_roomId: MaybeRefOrGetter<string | undefined>) {
-  const roomId = () => toValue(_roomId)
+export function useRoom(roomId: MaybeRefOrGetter<string | undefined>) {
+  const roomIdRef = toRef(roomId)
   const { client } = useMatrixClient()
   const { onSync } = useMatrixHooks()
 
   const room = shallowRef<Room | undefined>(undefined)
-  const get = () => room.value = client.value.getRoom(roomId()) ?? undefined
+  const get = () => {
+    const r = client.value.getRoom(roomIdRef.value)
+    if (r)
+      room.value = r
 
-  watch(roomId, get, { immediate: true })
+    else room.value = undefined
+  }
+
+  watch(roomIdRef, get, { immediate: true })
 
   onSync(get)
 
