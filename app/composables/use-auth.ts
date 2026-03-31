@@ -21,7 +21,7 @@ export type LoginRequest = Prettify<PasswordLoginRequest | TokenLoginRequest>
 
 export function useAuth() {
   const { initAuthedClient } = useMatrixClient()
-  const { $matrix } = useNuxtApp()
+  const status = useMatrixStatus()
 
   async function login(req: LoginRequest) {
     try {
@@ -47,7 +47,7 @@ export function useAuth() {
       await idb.setItem<AuthPayload>('auth', authPayload)
 
       const authedClient = await initAuthedClient(false)
-      $matrix.status.value.isAuthed = true
+      status.value.isAuthed = true
 
       return authedClient
     }

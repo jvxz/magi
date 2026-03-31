@@ -1,6 +1,6 @@
 export function useDirectRooms() {
   const { client } = useMatrixClient()
-  const { $matrix } = useNuxtApp()
+  const status = useMatrixStatus()
 
   const asyncState = useAsyncState(async () => {
     const directRooms = getDirectRooms(client.value)
@@ -21,7 +21,7 @@ export function useDirectRooms() {
     immediate: true,
   })
 
-  watch(() => $matrix.status.value.isDataSynced, asyncState.executeImmediate)
+  watch(() => status.value.isDataSynced, asyncState.executeImmediate)
 
   return asyncState
 }
