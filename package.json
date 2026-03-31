@@ -46,9 +46,9 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.7.3",
-    "@iconify-json/tabler": "^1.2.32",
+    "@iconify-json/tabler": "^1.2.33",
     "@nuxt/eslint": "1.15.2",
-    "@regle/nuxt": "1.21.1",
+    "@regle/nuxt": "1.21.2",
     "@types/node": "^25.5.0",
     "@unlazy/nuxt": "^1.1.0",
     "@unocss/eslint-plugin": "^66.6.7",
