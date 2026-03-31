@@ -1,5 +1,4 @@
 import { pwa } from './app/config/pwa'
-import { version } from './package.json'
 import { appMeta } from './shared/utils/constants'
 
 export default defineNuxtConfig({
@@ -27,19 +26,6 @@ export default defineNuxtConfig({
       import: false,
       standalone: false,
     },
-  },
-
-  evlog: {
-    env: {
-      service: appMeta.name,
-      version,
-    },
-    exclude: [
-      '**/_**',
-    ],
-    include: [
-      '**/api/**',
-    ],
   },
 
   experimental: {
@@ -76,11 +62,6 @@ export default defineNuxtConfig({
       {
         from: 'zod',
         imports: [{ as: 'z', name: '*' }],
-      },
-      {
-        from: 'evlog',
-        imports: ['createError'],
-        priority: 2,
       },
     ],
   },
