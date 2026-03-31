@@ -1,0 +1,39 @@
+# https://github.com/elk-zone/elk/blob/main/.github/workflows/ci.yml
+name: ci
+
+permissions: {}
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+  merge_group: {}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - run: npm i -g corepack@latest && corepack enable
+      - uses: actions/setup-node@v6
+
+      - name: install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: setup
+        run: pnpm nuxt prepare
+
+      - name: test
+        run: pnpm test
+        timeout-minutes: 10
+
+      - name: lint
+        run: pnpm lint
+
+      - name: typecheck
+        run: pnpm test:typecheck
