@@ -3,6 +3,7 @@ import withNuxt from './.nuxt/eslint.config.mjs'
 
 export default withNuxt(antfu({
   formatters: true,
+  ignores: ['.pnpm-store/', '*.md'],
   rules: {
     'antfu/curly': ['off'],
     'curly': ['warn', 'multi-or-nest'],

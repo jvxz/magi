@@ -1,0 +1,38 @@
+import { fileURLToPath } from 'node:url'
+import { defineVitestProject } from '@nuxt/test-utils/config'
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+  test: {
+    coverage: {
+      enabled: true,
+      provider: 'v8',
+    },
+    projects: [
+      {
+        test: {
+          environment: 'node',
+          include: ['test/unit/*.{test,spec}.ts'],
+          name: 'unit',
+        },
+      },
+      await defineVitestProject({
+        test: {
+          environment: 'nuxt',
+          environmentOptions: {
+            nuxt: {
+              domEnvironment: 'happy-dom',
+
+              mock: {
+                indexedDb: true,
+              },
+              rootDir: fileURLToPath(new URL('.', import.meta.url)),
+            },
+          },
+          include: ['test/nuxt/**/*.{test,spec}.ts'],
+          name: 'nuxt',
+        },
+      }),
+    ],
+  },
+})

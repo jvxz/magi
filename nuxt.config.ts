@@ -82,6 +82,7 @@ export default defineNuxtConfig({
     '@nuxt/hints',
     'nitro-cloudflare-dev',
     '@vite-pwa/nuxt',
+    '@nuxt/test-utils/module',
     '@peterbud/nuxt-query',
   ],
 
@@ -104,7 +105,7 @@ export default defineNuxtConfig({
       ],
     },
 
-    preset: 'cloudflare_module',
+    preset: 'cloudflare-module',
   },
 
   nuxtQuery: {

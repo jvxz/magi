@@ -81,7 +81,7 @@ watch(() => r$.$value.homeserver, () => {
               reset-search-term-on-blur
             >
               <UAutocompleteAnchor class="border-muted bg-card h-10 group-data-[error]:border-danger">
-                <UAutocompleteInput :show-icon="false" />
+                <UAutocompleteInput :show-icon="false" data-testid="homeserver-input" />
                 <UAutocompleteTrigger>
                   <Icon name="tabler:chevron-down" class="text-muted-foreground size-3.25!" />
                 </UAutocompleteTrigger>
@@ -118,6 +118,7 @@ watch(() => r$.$value.homeserver, () => {
               v-model:model-value="r$.$value.username"
               label="Username"
               required
+              data-testid="username-input"
               :ui="{ input: 'w-full h-10', container: 'w-full' }"
               :error="r$.username.$errors"
               @keydown.enter="handleLogin"
@@ -127,6 +128,7 @@ watch(() => r$.$value.homeserver, () => {
               label="Password"
               type="current-password"
               required
+              data-testid="password-input"
               :ui="{ input: 'w-full h-10', container: 'w-full' }"
               :error="r$.password.$errors"
               @keydown.enter="handleLogin"
