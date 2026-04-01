@@ -1,13 +1,17 @@
 <script lang="ts" setup>
-import type { EventType, StateEvents } from 'matrix-js-sdk'
+import type { MatrixEvent } from 'matrix-js-sdk'
+import { EventType } from 'matrix-js-sdk'
 
 const props = defineProps<{
-  event: StateEvents[EventType.RoomMember]
+  content: MatrixEvent
 }>()
 
-const { displayname, membership } = props.event
+assert(props.content.getType() === EventType.RoomMember, 'Event provided in PageRoomEventMember is not a RoomMember event')
+const content = props.content.getContent()
 </script>
 
 <template>
-  <p>{{ displayname }} {{ membership }}</p>
+  <PageRoomEvent data-event-type="member">
+    <p>{{ content.displayname }} {{ content.membership }}</p>
+  </PageRoomEvent>
 </template>
