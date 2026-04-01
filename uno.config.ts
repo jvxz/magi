@@ -64,9 +64,9 @@ export default defineConfig({
     },
     spacing: {
       'app-header-height': '2rem',
-      'DEFAULT': '0.235rem',
       'header-height': '49px',
       'page-y-padding': '6rem',
+      'user-card-height': '3.625rem',
     },
     text: {
       '2xs': {
