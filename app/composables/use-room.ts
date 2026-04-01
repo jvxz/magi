@@ -12,6 +12,8 @@ export function useRoom(roomId: MaybeRefOrGetter<string | undefined>) {
       room.value = r
 
     else room.value = undefined
+
+    triggerRef(room)
   }
 
   watch(roomIdRef, get, { immediate: true })
