@@ -37,7 +37,7 @@ const src = computed(() => {
   <Img
     v-bind="props"
     :key="user?.avatarUrl"
-    :alt="user?.displayName"
+    :alt="user?.displayName ? `${user?.displayName}'s avatar` : 'Avatar'"
     :src
     :class="cn(!square && 'rounded-full', props.class)"
   />
