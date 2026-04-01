@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { EventType } from 'matrix-js-sdk'
+
 definePageMeta({
   layout: 'app',
   name: 'space-room',
@@ -6,26 +8,19 @@ definePageMeta({
 
 const currentRoom = useCurrentRoom()
 const currentSpace = useCurrentSpace()
+
+const events = useRoomEvents(() => currentRoom.value?.roomId)
 </script>
 
 <template>
-  <LayoutAppSlot name="page-header">
-    <LayoutAppPageHeader>
-      <div class="px-6 flex gap-2 h-full items-center">
-        <div class="flex gap-2 items-center">
-          <p>
-            {{ currentRoom?.name }}
-          </p>
-        </div>
-      </div>
-    </LayoutAppPageHeader>
-  </LayoutAppSlot>
-
   <LayoutAppSlot name="page-header">
     <LayoutAppPageHeader>
       {{ currentRoom?.name ?? currentSpace?.name }}
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
-  <pre>{{ currentRoom?.name }}</pre>
+  <template v-for="event in events" :key="event.getId()">
+    <PageRoomEventMessage v-if="event.getType() === EventType.RoomMessage" :event="event.getContent()" />
+    <PageRoomEventMember v-else-if="event.getType() === EventType.RoomMember" :event="event.getContent()" />
+  </template>
 </template>
