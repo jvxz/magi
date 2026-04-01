@@ -19,8 +19,8 @@ export const useMatrixHooks = createSharedComposable(() => {
   }, { immediate: true })
 
   return {
-    onSync: syncHook.on,
     onDecrypted: decryptedHook.on,
+    onSync: syncHook.on,
   }
 })
 

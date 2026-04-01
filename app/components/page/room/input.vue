@@ -7,7 +7,7 @@ const msg = shallowRef('')
 </script>
 
 <template>
-  <div class="px-3 rounded flex h-user-card-height w-full absolute bottom-0 overflow-hidden shrink-0 mb-3">
+  <div class="mb-3 px-3 rounded flex shrink-0 h-user-card-height w-full bottom-0 absolute overflow-hidden">
     <div class="px-3.5 border rounded bg-card-2 flex gap-3.5 size-full items-center *:shrink-0">
       <UButton variant="ghost" size="icon">
         <Icon name="tabler:plus" class="size-5" />
@@ -15,10 +15,14 @@ const msg = shallowRef('')
       <input
         v-model="msg"
         type="text"
-        class="outline-none flex-1 size-full text-sm font-sans shrink"
+        class="text-sm font-sans outline-none flex-1 shrink size-full"
         :placeholder
       />
-      <UButton variant="ghost" size="icon" :disabled="!msg">
+      <UButton
+        variant="ghost"
+        size="icon"
+        :disabled="!msg"
+      >
         <Icon name="tabler:send" class="size-5" />
       </UButton>
     </div>
