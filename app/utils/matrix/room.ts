@@ -126,3 +126,43 @@ export function getJoinedRooms(client: MatrixClient, space: Room | undefined) {
 
   return joined
 }
+
+export function getMember(client: MatrixClient, userId: string | undefined, roomId: string | undefined) {
+  if (!roomId || !userId)
+    return
+
+  const room = client.getRoom(roomId)
+  if (!room)
+    return
+
+  const member = room.getMember(userId)
+  if (!member)
+    return
+
+  const displayName = getMemberDisplayName(room, userId)
+  if (!displayName)
+    return
+
+  const avatarUrl = mxcToHttps(member.getMxcAvatarUrl() ?? undefined, {
+    allowRedirects: true,
+    baseUrl: client.getHomeserverUrl(),
+    height: 400,
+    resizeMethod: 'scale',
+    useAuthentication: true,
+    width: 400,
+  })
+
+  return {
+    ...member,
+    avatarUrl,
+    displayName,
+  }
+}
+
+export function getMemberDisplayName(room: Room, userId: string) {
+  const member = room.getMember(userId)
+
+  const name = member?.rawDisplayName
+
+  return name === userId ? undefined : name
+}
