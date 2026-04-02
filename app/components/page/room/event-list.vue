@@ -5,25 +5,47 @@ const currentRoom = useCurrentRoom()
 const events = useRoomEvents(currentRoom)
 
 const containerRef = useTemplateRef<HTMLDivElement>('container')
-onMounted(() => {
-  if (containerRef.value)
-    containerRef.value.scrollTop = containerRef.value.scrollHeight
-})
+const wrapperRef = useTemplateRef<HTMLDivElement>('wrapper')
+let isPinned = true
+
+useResizeObserver(wrapperRef, scrollToBottom)
+watch(() => events.value.length, scrollToBottom, { flush: 'post' })
+
+function onScroll(event: Event) {
+  const target = event.target as HTMLElement
+  isPinned = (target.scrollHeight - target.scrollTop - target.clientHeight) <= 10
+}
+
+function scrollToBottom() {
+  if (!isPinned)
+    return
+  const containerEl = unrefElement(containerRef)
+  if (!containerEl || !isPinned)
+    return
+
+  containerEl.scrollTop = containerEl.scrollHeight
+}
 </script>
 
 <template>
-  <div ref="container" class="scroll-container h-[calc(100%-3rem)] w-full absolute overflow-x-hidden overflow-y-scroll space-y-4.25">
-    <template v-for="event in events" :key="event.getId()">
-      <PageRoomEventMessage
-        v-if="event.getType() === EventType.RoomMessage"
-        :content="event"
-      />
-      <PageRoomEventMember
-        v-else-if="event.getType() === EventType.RoomMember"
-        :content="event"
-      />
-    </template>
-    <div class="h-8" />
+  <div
+    ref="container"
+    class="scroll-container h-[calc(100%-3rem)] w-full absolute overflow-x-hidden overflow-y-scroll"
+    @scroll="onScroll"
+  >
+    <div ref="wrapper" class="w-full space-y-4.25">
+      <template v-for="event in events" :key="event.getId()">
+        <PageRoomEventMessage
+          v-if="event.getType() === EventType.RoomMessage"
+          :content="event"
+        />
+        <PageRoomEventMember
+          v-else-if="event.getType() === EventType.RoomMember"
+          :content="event"
+        />
+      </template>
+      <div class="h-8" />
+    </div>
   </div>
 </template>
 
