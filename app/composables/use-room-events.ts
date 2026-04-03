@@ -1,42 +1,57 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 
+
 export function useRoomEvents(room: MaybeRefOrGetter<Room | undefined>) {
   const roomRef = toRef(room)
   const { client } = useMatrixClient()
-
-  const events = shallowRef<MatrixEvent[]>(roomRef.value?.getLiveTimeline().getEvents() ?? [])
-
+  
+  const events = shallowRef<MatrixEvent[]>([])
+  
   const sync = () => {
     const liveEvents = roomRef.value?.getLiveTimeline().getEvents()
-
+    
     events.value = [...(liveEvents ?? [])]
   }
-
-  watchImmediate(events, async () => {
-    if (events.value.length < 30) {
-      const tl = roomRef.value?.getLiveTimeline()
-      if (!tl)
-        return
-
-      const res = await client.value.paginateEventTimeline(tl, {
-        backwards: true,
-        limit: 30 - events.value.length,
-      })
-
-      if (res)
-        sync()
-    }
-  })
-
+  
+  whenever(roomRef, sync, { immediate: true, once: true })
+  
   useRoomEventHooks(() => roomRef.value?.roomId, {
     onTimeline: () => sync(),
     onTimelineRefresh: () => sync(),
     onTimelineReset: () => sync(),
   })
+  
+  const mutex = new Mutex()
+  const { isPending: isScrolling, mutate: scrollBack, mutateAsync: scrollBackAsync, status: scrollBackStatus } = useMutation({
+    mutationFn: async () => {
+      if (mutex.isLocked)
+        return
+
+      await mutex.acquire()
+      try {
+        const r = toValue(room)
+        if (!r)
+          return
+
+        await client.value.scrollback(r, 80)
+        sync()
+      }
+      finally {
+        mutex.release()
+      }
+    },
+    mutationKey: ['scrollback', () => roomRef.value?.roomId],
+  })
 
   // sync on decrypted events (usually messages)
-  const { onDecrypted } = useMatrixHooks()
-  onDecrypted(sync)
+  // const { onDecrypted } = useMatrixHooks()
+  // onDecrypted(debounce(sync, 30))
 
-  return events
+  return {
+    events,
+    scrollBackStatus,
+    scrollBack,
+    isScrolling,
+    scrollBackAsync,
+  }
 }
