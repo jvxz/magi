@@ -1,26 +1,25 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 
-
 export function useRoomEvents(room: MaybeRefOrGetter<Room | undefined>) {
   const roomRef = toRef(room)
   const { client } = useMatrixClient()
-  
+
   const events = shallowRef<MatrixEvent[]>([])
-  
+
   const sync = () => {
     const liveEvents = roomRef.value?.getLiveTimeline().getEvents()
-    
+
     events.value = [...(liveEvents ?? [])]
   }
-  
+
   whenever(roomRef, sync, { immediate: true, once: true })
-  
+
   useRoomEventHooks(() => roomRef.value?.roomId, {
     onTimeline: () => sync(),
     onTimelineRefresh: () => sync(),
     onTimelineReset: () => sync(),
   })
-  
+
   const mutex = new Mutex()
   const { isPending: isScrolling, mutate: scrollBack, mutateAsync: scrollBackAsync, status: scrollBackStatus } = useMutation({
     mutationFn: async () => {
@@ -49,9 +48,9 @@ export function useRoomEvents(room: MaybeRefOrGetter<Room | undefined>) {
 
   return {
     events,
-    scrollBackStatus,
-    scrollBack,
     isScrolling,
+    scrollBack,
     scrollBackAsync,
+    scrollBackStatus,
   }
 }

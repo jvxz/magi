@@ -26,7 +26,7 @@ whenever(() => events.value.length && wrapperRef.value, () => {
 }, { immediate: true, once: true })
 
 watch(heightDiff, (diff) => {
-  // if user is not at the very top of the container, don't manually scroll; 
+  // if user is not at the very top of the container, don't manually scroll;
   // `overflow-anchor: none` on container handles it
   if (prevScrollTop !== 0)
     return
