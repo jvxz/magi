@@ -180,7 +180,7 @@ export function useScrollPagination<T extends object>(list: Ref<T[]>, container:
           ? -scrollTopAtPaginateStart
           : rawUserScrollDeltaWhilePaginating
         if (!addedHeight)
-          return
+          return isPaginating.value = false
 
         const topTrimHeight = Math.max(0, addedHeight - windowSectionSize.value)
         const topItemId = getClosestNode(topTrimHeight, true)?.dataset.itemId as Identifier
