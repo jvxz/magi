@@ -88,8 +88,8 @@ whenever(isReady, async () => {
   if (!container)
     return
 
-  const prevHeight = container.scrollHeight
   while (container.scrollHeight <= container.clientHeight && !isFullyLoaded.value) {
+    const prevHeight = container.scrollHeight
     await loadOlder()
     if (prevHeight === container.scrollHeight)
       break
