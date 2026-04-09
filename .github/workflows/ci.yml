@@ -26,7 +26,7 @@ jobs:
       - run: npm i -g corepack@latest && corepack enable
       - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 25
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
@@ -36,12 +36,12 @@ jobs:
       - name: setup
         run: pnpm nuxt prepare
 
-      - name: test
-        run: pnpm test
-        timeout-minutes: 10
+      - name: typecheck
+        run: pnpm test:typecheck
 
       - name: lint
         run: pnpm lint
 
-      - name: typecheck
-        run: pnpm test:typecheck
+      - name: test
+        run: pnpm test
+        timeout-minutes: 10
