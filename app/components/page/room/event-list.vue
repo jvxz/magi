@@ -68,7 +68,7 @@ async function loadChunk(
 
     const amountAdded = events.value.length - prevEventsLength
 
-    const startEventIdx = Math.max(0, prevStartEventIdx + amountAdded - 1)
+    const startEventIdx = Math.max(0, prevStartEventIdx + amountAdded)
 
     const chunkSize = amountAdded > 0 ? amountAdded : BATCH_SIZE
     const start = Math.max(0, startEventIdx - chunkSize)
