@@ -32,7 +32,6 @@ export function useRoomEvents(room: Ref<Room>) {
 
         // scrolling up; getting older events (maybe not cached)
         if (dir === 'backward') {
-          // const canLoadMore = await scrollBack()
           const canLoadMore = await retry(
             scrollBack,
             {
