@@ -72,6 +72,9 @@ export function useRoomEvents(room: Ref<Room>) {
 
   const { onDecrypted } = useMatrixHooks()
   onDecrypted((event) => {
+    if (room.value.roomId !== event.getRoomId())
+      return
+
     const id = event.getId()
     if (!id)
       return
