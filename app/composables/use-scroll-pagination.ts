@@ -344,7 +344,11 @@ export function useScrollPagination<T extends object>(list: Ref<T[]>, container:
     assert(bottomAnchor, 'bottomAnchor element not found')
 
     bottomAnchor.scrollIntoView({ behavior: 'instant', block: 'end' })
-    containerScrollTop.value = containerRef.value!.scrollTop
+
+    const container = unrefElement(containerRef)
+    assert(container, 'container was undefined in scrollToBottom')
+
+    containerScrollTop.value = container.scrollTop
   }
 
   function getItemIdentifier(item: T | undefined): string {
