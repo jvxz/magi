@@ -20,11 +20,7 @@ export function useRoomEvents(room: Ref<Room>) {
 
   const mutex = new Mutex()
   const { isPending: isScrolling, mutate: scrollEvents, mutateAsync: scrollEventsAsync, status: scrollEventsStatus } = useMutation({
-    mutationFn: async (opts: {
-      dir: 'forward' | 'backward'
-      startEvent: MatrixEvent
-      endEvent: MatrixEvent
-    }) => {
+    mutationFn: async (dir: 'forward' | 'backward') => {
       if (mutex.isLocked)
         return
 
@@ -35,7 +31,7 @@ export function useRoomEvents(room: Ref<Room>) {
           return
 
         // scrolling up; getting older events (maybe not cached)
-        if (opts.dir === 'backward') {
+        if (dir === 'backward') {
           // const canLoadMore = await scrollBack()
           const canLoadMore = await retry(
             scrollBack,

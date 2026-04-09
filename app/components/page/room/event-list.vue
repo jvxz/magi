@@ -64,7 +64,7 @@ async function loadChunk(
 
     const prevEventsLength = events.value.length
 
-    await scrollEventsAsync({ dir, endEvent, startEvent })
+    await scrollEventsAsync(dir)
 
     const amountAdded = events.value.length - prevEventsLength
 
