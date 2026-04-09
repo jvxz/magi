@@ -108,7 +108,7 @@ whenever(isReady, async () => {
     <div ref="wrapper" class="w-full">
       <div
         v-for="(event, idx) in eventsPaginated"
-        :key="`${event.getId()}:${getEventVersion(event.getId()!)}`"
+        :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
         class="pb-4.25"
         v-bind="itemBind(event, idx)"
       >
