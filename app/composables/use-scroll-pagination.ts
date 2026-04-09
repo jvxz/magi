@@ -154,7 +154,7 @@ export function useScrollPagination<T extends object>(list: Ref<T[]>, container:
         const scrollTopAtPaginateStart = container.scrollTop
 
         const anchorId = getItemIdentifier(listPaginated.value[0])
-        const anchorEl = anchorId ? container.querySelector<HTMLElement>(`[data-item-id="${anchorId}"]`) : null
+        const anchorEl = anchorId ? container.querySelector<HTMLElement>(`[data-item-id="${CSS.escape(anchorId)}"]`) : null
 
         const visibleAnchorEl = getFirstVisibleNode()
         const visibleAnchorId = visibleAnchorEl?.dataset.itemId ?? null
@@ -209,7 +209,7 @@ export function useScrollPagination<T extends object>(list: Ref<T[]>, container:
         await rAF()
 
         if (restoreAnchorId) {
-          const newAnchorEl = container.querySelector<HTMLElement>(`[data-item-id="${restoreAnchorId}"]`)
+          const newAnchorEl = container.querySelector<HTMLElement>(`[data-item-id="${CSS.escape(restoreAnchorId)}"]`)
           if (newAnchorEl) {
             const restoredScrollTop = newAnchorEl.offsetTop - restoreAnchorOffset
             container.scrollTop = restoredScrollTop + userScrollDeltaWhilePaginating
