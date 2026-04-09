@@ -18,6 +18,9 @@ const wrapperRef = useTemplateRef('wrapper')
 
 const { isReady, itemBind, listPaginated: eventsPaginated, loadOlder } = useScrollPagination(events, containerRef, {
   canPaginate: ({ endItem, listPaginated }) => {
+    if (!events.value.length)
+      return false
+
     const backward = !isFullyLoaded.value || !listPaginated.includes(events.value[0]!)
     const forward = events.value.at(-1) !== endItem
 
