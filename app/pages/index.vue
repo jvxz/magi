@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-2 h-screen items-center justify-center">
-    <p>Decoy</p>
+    <p>{{ appMeta.name }}</p>
     <UButton as-child>
       <NuxtLink to="/login">
         Login
