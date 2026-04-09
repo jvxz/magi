@@ -1,11 +1,11 @@
 ---
-description: Project-wide context for Decoy — a Matrix.org client app
+description: Project-wide context for Magi — a Matrix.org client app
 alwaysApply: true
 ---
 
-# Decoy — AI Agent Context
+# Magi — AI Agent Context
 
-Decoy is a **Matrix.org client** built with Nuxt 4. Core priorities: **security, end-to-end encryption, performance, and UX**. Production target is **Cloudflare Workers** (Nitro `cloudflare_module` + Wrangler).
+Magi is a **Matrix.org client** built with Nuxt 4. Core priorities: **security, end-to-end encryption, performance, and UX**. Production target is **Cloudflare Workers** (Nitro `cloudflare_module` + Wrangler).
 
 ---
 

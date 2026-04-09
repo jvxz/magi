@@ -5,5 +5,5 @@ definePageMeta({
 </script>
 
 <template>
-  <p>Decoy</p>
+  <p>{{ appMeta.name }}</p>
 </template>
