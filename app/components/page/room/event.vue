@@ -12,6 +12,7 @@ defineProps<PrimitiveProps & {
 
 <template>
   <Primitive
+    v-bind="$props"
     :data-event-id="eventId"
     :data-event-type="eventType"
     :class="cn('px-6 min-h-12 py-0.5 group hover:bg-card-2 shrink-0', $props.class)"
