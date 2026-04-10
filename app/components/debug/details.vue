@@ -10,7 +10,7 @@ const breakpoint = active()
 </script>
 
 <template>
-  <div class="text-xs text-muted-foreground right-2 top-2 absolute z-100000 font-mono" @click="$router.push('/playground')">
+  <div class="text-xs text-muted-foreground font-mono right-2 top-2 absolute z-100000" @click="$router.push('/playground')">
     {{ fps }}
     <span>{{ breakpoint }}</span>
   </div>
