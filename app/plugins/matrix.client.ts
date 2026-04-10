@@ -3,6 +3,10 @@ import { SyncState } from 'matrix-js-sdk'
 export default defineNuxtPlugin({
   order: 0,
   setup: async () => {
+    const config = useRuntimeConfig()
+    if (config.public.testMode)
+      return
+
     const status = useMatrixStatus()
     const { onSync } = useMatrixHooks()
 
@@ -26,13 +30,5 @@ export default defineNuxtPlugin({
       if (syncState === SyncState.Prepared)
         status.value.isDataSynced = true
     })
-
-    return {
-      provide: {
-        matrix: {
-          status,
-        },
-      },
-    }
   },
 })
