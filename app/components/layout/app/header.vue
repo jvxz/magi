@@ -21,7 +21,7 @@ const env = computed(() => {
 
 <template>
   <header class="flex shrink-0 h-app-header-height items-center justify-between *:shrink-0">
-    <div class="flex-1 flex items-center">
+    <div class="flex flex-1 items-center">
       <span class="text-xs text-muted-foreground font-medium ml-2">{{ env }}</span>
     </div>
     <p class="text-sm font-medium text-center w-auto">
