@@ -17,7 +17,13 @@ export default defineConfig<ConfigOptions>({
   use: {
     nuxt: {
       nuxtConfig: {
+        // @ts-expect-error - nitro config is not typed
         nitro: { preset: 'node-server' },
+        runtimeConfig: {
+          public: {
+            testMode: true,
+          },
+        },
       },
       rootDir: fileURLToPath(new URL('.', import.meta.url)),
     },
