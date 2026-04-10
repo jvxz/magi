@@ -18,8 +18,8 @@ const env = computed<string | undefined>(() => {
 
 <template>
   <header class="flex shrink-0 h-app-header-height items-center justify-between *:shrink-0">
-    <div class="flex flex-1 items-center">
-      <span v-if="env" class="text-xs text-muted-foreground font-medium ml-2">{{ env }}</span>
+    <div class="flex-1 flex items-center">
+      <span class="text-xs text-muted-foreground font-medium ml-2">{{ env }}</span>
     </div>
     <p class="text-sm font-medium text-center w-auto">
       {{ title ?? currentRoom?.name ?? upperFirst($route.name) }}
