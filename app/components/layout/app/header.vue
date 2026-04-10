@@ -5,15 +5,12 @@ defineProps<{
 
 const currentRoom = useCurrentRoom()
 
-const env = computed(() => {
-  if (!import.meta.dev)
-    return
+const env = computed<string | undefined>(() => {
+  if (isTestMode)
+    return 'Testing'
 
   if (import.meta.dev)
     return 'Development'
-
-  if (import.meta.test)
-    return 'Testing'
 
   return undefined
 })
