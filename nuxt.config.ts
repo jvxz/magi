@@ -130,6 +130,12 @@ export default defineNuxtConfig({
     '/playground': { appLayout: false },
   },
 
+  runtimeConfig: {
+    public: {
+      testMode: false,
+    },
+  },
+
   security: {
     headers: {
       contentSecurityPolicy: {
