@@ -268,8 +268,9 @@ export function useScrollPagination<T extends object>(list: Ref<T[]>, container:
   }
 
   function loadOlder() {
-    if (!pageStartItemId.value || !canPaginate('backward'))
+    if (!pageStartItemId.value || !(unref(canPaginate('backward').backward)))
       return
+
     return paginate('backward', pageStartItemId.value, pageEndItemId.value ?? lastItemId.value)
   }
 
