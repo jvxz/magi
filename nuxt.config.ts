@@ -146,7 +146,7 @@ export default defineNuxtConfig({
             ],
       },
     },
-    rateLimiter: import.meta.dev ? false : undefined,
+    rateLimiter: false,
     sri: false,
   },
 
