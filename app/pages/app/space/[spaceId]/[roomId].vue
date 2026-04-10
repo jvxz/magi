@@ -1,10 +1,14 @@
 <script lang="ts" setup>
+import { createMockRoom } from '~~/test/e2e/fixtures/mock-room'
+
 definePageMeta({
   layout: 'app',
   name: 'space-room',
 })
 
-const currentRoom = useCurrentRoom()
+const config = useRuntimeConfig()
+
+const currentRoom = config.public.testMode ? createMockRoom(500) : useCurrentRoom()
 const currentSpace = useCurrentSpace()
 </script>
 
