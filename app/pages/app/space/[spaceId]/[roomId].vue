@@ -16,7 +16,7 @@ const currentSpace = useCurrentSpace()
   </LayoutAppSlot>
 
   <div class="flex flex-1 flex-col size-full relative">
-    <PageRoomEventList />
+    <PageRoomEventList v-if="currentRoom" :room="currentRoom" />
     <PageRoomInput />
   </div>
 </template>

@@ -5,15 +5,12 @@ defineProps<{
 
 const currentRoom = useCurrentRoom()
 
-const env = computed(() => {
-  if (!import.meta.dev)
-    return
+const env = computed<string | undefined>(() => {
+  if (isTestMode)
+    return 'Testing'
 
   if (import.meta.dev)
     return 'Development'
-
-  if (import.meta.test)
-    return 'Testing'
 
   return undefined
 })
@@ -22,7 +19,7 @@ const env = computed(() => {
 <template>
   <header class="flex shrink-0 h-app-header-height items-center justify-between *:shrink-0">
     <div class="flex flex-1 items-center">
-      <span class="text-xs text-muted-foreground font-medium ml-2">{{ env }}</span>
+      <span v-if="env" class="text-xs text-muted-foreground font-medium ml-2">{{ env }}</span>
     </div>
     <p class="text-sm font-medium text-center w-auto">
       {{ title ?? currentRoom?.name ?? upperFirst($route.name) }}

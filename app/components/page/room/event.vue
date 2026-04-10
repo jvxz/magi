@@ -3,18 +3,18 @@ import type { EventType } from 'matrix-js-sdk'
 import type { PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 
-const rawProps = defineProps<PrimitiveProps & {
+defineProps<PrimitiveProps & {
   class?: HTMLAttributes['class']
-  dataEventType: EventType | string & {}
+  eventId: string | undefined
+  eventType: EventType | string
 }>()
-
-const { dataEventType, ...props } = rawProps
 </script>
 
 <template>
   <Primitive
-    v-bind="props"
-    :data-event-type="dataEventType"
+    v-bind="$props"
+    :data-event-id="eventId"
+    :data-event-type="eventType"
     :class="cn('px-6 min-h-12 py-0.5 group hover:bg-card-2 shrink-0', $props.class)"
   >
     <slot />
