@@ -68,7 +68,8 @@ export function useScrollPagination<T extends object>(list: Ref<T[]>, container:
   })
 
   watch(() => list.value.at(-1), (newLastItem, oldLastItem) => {
-    assert(pageStartItemId.value, 'pageStartItemId was undefined when attempting to paginate forwards on list update')
+    if (!isReady.value || !pageStartItemId.value)
+      return
 
     const includedLastItem = oldLastItem ? listPaginated.value.includes(oldLastItem) : true
     if (includedLastItem) {
