@@ -66,14 +66,11 @@ export function useEventPagination(opts: Opts) {
     }
   }
 
-  const mutex = new Mutex()
   async function paginate(dir: Direction) {
-    if (mutex.isLocked && !isPaginating.value)
+    if (isPaginating.value)
       return
 
     isPaginating.value = true
-
-    await mutex.acquire()
 
     try {
       if (dir === Direction.Backward && !canPaginateBackward.value)
@@ -98,7 +95,6 @@ export function useEventPagination(opts: Opts) {
       await nextTick()
     }
     finally {
-      mutex.release()
       isPaginating.value = false
     }
   }
