@@ -31,7 +31,6 @@ export function useRoomEvents(room: Ref<Room>) {
         if (!r)
           return
 
-        // scrolling up; getting older events (maybe not cached)
         if (dir === Direction.Backward) {
           const canLoadMore = await retry(
             scrollBack,
@@ -39,7 +38,6 @@ export function useRoomEvents(room: Ref<Room>) {
               delay: attempts => attempts * 50,
               retries: 4,
               shouldRetry: err => err instanceof $Error,
-
             },
           )
 
@@ -96,8 +94,12 @@ export function useRoomEvents(room: Ref<Room>) {
     const canLoadMore = await client.value.paginateEventTimeline(tl, { backwards: true, limit: BATCH_SIZE })
     const newLen = tl.getEvents().length
 
-    if (prevLen === newLen)
+    if (prevLen === newLen) {
+      if (!canLoadMore)
+        return false
+
       throw new $Error('previous event length equals new event length')
+    }
 
     return canLoadMore
   }
