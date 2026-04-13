@@ -370,7 +370,7 @@ export function useEventPagination(opts: Opts) {
       anchor = intersecting.reduce((best, child) => {
         const bi = Number.parseInt(best.dataset.index ?? '', 10)
         const ci = Number.parseInt(child.dataset.index ?? '', 10)
-        
+
         if (Number.isNaN(ci))
           return best
         if (Number.isNaN(bi))
