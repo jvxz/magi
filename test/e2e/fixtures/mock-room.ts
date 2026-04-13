@@ -15,13 +15,18 @@ export function createMockRoom(eventCount: number = 250): Room {
 
 function createMockEvents(eventCount: number, roomId: string): MatrixEvent[] {
   return Array.from({ length: eventCount }, (_, i) => {
-    const id = i === 0 ? 'oldest-event' : crypto.randomUUID()
+    const id = i === 0
+      ? 'oldest-event'
+      : i === eventCount - 1
+        ? 'newest-event'
+        : crypto.randomUUID()
     const content = {
       body: `Event ${id} (${i})`,
       msgtype: 'm.text',
     }
 
-    const event: Partial<Record<keyof MatrixEvent, unknown>> = {
+    const event: Partial<Record<keyof MatrixEvent, unknown>> & { _size: number } = {
+      _size: Math.max(64, Math.random() * 250),
       event: {
         content,
         type: 'm.room.message',
