@@ -70,7 +70,7 @@ async function paginate(dir: Direction, page: TestArgs['page']) {
   const prevEvent = await getPaginatedEvent(dir, page)
   await prevEvent.el.evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'start' }))
 
-  expect.soft(await prevEvent.el.evaluate(el => el.children.length)).toBeLessThanOrEqual(80)
+  expect(await container.evaluate(el => el.children.length)).toBeLessThanOrEqual(80)
 
   const nextEvent = await getPaginatedEvent(dir, page)
 
