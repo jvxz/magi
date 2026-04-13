@@ -60,8 +60,6 @@ test.describe('Event list', () => {
 
     expect(e).toBeDefined()
     expect(e?.id).toBe('newest-event')
-
-    await sharedPage.pause()
   })
 })
 
