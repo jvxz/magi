@@ -90,8 +90,6 @@ export function useEventPagination(opts: Opts) {
       forwardSentinelId.value = sentinels.forward?.getId()
 
       await setRange({ dir })
-      if (container.scrollTop === 0)
-        console.error('detected container with a `scrollTop` of 0')
 
       await nextTick()
     }
