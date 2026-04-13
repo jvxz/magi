@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { createMockRoom } from '~~/test/e2e/fixtures/mock-room'
-
 definePageMeta({
   layout: 'app',
   name: 'space-room',
