@@ -5,7 +5,7 @@ type Direction = 'backwards' | 'forwards'
 type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
 type MockEvent = Awaited<ReturnType<typeof getPaginatedEvent>>
 
-let sharedPage: Page
+let sharedPage: Page | undefined
 let oldestEvent: MockEvent | undefined
 
 test.describe.configure({ mode: 'serial' })
@@ -28,14 +28,14 @@ test.beforeAll(async ({ browser }) => {
 })
 
 test.afterAll(async () => {
-  await sharedPage.context().close()
+  await sharedPage?.context().close()
 })
 
 test.describe('Event list', () => {
   test('paginates backwards', async () => {
-    let e = await paginate('backwards', sharedPage)
+    let e = await paginate('backwards', sharedPage!)
     while (e) {
-      const res = await paginate('backwards', sharedPage)
+      const res = await paginate('backwards', sharedPage!)
       if (res)
         e = res
       else break
@@ -50,9 +50,9 @@ test.describe('Event list', () => {
   test('paginates forwards from the end', async () => {
     expect(oldestEvent).toBeDefined()
 
-    let e = await paginate('forwards', sharedPage)
+    let e = await paginate('forwards', sharedPage!)
     while (e) {
-      const res = await paginate('forwards', sharedPage)
+      const res = await paginate('forwards', sharedPage!)
       if (res)
         e = res
       else break
