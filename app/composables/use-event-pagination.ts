@@ -33,7 +33,7 @@ export function useEventPagination(opts: Opts) {
   const maxPageHeight = refDefault(toRef(opts.maxPageHeight), 4000)
 
   const canScroll = computed(() => canElementScroll(scrollEl.value))
-  const canPaginateBackward = computed(() => !isFullyLoaded.value)
+  const canPaginateBackward = computed(() => !isFullyLoaded.value || eventsPaginated.value[0] !== events.value[0])
   const canPaginateForward = computed(() => eventsPaginated.value.at(-1) !== events.value.at(-1))
 
   const isPaginating = shallowRef(false)
