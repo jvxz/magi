@@ -491,7 +491,6 @@ function getEventById(events: MatrixEvent[], id: string | undefined) {
 function resolveCachedItems(itemIds: string[]) {
   let allCached = true
   const cached: CachedItemNode[] = []
-  const uncached: string[] = []
   for (let i = 0; i < itemIds.length; i++) {
     const id = itemIds[i]
     assert(id, 'id was undefined when resolving cached items')
@@ -503,13 +502,11 @@ function resolveCachedItems(itemIds: string[]) {
     }
 
     allCached = false
-    uncached.push(id)
   }
 
   return {
     allCached,
     cached,
-    uncached,
   }
 }
 
