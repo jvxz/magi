@@ -47,7 +47,7 @@ export function useEventPagination(opts: Opts) {
     for (const entry of entries) {
       const el = entry.target
       if (!(el instanceof HTMLElement))
-        return
+        continue
 
       const { id } = getItemNodeData(el)
 
