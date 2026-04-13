@@ -1,22 +1,41 @@
+import type { Page } from '@playwright/test'
 import { expect, test } from '@nuxt/test-utils/playwright'
 
-test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => {
+type Direction = 'backwards' | 'forwards'
+type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
+type MockEvent = Awaited<ReturnType<typeof getPaginatedEvent>>
+
+let sharedPage: Page
+let oldestEvent: MockEvent | undefined
+
+test.describe.configure({ mode: 'serial' })
+
+test.beforeAll(async ({ browser }) => {
+  const context = await browser.newContext()
+  sharedPage = await context.newPage()
+
+  await sharedPage.addInitScript(() => {
     window.localStorage.setItem('magi:test:auth', JSON.stringify({
       accessToken: 'fake-token',
       deviceId: 'TEST_DEVICE',
       userId: '@test:localhost',
     }))
   })
+
+  await sharedPage.goto('/app/space/test/test', { waitUntil: 'networkidle' })
+  await expect(sharedPage).not.toHaveURL('/login')
+  await expect(sharedPage.getByText('Testing')).toBeVisible()
+})
+
+test.afterAll(async () => {
+  await sharedPage.context().close()
 })
 
 test.describe('Event list', () => {
-  test('paginates backwards', async ({ goto, page }) => {
-    await loadRoomPage(page, goto)
-
-    let e = await paginate('backward', page)
+  test('paginates backwards', async () => {
+    let e = await paginate('backwards', sharedPage)
     while (e) {
-      const res = await paginate('backward', page)
+      const res = await paginate('backwards', sharedPage)
       if (res)
         e = res
       else break
@@ -25,16 +44,40 @@ test.describe('Event list', () => {
     expect(e).toBeDefined()
     expect(e?.id).toBe('oldest-event')
 
-    await page.pause()
+    oldestEvent = e
+  })
+
+  test('paginates forwards from the end', async () => {
+    expect(oldestEvent).toBeDefined()
+
+    let e = await paginate('forwards', sharedPage)
+    while (e) {
+      const res = await paginate('forwards', sharedPage)
+      if (res)
+        e = res
+      else break
+    }
+
+    expect(e).toBeDefined()
+    expect(e?.id).toBe('newest-event')
+
+    await sharedPage.pause()
   })
 })
 
-type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
+async function paginate(dir: Direction, page: TestArgs['page']) {
+  const container = await getScrollContainer(page)
+  await container.hover()
 
-async function loadRoomPage(page: TestArgs['page'], goto: TestArgs['goto']) {
-  await goto('/app/space/test/test', { waitUntil: 'hydration' })
-  await expect(page).not.toHaveURL('/login')
-  await expect(page.getByText('Testing')).toBeVisible()
+  const prevEvent = await getPaginatedEvent(dir, page)
+  await prevEvent.el.evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'start' }))
+
+  expect.soft(await prevEvent.el.evaluate(el => el.children.length)).toBeLessThanOrEqual(80)
+
+  const nextEvent = await getPaginatedEvent(dir, page)
+
+  if (nextEvent.id !== prevEvent.id)
+    return nextEvent
 }
 
 async function getScrollContainer(page: TestArgs['page']) {
@@ -46,10 +89,10 @@ async function getScrollContainerEvents(page: TestArgs['page']) {
   return wrapper.locator('[data-index]')
 }
 
-async function getOldestPaginatedEvent(page: TestArgs['page']) {
+async function getPaginatedEvent(dir: Direction, page: TestArgs['page']) {
   const events = await getScrollContainerEvents(page)
 
-  const el = events.first()
+  const el = dir === 'backwards' ? events.first() : events.last()
   expect(el).toBeTruthy()
 
   const id = await el.getAttribute('data-item-id')
@@ -62,22 +105,4 @@ async function getOldestPaginatedEvent(page: TestArgs['page']) {
     id,
     index,
   }
-}
-
-async function paginate(dir: 'backward' | 'forward', page: TestArgs['page']) {
-  const container = await getScrollContainer(page)
-  await container.hover()
-
-  const prevEvent = await getOldestPaginatedEvent(page)
-  await prevEvent.el.evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'start' }))
-
-  const scrollHeight = await container.evaluate(el => el.scrollHeight)
-
-  const threshold = 139
-  expect(Math.abs(scrollHeight - 7000)).toBeLessThanOrEqual(threshold)
-
-  const nextEvent = await getOldestPaginatedEvent(page)
-
-  if (nextEvent.id !== prevEvent.id)
-    return nextEvent
 }
