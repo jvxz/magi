@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-4
 
     steps:
       - uses: actions/checkout@v6
@@ -45,3 +45,10 @@ jobs:
       - name: test
         run: pnpm test
         timeout-minutes: 10
+
+      - name: install playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: e2e test
+        run: pnpm test:e2e
+        timeout-minutes: 15

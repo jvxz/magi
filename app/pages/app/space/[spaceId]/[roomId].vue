@@ -4,7 +4,9 @@ definePageMeta({
   name: 'space-room',
 })
 
-const currentRoom = useCurrentRoom()
+const config = useRuntimeConfig()
+
+const currentRoom = config.public.testMode ? createMockRoom(500) : useCurrentRoom()
 const currentSpace = useCurrentSpace()
 </script>
 

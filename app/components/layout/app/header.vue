@@ -6,7 +6,7 @@ defineProps<{
 const currentRoom = useCurrentRoom()
 
 const env = computed<string | undefined>(() => {
-  if (isTestMode)
+  if (isTestMode())
     return 'Testing'
 
   if (import.meta.dev)
