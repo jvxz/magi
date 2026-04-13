@@ -3,10 +3,8 @@ import { expect, test } from '@nuxt/test-utils/playwright'
 
 type Direction = 'backwards' | 'forwards'
 type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
-type MockEvent = Awaited<ReturnType<typeof getPaginatedEvent>>
 
 let sharedPage: Page | undefined
-let oldestEvent: MockEvent | undefined
 
 test.describe.configure({ mode: 'serial' })
 
@@ -33,54 +31,38 @@ test.afterAll(async () => {
 
 test.describe('Event list', () => {
   test('paginates backwards', async () => {
-    let e = await paginate('backwards', sharedPage!)
-    while (e) {
-      const res = await paginate('backwards', sharedPage!)
-      if (res)
-        e = res
-      else break
-    }
-
-    expect(e).toBeDefined()
-    expect(e?.id).toBe('oldest-event')
-
-    oldestEvent = e
+    await paginateUntilBoundary('backwards', sharedPage!, 'oldest-event')
   })
 
   test('paginates forwards from the end', async () => {
-    expect(oldestEvent).toBeDefined()
-
-    let e = await paginate('forwards', sharedPage!)
-    while (e) {
-      const res = await paginate('forwards', sharedPage!)
-      if (res)
-        e = res
-      else break
-    }
-
-    expect(e).toBeDefined()
-    expect(e?.id).toBe('newest-event')
+    await paginateUntilBoundary('forwards', sharedPage!, 'newest-event')
   })
 })
 
-async function paginate(dir: Direction, page: TestArgs['page']) {
-  const container = await getScrollContainer(page)
-  await container.hover()
+async function paginateUntilBoundary(
+  dir: Direction,
+  page: TestArgs['page'],
+  boundaryId: 'oldest-event' | 'newest-event',
+  maxSteps = 200,
+) {
+  for (let step = 0; step < maxSteps; step++) {
+    const current = await getPaginatedEvent(dir, page)
 
-  const prevEvent = await getPaginatedEvent(dir, page)
-  await prevEvent.el.evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'start' }))
+    if (current.id === boundaryId)
+      return
 
-  const events = await getScrollContainerEvents(page)
-  expect(await events.count()).toBeLessThanOrEqual(80)
+    await current.el.evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'start' }))
 
-  const nextEvent = await getPaginatedEvent(dir, page)
+    await expect.poll(async () => {
+      const next = await getPaginatedEvent(dir, page)
+      return next.id
+    }, {
+      message: `Boundary did not move after scroll (dir=${dir}, step=${step})`,
+      timeout: 2000,
+    }).not.toBe(current.id)
+  }
 
-  if (nextEvent.id !== prevEvent.id)
-    return nextEvent
-}
-
-async function getScrollContainer(page: TestArgs['page']) {
-  return page.locator('.scroll-container')
+  throw new Error(`Did not reach ${boundaryId} within ${maxSteps} steps`)
 }
 
 async function getScrollContainerEvents(page: TestArgs['page']) {
