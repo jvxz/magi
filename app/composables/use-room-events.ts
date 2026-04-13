@@ -1,4 +1,5 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
+import { Direction } from 'matrix-js-sdk'
 
 export const BATCH_SIZE = 120
 
@@ -20,7 +21,7 @@ export function useRoomEvents(room: Ref<Room>) {
 
   const mutex = new Mutex()
   const { isPending: isScrolling, mutate: scrollEvents, mutateAsync: scrollEventsAsync, status: scrollEventsStatus } = useMutation({
-    mutationFn: async (dir: 'forward' | 'backward') => {
+    mutationFn: async (dir: Direction) => {
       if (mutex.isLocked)
         return
 
@@ -31,7 +32,7 @@ export function useRoomEvents(room: Ref<Room>) {
           return
 
         // scrolling up; getting older events (maybe not cached)
-        if (dir === 'backward') {
+        if (dir === Direction.Backward) {
           const canLoadMore = await retry(
             scrollBack,
             {
