@@ -1,1 +1,1 @@
-export const isTestMode = useRuntimeConfig().public.testMode
+export const isTestMode = () => useRuntimeConfig().public.testMode
