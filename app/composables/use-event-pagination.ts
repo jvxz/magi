@@ -1,5 +1,6 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 import { Direction } from 'matrix-js-sdk'
+import QuickLRU from 'quick-lru'
 
 type MaybeElementRef = MaybeRefOrGetter<MaybeElement>
 
@@ -22,7 +23,7 @@ type CachedItemNode = Pick<ElementOrDimensions, 'clientHeight' | 'dataset'> & {
   }
 }
 
-const itemNodeHeightCache = new Map<string, CachedItemNode>()
+const itemNodeHeightCache = new QuickLRU<string, CachedItemNode>({ maxSize: 2048 })
 
 export function useEventPagination(opts: Opts) {
   const { events, getEventVersion, isFullyLoaded, scrollEventsAsync } = useRoomEvents(opts.room)
