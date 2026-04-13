@@ -1,7 +1,7 @@
 import type { ConfigOptions } from '@nuxt/test-utils/playwright'
 import { defineConfig, devices } from '@playwright/test'
 
-const baseURL = 'http://localhost:5678'
+const baseURL = 'http://localhost:3000'
 
 export default defineConfig<ConfigOptions>({
   forbidOnly: !!process.env.CI,
@@ -32,9 +32,8 @@ export default defineConfig<ConfigOptions>({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'pnpm test:e2e:webserver',
+    command: 'NUXT_PUBLIC_TEST_MODE=true pnpm dev',
     reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
     url: baseURL,
   },
   workers: process.env.CI ? 1 : undefined,
