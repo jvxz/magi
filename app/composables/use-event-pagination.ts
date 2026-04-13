@@ -29,7 +29,7 @@ export function useEventPagination(opts: Opts) {
   const eventsPaginated = shallowRef<MatrixEvent[]>(events.value.slice(-80))
   const scrollEl = toRef(opts.scrollEl)
   const itemsEl = toRef(opts.itemsEl)
-  const maxPageHeight = refDefault(toRef(opts.maxPageHeight), 3000)
+  const maxPageHeight = refDefault(toRef(opts.maxPageHeight), 4000)
 
   const canScroll = computed(() => canElementScroll(scrollEl.value))
   const canPaginateBackward = computed(() => !isFullyLoaded.value)
@@ -106,6 +106,8 @@ export function useEventPagination(opts: Opts) {
 
     const { id } = getItemNodeData(anchor.element)
     backwardSentinelId.value = id
+    forwardSentinelId.value = eventsPaginated.value.at(-1)?.getId()
+
 
     const index = getItemRealIndex(id)
     await setRange({
@@ -158,7 +160,7 @@ export function useEventPagination(opts: Opts) {
 
       nodes = dir === Direction.Backward
         ? arr.slice(Math.max(0, sliceIndices.backward! - 80), sliceIndices.backward!)
-        : arr.slice(sliceIndices.forward! + 80, Math.min(arr.length, sliceIndices.forward! + 160))
+        : arr.slice(sliceIndices.forward! + 1, Math.min(arr.length, sliceIndices.forward! + 81))
     }
     else
       nodes = cached
@@ -171,9 +173,9 @@ export function useEventPagination(opts: Opts) {
         // if cached, don't re-cache
         if (!(el instanceof HTMLElement) || !el.dataset.itemId || !el.dataset.index)
           return
-
+        
         const { id, index } = getItemNodeData(el)
-
+        
         itemNodeHeightCache.set(id, {
           clientHeight: el.clientHeight,
           dataset: {
@@ -184,7 +186,8 @@ export function useEventPagination(opts: Opts) {
       },
     )
 
-    const dirAnchor = scannedNodes[0]
+    const dirAnchor = scannedNodes.at(-1)
+
     if (!dirAnchor) {
       if (dir !== Direction.Forward)
         return
@@ -256,13 +259,11 @@ export function useEventPagination(opts: Opts) {
 
     function set() {
       const indices = getSentinelIndices()
+      if (indices.backward === undefined || indices.forward === undefined)
+        return
+      const startIdx = Math.max(0, params?.start ?? indices.backward)
+      const endIdx = Math.min(events.value.length - 1, params?.end ?? indices.forward) + 1
 
-      const startIdx = indices.backward !== undefined
-        ? Math.max(0, params?.start ?? indices.backward)
-        : undefined
-      const endIdx = indices.forward !== undefined
-        ? Math.min(events.value.length - 1, params?.end ?? indices.forward) + 1
-        : undefined
 
       if (startIdx !== undefined && endIdx !== undefined && startIdx > endIdx)
         return
@@ -293,7 +294,11 @@ export function useEventPagination(opts: Opts) {
     if (!el)
       return
 
-    const intersecting = getIntersectingNodes(el, padHeight, { containerScrollTop: scrollEl.value?.scrollTop })
+    const intersecting = getIntersectingNodes(el, padHeight, {
+      containerScrollTop: scrollEl.value?.scrollTop,
+      containerClientHeight: scrollEl.value?.clientHeight,
+    })
+
     if (!intersecting)
       return
 

@@ -18,13 +18,17 @@ export function scrollToBottom(el: MaybeElement) {
   })
 }
 
-export function getIntersectingNodes(el: MaybeElement, padHeight?: number, overrides?: { containerScrollTop?: number, containerClientHeight?: number }) {
+export function getIntersectingNodes(el: MaybeElement, padHeight?: number, overrides?: {
+  containerScrollTop?: number
+  containerClientHeight?: number
+}) {
   if (!el)
     return
 
   const containerCanScroll = canElementScroll(el)
-  if (!containerCanScroll)
+  if (!containerCanScroll && overrides?.containerScrollTop === undefined && overrides?.containerClientHeight === undefined)
     return Array.from(el.children).filter(c => !c.hasAttribute('data-ignore')) as HTMLElement[]
+
 
   const containerScrollTop = overrides?.containerScrollTop ?? el.scrollTop
   const containerClientHeight = overrides?.containerClientHeight ?? el.clientHeight
