@@ -29,7 +29,6 @@ export function getIntersectingNodes(el: MaybeElement, padHeight?: number, overr
   if (!containerCanScroll && overrides?.containerScrollTop === undefined && overrides?.containerClientHeight === undefined)
     return Array.from(el.children).filter(c => !c.hasAttribute('data-ignore')) as HTMLElement[]
 
-
   const containerScrollTop = overrides?.containerScrollTop ?? el.scrollTop
   const containerClientHeight = overrides?.containerClientHeight ?? el.clientHeight
 
@@ -78,7 +77,7 @@ export function getTotalNodeHeights<T extends ChildNode | HTMLElement | Dimensio
   const scannedNodes: T[] = []
 
   for (let i = 0; i < nodes.length; i++) {
-    if (calcWhile && !calcWhile?.(currentHeight))
+    if (calcWhile && !calcWhile(currentHeight) && scannedNodes.length > 0)
       break
 
     const node = nodes[i]
