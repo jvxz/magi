@@ -477,7 +477,7 @@ function getEventById(events: MatrixEvent[], id: string | undefined) {
   for (let i = 0; i < events.length; i++) {
     const event = events[i]
     if (!event)
-      return
+      continue
 
     if (event.getId() === id) {
       return {
