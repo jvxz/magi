@@ -456,6 +456,7 @@ export function useEventPagination(opts: Opts) {
     forwardSentinelId,
     getEventVersion,
     handleOnMounted,
+    isPaginating,
     scrollToBottom: () => scrollToBottom(unrefElement(scrollEl)),
   }
 }

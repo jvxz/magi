@@ -6,6 +6,9 @@ const props = defineProps<{
   room: Room
 }>()
 
+const emits = defineEmits<{
+  isPaginating: [value: boolean]
+}>()
 const containerRef = useTemplateRef('container')
 const wrapperRef = useTemplateRef('wrapper')
 
@@ -14,6 +17,7 @@ const {
   eventsPaginated,
   getEventVersion,
   handleOnMounted,
+  isPaginating,
   scrollToBottom,
 } = useEventPagination({
   itemsEl: wrapperRef,
@@ -26,6 +30,8 @@ onMounted(async () => {
   scrollToBottom()
   await handleOnMounted()
 })
+
+watch(isPaginating, v => emits('isPaginating', v))
 </script>
 
 <template>
