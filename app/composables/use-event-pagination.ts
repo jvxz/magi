@@ -62,6 +62,9 @@ export function useEventPagination(opts: Opts) {
   })
 
   watch(events, async (newEvents, prevEvents) => {
+    if (isPaginating.value)
+      return
+
     const container = unrefElement(scrollEl)
     if (!container)
       return
