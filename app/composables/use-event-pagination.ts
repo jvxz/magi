@@ -130,7 +130,7 @@ export function useEventPagination(opts: Opts) {
     const itemsRoot = unrefElement(itemsEl)
     const backwardProbeEl = getItemNodeData(anchor.element).id === backwardId
       ? anchor.element
-      : itemsRoot?.querySelector<HTMLElement>(`[data-item-id="${CSS.escape(backwardId)}"]`) ?? anchor.element
+      : itemsRoot?.querySelector<HTMLElement>(createItemQuerySelector('id', backwardId)) ?? anchor.element
 
     if (isIntersecting(container, backwardProbeEl) && !isFullyLoaded.value) {
       await scrollEventsAsync(Direction.Backward)
