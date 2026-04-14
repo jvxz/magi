@@ -3,7 +3,9 @@ import { Direction } from 'matrix-js-sdk'
 
 export const BATCH_SIZE = 120
 
-export function useRoomEvents(room: Ref<Room>) {
+type Hooks = Prettify<Partial<Pick<Required<NonNullable<Parameters<typeof useRoomEventHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>>
+
+export function useRoomEvents(room: Ref<Room>, hooks?: Hooks) {
   const { client } = useMatrixClient()
 
   const events = shallowRef<MatrixEvent[]>([])
@@ -36,7 +38,7 @@ export function useRoomEvents(room: Ref<Room>) {
             scrollBack,
             {
               delay: attempts => attempts * 50,
-              retries: 4,
+              retries: 6,
               shouldRetry: err => err instanceof $Error,
             },
           )
@@ -54,17 +56,21 @@ export function useRoomEvents(room: Ref<Room>) {
   })
 
   useRoomEventHooks(() => room.value.roomId, {
-    onTimeline: () => {
-      if (!isScrolling.value)
+    onTimeline: (...params) => {
+      if (!isScrolling.value) {
         sync()
+        hooks?.onTimeline?.(...params)
+      }
     },
-    onTimelineRefresh: () => {
+    onTimelineRefresh: (...params) => {
       if (!isScrolling.value)
         sync()
+      hooks?.onTimelineRefresh?.(...params)
     },
-    onTimelineReset: () => {
+    onTimelineReset: (...params) => {
       if (!isScrolling.value)
         sync()
+      hooks?.onTimelineReset?.(...params)
     },
   })
 
