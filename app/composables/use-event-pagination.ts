@@ -84,9 +84,9 @@ export function useEventPagination(opts: Opts) {
           if (sentinels) {
             backwardSentinelId.value = sentinels.backward?.getId()
             forwardSentinelId.value = sentinels.forward?.getId()
-          }
 
-          await setRange()
+            await setRange()
+          }
         }
       }
     }
