@@ -457,6 +457,7 @@ export function useEventPagination(opts: Opts) {
     getEventVersion,
     handleOnMounted,
     scrollToBottom: () => scrollToBottom(unrefElement(scrollEl)),
+    isPaginating
   }
 }
 
