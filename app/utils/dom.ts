@@ -75,10 +75,13 @@ export function getTotalNodeHeights<T extends ChildNode | HTMLElement | Dimensio
 ) {
   let currentHeight = initHeight ?? 0
   const scannedNodes: T[] = []
+  let stoppedEarly = false
 
   for (let i = 0; i < nodes.length; i++) {
-    if (calcWhile && !calcWhile(currentHeight) && scannedNodes.length > 0)
+    if (calcWhile && !calcWhile(currentHeight) && scannedNodes.length > 0) {
+      stoppedEarly = true
       break
+    }
 
     const node = nodes[i]
     if (!node || !('clientHeight' in node))
@@ -95,6 +98,7 @@ export function getTotalNodeHeights<T extends ChildNode | HTMLElement | Dimensio
 
   return {
     scannedNodes,
+    stoppedEarly,
     totalHeights: currentHeight,
   }
 }

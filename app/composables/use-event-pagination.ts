@@ -191,8 +191,10 @@ export function useEventPagination(opts: Opts) {
     else
       nodes = cached
 
-    const { scannedNodes } = getTotalNodeHeights(
-      dir === Direction.Backward ? nodes : nodes.reverse(),
+    const heightNodes = dir === Direction.Backward ? nodes : [...nodes].reverse()
+
+    const { scannedNodes, stoppedEarly } = getTotalNodeHeights(
+      heightNodes,
       visibleAnchor.element.clientHeight,
       curr => curr <= maxPageHeight.value,
       (el) => {
@@ -212,7 +214,7 @@ export function useEventPagination(opts: Opts) {
       },
     )
 
-    const dirAnchor = scannedNodes[0]
+    const dirAnchor = stoppedEarly ? scannedNodes.at(-1) : scannedNodes[0]
 
     if (!dirAnchor) {
       if (dir === Direction.Forward) {
