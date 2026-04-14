@@ -30,13 +30,14 @@ export function useEventPagination(opts: Opts) {
   const eventsPaginated = shallowRef<MatrixEvent[]>(events.value.slice(-80))
   const scrollEl = toRef(opts.scrollEl)
   const itemsEl = toRef(opts.itemsEl)
-  const maxPageHeight = refDefault(toRef(opts.maxPageHeight), 4000)
+  const maxPageHeight = refDefault(toRef(opts.maxPageHeight), 5000)
 
   const canScroll = computed(() => canElementScroll(scrollEl.value))
   const canPaginateBackward = computed(() => !isFullyLoaded.value || eventsPaginated.value[0] !== events.value[0])
   const canPaginateForward = computed(() => eventsPaginated.value.at(-1) !== events.value.at(-1))
 
   const isPaginating = shallowRef(false)
+  const isPinned = shallowRef(false)
 
   const backwardSentinelId = shallowRef<string>()
   const forwardSentinelId = shallowRef<string>()
@@ -58,6 +59,48 @@ export function useEventPagination(opts: Opts) {
       if (entry.isIntersecting && id === forwardSentinelId.value)
         await paginate(Direction.Forward)
     }
+  })
+
+  watch(events, async (newEvents, prevEvents) => {
+    const container = unrefElement(scrollEl)
+    if (!container)
+      return
+
+    const prevEventsLastId = prevEvents.at(-1)?.getId()
+    const prevForwardSentinelId = forwardSentinelId.value
+    const paginatedLastId = eventsPaginated.value.at(-1)?.getId()
+    const isAtForwardEnd = paginatedLastId === prevEventsLastId
+
+    if (isAtForwardEnd) {
+      if (prevEventsLastId && prevEventsLastId === prevForwardSentinelId) {
+        const newLastEvent = newEvents.at(-1)
+
+        if (newLastEvent && newLastEvent.getId() !== forwardSentinelId.value) {
+          const sentinels = await getNextPageSentinels(Direction.Forward)
+
+          if (sentinels) {
+            backwardSentinelId.value = sentinels.backward?.getId()
+            forwardSentinelId.value = sentinels.forward?.getId()
+          }
+
+          await setRange()
+        }
+      }
+    }
+
+    if (isPinned.value) {
+      await nextTick()
+      scrollToBottom(container)
+    }
+  }, { flush: 'post' })
+
+  // for isPinned
+  useEventListener(scrollEl, 'scroll', ({ target }) => {
+    const el = target as HTMLElement
+    if (!el)
+      return
+
+    isPinned.value = !canPaginateForward.value && isPinnedToBottom(el)
   })
 
   function createItemBind(event: MatrixEvent, index: number) {
@@ -139,6 +182,7 @@ export function useEventPagination(opts: Opts) {
 
       await nextTick()
       scrollToBottom(container)
+      isPinned.value = isPinnedToBottom(container)
     }
   }
 
@@ -461,6 +505,10 @@ export function useEventPagination(opts: Opts) {
     isPaginating,
     scrollToBottom: () => scrollToBottom(unrefElement(scrollEl)),
   }
+}
+
+function isPinnedToBottom(container: HTMLElement) {
+  return container.scrollHeight - container.scrollTop - container.clientHeight < 50
 }
 
 function getItemNodeData(node: HTMLElement | CachedItemNode): ItemNodeData {
