@@ -63,14 +63,16 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Hooks) {
       }
     },
     onTimelineRefresh: (...params) => {
-      if (!isScrolling.value)
+      if (!isScrolling.value) {
         sync()
-      hooks?.onTimelineRefresh?.(...params)
+        hooks?.onTimelineRefresh?.(...params)
+      }
     },
     onTimelineReset: (...params) => {
-      if (!isScrolling.value)
+      if (!isScrolling.value) {
         sync()
-      hooks?.onTimelineReset?.(...params)
+        hooks?.onTimelineReset?.(...params)
+      }
     },
   })
 
