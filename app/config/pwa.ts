@@ -11,7 +11,7 @@ export const pwa: ModuleOptions = {
   devOptions: {
     enabled: process.env.VITE_PLUGIN_PWA === 'true',
     navigateFallback: scope,
-    suppressWarnings: false,
+    suppressWarnings: true,
     type: 'module',
   },
   filename: 'sw.ts',
@@ -30,6 +30,7 @@ export const pwa: ModuleOptions = {
   strategies: 'injectManifest',
   workbox: {
     cleanupOutdatedCaches: true,
+    disableDevLogs: true,
     globPatterns: ['**/*.{js,css,html,png,ico,svg}'],
     navigateFallback: '/',
     navigateFallbackDenylist: [/^\/api\//],
