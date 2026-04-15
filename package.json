@@ -9,10 +9,8 @@
     "dev": "VITE_PLUGIN_PWA=true nuxt dev",
     "dev:no-pwa": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "pnpm run build && wrangler dev --port 3000",
+    "preview": "pnpm run build && nuxt preview",
     "postinstall": "nuxt prepare",
-    "deploy": "pnpm run build && wrangler deploy",
-    "cf-typegen": "wrangler types",
     "lint": "eslint --ignore-pattern AGENTS.md",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
@@ -67,7 +65,6 @@
     "eslint": "^10.1.0",
     "eslint-plugin-format": "^2.0.1",
     "happy-dom": "^20.8.9",
-    "nitro-cloudflare-dev": "^0.2.2",
     "playwright-core": "^1.59.1",
     "typescript": "^5.9.3",
     "unocss": "^66.6.7",
@@ -79,7 +76,6 @@
     "workbox-expiration": "^7.4.0",
     "workbox-precaching": "^7.4.0",
     "workbox-routing": "^7.4.0",
-    "workbox-strategies": "^7.4.0",
-    "wrangler": "^4.80.0"
+    "workbox-strategies": "^7.4.0"
   }
 }
