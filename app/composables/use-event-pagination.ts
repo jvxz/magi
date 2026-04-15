@@ -218,6 +218,10 @@ export function useEventPagination(opts: Opts) {
       else
         scrollToBottom(container)
     }
+    else if (cachedScrollState) {
+      await nextTick()
+      container.scrollTop = cachedScrollState.scrollTop
+    }
 
     isPinned.value = isPinnedToBottom(container)
 
