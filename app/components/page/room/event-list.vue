@@ -48,7 +48,7 @@ watch(isPaginating, v => emits('isPaginating', v))
         v-for="(event, idx) in eventsPaginated"
         :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
         class="pb-4.25"
-        :style="$config.public.testMode ? { height: `${(event as any)._size}px` } : undefined"
+        :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
         v-bind="createItemBind(event, idx)"
       >
         <PageRoomEventMessage

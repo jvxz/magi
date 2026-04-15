@@ -4,9 +4,7 @@ definePageMeta({
   name: 'space-room',
 })
 
-const config = useRuntimeConfig()
-
-const currentRoom = config.public.testMode ? createMockRoom(500) : useCurrentRoom()
+const currentRoom = isTestMode() ? createMockRoom(500) : useCurrentRoom()
 const currentSpace = useCurrentSpace()
 
 const isPaginating = shallowRef(false)
