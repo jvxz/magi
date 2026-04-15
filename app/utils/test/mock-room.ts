@@ -12,9 +12,9 @@ export function createMockRoom(eventCount: number = 250, id: string): Room {
       getEvents: () => events,
       getPaginationToken: () => 'token',
     }),
-    on: () => {},
-    off: () => {},
     id,
+    off: () => {},
+    on: () => {},
     roomId: id,
   } as unknown as Room
 
