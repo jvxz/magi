@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Magi — AI Agent Context
 
-Magi is a **Matrix.org client** built with Nuxt 4. Core priorities: **security, end-to-end encryption, performance, and UX**. Production target is **Cloudflare Workers** (Nitro `cloudflare_module` + Wrangler).
+Magi is a **Matrix.org client** built with Nuxt 4. Core priorities: **security, end-to-end encryption, performance, and UX**. Production targets modern serverless, edge, and Node.js environments.
 
 ---
 
@@ -19,9 +19,8 @@ Use **pnpm** (package manager for this repo).
 | `pnpm dev:no-pwa` | Nuxt dev without PWA |
 | `pnpm build` | Production Nuxt build |
 | `pnpm generate` | Static generation (`nuxt generate`) |
-| `pnpm preview` | Build then `wrangler dev --port 3000` |
-| `pnpm deploy` | Build then `wrangler deploy` |
-| `pnpm cf-typegen` | `wrangler types` |
+| `pnpm preview` | Build then serve preview locally |
+| `pnpm deploy` | Build then deploy (customize as needed for your target) |
 | `pnpm lint` | ESLint (`AGENTS.md` is ignored via `--ignore-pattern`) |
 | `pnpm postinstall` | `nuxt prepare` |
 
@@ -55,7 +54,6 @@ There is **no** `test` script in `package.json` today.
 | PWA | `@vite-pwa/nuxt` — config `app/config/pwa.ts`, inject manifest `app/sw.ts`; dev PWA only when `VITE_PLUGIN_PWA=true` |
 | Security | `nuxt-security` (CSP, rate limiting in prod) |
 | DX | `@nuxt/hints`, `nitro-cloudflare-dev` |
-| Cloudflare | `wrangler`; Nitro `preset: 'cloudflare_module'` |
 
 ---
 
@@ -93,7 +91,6 @@ server/
   api/                        # Nitro routes
   utils/                      # validate-body-zod, validate-query-zod
 shared/utils/                 # assert, constants (MATRIX_BASE_URL, appMeta), $error, …
-wrangler.jsonc                # Cloudflare Workers config
 uno.config.ts                 # UnoCSS (presetWind4, animations)
 eslint.config.mjs
 ```
