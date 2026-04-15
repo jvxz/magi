@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
+    "build:test": "NITRO_PRESET=node-server NODE_ENV=test pnpm build",
     "dev": "VITE_PLUGIN_PWA=true nuxt dev",
     "dev:no-pwa": "nuxt dev",
     "generate": "nuxt generate",
@@ -19,9 +20,10 @@
     "test:typecheck": "vue-tsc -b --noEmit",
     "test:unit": "vitest --project unit",
     "test:nuxt": "vitest --project nuxt",
-    "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:webserver": "NITRO_PRESET=node-server NODE_ENV=test pnpm run build && pnpm nuxt preview --port 5678"
+    "test:e2e:prebuilt": "playwright test",
+    "test:e2e": "pnpm build:test && pnpm test:e2e:prebuilt",
+    "test:e2e:webserver": "NODE_ENV=test pnpm exec nuxt preview --port 5678"
   },
   "dependencies": {
     "@matrix-org/matrix-sdk-crypto-wasm": "^18.0.0",
