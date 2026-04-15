@@ -88,7 +88,7 @@ async function paginateUntilBoundary(
 
 async function navToRoom(page: TestArgs['page'], roomId: string) {
   const tab = page.getByTestId(`mock-room-${roomId}`)
-  expect(tab).toBeVisible()
+  await expect(tab).toBeVisible()
 
   await tab.click()
   await page.waitForURL(`**\/${roomId}`)
