@@ -84,6 +84,7 @@ const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
             createMockRoom(750, '750'),
           ]"
           :key="room.name"
+          :data-testid="`mock-room-${room.roomId}`"
           :to="{
             name: 'space-room',
             params: {
