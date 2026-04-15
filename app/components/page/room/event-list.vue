@@ -38,6 +38,7 @@ watch(isPaginating, v => emits('isPaginating', v))
   <div
     ref="container"
     class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
+    data-testid="scroll-container"
   >
     <div
       ref="wrapper"
