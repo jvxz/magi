@@ -23,7 +23,14 @@ type CachedItemNode = Pick<ElementOrDimensions, 'clientHeight' | 'dataset'> & {
   }
 }
 
+interface CachedScrollState {
+  backwardSentinelId: string | undefined
+  forwardSentinelId: string | undefined
+  scrollTop: number
+}
+
 const itemNodeHeightCache = new QuickLRU<string, CachedItemNode>({ maxSize: 2048 })
+const pageScrollStateCache = new QuickLRU<string, CachedScrollState>({ maxSize: 32 })
 
 export function useEventPagination(opts: Opts) {
   const { events, getEventVersion, isFullyLoaded, scrollEventsAsync } = useRoomEvents(opts.room)
@@ -104,6 +111,23 @@ export function useEventPagination(opts: Opts) {
     isPinned.value = !canPaginateForward.value && isPinnedToBottom(el)
   })
 
+  onBeforeRouteUpdate(saveScrollState)
+  onBeforeRouteLeave(saveScrollState)
+
+  function saveScrollState() {
+    const container = unrefElement(scrollEl)
+    if (!container)
+      return
+
+    const roomId = opts.room.value.roomId
+
+    pageScrollStateCache.set(roomId, {
+      backwardSentinelId: backwardSentinelId.value,
+      forwardSentinelId: forwardSentinelId.value,
+      scrollTop: container.scrollTop,
+    })
+  }
+
   function createItemBind(event: MatrixEvent, index: number) {
     return {
       'data-index': index,
@@ -148,11 +172,14 @@ export function useEventPagination(opts: Opts) {
     if (!anchor)
       return
 
-    let backwardId = getItemNodeData(anchor.element).id
-    const forwardId = eventsPaginated.value.at(-1)?.getId()
+    const cachedScrollState = pageScrollStateCache.get(opts.room.value.roomId)
+
+    let backwardId = cachedScrollState?.backwardSentinelId ?? getItemNodeData(anchor.element).id
+    const forwardId = cachedScrollState?.forwardSentinelId ?? eventsPaginated.value.at(-1)?.getId()
 
     if (
       forwardId
+      && !cachedScrollState?.backwardSentinelId
       && backwardId === forwardId
       && eventsPaginated.value.length > 1
     )
@@ -177,14 +204,26 @@ export function useEventPagination(opts: Opts) {
       : itemsRoot?.querySelector<HTMLElement>(createItemQuerySelector('id', backwardId)) ?? anchor.element
 
     if (isIntersecting(container, backwardProbeEl) && !isFullyLoaded.value) {
+      const beforeScrollHeight = container.scrollHeight
+
       await scrollEventsAsync(Direction.Backward)
       backwardSentinelId.value = events.value[0]?.getId()
       setRange()
-
       await nextTick()
-      scrollToBottom(container)
-      isPinned.value = isPinnedToBottom(container)
+
+      if (cachedScrollState) {
+        const addedHeight = container.scrollHeight - beforeScrollHeight
+        container.scrollTop = cachedScrollState.scrollTop + addedHeight
+      }
+      else
+        scrollToBottom(container)
     }
+    else if (cachedScrollState) {
+      await nextTick()
+      container.scrollTop = cachedScrollState.scrollTop
+    }
+
+    isPinned.value = isPinnedToBottom(container)
 
     await nextTick()
     startIntersectionObserver()

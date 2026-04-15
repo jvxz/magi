@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@nuxt/test-utils/playwright'
+import { assert } from 'es-toolkit'
 
 type Direction = 'backwards' | 'forwards'
 type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
@@ -20,7 +21,7 @@ test.beforeAll(async ({ browser }) => {
     }))
   })
 
-  await sharedPage.goto('/app/space/test/test', { waitUntil: 'networkidle' })
+  await sharedPage.goto('/app/space/test/test', { waitUntil: 'domcontentloaded' })
   await expect(sharedPage).not.toHaveURL('/login')
   await expect(sharedPage.getByText('Testing')).toBeVisible()
 })
@@ -31,11 +32,31 @@ test.afterAll(async () => {
 
 test.describe('Event list', () => {
   test('paginates backwards', async () => {
-    await paginateUntilBoundary('backwards', sharedPage!, 'oldest-event')
+    assert(sharedPage, 'sharedPage was undefined on access')
+
+    await paginateUntilBoundary('backwards', sharedPage, 'oldest-event')
   })
 
   test('paginates forwards from the end', async () => {
-    await paginateUntilBoundary('forwards', sharedPage!, 'newest-event')
+    assert(sharedPage, 'sharedPage was undefined on access')
+
+    await paginateUntilBoundary('forwards', sharedPage, 'newest-event')
+  })
+
+  test('restore scroll on page load', async () => {
+    assert(sharedPage, 'sharedPage was undefined on access')
+
+    await navToRoom(sharedPage, '750')
+
+    const oldContainer = await getScrollContainer(sharedPage)
+    await oldContainer.evaluate(el => el.scrollTop = 1024)
+
+    await navToRoom(sharedPage, '250')
+    await navToRoom(sharedPage, '750')
+
+    const newContainer = await getScrollContainer(sharedPage)
+    await sharedPage.waitForTimeout(2000)
+    expect(await newContainer.evaluate(el => el.scrollTop)).toBe(1024)
   })
 })
 
@@ -63,6 +84,18 @@ async function paginateUntilBoundary(
   }
 
   throw new Error(`Did not reach ${boundaryId} within ${maxSteps} steps`)
+}
+
+async function navToRoom(page: TestArgs['page'], roomId: string) {
+  const tab = page.getByTestId(`mock-room-${roomId}`)
+  await expect(tab).toBeVisible()
+
+  await tab.click()
+  await page.waitForURL(`**\/${roomId}`)
+}
+
+async function getScrollContainer(page: TestArgs['page']) {
+  return page.getByTestId('scroll-container')
 }
 
 async function getScrollContainerEvents(page: TestArgs['page']) {
