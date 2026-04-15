@@ -57,8 +57,6 @@ test.describe('Event list', () => {
     const newContainer = await getScrollContainer(sharedPage)
     await sharedPage.waitForTimeout(2000)
     expect(await newContainer.evaluate(el => el.scrollTop)).toBe(1024)
-
-    await sharedPage.pause()
   })
 })
 
