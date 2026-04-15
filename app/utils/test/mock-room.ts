@@ -3,11 +3,13 @@ import type { MatrixEvent, Room } from 'matrix-js-sdk'
 const mockRoomMap = new Map<string, Room>()
 
 export function createMockRoom(eventCount: number = 250, id: string): Room {
+  const cached = mockRoomMap.get(id)
+  if (cached)
+    return cached
+
   const events = createMockEvents(eventCount, id)
 
-  const cached = mockRoomMap.get(id)
-
-  const room = cached ?? {
+  const room = {
     getLiveTimeline: () => ({
       getEvents: () => events,
       getPaginationToken: () => 'token',
@@ -19,8 +21,7 @@ export function createMockRoom(eventCount: number = 250, id: string): Room {
     roomId: id,
   } as unknown as Room
 
-  if (!cached)
-    mockRoomMap.set(id, room)
+  mockRoomMap.set(id, room)
 
   return room
 }
