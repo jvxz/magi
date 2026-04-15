@@ -1,16 +1,29 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 
-export function createMockRoom(eventCount: number = 250): Room {
-  const roomId = '!test:localHost'
-  const events = createMockEvents(eventCount, roomId)
+const mockRoomMap = new Map<string, Room>()
 
-  return {
+export function createMockRoom(eventCount: number = 250, id: string): Room {
+  const cached = mockRoomMap.get(id)
+  if (cached)
+    return cached
+
+  const events = createMockEvents(eventCount, id)
+
+  const room = {
     getLiveTimeline: () => ({
       getEvents: () => events,
       getPaginationToken: () => 'token',
     }),
-    roomId,
+    id,
+    name: `Mock room: ${id}`,
+    off: () => {},
+    on: () => {},
+    roomId: id,
   } as unknown as Room
+
+  mockRoomMap.set(id, room)
+
+  return room
 }
 
 function createMockEvents(eventCount: number, roomId: string): MatrixEvent[] {
