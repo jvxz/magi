@@ -38,17 +38,17 @@ watch(isPaginating, v => emits('isPaginating', v))
   <div
     ref="container"
     class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
+    data-testid="scroll-container"
   >
     <div
       ref="wrapper"
       class="w-full"
-      data-testid="scroll-container-wrapper"
     >
       <div
         v-for="(event, idx) in eventsPaginated"
         :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
         class="pb-4.25"
-        :style="$config.public.testMode ? { height: `${(event as any)._size}px` } : undefined"
+        :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
         v-bind="createItemBind(event, idx)"
       >
         <PageRoomEventMessage
