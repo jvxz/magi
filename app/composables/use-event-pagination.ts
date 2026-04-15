@@ -41,10 +41,10 @@ export function useEventPagination(opts: Opts) {
 
   const backwardSentinelId = shallowRef<string>()
   const forwardSentinelId = shallowRef<string>()
+  const { element: backwardSentinelEl } = useQuerySelector(() => createItemQuerySelector('id', backwardSentinelId.value), { observeScope: true, scope: itemsEl })
+  const { element: forwardSentinelEl } = useQuerySelector(() => createItemQuerySelector('id', forwardSentinelId.value), { observeScope: true, scope: itemsEl })
 
-  useIntersectionObserver([
-    useQuerySelector(() => createItemQuerySelector('id', backwardSentinelId.value)),
-    useQuerySelector(() => createItemQuerySelector('id', forwardSentinelId.value)),
+  const { resume: startIntersectionObserver } = useIntersectionObserver([backwardSentinelEl, forwardSentinelEl,
   ], async (entries) => {
     for (const entry of entries) {
       const el = entry.target
@@ -59,7 +59,7 @@ export function useEventPagination(opts: Opts) {
       if (entry.isIntersecting && id === forwardSentinelId.value)
         await paginate(Direction.Forward)
     }
-  })
+  }, { immediate: false })
 
   watch(events, async (newEvents, prevEvents) => {
     if (isPaginating.value)
@@ -84,8 +84,6 @@ export function useEventPagination(opts: Opts) {
           if (sentinels) {
             backwardSentinelId.value = sentinels.backward?.getId()
             forwardSentinelId.value = sentinels.forward?.getId()
-
-            await setRange()
           }
         }
       }
@@ -187,6 +185,9 @@ export function useEventPagination(opts: Opts) {
       scrollToBottom(container)
       isPinned.value = isPinnedToBottom(container)
     }
+
+    await nextTick()
+    startIntersectionObserver()
   }
 
   async function getNextPageSentinels(dir: Direction) {
