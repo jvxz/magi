@@ -7,7 +7,7 @@ export function useRoom(roomId: MaybeRefOrGetter<string | undefined>) {
 
   const room = shallowRef<Room | undefined>(undefined)
   const get = () => {
-    const r = client.value.getRoom(roomIdRef.value)
+    const r = isTestMode() ? createMockRoom(500, roomIdRef.value!) : client.value.getRoom(roomIdRef.value)
     if (r)
       room.value = r
 
