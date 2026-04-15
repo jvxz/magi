@@ -204,18 +204,20 @@ export function useEventPagination(opts: Opts) {
       : itemsRoot?.querySelector<HTMLElement>(createItemQuerySelector('id', backwardId)) ?? anchor.element
 
     if (isIntersecting(container, backwardProbeEl) && !isFullyLoaded.value) {
+      const beforeScrollHeight = container.scrollHeight
+
       await scrollEventsAsync(Direction.Backward)
       backwardSentinelId.value = events.value[0]?.getId()
       setRange()
-
       await nextTick()
 
-      if (!cachedScrollState)
+      if (cachedScrollState) {
+        const addedHeight = container.scrollHeight - beforeScrollHeight
+        container.scrollTop = cachedScrollState.scrollTop + addedHeight
+      }
+      else
         scrollToBottom(container)
     }
-
-    if (cachedScrollState)
-      container.scrollTop = cachedScrollState.scrollTop
 
     isPinned.value = isPinnedToBottom(container)
 
