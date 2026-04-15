@@ -1,7 +1,7 @@
 import type { ConfigOptions } from '@nuxt/test-utils/playwright'
 import { defineConfig, devices } from '@playwright/test'
 
-const baseURL = 'http://localhost:3000'
+const baseURL = 'http://localhost:5678'
 
 export default defineConfig<ConfigOptions>({
   forbidOnly: !!process.env.CI,
@@ -16,23 +16,15 @@ export default defineConfig<ConfigOptions>({
   retries: process.env.CI ? 2 : 0,
   testDir: './test/e2e',
   use: {
+    baseURL,
     nuxt: {
       host: baseURL,
-      nuxtConfig: {
-        // @ts-expect-error - nitro config is not typed
-        nitro: { preset: 'node-server' },
-        runtimeConfig: {
-          public: {
-            testMode: true,
-          },
-        },
-      },
       rootDir: import.meta.dirname,
     },
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'NUXT_PUBLIC_TEST_MODE=true pnpm dev',
+    command: 'pnpm run test:e2e:webserver',
     reuseExistingServer: !process.env.CI,
     url: baseURL,
   },
