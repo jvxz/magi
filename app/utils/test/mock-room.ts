@@ -13,6 +13,7 @@ export function createMockRoom(eventCount: number = 250, id: string): Room {
       getPaginationToken: () => 'token',
     }),
     id,
+    name: `Mock room: ${id}`,
     off: () => {},
     on: () => {},
     roomId: id,
