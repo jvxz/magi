@@ -60,20 +60,42 @@ const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
 
       <URoomListSeparator />
 
-      <URoomListTab
-        v-for="room in joinedRooms"
-        :key="room.roomId"
-        :to="{
-          name: 'space-room',
-          params: {
-            spaceId: $route.params.spaceId,
-            roomId: room.roomId,
-          },
-        }"
-      >
-        <URoomListButtonIcon icon="tabler:hash" />
-        {{ room.name }}
-      </URoomListTab>
+      <template v-if="!isTestMode()">
+        <URoomListTab
+          v-for="room in joinedRooms"
+          :key="room.roomId"
+          :to="{
+            name: 'space-room',
+            params: {
+              spaceId: $route.params.spaceId,
+              roomId: room.roomId,
+            },
+          }"
+        >
+          <URoomListButtonIcon icon="tabler:hash" />
+          {{ room.name }}
+        </URoomListTab>
+      </template>
+      <template v-else>
+        <URoomListTab
+          v-for="room in [
+            createMockRoom(250, '250'),
+            createMockRoom(500, '500'),
+            createMockRoom(750, '750'),
+          ]"
+          :key="room.name"
+          :to="{
+            name: 'space-room',
+            params: {
+              spaceId: $route.params.spaceId,
+              roomId: room.roomId,
+            },
+          }"
+        >
+          <URoomListButtonIcon icon="tabler:hash" />
+          {{ room.name }}
+        </URoomListTab>
+      </template>
     </URoomList>
   </LayoutAppSlot>
 
