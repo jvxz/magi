@@ -80,18 +80,12 @@ export default defineNuxtConfig({
     'nuxt-vitalizer',
     '@regle/nuxt',
     '@nuxt/hints',
-    'nitro-cloudflare-dev',
     '@vite-pwa/nuxt',
     '@nuxt/test-utils/module',
     '@peterbud/nuxt-query',
   ],
 
   nitro: {
-    cloudflare: {
-      deployConfig: true,
-      nodeCompat: true,
-    },
-
     imports: {
       dirs: [
         './server/schema/*',
@@ -104,8 +98,6 @@ export default defineNuxtConfig({
         },
       ],
     },
-
-    preset: 'cloudflare-module',
   },
 
   nuxtQuery: {
