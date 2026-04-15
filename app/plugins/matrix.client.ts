@@ -3,8 +3,7 @@ import { SyncState } from 'matrix-js-sdk'
 export default defineNuxtPlugin({
   order: 0,
   setup: async () => {
-    const config = useRuntimeConfig()
-    if (config.public.testMode)
+    if (isTestMode())
       return
 
     const status = useMatrixStatus()
