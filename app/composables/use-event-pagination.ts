@@ -111,7 +111,10 @@ export function useEventPagination(opts: Opts) {
     isPinned.value = !canPaginateForward.value && isPinnedToBottom(el)
   })
 
-  onBeforeRouteUpdate(() => {
+  onBeforeRouteUpdate(saveScrollState)
+  onBeforeRouteLeave(saveScrollState)
+
+  function saveScrollState() {
     const container = unrefElement(scrollEl)
     if (!container)
       return
@@ -123,7 +126,7 @@ export function useEventPagination(opts: Opts) {
       forwardSentinelId: forwardSentinelId.value,
       scrollTop: container.scrollTop,
     })
-  })
+  }
 
   function createItemBind(event: MatrixEvent, index: number) {
     return {
