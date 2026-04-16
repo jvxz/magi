@@ -1,13 +1,17 @@
-<script setup lang="ts">
+<script lang="ts">
 import type { ImgProps } from '~/components/img.vue'
 
-const props = defineProps<Omit<ImgProps, 'src' | 'alt'> & {
+export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   user: {
     avatarUrl?: string
     displayName?: string
   } | undefined
   square?: boolean
-}>()
+}
+</script>
+
+<script setup lang="ts">
+const props = defineProps<MatrixAvatarProps>()
 
 const { client } = useMatrixClient()
 

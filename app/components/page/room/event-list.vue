@@ -17,6 +17,7 @@ const {
   eventsPaginated,
   getEventVersion,
   handleOnMounted,
+  isFullyLoaded,
   isPaginating,
   scrollToBottom,
 } = useEventPagination({
@@ -45,6 +46,8 @@ watch(isPaginating, v => emits('isPaginating', v))
       class="w-full"
       data-testid="scroll-container-wrapper"
     >
+      <div data-ignore class="h-4.25" />
+      <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
       <div
         v-for="(event, idx) in eventsPaginated"
         :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
