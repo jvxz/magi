@@ -135,10 +135,9 @@ export function useEventPagination(opts: Opts) {
     }
   }
 
+  const paginateMutex = new Mutex()
   async function paginate(dir: Direction) {
-    if (isPaginating.value)
-      return
-
+    await paginateMutex.acquire()
     isPaginating.value = true
 
     try {
@@ -159,11 +158,26 @@ export function useEventPagination(opts: Opts) {
       forwardSentinelId.value = sentinels.forward?.getId()
 
       await setRange({ dir })
-
       await nextTick()
     }
     finally {
+      const container = unrefElement(scrollEl)
+
+      if (container) {
+        const backwardEl = backwardSentinelEl.value
+        const forwardEl = forwardSentinelEl.value
+
+        const backwardIntersecting = dir !== Direction.Backward && backwardEl && isIntersecting(container, backwardEl)
+        const forwardIntersecting = dir !== Direction.Forward && forwardEl && isIntersecting(container, forwardEl)
+
+        if (backwardIntersecting)
+          void paginate(Direction.Backward)
+        else if (forwardIntersecting)
+          void paginate(Direction.Forward)
+      }
+
       isPaginating.value = false
+      paginateMutex.release()
     }
   }
 
