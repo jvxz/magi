@@ -15,6 +15,6 @@ defineProps<MatrixAvatarProps>()
       :user
       :size="size ?? 32"
     />
-    <USkeleton class="rounded-full" v-else />
+    <USkeleton v-else class="rounded-full" />
   </Slot>
 </template>
