@@ -1,5 +1,41 @@
-import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
+import { defineConfig, definePreset, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { presetAnimations } from 'unocss-preset-animations'
+
+const presetAnchorPositioning = definePreset(() => {
+  return {
+    name: 'unocss-anchor-positioning-preset',
+    rules: [
+      [
+        /(?<=position-anchor-)(?<name>[a-zA-Z0-9]+)/g,
+        ([name]) => ({
+          'position-anchor': `--${name}`,
+        }),
+      ],
+      [
+        /(?<=anchor-name-)(?<name>[a-zA-Z0-9]+)/g,
+        ([name]) => ({
+          'anchor-name': `--${name}`,
+        }),
+      ],
+      [
+        /(?<=anchor-)(?<pos>left|right|top|bottom|inset)/g,
+        ([pos]) => {
+          if (pos === 'inset') {
+            return {
+              bottom: 'anchor(bottom)',
+              left: 'anchor(left)',
+              right: 'anchor(right)',
+              top: 'anchor(top)',
+            }
+          }
+          return {
+            [pos]: `anchor(${pos})`,
+          }
+        },
+      ],
+    ],
+  }
+})
 
 export default defineConfig({
   presets: [
@@ -7,6 +43,7 @@ export default defineConfig({
       preflights: { reset: false },
     }),
     presetAnimations,
+    presetAnchorPositioning,
   ],
   rules: [
     [
