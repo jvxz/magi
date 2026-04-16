@@ -58,6 +58,12 @@ export default defineConfig({
         'text-box': 'trim-both cap alphabetic',
       },
     ],
+    [
+      'ease-snappy',
+      {
+        'transition-timing-function': 'cubic-bezier(0.33, 1, 0.68, 1)',
+      },
+    ],
   ],
   safelist: ['group'],
   theme: {
