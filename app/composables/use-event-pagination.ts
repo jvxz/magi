@@ -253,6 +253,11 @@ export function useEventPagination(opts: Opts) {
     await scrollEvents(dir)
 
     const index = getItemRealIndex(visibleAnchorId)
+    const { id: visibleAnchorId } = getItemNodeData(visibleAnchor.element)
+
+    await scrollEvents(dir)
+
+    const index = getItemRealIndex(visibleAnchorId)
     if (index === undefined)
       return
 
