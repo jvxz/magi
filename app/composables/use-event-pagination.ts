@@ -248,15 +248,15 @@ export function useEventPagination(opts: Opts) {
     if (!visibleAnchor)
       return
 
-    const { id } = getItemNodeData(visibleAnchor.element)
-    const index = getItemRealIndex(id)
+    const { id: visibleAnchorId } = getItemNodeData(visibleAnchor.element)
+
+    await scrollEvents(dir)
+
+    const index = getItemRealIndex(visibleAnchorId)
     if (index === undefined)
       return
 
     const { end, start } = getPaddedRange(dir, index)
-
-    await scrollEvents(dir)
-
     const { allCached, cached } = resolveCachedItems(events.value.slice(start, end).map(e => e.getId()!))
 
     let nodes: (HTMLElement | CachedItemNode)[] = []
@@ -411,7 +411,7 @@ export function useEventPagination(opts: Opts) {
     if (!container)
       return
 
-    if (container.scrollTop === 0 && params?.dir) {
+    if (params?.dir) {
       const anchor = getAnchor(params.dir)
       assert(anchor, 'did not get `anchor` in `setRange`')
 
@@ -620,10 +620,16 @@ function resolveCachedItems(itemIds: string[]) {
 }
 
 async function retainScrollTop(scrollEl: HTMLElement, anchor: HTMLElement) {
-  const beforeOffsetTop = anchor.offsetTop
+  const anchorId = getItemNodeData(anchor).id
+  const beforeOffsetTop = anchor.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top
   await nextTick()
-  const afterOffsetTop = anchor.offsetTop
+  await rAF()
 
+  const nextAnchor = scrollEl.querySelector<HTMLElement>(createItemQuerySelector('id', anchorId))
+  if (!nextAnchor)
+    return
+
+  const afterOffsetTop = nextAnchor.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top
   const diff = afterOffsetTop - beforeOffsetTop
 
   scrollEl.scrollTop += diff
