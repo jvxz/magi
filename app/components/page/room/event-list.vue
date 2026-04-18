@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { DeviceVerification } from 'matrix-js-sdk'
 import type { Room } from 'matrix-js-sdk'
-import { EventType } from 'matrix-js-sdk'
 
 const props = defineProps<{
   room: Room
@@ -14,6 +14,7 @@ const wrapperRef = useTemplateRef('wrapper')
 
 const {
   createItemBind,
+  events,
   eventsPaginated,
   getEventVersion,
   handleOnMounted,
@@ -33,6 +34,8 @@ onMounted(async () => {
 })
 
 watch(isPaginating, v => emits('isPaginating', v))
+
+const groupedEvents = useEventGrouping({ events, eventsPaginated })
 </script>
 
 <template>
@@ -47,24 +50,22 @@ watch(isPaginating, v => emits('isPaginating', v))
       data-testid="scroll-container-wrapper"
     >
       <div data-ignore class="h-4.25" />
+
       <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
+
       <div
-        v-for="(event, idx) in eventsPaginated"
-        :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
-        class="pb-4.25"
-        :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
+        v-for="(event, idx) in groupedEvents.events"
         v-bind="createItemBind(event, idx)"
+        :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
+        :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
       >
-        <PageRoomEventMessage
-          v-if="event.getType() === EventType.RoomMessage || event.getType() === EventType.RoomMessageEncrypted"
+        <PageRoomEventGeneric
           :event
-        />
-        <PageRoomEventMember
-          v-else-if="event.getType() === EventType.RoomMember"
-          :event
+          :grouped="groupedEvents.grouped[idx] !== false"
+          :room
         />
       </div>
-      <div data-ignore class="h-8" />
+      <div data-ignore class="h-12" />
     </div>
   </div>
 </template>
