@@ -13,10 +13,7 @@ const props = defineProps<MatrixAvatarProps>()
 
 const { client } = useMatrixClient()
 
-const reducedMotion = usePreferredReducedMotion()
-
-const { getAvatarUrl } = useUser()
-const { data: avatarUrl } = getAvatarUrl(props.user, () => ({ animated: reducedMotion.value !== 'reduce' }))
+const { data: userProfile } = useUserProfile(() => typeof props.user === 'string' ? props.user : props.user?.userId)
 
 const resolvedUser = computed(() => {
   if (!props.user)
@@ -32,9 +29,9 @@ const resolvedUser = computed(() => {
 <template>
   <Img
     v-bind="props"
-    :key="avatarUrl"
+    :key="userProfile?.avatar_url"
     :alt="resolvedUser?.displayName ? `${resolvedUser?.displayName}'s avatar` : 'Avatar'"
-    :src="avatarUrl"
+    :src="userProfile?.avatar_url"
     :class="cn(!square && 'rounded-full', props.class)"
   />
 </template>
