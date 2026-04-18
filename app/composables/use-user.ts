@@ -1,6 +1,3 @@
-import { toRef } from '@vueuse/core'
-import { User } from 'matrix-js-sdk'
-
 export function useUser() {
   const { client } = useMatrixClient()
   const status = useMatrixStatus()
@@ -22,27 +19,8 @@ export function useUser() {
   })
   const refreshMe = useThrottleFn(forceRefreshMe, 60000)
 
-  const getAvatarUrl = (user: MaybeRefOrGetter<'self' | string & {} | User | undefined>, opts?: MaybeRefOrGetter<GetUserAvatarUrlOpts>) => useQuery({
-    enabled: () => !!toValue(user),
-    queryFn: () => {
-      const value = toValue(user)
-      if (!value)
-        return undefined
-
-      const optsValue = toValue(opts)
-
-      if (value instanceof User)
-        return getUserAvatarUrl(client.value, value.userId, optsValue)
-
-      return getUserAvatarUrl(client.value, value, optsValue)
-    },
-    queryKey: ['userAvatar', () => toValue(user)],
-    watch: [toRef(opts)],
-  })
-
   return {
     forceRefreshMe,
-    getAvatarUrl,
     me,
     mePending,
     refreshMe,
