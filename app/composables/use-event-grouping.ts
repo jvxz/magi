@@ -28,8 +28,9 @@ export function useEventGrouping(opts: Opts) {
 
       const sameSender = prevEvent && event.getSender() === prevEvent.getSender()
       const sameEventType = prevEvent && event.getType() === prevEvent.getType()
+      const isReply = checkReplyEvent(event)
       const withinWindow = currentGroupTsCutoff !== -1 && event.getTs() < currentGroupTsCutoff
-      const shouldGroup = !!(sameSender && sameEventType && withinWindow)
+      const shouldGroup = !!(sameSender && sameEventType && withinWindow && !isReply)
 
       if (!shouldGroup)
         currentGroupTsCutoff = event.getTs() + GROUP_WINDOW_MS
