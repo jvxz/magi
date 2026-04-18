@@ -2,19 +2,19 @@
 import type { MatrixAvatarProps } from '~/components/matrix/avatar.vue'
 import { MatrixAvatar } from '#components'
 
-defineProps<MatrixAvatarProps>()
+defineProps<MatrixAvatarProps & { ghost?: boolean }>()
 </script>
 
 <template>
-  <Slot
-    :class="cn('mt-1 shrink-0 size-10', $attrs.class)"
-    as-child
-  >
-    <MatrixAvatar
-      v-if="user"
-      :user
-      :size="size ?? 32"
-    />
-    <USkeleton v-else class="rounded-full" />
-  </Slot>
+  <div :class="cn('shrink-0 size-10 group-data-[grouped=true]:h-0 mt-0.5 data-[grouped=true]:m-0', $attrs.class)">
+    <template v-if="!ghost">
+      <MatrixAvatar
+        v-if="user"
+        :user
+        :size="size ?? 32"
+        class="size-full"
+      />
+      <USkeleton v-else class="rounded-full" />
+    </template>
+  </div>
 </template>
