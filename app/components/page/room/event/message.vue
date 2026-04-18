@@ -8,13 +8,13 @@ const props = defineProps<{
   room: Room
 }>()
 
-const { client } = useMatrixClient()
-
-const member = getMember(client.value, props.event.getSender(), props.event.getRoomId())
-
-const displayName = member?.displayName ?? props.event.getSender()
-
 const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(props.event, props.room)
+
+const eventContentBody = useEventContent(props.event, 'body')
+const { data: eventProfile } = useUserProfile(() => props.event.getSender())
+
+const replyEventContentBody = useEventContent(replyEvent.value, 'body')
+const { data: replyEventProfile } = useUserProfile(() => replyEvent.value?.getSender())
 
 const isDecrypting = computed(() => props.event.isBeingDecrypted())
 
@@ -29,9 +29,6 @@ const shouldRender = computed(() => {
 
   return (isMsg || isDecrypting.value) && !isEdit
 })
-
-const eventContent = computed(() => getEventContent(props.event).body)
-const replyEventContent = computed(() => getEventContent(replyEvent.value).body)
 </script>
 
 <template>
@@ -52,14 +49,14 @@ const replyEventContent = computed(() => getEventContent(replyEvent.value).body)
 
         <template v-if="!isReplyEventLoading">
           <p class="text-muted-foreground font-medium">
-            {{ replyEvent?.getSender() }}
+            {{ replyEventProfile?.displayname ?? replyEvent?.getSender() }}
           </p>
 
           <p
             class="max-w-2/3 truncate"
             :class="{ 'italic text-muted-foreground': replyEvent?.isDecryptionFailure() }"
           >
-            {{ replyEventContent }}
+            {{ replyEventContentBody }}
           </p>
         </template>
         <template v-else>
@@ -68,10 +65,10 @@ const replyEventContent = computed(() => getEventContent(replyEvent.value).body)
       </div>
 
       <div class="flex gap-4">
-        <PageRoomEventMessageAvatar :user="member?.userId" />
+        <PageRoomEventMessageAvatar :user="event.getSender()" />
         <PageRoomEventMessageContent>
           <template v-if="!grouped" #header>
-            {{ displayName }}
+            {{ eventProfile?.displayname }}
             <NuxtTime
               :datetime="event.getTs()"
               hour="numeric"
@@ -81,7 +78,7 @@ const replyEventContent = computed(() => getEventContent(replyEvent.value).body)
           </template>
 
           <p v-if="!isDecrypting" :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() }">
-            {{ eventContent }}
+            {{ eventContentBody }}
           </p>
           <p v-else class="italic">
             Decrypting message...
