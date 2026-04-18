@@ -1,3 +1,6 @@
+import { toRef } from '@vueuse/core'
+import { User } from 'matrix-js-sdk'
+
 export function useUser() {
   const { client } = useMatrixClient()
   const status = useMatrixStatus()
@@ -19,25 +22,22 @@ export function useUser() {
   })
   const refreshMe = useThrottleFn(forceRefreshMe, 60000)
 
-  const getAvatarUrl = (userId: MaybeRefOrGetter<'self' | string & {}>) => useQuery({
-    queryFn: async () => {
-      const id = toValue(userId) === 'self' ? client.value.getSafeUserId() : toValue(userId)
+  const getAvatarUrl = (user: MaybeRefOrGetter<'self' | string & {} | User | undefined>, opts?: MaybeRefOrGetter<GetUserAvatarUrlOpts>) => useQuery({
+    enabled: () => !!toValue(user),
+    queryFn: () => {
+      const value = toValue(user)
+      if (!value)
+        return undefined
 
-      const { avatar_url } = await client.value.getProfileInfo(id, 'avatar_url')
-      if (!avatar_url)
-        return
+      const optsValue = toValue(opts)
 
-      return mxcToHttps(avatar_url, {
-        allowDirectLinks: false,
-        allowRedirects: true,
-        baseUrl: client.value.getHomeserverUrl(),
-        height: 32,
-        resizeMethod: 'scale',
-        useAuthentication: true,
-        width: 32,
-      })
+      if (value instanceof User)
+        return getUserAvatarUrl(client.value, value.userId, optsValue)
+
+      return getUserAvatarUrl(client.value, value, optsValue)
     },
-    queryKey: ['userAvatar', () => toValue(userId)],
+    queryKey: ['userAvatar', () => toValue(user)],
+    watch: [toRef(opts)],
   })
 
   return {
