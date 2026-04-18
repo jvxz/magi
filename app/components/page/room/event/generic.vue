@@ -13,7 +13,7 @@ const type = computed(() => props.event.getType())
 
 <template>
   <PageRoomEventMessage
-    v-if="type === EventType.RoomMessage || EventType.RoomMessageEncrypted"
+    v-if="type === EventType.RoomMessage || type === EventType.RoomMessageEncrypted"
     :event
     :grouped
     :room
