@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { DeviceVerification } from 'matrix-js-sdk'
 import type { Room } from 'matrix-js-sdk'
 
 const props = defineProps<{

@@ -23,7 +23,7 @@ const rows = Array.from({ length: 4 }, () => ({
       >
         <PageRoomEventMessageRoot>
           <PageRoomEventMessageAvatar :user="undefined" ghost />
-          <PageRoomEventMessageContent class="gap-1.5 flex flex-col translate-y-1">
+          <PageRoomEventMessageContent class="flex flex-col gap-1.5 translate-y-1">
             <template #header>
               <USkeleton
                 class="h-4 relative overflow-clip after:bg-white/15 after:size-full after:content-[''] after:absolute"
