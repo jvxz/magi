@@ -56,6 +56,6 @@ function getPreviousEvent(eventList: MatrixEvent[], event: MatrixEvent | undefin
     assert(eventTarget, '`eventTarget` was undefined when getting previous event')
 
     if (eventTarget.getId() === event.getId())
-      return eventList.at(i - 1)
+      return i === 0 ? undefined : eventList.at(i - 1)
   }
 }
