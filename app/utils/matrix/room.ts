@@ -166,3 +166,16 @@ export function getMemberDisplayName(room: Room, userId: string) {
 
   return name === userId ? undefined : name
 }
+
+export async function getRoomEventById(room: Room, client: MatrixClient, eventId: string) {
+  const cachedEvent = room.findEventById(eventId)
+  if (cachedEvent)
+    return cachedEvent
+
+  const eventData = await client.fetchRoomEvent(room.roomId, eventId)
+  const mapper = client.getEventMapper()
+
+  const mapped = mapper(eventData)
+
+  return mapped
+}
