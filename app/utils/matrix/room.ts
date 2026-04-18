@@ -139,7 +139,7 @@ export function getMember(client: MatrixClient, userId: string | undefined, room
   if (!member)
     return
 
-  const displayName = getMemberDisplayName(room, userId)
+  const displayName = getRoomMemberDisplayName(room, userId)
   if (!displayName)
     return
 
@@ -159,7 +159,10 @@ export function getMember(client: MatrixClient, userId: string | undefined, room
   }
 }
 
-export function getMemberDisplayName(room: Room, userId: string) {
+export function getRoomMemberDisplayName(room: Room, userId: string | undefined) {
+  if (!userId)
+    return undefined
+
   const member = room.getMember(userId)
 
   const name = member?.rawDisplayName
