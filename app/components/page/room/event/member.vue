@@ -7,7 +7,7 @@ const props = defineProps<{
 }>()
 
 assert(props.event.getType() === EventType.RoomMember, 'Event provided in PageRoomEventMember is not a RoomMember event')
-const content = props.event.getContent()
+const content = getEventContent(props.event)
 </script>
 
 <template>
