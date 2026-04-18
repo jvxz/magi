@@ -1,12 +1,10 @@
 <script lang="ts">
 import type { ImgProps } from '~/components/img.vue'
+import { User } from 'matrix-js-sdk'
 
 export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
-  user: {
-    avatarUrl?: string
-    displayName?: string
-  } | undefined
   square?: boolean
+  user: User | string | undefined
 }
 </script>
 
@@ -16,33 +14,27 @@ const props = defineProps<MatrixAvatarProps>()
 const { client } = useMatrixClient()
 
 const reducedMotion = usePreferredReducedMotion()
-const src = computed(() => {
-  if (!props.user?.avatarUrl)
-    return IMG_PLACEHOLDER_URL
 
-  if (isMxc(props.user?.avatarUrl)) {
-    return mxcToHttps(props.user.avatarUrl, {
-      allowRedirects: true,
-      animated: reducedMotion.value !== 'reduce',
-      baseUrl: client.value.getHomeserverUrl(),
-      // don't adhere to size prop to allow caching; url doesn't match when size is different
-      height: 400,
-      resizeMethod: 'scale',
-      useAuthentication: true,
-      width: 400,
-    })
-  }
+const { getAvatarUrl } = useUser()
+const { data: avatarUrl } = getAvatarUrl(props.user, () => ({ animated: reducedMotion.value !== 'reduce' }))
 
-  return props.user.avatarUrl
+const resolvedUser = computed(() => {
+  if (!props.user)
+    return undefined
+
+  if (props.user instanceof User)
+    return props.user
+
+  return client.value.getUser(props.user)
 })
 </script>
 
 <template>
   <Img
     v-bind="props"
-    :key="user?.avatarUrl"
-    :alt="user?.displayName ? `${user?.displayName}'s avatar` : 'Avatar'"
-    :src
+    :key="avatarUrl"
+    :alt="resolvedUser?.displayName ? `${resolvedUser?.displayName}'s avatar` : 'Avatar'"
+    :src="avatarUrl"
     :class="cn(!square && 'rounded-full', props.class)"
   />
 </template>
