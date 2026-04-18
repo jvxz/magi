@@ -22,7 +22,7 @@ const rows = Array.from({ length: 4 }, () => ({
         class="hover:bg-transparent"
       >
         <PageRoomEventMessageRoot>
-          <PageRoomEventMessageAvatar :user="undefined" />
+          <PageRoomEventMessageAvatar :user="undefined" ghost />
           <PageRoomEventMessageContent class="gap-1.5 translate-y-1">
             <template #header>
               <USkeleton
