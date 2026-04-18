@@ -3,9 +3,9 @@ import { Direction } from 'matrix-js-sdk'
 
 export const BATCH_SIZE = 120
 
-type Hooks = Prettify<Partial<Pick<Required<NonNullable<Parameters<typeof useRoomEventHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>>
+type Hooks = Prettify<Pick<Required<NonNullable<Parameters<typeof useRoomEventHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>
 
-export function useRoomEvents(room: Ref<Room>, hooks?: Hooks) {
+export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
   const { client } = useMatrixClient()
 
   const events = shallowRef<MatrixEvent[]>([])
@@ -21,6 +21,7 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Hooks) {
 
   whenever(room, sync, { immediate: true, once: true })
 
+  let currentBatchSize = BATCH_SIZE
   const mutex = new Mutex()
   const { isPending: isScrolling, mutate: scrollEvents, mutateAsync: scrollEventsAsync, status: scrollEventsStatus } = useMutation({
     mutationFn: async (dir: Direction) => {
@@ -37,7 +38,10 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Hooks) {
           const canLoadMore = await retry(
             scrollBack,
             {
-              delay: attempts => attempts * 50,
+              delay: (attempts) => {
+                currentBatchSize = currentBatchSize + 10
+                return attempts * 50
+              },
               retries: 6,
               shouldRetry: err => err instanceof $Error,
             },
@@ -50,6 +54,7 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Hooks) {
       }
       finally {
         mutex.release()
+        currentBatchSize = BATCH_SIZE
       }
     },
     mutationKey: ['scrollEvents', () => room.value?.roomId],
