@@ -1,12 +1,18 @@
 import type { IContent, MatrixEvent } from 'matrix-js-sdk'
 
-export function useEventContent(event: MatrixEvent | undefined, pick?: keyof IContent) {
+export function useEventContent(event: MaybeRefOrGetter<MatrixEvent | undefined>, pick?: keyof IContent, fallback?: string) {
+  const eventRef = toRef(event)
   const content = computed(() => {
     if (pick)
-      return event?.getContent()[pick]
+      return eventRef.value?.getContent()[pick] ?? fallback
 
-    return event?.getContent()
+    return eventRef.value?.getContent() ?? fallback
   })
 
-  return content
+  const isFallback = computed(() => content.value === fallback)
+
+  return {
+    content,
+    isFallback,
+  }
 }
