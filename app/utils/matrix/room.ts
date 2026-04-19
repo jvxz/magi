@@ -165,7 +165,7 @@ export function getRoomMemberDisplayName(room: Room, userId: string | undefined)
 
   const member = room.getMember(userId)
 
-  const name = member?.rawDisplayName
+  const name = member?.name
 
   return name === userId ? undefined : name
 }
