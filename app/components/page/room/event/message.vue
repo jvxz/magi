@@ -10,11 +10,11 @@ const props = defineProps<{
 
 const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(props.event, props.room)
 
-const eventContentBody = useEventContent(props.event, 'body')
-const { data: eventProfile } = useUserProfile(() => props.event.getSender())
+const { content: eventContentBody, isFallback: isEventContentBodyFallback } = useEventContent(() => props.event, 'body', 'Could not load event content')
+const eventProfile = useUserProfile(() => props.event.getSender())
 
-const replyEventContentBody = useEventContent(replyEvent.value, 'body')
-const { data: replyEventProfile } = useUserProfile(() => replyEvent.value?.getSender())
+const { content: replyEventContentBody, isFallback: isReplyEventContentBodyFallback } = useEventContent(() => replyEvent.value, 'body', 'Could not load reply event content')
+const replyEventProfile = useUserProfile(() => replyEvent.value?.getSender())
 
 const isDecrypting = computed(() => props.event.isBeingDecrypted())
 
@@ -43,18 +43,18 @@ const shouldRender = computed(() => {
       <div v-if="isReplyEvent" class="text-sm flex gap-1.5 items-center relative">
         <Icon name="custom:reply" class="text-muted-foreground shrink-0 h-6 w-12 translate-x-2.5 translate-y-1" />
 
-        <div class="ps-1.5">
-          <MatrixAvatar class="size-3.5" :user="replyEvent?.getSender()" />
+        <div class="ms-1.5 size-3.5 aspect-square">
+          <MatrixAvatar class="size-full" :user="replyEvent?.getSender()" />
         </div>
 
         <template v-if="!isReplyEventLoading">
           <p class="text-muted-foreground font-medium">
-            {{ replyEventProfile?.displayname ?? replyEvent?.getSender() }}
+            {{ replyEventProfile?.displayname }}
           </p>
 
           <p
             class="max-w-2/3 truncate"
-            :class="{ 'italic text-muted-foreground': replyEvent?.isDecryptionFailure() }"
+            :class="{ 'italic text-muted-foreground': replyEvent?.isDecryptionFailure() || isReplyEventContentBodyFallback }"
           >
             {{ replyEventContentBody }}
           </p>
@@ -65,9 +65,9 @@ const shouldRender = computed(() => {
       </div>
 
       <div class="flex gap-4">
-        <PageRoomEventMessageAvatar :user="event.getSender()" />
+        <PageRoomEventMessageAvatar v-if="event.getSender()" :user="event.getSender()" />
         <PageRoomEventMessageContent>
-          <template v-if="!grouped" #header>
+          <template v-if="!grouped && isDefined(event.getTs())" #header>
             {{ eventProfile?.displayname }}
             <NuxtTime
               :datetime="event.getTs()"
@@ -77,7 +77,7 @@ const shouldRender = computed(() => {
             />
           </template>
 
-          <p v-if="!isDecrypting" :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() }">
+          <p v-if="!isDecrypting" :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || isEventContentBodyFallback }">
             {{ eventContentBody }}
           </p>
           <p v-else class="italic">
