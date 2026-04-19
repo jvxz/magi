@@ -14,7 +14,6 @@ function acquire(key: string) {
   let entry = cache.get(key)
   if (!entry) {
     const scope = effectScope(true)
-    const qc = useQueryClient()
 
     const ref = scope.run(() => {
       const userId = key
@@ -23,13 +22,9 @@ function acquire(key: string) {
 
       const user = shallowRef<User | undefined>(client.value.getUser(userId) ?? undefined)
 
-      const { data: profile } = useQuery({
-        initialData: {
-          avatar_url: user.value?.avatarUrl,
-          displayname: user.value?.rawDisplayName,
-        },
-        queryFn: () => client.value.getProfileInfo(userId),
-        queryKey: getQueryKey(userId),
+      const profile = shallowRef<IMatrixProfile | undefined>({
+        avatar_url: user.value?.avatarUrl,
+        displayname: user.value?.rawDisplayName ?? getDisplayNameFallback(userId),
       })
 
       onEvent((event) => {
@@ -39,13 +34,11 @@ function acquire(key: string) {
           return
 
         const content = event.getContent()
-        qc.setQueryData<IMatrixProfile>(getQueryKey(userId), (prev) => {
-          return {
-            ...prev,
-            avatar_url: content.avatar_url,
-            displayname: content.displayname,
-          }
-        })
+        profile.value = {
+          ...profile.value,
+          avatar_url: content.avatar_url,
+          displayname: content.displayname ?? getDisplayNameFallback(userId),
+        }
       })
 
       return profile
@@ -89,8 +82,4 @@ export function useUserProfile(userId: MaybeRefOrGetter<string | undefined>) {
   }, { immediate: true })
 
   return computed(() => current.value?.ref.value)
-}
-
-function getQueryKey(userId: string) {
-  return ['userProfile', userId]
 }
