@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import type { Room } from 'matrix-js-sdk'
 import type { MatrixAvatarProps } from '~/components/matrix/avatar.vue'
 import { MatrixAvatar } from '#components'
 
-defineProps<MatrixAvatarProps & { ghost?: boolean }>()
+defineProps<MatrixAvatarProps & { ghost?: boolean, room?: Room }>()
 </script>
 
 <template>
@@ -11,6 +12,7 @@ defineProps<MatrixAvatarProps & { ghost?: boolean }>()
       <MatrixAvatar
         v-if="user"
         :user
+        :room
         :size="size ?? 32"
         class="size-full"
       />
