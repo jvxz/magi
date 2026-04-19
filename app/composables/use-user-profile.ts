@@ -25,13 +25,18 @@ function acquire(key: string) {
         displayname: user.value?.rawDisplayName,
       })
 
-      client.value.getProfileInfo(userId).then(p => profile.value = p)
+      let settled = false
+
+      if (!settled)
+        client.value.getProfileInfo(userId).then(p => profile.value = p)
 
       onEvent((event) => {
         if (event.getType() !== 'm.room.member')
           return
         if (event.getStateKey() !== userId)
           return
+
+        settled = true
 
         const content = event.getContent()
         profile.value = {
