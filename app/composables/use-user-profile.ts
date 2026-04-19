@@ -1,47 +1,85 @@
-import type { Room } from 'matrix-js-sdk'
-import { UserEvent } from 'matrix-js-sdk'
+import type { IMatrixProfile, User } from 'matrix-js-sdk'
+import type { EffectScope, ShallowRef } from 'vue'
+import { toRef } from '@vueuse/core'
 
-export function useUserProfile(userId: MaybeRefOrGetter<string | undefined>, room?: MaybeRefOrGetter<Room | undefined>) {
-  const { client } = useMatrixClient()
-  const userIdRef = toRef(userId)
+interface Entry {
+  scope: EffectScope
+  ref: ShallowRef<IMatrixProfile | undefined>
+  subs: number
+}
 
-  const user = computed(() => userIdRef.value ? client.value.getUser(userIdRef.value) : undefined)
+const cache = new Map<string, Entry>()
 
-  const reducedMotion = usePreferredReducedMotion()
+function acquire(key: string) {
+  let entry = cache.get(key)
+  if (!entry) {
+    const scope = effectScope(true)
+    const ref = scope.run(() => {
+      const userId = key
+      const { client } = useMatrixClient()
+      const { onEvent } = useMatrixHooks()
 
-  const query = useQuery({
-    enabled: () => !!userIdRef.value,
-    queryFn: async () => {
-      // user id is guaranteed to be defined as the query is disabled if not
-      const userId = userIdRef.value!
+      const user = shallowRef<User | undefined>(client.value.getUser(userId) ?? undefined)
+      const profile = shallowRef<IMatrixProfile>({
+        avatar_url: user.value?.avatarUrl,
+        displayname: user.value?.rawDisplayName,
+      })
 
-      let profile = await client.value.getProfileInfo(userId)
+      client.value.getProfileInfo(userId).then(p => profile.value = p)
 
-      const r = toValue(room)
-      if ((!profile.avatar_url || !profile.displayname) && r) {
-        profile = {
-          avatar_url: profile.avatar_url ?? r.getMember(userId)?.getMxcAvatarUrl(),
-          displayname: profile.displayname ?? getRoomMemberDisplayName(r, userId),
+      onEvent((event) => {
+        if (event.getType() !== 'm.room.member')
+          return
+        if (event.getStateKey() !== userId)
+          return
+
+        const content = event.getContent()
+        profile.value = {
+          ...profile.value,
+          avatar_url: content.avatar_url,
+          displayname: content.displayname,
         }
-      }
+      })
 
-      const resolvedAvatarUrl = resolveAvatarUrl(profile?.avatar_url, { animated: reducedMotion.value !== 'reduce', baseUrl: client.value.getHomeserverUrl() })
+      return profile
+    })!
 
-      return {
-        ...profile,
-        avatar_url: resolvedAvatarUrl,
-      }
-    },
-    queryKey: ['userProfile', userIdRef],
-  })
+    entry = { ref, scope, subs: 0 }
 
-  user.value?.on(UserEvent.AvatarUrl, () => query.refetch())
-  user.value?.on(UserEvent.DisplayName, () => query.refetch())
+    cache.set(key, entry)
+  }
+  entry.subs++
+  return entry
+}
 
-  tryOnScopeDispose(() => {
-    user.value?.off(UserEvent.AvatarUrl, () => query.refetch())
-    user.value?.off(UserEvent.DisplayName, () => query.refetch())
-  })
+function release(key: string) {
+  const entry = cache.get(key)
+  if (!entry)
+    return
 
-  return query
+  entry.subs--
+
+  if (entry.subs <= 0) {
+    entry.scope.stop()
+    cache.delete(key)
+  }
+}
+
+export function useUserProfile(userId: MaybeRefOrGetter<string | undefined>) {
+  const userIdRef = toRef(userId)
+  const current = shallowRef<Entry | undefined>(undefined)
+
+  watch(userIdRef, (key, _, onCleanup) => {
+    if (!key) {
+      current.value = undefined
+      return
+    }
+
+    const entry = acquire(key)
+    current.value = entry
+
+    onCleanup(() => release(key))
+  }, { immediate: true })
+
+  return computed(() => current.value?.ref.value)
 }
