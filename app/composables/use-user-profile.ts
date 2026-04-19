@@ -1,6 +1,7 @@
+import type { Room } from 'matrix-js-sdk'
 import { UserEvent } from 'matrix-js-sdk'
 
-export function useUserProfile(userId: MaybeRefOrGetter<string | undefined>) {
+export function useUserProfile(userId: MaybeRefOrGetter<string | undefined>, room?: MaybeRefOrGetter<Room | undefined>) {
   const { client } = useMatrixClient()
   const userIdRef = toRef(userId)
 
@@ -11,13 +12,24 @@ export function useUserProfile(userId: MaybeRefOrGetter<string | undefined>) {
   const query = useQuery({
     enabled: () => !!userIdRef.value,
     queryFn: async () => {
-      const profile = await client.value.getProfileInfo(userIdRef.value!)
+      // user id is guaranteed to be defined as the query is disabled if not
+      const userId = userIdRef.value!
 
-      const avatar_url = resolveAvatarUrl(profile?.avatar_url, { animated: reducedMotion.value !== 'reduce', baseUrl: client.value.getHomeserverUrl() })
+      let profile = await client.value.getProfileInfo(userId)
+
+      const r = toValue(room)
+      if ((!profile.avatar_url || !profile.displayname) && r) {
+        profile = {
+          avatar_url: profile.avatar_url ?? r.getMember(userId)?.getMxcAvatarUrl(),
+          displayname: profile.displayname ?? getRoomMemberDisplayName(r, userId),
+        }
+      }
+
+      const resolvedAvatarUrl = resolveAvatarUrl(profile?.avatar_url, { animated: reducedMotion.value !== 'reduce', baseUrl: client.value.getHomeserverUrl() })
 
       return {
         ...profile,
-        avatar_url,
+        avatar_url: resolvedAvatarUrl,
       }
     },
     queryKey: ['userProfile', userIdRef],
