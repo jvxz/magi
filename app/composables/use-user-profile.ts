@@ -14,21 +14,23 @@ function acquire(key: string) {
   let entry = cache.get(key)
   if (!entry) {
     const scope = effectScope(true)
+    const qc = useQueryClient()
+
     const ref = scope.run(() => {
       const userId = key
       const { client } = useMatrixClient()
       const { onEvent } = useMatrixHooks()
 
       const user = shallowRef<User | undefined>(client.value.getUser(userId) ?? undefined)
-      const profile = shallowRef<IMatrixProfile>({
-        avatar_url: user.value?.avatarUrl,
-        displayname: user.value?.rawDisplayName,
+
+      const { data: profile } = useQuery({
+        initialData: {
+          avatar_url: user.value?.avatarUrl,
+          displayname: user.value?.rawDisplayName,
+        },
+        queryFn: () => client.value.getProfileInfo(userId),
+        queryKey: getQueryKey(userId),
       })
-
-      let settled = false
-
-      if (!settled)
-        client.value.getProfileInfo(userId).then(p => profile.value = p)
 
       onEvent((event) => {
         if (event.getType() !== 'm.room.member')
@@ -36,14 +38,14 @@ function acquire(key: string) {
         if (event.getStateKey() !== userId)
           return
 
-        settled = true
-
         const content = event.getContent()
-        profile.value = {
-          ...profile.value,
-          avatar_url: content.avatar_url,
-          displayname: content.displayname,
-        }
+        qc.setQueryData<IMatrixProfile>(getQueryKey(userId), (prev) => {
+          return {
+            ...prev,
+            avatar_url: content.avatar_url,
+            displayname: content.displayname,
+          }
+        })
       })
 
       return profile
@@ -87,4 +89,8 @@ export function useUserProfile(userId: MaybeRefOrGetter<string | undefined>) {
   }, { immediate: true })
 
   return computed(() => current.value?.ref.value)
+}
+
+function getQueryKey(userId: string) {
+  return ['userProfile', userId]
 }
