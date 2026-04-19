@@ -7,6 +7,7 @@ type EmitterListener<T extends ValidEvents = ValidEvents> = Listener<ValidEvents
 
 const syncHook = createEventHook<Parameters<EmitterListener<ClientEvent.Sync>>>()
 const decryptedHook = createEventHook<Parameters<EmitterListener<MatrixEventEvent.Decrypted>>>()
+const eventHook = createEventHook<Parameters<EmitterListener<ClientEvent.Event>>>()
 export const roomMemberTypingHook = createEventHook<Parameters<EmitterListener<RoomMemberEvent.Typing>>>()
 
 export const useMatrixHooks = createSharedComposable(() => {
@@ -14,12 +15,14 @@ export const useMatrixHooks = createSharedComposable(() => {
 
   watch(client, (current, prev) => {
     bindListener(ClientEvent.Sync, syncHook.trigger, { current, prev })
+    bindListener(ClientEvent.Event, eventHook.trigger, { current, prev })
     bindListener(RoomMemberEvent.Typing, roomMemberTypingHook.trigger, { current, prev })
     bindListener(MatrixEventEvent.Decrypted, decryptedHook.trigger, { current, prev })
   }, { immediate: true })
 
   return {
     onDecrypted: decryptedHook.on,
+    onEvent: eventHook.on,
     onSync: syncHook.on,
   }
 })
