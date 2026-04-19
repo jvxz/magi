@@ -1,7 +1,6 @@
 <script lang="ts">
-import type { Room } from 'matrix-js-sdk'
+import type { Room, User } from 'matrix-js-sdk'
 import type { ImgProps } from '~/components/img.vue'
-import { User } from 'matrix-js-sdk'
 
 export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   square?: boolean
@@ -13,29 +12,22 @@ export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
 <script setup lang="ts">
 const props = defineProps<MatrixAvatarProps>()
 
-const { client } = useMatrixClient()
+const userProfile = useUserProfile(() => typeof props.user === 'string' ? props.user : props.user?.userId)
+const resolvedAvatar = useResolveAvatarUrl(() => userProfile.value?.avatar_url)
 
-const { data: userProfile } = useUserProfile(() => typeof props.user === 'string' ? props.user : props.user?.userId, () => props.room)
-
-const resolvedUser = computed(() => {
-  if (!props.user)
-    return undefined
-
-  if (props.user instanceof User)
-    return props.user
-
-  return client.value.getUser(props.user)
-})
+const isError = ref(false)
 </script>
 
 <template>
   <Img
-    v-if="userProfile?.avatar_url"
+    v-if="resolvedAvatar && !isError"
     v-bind="props"
-    :key="userProfile?.avatar_url"
-    :alt="resolvedUser?.displayName ? `${resolvedUser?.displayName}'s avatar` : 'Avatar'"
-    :src="userProfile?.avatar_url"
+    :key="resolvedAvatar"
+    data-slot="avatar"
+    :alt="userProfile?.displayname ? `${userProfile?.displayname}'s avatar` : 'Avatar'"
+    :src="resolvedAvatar"
     :class="cn(!square && 'rounded-full', props.class)"
+    @error="isError = true"
   />
   <div v-else class="rounded-full bg-primary size-full" />
 </template>
