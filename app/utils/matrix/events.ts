@@ -248,3 +248,17 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
     type: 'unknown',
   }
 }
+
+// https://github.com/cinnyapp/cinny/blob/098684973ebb28592158efa43e79741ab27afab9/src/app/utils/room.ts#L330-L334
+const REPLY_BODY_REG = /^> <.+?> .+\n(>.*\n)*\n/m
+export function trimReplyFromBody(body: string): string {
+  const match = body.match(REPLY_BODY_REG)
+  if (!match)
+    return body
+  return body.slice(match[0].length)
+}
+
+const REPLY_PREVIEW_BODY_REG = /^(?:```[^\r\n]*\r?\n)?([^\r\n]+)/
+export function formatReplyPreviewBody(body: string | undefined) {
+  return body?.match(REPLY_PREVIEW_BODY_REG)?.[1] ?? body
+}
