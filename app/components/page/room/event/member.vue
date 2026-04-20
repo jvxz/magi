@@ -79,6 +79,23 @@ const body = computed(() => {
     }
   }
 
+  if (parsed.type === 'invite') {
+    return {
+      icon: 'tabler:mail',
+      message: ` was invited to the room by `,
+      sender: parsed.data.invitedName,
+      subject: parsed.data.inviterName,
+    }
+  }
+
+  if (parsed.type === 'knock') {
+    return {
+      icon: 'tabler:door',
+      message: ` knocked on the room`,
+      sender: parsed.data.name,
+    }
+  }
+
   return {
     icon: 'tabler:question-circle',
     message: 'Unknown membership event',

@@ -52,7 +52,7 @@ export function canDecryptEvent(event: MatrixEvent | Partial<IEvent> | undefined
   return matrixEvent.shouldAttemptDecryption()
 }
 
-type MembershipEventContent = Prettify<MembershipEventBan | MembershipEventDisplayName | MembershipEventUnban | MembershipEventUnknown | MembershipEventAvatar | MembershipEventLeave | MembershipEventJoin>
+type MembershipEventContent = Prettify<MembershipEventBan | MembershipEventInvite | MembershipEventKnock | MembershipEventDisplayName | MembershipEventUnban | MembershipEventUnknown | MembershipEventAvatar | MembershipEventLeave | MembershipEventJoin>
 
 interface MembershipEventBan {
   type: 'ban'
@@ -115,6 +115,24 @@ interface MembershipEventLeave {
 
 interface MembershipEventJoin {
   type: 'join'
+  data: {
+    id: string
+    name: string
+  }
+}
+
+interface MembershipEventInvite {
+  type: 'invite'
+  data: {
+    invitedId: string
+    invitedName: string
+    inviterId: string
+    inviterName: string
+  }
+}
+
+interface MembershipEventKnock {
+  type: 'knock'
   data: {
     id: string
     name: string
@@ -241,6 +259,30 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
         name: subjectName,
       },
       type: 'leave',
+    }
+  }
+
+  // invite
+  if (content.membership === KnownMembership.Invite) {
+    return {
+      data: {
+        invitedId: subject,
+        invitedName: subjectName,
+        inviterId: sender,
+        inviterName: senderName,
+      },
+      type: 'invite',
+    }
+  }
+
+  // knock
+  if (content.membership === KnownMembership.Knock) {
+    return {
+      data: {
+        id: sender,
+        name: senderName,
+      },
+      type: 'knock',
     }
   }
 
