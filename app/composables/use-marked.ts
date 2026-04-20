@@ -6,7 +6,7 @@ const md = marked.use({
   async: false,
   renderer: {
     strong: t => `<strong class="font-medium">${t.text}</strong>`,
-  }
+  },
 })
 
 export function useMarked(input: MaybeRefOrGetter<string | undefined>) {
