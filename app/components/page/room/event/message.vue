@@ -11,10 +11,11 @@ const props = defineProps<{
 const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(props.event, props.room)
 
 const { content: eventContent } = useEventContent(() => props.event)
+const eventBody = computed(() => trimReplyFromBody(eventContent.value?.body))
 const eventProfile = useUserProfile(() => props.event.getSender())
 
 const { content: replyEventContent, isRedacted: isReplyEventRedacted } = useEventContent(() => replyEvent.value)
-const replyEventBody = computed(() => isReplyEventRedacted.value ? 'Original message was deleted' : replyEventContent.value?.body)
+const replyEventBody = computed(() => isReplyEventRedacted.value ? 'Original message was deleted' : formatReplyPreviewBody(replyEventContent.value?.body))
 const replyEventProfile = useUserProfile(() => replyEvent.value?.getSender())
 
 const isDecrypting = computed(() => props.event.isBeingDecrypted())
@@ -62,11 +63,13 @@ const shouldRender = computed(() => {
             {{ replyEventProfile?.displayname }}
           </p>
 
-          <RenderMd
+          <p
+            v-if="!isReplyEventRedacted"
             class="max-w-2/3 truncate"
-            :content="replyEventBody"
             :class="{ 'italic text-muted-foreground': replyEvent?.isDecryptionFailure() || !replyEventBody || isReplyEventRedacted }"
-          />
+          >
+            {{ replyEventBody }}
+          </p>
         </template>
         <template v-else>
           <USkeleton class="h-4 w-32" />
@@ -88,7 +91,7 @@ const shouldRender = computed(() => {
 
           <RenderMd
             v-if="!isDecrypting"
-            :content="eventContent?.body"
+            :content="eventBody"
             :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body }"
           />
           <p v-else class="italic">
