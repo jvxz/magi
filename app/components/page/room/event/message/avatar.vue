@@ -16,7 +16,8 @@ defineProps<MatrixAvatarProps & { ghost?: boolean, room?: Room }>()
         :size="size ?? 32"
         class="size-full"
       />
-      <USkeleton v-else class="rounded-full" />
+      <USkeleton v-else class="rounded-full size-full" />
     </template>
+    <USkeleton v-else class="rounded-full size-full" />
   </div>
 </template>
