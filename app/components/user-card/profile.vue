@@ -7,7 +7,7 @@ const { me } = useUser()
     <MatrixAvatar
       loading="eager"
       fetchpriority="high"
-      :user="me"
+      :user="me?.userId"
       :size="36"
       class="max-h-full"
     />

@@ -22,8 +22,8 @@ const rows = Array.from({ length: 4 }, () => ({
         class="hover:bg-transparent"
       >
         <PageRoomEventMessageRoot>
-          <PageRoomEventMessageAvatar :user="undefined" />
-          <PageRoomEventMessageContent class="gap-1.5 translate-y-1">
+          <PageRoomEventMessageAvatar :user="undefined" ghost />
+          <PageRoomEventMessageContent class="flex flex-col gap-1.5 translate-y-1">
             <template #header>
               <USkeleton
                 class="h-4 relative overflow-clip after:bg-white/15 after:size-full after:content-[''] after:absolute"

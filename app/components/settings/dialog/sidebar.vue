@@ -6,7 +6,7 @@ const { me } = useUser()
   <div class="p-4 rounded-l-lg bg-background shrink-0 w-64">
     <UButton variant="ghost" class="group text-foreground font-normal p-3 gap-3.5 h-[4.25rem] w-full items-center justify-between">
       <MatrixAvatar
-        :user="me"
+        :user="me?.userId"
         :size="48"
         class="shrink-0"
       />

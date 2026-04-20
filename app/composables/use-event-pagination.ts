@@ -412,12 +412,12 @@ export function useEventPagination(opts: Opts) {
       return
 
     if (params?.dir) {
-      const anchor = getAnchor(params.dir)
-      assert(anchor, 'did not get `anchor` in `setRange`')
+      const beforeBackwardEl = unrefElement(backwardSentinelEl.value)
 
       set()
 
-      await retainScrollTop(container, anchor.element)
+      if (beforeBackwardEl)
+        await retainScrollTop(container, itemsEl, beforeBackwardEl)
     }
     else
       set()
@@ -582,6 +582,14 @@ function getItemNodeData(node: HTMLElement | CachedItemNode): ItemNodeData {
   }
 }
 
+function getItemNodeById(itemsEl: MaybeElementRef, id: string) {
+  const el = unrefElement(itemsEl)
+  if (!el)
+    return
+
+  return el.querySelector<HTMLElement>(createItemQuerySelector('id', id))
+}
+
 function getEventById(events: MatrixEvent[], id: string | undefined) {
   for (let i = 0; i < events.length; i++) {
     const event = events[i]
@@ -619,20 +627,25 @@ function resolveCachedItems(itemIds: string[]) {
   }
 }
 
-async function retainScrollTop(scrollEl: HTMLElement, anchor: HTMLElement) {
-  const anchorId = getItemNodeData(anchor).id
-  const beforeOffsetTop = anchor.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top
-  await nextTick()
-  await rAF()
+async function retainScrollTop(scrollEl: HTMLElement, itemsEl: MaybeElementRef, backwardSentinelEl: HTMLElement) {
+  const beforeOffsetTop = backwardSentinelEl.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top
+  const beforeHeight = backwardSentinelEl.getBoundingClientRect().height
+  const { id: backwardId } = getItemNodeData(backwardSentinelEl)
 
-  const nextAnchor = scrollEl.querySelector<HTMLElement>(createItemQuerySelector('id', anchorId))
-  if (!nextAnchor)
+  await nextTick()
+
+  const afterBackwardEl = getItemNodeById(itemsEl, backwardId)
+
+  if (!afterBackwardEl)
     return
 
-  const afterOffsetTop = nextAnchor.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top
-  const diff = afterOffsetTop - beforeOffsetTop
+  const afterHeight = afterBackwardEl.getBoundingClientRect().height
+  const afterOffsetTop = afterBackwardEl.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top
 
-  scrollEl.scrollTop += diff
+  const offsetDiff = afterOffsetTop - beforeOffsetTop
+  const heightDiff = afterHeight - beforeHeight
+
+  scrollEl.scrollTop += offsetDiff + heightDiff
 }
 
 function createItemQuerySelector(type: 'id' | 'index', input: string | undefined) {
