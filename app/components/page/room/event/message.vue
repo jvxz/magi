@@ -10,10 +10,11 @@ const props = defineProps<{
 
 const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(props.event, props.room)
 
-const { content: eventContentBody, isFallback: isEventContentBodyFallback } = useEventContent(() => props.event, 'body', 'Could not load event content')
+const { content: eventContent } = useEventContent(() => props.event)
 const eventProfile = useUserProfile(() => props.event.getSender())
 
-const { content: replyEventContentBody, isFallback: isReplyEventContentBodyFallback } = useEventContent(() => replyEvent.value, 'body', 'Could not load reply event content')
+const { content: replyEventContent, isRedacted: isReplyEventRedacted } = useEventContent(() => replyEvent.value)
+const replyEventBody = computed(() => isReplyEventRedacted.value ? 'Original message was deleted' : replyEventContent.value?.body)
 const replyEventProfile = useUserProfile(() => replyEvent.value?.getSender())
 
 const isDecrypting = computed(() => props.event.isBeingDecrypted())
@@ -44,20 +45,28 @@ const shouldRender = computed(() => {
         <Icon name="custom:reply" class="text-muted-foreground shrink-0 h-6 w-12 translate-x-2.5 translate-y-1" />
 
         <div class="ms-1.5 size-3.5 aspect-square">
-          <MatrixAvatar class="size-full" :user="replyEvent?.getSender()" />
+          <MatrixAvatar
+            v-if="!isReplyEventRedacted"
+            class="size-full"
+            :user="replyEvent?.getSender()"
+          />
+          <Icon
+            v-else
+            class="text-muted-foreground -translate-y-0.5"
+            name="tabler:arrow-back-up"
+          />
         </div>
 
         <template v-if="!isReplyEventLoading">
-          <p class="text-muted-foreground font-medium">
+          <p v-if="!isReplyEventRedacted" class="text-muted-foreground font-medium">
             {{ replyEventProfile?.displayname }}
           </p>
 
-          <p
+          <RenderMd
             class="max-w-2/3 truncate"
-            :class="{ 'italic text-muted-foreground': replyEvent?.isDecryptionFailure() || isReplyEventContentBodyFallback }"
-          >
-            {{ replyEventContentBody }}
-          </p>
+            :content="replyEventBody"
+            :class="{ 'italic text-muted-foreground': replyEvent?.isDecryptionFailure() || !replyEventBody || isReplyEventRedacted }"
+          />
         </template>
         <template v-else>
           <USkeleton class="h-4 w-32" />
@@ -77,9 +86,11 @@ const shouldRender = computed(() => {
             />
           </template>
 
-          <p v-if="!isDecrypting" :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || isEventContentBodyFallback }">
-            {{ eventContentBody }}
-          </p>
+          <RenderMd
+            v-if="!isDecrypting"
+            :content="eventContent?.body"
+            :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body }"
+          />
           <p v-else class="italic">
             Decrypting message...
           </p>
