@@ -138,8 +138,8 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
     }
   }
 
-  const senderName = content.displayname === sender ? getDisplayNameFallback(sender) : content.displayname ?? getDisplayNameFallback(sender)
-  const subjectName = getDisplayNameFallback(subject)
+  const subjectName = content.displayname ?? getDisplayNameFallback(subject)
+  const senderName = getDisplayNameFallback(sender)
 
   // ban
   if (content.membership === KnownMembership.Ban) {
