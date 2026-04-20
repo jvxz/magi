@@ -93,6 +93,9 @@ importers:
       '@antfu/eslint-config':
         specifier: ^8.0.0
         version: 8.1.1(@typescript-eslint/rule-tester@8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.3))(@typescript-eslint/typescript-estree@8.58.1(typescript@6.0.3))(@typescript-eslint/utils@8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.3))(@unocss/eslint-plugin@66.6.8(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.3))(@vue/compiler-sfc@3.5.32)(eslint-plugin-format@2.0.1(eslint@10.2.0(jiti@2.6.1)))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.3)(vitest@4.1.4)
+      '@faker-js/faker':
+        specifier: ^10.4.0
+        version: 10.4.0
       '@iconify-json/tabler':
         specifier: ^1.2.33
         version: 1.2.33
@@ -1088,6 +1091,10 @@ packages:
   '@eslint/plugin-kit@0.7.1':
     resolution: {integrity: sha512-rZAP3aVgB9ds9KOeUSL+zZ21hPmo8dh6fnIFwRQj5EAZl9gzR7wxYbYXYysAM8CTqGmUGyp2S4kUdV17MnGuWQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+
+  '@faker-js/faker@10.4.0':
+    resolution: {integrity: sha512-sDBWI3yLy8EcDzgobvJTWq1MJYzAkQdpjXuPukga9wXonhpMRvd1Izuo2Qgwey2OiEoRIBr35RMU9HJRoOHzpw==}
+    engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
 
   '@fastify/accept-negotiator@2.0.1':
     resolution: {integrity: sha512-/c/TW2bO/v9JeEgoD/g1G5GxGeCF1Hafdf79WPmUlgYiBXummY0oX3VVq4yFkKKVBKDNlaDUYoab7g38RpPqCQ==}
@@ -9650,6 +9657,8 @@ snapshots:
     dependencies:
       '@eslint/core': 1.2.1
       levn: 0.4.1
+
+  '@faker-js/faker@10.4.0': {}
 
   '@fastify/accept-negotiator@2.0.1':
     optional: true
