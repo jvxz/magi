@@ -27,6 +27,15 @@ function acquire(key: string) {
         displayname: user.value?.rawDisplayName ?? getDisplayNameFallback(userId),
       })
 
+      if (!user.value) {
+        client.value.getProfileInfo(userId)
+          .then((result) => {
+            if (result)
+              profile.value = result
+          })
+          .catch(() => { })
+      }
+
       onEvent((event) => {
         if (event.getType() !== 'm.room.member')
           return
