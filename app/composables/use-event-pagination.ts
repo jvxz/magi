@@ -183,10 +183,11 @@ export function useEventPagination(opts: Opts) {
 
   async function handleOnMounted() {
     const anchor = getAnchor(Direction.Backward, maxPageHeight.value * 0.75)
-    if (!anchor)
-      return
-
     const cachedScrollState = pageScrollStateCache.get(opts.room.value.roomId)
+    const container = unrefElement(scrollEl)
+
+    if (!anchor || !container)
+      return
 
     let backwardId = cachedScrollState?.backwardSentinelId ?? getItemNodeData(anchor.element).id
     const forwardId = cachedScrollState?.forwardSentinelId ?? eventsPaginated.value.at(-1)?.getId()
@@ -208,10 +209,6 @@ export function useEventPagination(opts: Opts) {
       start: index,
     })
 
-    const container = unrefElement(scrollEl)
-    if (!container)
-      return
-
     const itemsRoot = unrefElement(itemsEl)
     const backwardProbeEl = getItemNodeData(anchor.element).id === backwardId
       ? anchor.element
@@ -227,7 +224,8 @@ export function useEventPagination(opts: Opts) {
 
       if (cachedScrollState) {
         const addedHeight = container.scrollHeight - beforeScrollHeight
-        container.scrollTop = cachedScrollState.scrollTop + addedHeight
+        const restoreScrollTop = cachedScrollState.scrollTop + addedHeight
+        container.scrollTop = restoreScrollTop
       }
       else
         scrollToBottom(container)

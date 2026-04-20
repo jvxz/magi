@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@nuxt/test-utils/playwright'
 import { assert } from 'es-toolkit'
+import { randomInt } from 'es-toolkit/math'
 
 type Direction = 'backwards' | 'forwards'
 type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
@@ -49,14 +50,17 @@ test.describe('Event list', () => {
     await navToRoom(sharedPage, '750')
 
     const oldContainer = await getScrollContainer(sharedPage)
-    await oldContainer.evaluate(el => el.scrollTop = 1024)
+
+    const scrollHeightVal = await oldContainer.evaluate(el => el.scrollHeight)
+    const scrollTopVal = randomInt(scrollHeightVal * 0.25, scrollHeightVal)
+
+    await oldContainer.evaluate((el, value) => el.scrollTop = value, scrollTopVal)
 
     await navToRoom(sharedPage, '250')
     await navToRoom(sharedPage, '750')
 
     const newContainer = await getScrollContainer(sharedPage)
-    await sharedPage.waitForTimeout(2000)
-    expect(await newContainer.evaluate(el => el.scrollTop)).toBe(1024)
+    expect.poll(async () => await newContainer.evaluate(el => el.scrollTop), { timeout: 2000 }).toBe(scrollTopVal)
   })
 })
 
