@@ -2,7 +2,9 @@
 export const USER_ID_REG = /^([@$+#])([^\s:]+):(\S+)$/
 
 export function getDisplayNameFallback(userId: string) {
-  return userId.match(USER_ID_REG)?.at(2)
+  const match = userId.match(USER_ID_REG)?.at(2)
+  assert(match, 'invalid user ID when getting display name fallback')
+  return match
 }
 
 export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: Partial<{ baseUrl?: string, animated?: boolean }>) {
