@@ -214,7 +214,7 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
       data: {
         from: prev?.avatar_url,
         id: subject,
-        name: senderName,
+        name: subjectName,
         to: content.avatar_url,
         type: 'changed',
       },
