@@ -1,5 +1,7 @@
 import type { EventType, IContent, IEvent } from 'matrix-js-sdk'
-import { MatrixEvent } from 'matrix-js-sdk'
+import type { RoomMemberEventContent } from 'matrix-js-sdk/lib/types'
+
+import { KnownMembership, MatrixEvent } from 'matrix-js-sdk'
 
 type Predicate = EventType | string | ((event: MatrixEvent) => boolean)
 
@@ -48,4 +50,201 @@ export function canDecryptEvent(event: MatrixEvent | Partial<IEvent> | undefined
   const matrixEvent = new MatrixEvent(event)
 
   return matrixEvent.shouldAttemptDecryption()
+}
+
+type MembershipEventContent = Prettify<MembershipEventBan | MembershipEventDisplayName | MembershipEventUnban | MembershipEventUnknown | MembershipEventAvatar | MembershipEventLeave | MembershipEventJoin>
+
+interface MembershipEventBan {
+  type: 'ban'
+  data: {
+    bannedId: string
+    bannedName: string
+    bannerId: string
+    bannerName: string
+  }
+}
+
+interface MembershipEventUnban {
+  type: 'unban'
+  data: {
+    unbannedId: string
+    unbannedName: string
+    unbannerId: string
+    unbannerName: string
+  }
+}
+
+interface MembershipEventDisplayName {
+  type: 'displayName'
+  data: {
+    type: 'changed'
+    to: string
+    from: string | undefined
+    id: string
+  } | {
+    type: 'removed'
+    from: string
+    id: string
+    name: string
+  }
+}
+
+interface MembershipEventAvatar {
+  type: 'avatar'
+  data: {
+    type: 'changed'
+    to: string
+    from: string | undefined
+    id: string
+    name: string
+  } | {
+    type: 'removed'
+    from: string
+    id: string
+    name: string
+  }
+}
+
+interface MembershipEventLeave {
+  type: 'leave'
+  data: {
+    id: string
+    name: string
+  }
+}
+
+interface MembershipEventJoin {
+  type: 'join'
+  data: {
+    id: string
+    name: string
+  }
+}
+
+interface MembershipEventUnknown {
+  type: 'unknown'
+}
+
+export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent {
+  const content = event.getContent<RoomMemberEventContent>()
+  const prev = event.getPrevContent() as RoomMemberEventContent | undefined
+
+  const sender = event.getSender()
+  const subject = event.getStateKey()
+
+  if (!sender || !subject) {
+    return {
+      type: 'unknown',
+    }
+  }
+
+  const senderName = content.displayname === sender ? getDisplayNameFallback(sender) : content.displayname ?? getDisplayNameFallback(sender)
+  const subjectName = getDisplayNameFallback(subject)
+
+  // ban
+  if (content.membership === KnownMembership.Ban) {
+    return {
+      data: {
+        bannedId: subject,
+        bannedName: subjectName,
+        bannerId: sender,
+        bannerName: senderName,
+      },
+      type: 'ban',
+    }
+  }
+
+  // unban
+  if (prev?.membership === KnownMembership.Ban) {
+    return {
+      data: {
+        unbannedId: subject,
+        unbannedName: subjectName,
+        unbannerId: sender,
+        unbannerName: senderName,
+      },
+      type: 'unban',
+    }
+  }
+
+  // displayName
+  if (content.displayname !== prev?.displayname) {
+    if (!content.displayname && prev?.displayname) {
+      return {
+        data: {
+          from: prev.displayname,
+          id: subject,
+          name: subjectName,
+          type: 'removed',
+        },
+        type: 'displayName',
+      }
+    }
+
+    assert(content.displayname, 'display name is required when displayName changed')
+
+    return {
+      data: {
+        from: prev?.displayname,
+        id: subject,
+        to: content.displayname,
+        type: 'changed',
+      },
+      type: 'displayName',
+    }
+  }
+
+  // avatar
+  if (prev?.avatar_url !== content.avatar_url) {
+    if (!content.avatar_url && prev?.avatar_url) {
+      return {
+        data: {
+          from: prev.avatar_url,
+          id: subject,
+          name: subjectName,
+          type: 'removed',
+        },
+        type: 'avatar',
+      }
+    }
+
+    assert(content.avatar_url, 'avatar URL is required when avatar changed')
+
+    return {
+      data: {
+        from: prev?.avatar_url,
+        id: subject,
+        name: senderName,
+        to: content.avatar_url,
+        type: 'changed',
+      },
+      type: 'avatar',
+    }
+  }
+
+  // join
+  if (content.membership === KnownMembership.Join) {
+    return {
+      data: {
+        id: sender,
+        name: senderName,
+      },
+      type: 'join',
+    }
+  }
+
+  // leave
+  if (content.membership === KnownMembership.Leave) {
+    return {
+      data: {
+        id: sender,
+        name: senderName,
+      },
+      type: 'leave',
+    }
+  }
+
+  return {
+    type: 'unknown',
+  }
 }
