@@ -146,6 +146,14 @@ export default defineNuxtConfig({
     name: appMeta.name,
   },
 
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        allowImportingTsExtensions: true,
+      },
+    },
+  },
+
   vite: {
     optimizeDeps: {
       exclude: [
