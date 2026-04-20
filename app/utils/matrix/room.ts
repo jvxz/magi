@@ -139,7 +139,7 @@ export function getMember(client: MatrixClient, userId: string | undefined, room
   if (!member)
     return
 
-  const displayName = getMemberDisplayName(room, userId)
+  const displayName = getRoomMemberDisplayName(room, userId)
   if (!displayName)
     return
 
@@ -159,10 +159,26 @@ export function getMember(client: MatrixClient, userId: string | undefined, room
   }
 }
 
-export function getMemberDisplayName(room: Room, userId: string) {
+export function getRoomMemberDisplayName(room: Room, userId: string | undefined) {
+  if (!userId)
+    return undefined
+
   const member = room.getMember(userId)
 
-  const name = member?.rawDisplayName
+  const name = member?.name
 
   return name === userId ? undefined : name
+}
+
+export async function getRoomEventById(room: Room, client: MatrixClient, eventId: string) {
+  const cachedEvent = room.findEventById(eventId)
+  if (cachedEvent)
+    return cachedEvent
+
+  const eventData = await client.fetchRoomEvent(room.roomId, eventId)
+  const mapper = client.getEventMapper()
+
+  const mapped = mapper(eventData)
+
+  return mapped
 }

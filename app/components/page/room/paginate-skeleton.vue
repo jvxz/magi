@@ -2,7 +2,7 @@
 const colCounts = [2, 3, 5, 6]
 const sizes = [48, 64, 80, 96, 112, 128]
 
-const rows = Array.from({ length: 4 }, () => ({
+const rows = Array.from({ length: 7 }, () => ({
   header: sample(sizes),
   lines: Array.from({ length: sample(colCounts) }, () =>
     Array.from({ length: sample(colCounts) }, () => sample(sizes))),
@@ -22,8 +22,8 @@ const rows = Array.from({ length: 4 }, () => ({
         class="hover:bg-transparent"
       >
         <PageRoomEventMessageRoot>
-          <PageRoomEventMessageAvatar :user="undefined" />
-          <PageRoomEventMessageContent class="gap-1.5 translate-y-1">
+          <PageRoomEventMessageAvatar :user="undefined" ghost />
+          <PageRoomEventMessageContent class="flex flex-col gap-1.5 translate-y-1">
             <template #header>
               <USkeleton
                 class="h-4 relative overflow-clip after:bg-white/15 after:size-full after:content-[''] after:absolute"

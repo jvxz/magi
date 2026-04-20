@@ -1,48 +1,33 @@
 <script lang="ts">
+import type { Room, User } from 'matrix-js-sdk'
 import type { ImgProps } from '~/components/img.vue'
 
 export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
-  user: {
-    avatarUrl?: string
-    displayName?: string
-  } | undefined
   square?: boolean
+  room?: Room | undefined
+  user: User | string | undefined
 }
 </script>
 
 <script setup lang="ts">
 const props = defineProps<MatrixAvatarProps>()
 
-const { client } = useMatrixClient()
+const userProfile = useUserProfile(() => typeof props.user === 'string' ? props.user : props.user?.userId)
+const resolvedAvatar = useResolveAvatarUrl(() => userProfile.value?.avatar_url)
 
-const reducedMotion = usePreferredReducedMotion()
-const src = computed(() => {
-  if (!props.user?.avatarUrl)
-    return IMG_PLACEHOLDER_URL
-
-  if (isMxc(props.user?.avatarUrl)) {
-    return mxcToHttps(props.user.avatarUrl, {
-      allowRedirects: true,
-      animated: reducedMotion.value !== 'reduce',
-      baseUrl: client.value.getHomeserverUrl(),
-      // don't adhere to size prop to allow caching; url doesn't match when size is different
-      height: 400,
-      resizeMethod: 'scale',
-      useAuthentication: true,
-      width: 400,
-    })
-  }
-
-  return props.user.avatarUrl
-})
+const isError = ref(false)
 </script>
 
 <template>
   <Img
+    v-if="resolvedAvatar && !isError"
     v-bind="props"
-    :key="user?.avatarUrl"
-    :alt="user?.displayName ? `${user?.displayName}'s avatar` : 'Avatar'"
-    :src
+    :key="resolvedAvatar"
+    data-slot="avatar"
+    :alt="userProfile?.displayname ? `${userProfile?.displayname}'s avatar` : 'Avatar'"
+    :src="resolvedAvatar"
     :class="cn(!square && 'rounded-full', props.class)"
+    @error="isError = true"
   />
+  <div v-else class="rounded-full bg-primary size-full" />
 </template>
