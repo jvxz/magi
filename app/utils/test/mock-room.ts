@@ -15,6 +15,7 @@ export function createMockRoom(eventCount: number = 250, id: string): Room {
       getPaginationToken: () => 'token',
     }),
     id,
+    loadMembersIfNeeded: async () => {},
     name: `Mock room: ${id}`,
     off: () => {},
     on: () => {},
@@ -44,12 +45,15 @@ function createMockEvents(eventCount: number, roomId: string): MatrixEvent[] {
         content,
         type: 'm.room.message',
       },
+      getClearContent: () => content,
       getContent: () => content,
       getId: () => id,
       getRoomId: () => roomId,
       getSender: () => '@test:localhost',
       getTs: () => Math.random(),
       getType: () => 'm.room.message',
+      isBeingDecrypted: () => false,
+      isDecryptionFailure: () => false,
       isEncrypted: () => false,
     }
 
