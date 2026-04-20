@@ -226,8 +226,8 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
   if (content.membership === KnownMembership.Join) {
     return {
       data: {
-        id: sender,
-        name: senderName,
+        id: subject,
+        name: subjectName,
       },
       type: 'join',
     }
@@ -237,8 +237,8 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
   if (content.membership === KnownMembership.Leave) {
     return {
       data: {
-        id: sender,
-        name: senderName,
+        id: subject,
+        name: subjectName,
       },
       type: 'leave',
     }
