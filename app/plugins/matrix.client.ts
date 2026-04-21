@@ -6,6 +6,7 @@ export default defineNuxtPlugin({
   parallel: true,
   setup: () => {
     const status = useMatrixStatus()
+    const { onSync } = useMatrixHooks()
     const ready = ref(false)
 
     const init = async () => {
@@ -13,33 +14,32 @@ export default defineNuxtPlugin({
         if (isTestMode())
           return
 
-        const { onSync } = useMatrixHooks()
+        status.value.isStarting = true
+        status.value.isDataSynced = false
 
-        // init client
         const { client, initAuthedClient } = useMatrixClient()
 
         const authPayload = await idb.get<AuthPayload>('auth')
         if (authPayload) {
           const authedClient = await initAuthedClient(false)
-          if (!authedClient) {
-            console.error('Unable to get authed client. Logging out...')
+          if (!authedClient)
             logoutClient(client.value)
-          }
 
           else
             status.value.isAuthed = true
         }
-
-        // process isDataSynced status when client changes
-        onSync((syncState, _prevState) => {
-          if (syncState === SyncState.Prepared) {
-            status.value.isDataSynced = true
-            ready.value = true
-          }
-        })
       }
       finally {
+        const router = useRouter()
+        const route = useRoute()
+
         status.value.isStarting = false
+
+        if (route.path.startsWith('/app') && !status.value.isAuthed)
+          await router.replace('/login')
+
+        else if (route.path.startsWith('/login') && status.value.isAuthed)
+          await router.replace('/app')
       }
     }
 
@@ -52,6 +52,14 @@ export default defineNuxtPlugin({
 
       if (status.value.isAuthed && to.path.includes('/login'))
         return navigateTo('/app')
+    })
+
+    // process isDataSynced status when client changes
+    onSync((syncState, _prevState) => {
+      if (syncState === SyncState.Prepared) {
+        status.value.isDataSynced = true
+        ready.value = true
+      }
     })
 
     void init()
