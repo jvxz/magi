@@ -185,61 +185,6 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
     }
   }
 
-  // displayName
-  if (content.displayname !== prev?.displayname) {
-    if (!content.displayname && prev?.displayname) {
-      return {
-        data: {
-          from: prev.displayname,
-          id: subject,
-          name: subjectName,
-          type: 'removed',
-        },
-        type: 'displayName',
-      }
-    }
-
-    assert(content.displayname, 'display name is required when displayName changed')
-
-    return {
-      data: {
-        from: prev?.displayname,
-        id: subject,
-        to: content.displayname,
-        type: 'changed',
-      },
-      type: 'displayName',
-    }
-  }
-
-  // avatar
-  if (prev?.avatar_url !== content.avatar_url) {
-    if (!content.avatar_url && prev?.avatar_url) {
-      return {
-        data: {
-          from: prev.avatar_url,
-          id: subject,
-          name: subjectName,
-          type: 'removed',
-        },
-        type: 'avatar',
-      }
-    }
-
-    assert(content.avatar_url, 'avatar URL is required when avatar changed')
-
-    return {
-      data: {
-        from: prev?.avatar_url,
-        id: subject,
-        name: subjectName,
-        to: content.avatar_url,
-        type: 'changed',
-      },
-      type: 'avatar',
-    }
-  }
-
   // join
   if (content.membership === KnownMembership.Join) {
     return {
@@ -283,6 +228,63 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
         name: senderName,
       },
       type: 'knock',
+    }
+  }
+
+  // displayName
+  if (content.displayname !== prev?.displayname) {
+    if (!content.displayname && prev?.displayname) {
+      return {
+        data: {
+          from: prev.displayname,
+          id: subject,
+          name: subjectName,
+          type: 'removed',
+        },
+        type: 'displayName',
+      }
+    }
+
+    assert(content.displayname, 'display name is required when displayName changed')
+
+    return {
+      data: {
+        from: prev?.displayname,
+        id: subject,
+        to: content.displayname,
+        type: 'changed',
+      },
+      type: 'displayName',
+    }
+  }
+
+  // avatar
+  if (prev?.avatar_url !== content.avatar_url) {
+    if (!content.avatar_url && prev?.avatar_url) {
+      return {
+        data: {
+          from: prev.avatar_url,
+          id: subject,
+          name: subjectName,
+          type: 'removed',
+        },
+        type: 'avatar',
+      }
+    }
+
+    console.log('prev: ', prev)
+    console.log('content: ', content)
+    assert(content.avatar_url, 'avatar URL is required when avatar changed')
+
+    return {
+      data: {
+        from: prev?.avatar_url,
+        id: subject,
+        name: subjectName,
+        to: content.avatar_url,
+        type: 'changed',
+      },
+      type: 'avatar',
     }
   }
 
