@@ -1,16 +1,21 @@
 export default defineNuxtPlugin({
-  dependsOn: ['matrix'],
-  setup: async () => {
-    const visibility = useDocumentVisibility()
-    const sw = await getServiceWorker()
-    assert(sw, 'service worker was undefined when initializing heartbeat')
+  parallel: true,
+  setup: () => {
+    async function init() {
+      const visibility = useDocumentVisibility()
+      const sw = await getServiceWorker()
+      assert(sw, 'service worker was undefined when initializing heartbeat')
 
-    sw.addEventListener('controllerchange', refreshAuth)
-    whenever(() => visibility.value === 'visible', refreshAuth)
+      sw.addEventListener('controllerchange', refreshAuth)
+      whenever(() => visibility.value === 'visible', refreshAuth)
 
-    async function refreshAuth() {
-      const auth = await idb.getItem<AuthPayload>('auth')
-      await messageSw('session', auth ?? {})
+      async function refreshAuth() {
+        const auth = await idb.getItem<AuthPayload>('auth')
+        await messageSw('session', auth ?? {})
+      }
     }
+
+    void init()
   },
+
 })
