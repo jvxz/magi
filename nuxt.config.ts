@@ -83,6 +83,7 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
     '@nuxt/test-utils/module',
     '@peterbud/nuxt-query',
+    'motion-v/nuxt',
   ],
 
   nitro: {

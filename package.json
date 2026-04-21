@@ -41,6 +41,7 @@
     "idb-keyval": "^6.2.2",
     "marked": "^18.0.2",
     "matrix-js-sdk": "^41.3.0",
+    "motion-v": "^2.2.1",
     "nuxt": "^4.4.2",
     "nuxt-security": "2.5.1",
     "nuxt-vitalizer": "2.0.0",
