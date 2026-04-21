@@ -43,17 +43,6 @@ export default defineNuxtPlugin({
       }
     }
 
-    addRouteMiddleware('auth', async (to) => {
-      if (import.meta.server || status.value.isStarting)
-        return
-
-      if (!status.value.isAuthed && to.path.includes('/app'))
-        return navigateTo('/login')
-
-      if (status.value.isAuthed && to.path.includes('/login'))
-        return navigateTo('/app')
-    })
-
     // process isDataSynced status when client changes
     onSync((syncState, _prevState) => {
       if (syncState === SyncState.Prepared) {
