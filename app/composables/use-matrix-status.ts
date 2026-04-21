@@ -5,7 +5,7 @@ export function useMatrixStatus() {
     'matrix:status',
     () => ref({
       clientState: null as SyncState | null,
-      startupState: 'loading' as 'loading' | 'ready',
+      isStarting: true,
       isAuthed: isTestMode() ?? false,
       isDataSynced: isTestMode() ?? false,
     }),
