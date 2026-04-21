@@ -10,9 +10,7 @@ const { $ready } = useNuxtApp()
 const route = useRoute()
 const roomLabel = computed(() => currentRoom.value?.name ?? upperFirst(route.name))
 
-const showInitializing = computed(() =>
-  !$ready || !status.value.isDataSynced || !roomLabel.value,
-)
+const showInitializing = computed(() => !$ready.value || !status.value.isDataSynced || !roomLabel.value)
 
 const motionProps: MotionProps = {
   animate: { opacity: 1, scale: 1, y: 0 },
