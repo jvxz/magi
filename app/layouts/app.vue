@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import { SplitterGroup, SplitterPanel } from 'reka-ui'
 
-defineProps<{
-  appHeaderTitle?: string
-}>()
-
 const layout = useCookie<number[]>('splitter:appAside', {
   default: () => [400, 240],
 })
@@ -14,8 +10,8 @@ const layout = useCookie<number[]>('splitter:appAside', {
   <SettingsDialog />
 
   <div class="flex flex-col h-screen relative">
-    <LayoutAppHeader :title="appHeaderTitle" />
-    <main class="bg-card flex-1 h-fit">
+    <LayoutAppHeader />
+    <main class="bg-card flex-1 h-fit z-1">
       <SplitterGroup
         id="aside-extra-splitter-group"
         direction="horizontal"
