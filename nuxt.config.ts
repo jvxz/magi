@@ -87,6 +87,10 @@ export default defineNuxtConfig({
   ],
 
   nitro: {
+    cloudflare: {
+      nodeCompat: true,
+    },
+
     imports: {
       dirs: [
         './server/schema/*',
