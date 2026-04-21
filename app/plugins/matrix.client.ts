@@ -1,6 +1,7 @@
 import { SyncState } from 'matrix-js-sdk'
 
 export default defineNuxtPlugin({
+  name: 'matrix',
   order: 0,
   setup: async () => {
     if (isTestMode())
@@ -20,8 +21,10 @@ export default defineNuxtPlugin({
         logoutClient(client.value)
       }
 
-      else
+      else {
         status.value.isAuthed = true
+        status.value.startupState = 'ready'
+      }
     }
 
     // process isDataSynced status when client changes
