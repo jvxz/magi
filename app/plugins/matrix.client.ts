@@ -11,8 +11,10 @@ export default defineNuxtPlugin({
 
     const init = async () => {
       try {
-        if (isTestMode())
-          return
+        if (isTestMode()) {
+          await delay(1000)
+          return ready.value = true
+        }
 
         status.value.isStarting = true
         status.value.isDataSynced = false
