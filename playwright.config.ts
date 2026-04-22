@@ -9,7 +9,12 @@ export default defineConfig<ConfigOptions>({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        ...(process.env.CI
+          ? { launchOptions: { args: ['--disable-dev-shm-usage'] } }
+          : {}),
+      },
     },
   ],
   reporter: 'html',

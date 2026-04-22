@@ -52,7 +52,7 @@ test.describe('Event list', () => {
 
     await navToRoom(sharedPage, '750')
 
-    const oldContainer = await getScrollContainer(sharedPage)
+    const oldContainer = getScrollContainer(sharedPage)
 
     const scrollHeightVal = await oldContainer.evaluate(el => el.scrollHeight)
     const scrollTopVal = randomInt(scrollHeightVal * 0.25, scrollHeightVal)
@@ -62,8 +62,11 @@ test.describe('Event list', () => {
     await navToRoom(sharedPage, '250')
     await navToRoom(sharedPage, '750')
 
-    const newContainer = await getScrollContainer(sharedPage)
-    expect.poll(async () => await newContainer.evaluate(el => el.scrollTop), { timeout: 2000 }).toBe(scrollTopVal)
+    const newContainer = getScrollContainer(sharedPage)
+    await expect(newContainer).toBeVisible({ timeout: 15_000 })
+    await expect
+      .poll(() => newContainer.evaluate((el: HTMLElement) => el.scrollTop), { timeout: 10_000 })
+      .toBe(scrollTopVal)
   })
 })
 
@@ -99,9 +102,10 @@ async function navToRoom(page: TestArgs['page'], roomId: string) {
 
   await tab.click()
   await page.waitForURL(`**\/${roomId}`)
+  await expect(page.getByTestId('scroll-container')).toBeVisible({ timeout: 15_000 })
 }
 
-async function getScrollContainer(page: TestArgs['page']) {
+function getScrollContainer(page: TestArgs['page']) {
   return page.getByTestId('scroll-container')
 }
 
