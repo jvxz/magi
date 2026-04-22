@@ -1,4 +1,7 @@
 export default defineNuxtRouteMiddleware((to) => {
+  if (import.meta.server)
+    return
+
   if (!('spaceId' in to.params)) {
     return navigateTo({
       name: 'me',
