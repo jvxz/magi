@@ -53,7 +53,7 @@ export default defineNuxtConfig({
             page.meta ||= {}
             page.meta.requiresAuth = true
 
-            if (!page.meta.middlware)
+            if (!page.meta.middleware)
               page.meta.middleware = ['auth']
 
             else {
