@@ -1,4 +1,5 @@
 import type { NuxtPage } from 'nuxt/schema'
+import { uniq } from 'es-toolkit/array'
 import { pwa } from './app/config/pwa'
 import { appMeta } from './shared/utils/constants'
 
@@ -58,10 +59,10 @@ export default defineNuxtConfig({
 
             else {
               if (Array.isArray(page.meta.middleware))
-                page.meta.middleware = [...page.meta.middleware, 'auth']
+                page.meta.middleware = uniq([...page.meta.middleware, 'auth'])
 
               else
-                page.meta.middleware = [page.meta.middleware, 'auth']
+                page.meta.middleware = uniq([page.meta.middleware, 'auth'])
             }
           }
           if (page.children)
