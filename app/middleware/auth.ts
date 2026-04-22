@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (status.value.isStarting)
     return
 
-  if (!status.value.isAuthed && to.name !== 'login')
+  if (!status.value.isAuthed && to.meta.requiresAuth)
     return navigateTo('/login')
 
   if (status.value.isAuthed && to.name === 'login')
