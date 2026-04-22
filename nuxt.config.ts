@@ -1,3 +1,5 @@
+import type { NuxtPage } from 'nuxt/schema'
+import { uniq } from 'es-toolkit/array'
 import { pwa } from './app/config/pwa'
 import { appMeta } from './shared/utils/constants'
 
@@ -44,7 +46,37 @@ export default defineNuxtConfig({
     },
   },
 
+  hooks: {
+    'pages:extend': (pages) => {
+      function requireAuth(pages: NuxtPage[]) {
+        for (const page of pages) {
+          if (page?.path.startsWith('/app')) {
+            page.meta ||= {}
+            page.meta.requiresAuth = true
+
+            if (!page.meta.middleware)
+              page.meta.middleware = ['auth']
+
+            else {
+              if (Array.isArray(page.meta.middleware))
+                page.meta.middleware = uniq([...page.meta.middleware, 'auth'])
+
+              else
+                page.meta.middleware = uniq([page.meta.middleware, 'auth'])
+            }
+          }
+          if (page.children)
+            requireAuth(page.children)
+        }
+      }
+      requireAuth(pages)
+    },
+  },
+
   icon: {
+    clientBundle: {
+      scan: true,
+    },
     customCollections: [{ dir: './app/assets/icons', prefix: 'custom', provider: 'none' }],
   },
 
@@ -122,8 +154,8 @@ export default defineNuxtConfig({
   pwa,
 
   routeRules: {
-    '/app/**': { appMiddleware: 'auth', ssr: false },
-    '/login': { appMiddleware: 'auth', ssr: false },
+    '/app/**': { ssr: false },
+    '/login': { ssr: false },
     '/playground': { appLayout: false },
   },
 

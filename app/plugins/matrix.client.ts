@@ -3,34 +3,65 @@ import { SyncState } from 'matrix-js-sdk'
 export default defineNuxtPlugin({
   name: 'matrix',
   order: 0,
-  setup: async () => {
-    if (isTestMode())
-      return
-
+  parallel: true,
+  setup: () => {
     const status = useMatrixStatus()
     const { onSync } = useMatrixHooks()
+    // always ready in e2e tests
+    const ready = ref(isTestMode())
 
-    // init client
-    const { client, initAuthedClient } = useMatrixClient()
+    const init = async () => {
+      try {
+        if (isAuthMocked()) {
+          status.value.isAuthed = true
+          status.value.isDataSynced = true
 
-    const authPayload = await idb.get<AuthPayload>('auth')
-    if (authPayload) {
-      const authedClient = await initAuthedClient(false)
-      if (!authedClient) {
-        console.error('Unable to get authed client. Logging out...')
-        logoutClient(client.value)
+          return
+        }
+
+        status.value.isStarting = true
+        status.value.isDataSynced = false
+
+        const { client, initAuthedClient } = useMatrixClient()
+
+        const authPayload = await idb.get<AuthPayload>('auth')
+        if (authPayload) {
+          const authedClient = await initAuthedClient(false)
+          if (!authedClient)
+            logoutClient(client.value)
+
+          else
+            status.value.isAuthed = true
+        }
       }
+      finally {
+        const router = useRouter()
+        const route = useRoute()
 
-      else {
-        status.value.isAuthed = true
-        status.value.startupState = 'ready'
+        status.value.isStarting = false
+
+        if (!status.value.isAuthed && route.meta.requiresAuth)
+          await router.replace('/login')
+
+        else if (status.value.isAuthed && route.name === 'login')
+          await router.replace('/app')
       }
     }
 
     // process isDataSynced status when client changes
     onSync((syncState, _prevState) => {
-      if (syncState === SyncState.Prepared)
+      if (syncState === SyncState.Prepared) {
         status.value.isDataSynced = true
+        ready.value = true
+      }
     })
+
+    void init()
+
+    return {
+      provide: {
+        ready,
+      },
+    }
   },
 })

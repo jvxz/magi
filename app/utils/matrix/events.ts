@@ -272,8 +272,6 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
       }
     }
 
-    console.log('prev: ', prev)
-    console.log('content: ', content)
     assert(content.avatar_url, 'avatar URL is required when avatar changed')
 
     return {
