@@ -154,8 +154,8 @@ export default defineNuxtConfig({
   pwa,
 
   routeRules: {
-    '/app/**': { appMiddleware: 'auth', ssr: false },
-    '/login': { appMiddleware: 'auth', ssr: false },
+    '/app/**': { ssr: false },
+    '/login': { ssr: false },
     '/playground': { appLayout: false },
   },
 
