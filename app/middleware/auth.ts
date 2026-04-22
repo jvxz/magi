@@ -11,12 +11,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (status.value.isStarting)
     return
 
-  if (isAuthMocked())
-    status.value.isAuthed = true
-
-  if (!status.value.isAuthed && to.path.includes('/app'))
+  if (!status.value.isAuthed && to.name !== 'login')
     return navigateTo('/login')
 
-  if (status.value.isAuthed && to.path.includes('/login'))
+  if (status.value.isAuthed && to.name === 'login')
     return navigateTo('/app')
 })
