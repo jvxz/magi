@@ -1,3 +1,4 @@
+import type { NuxtPage } from 'nuxt/schema'
 import { pwa } from './app/config/pwa'
 import { appMeta } from './shared/utils/constants'
 
@@ -41,6 +42,33 @@ export default defineNuxtConfig({
     defaults: {
       preload: true,
       weights: ['100 900'],
+    },
+  },
+
+  hooks: {
+    'pages:extend': (pages) => {
+      function requireAuth(pages: NuxtPage[]) {
+        for (const page of pages) {
+          if (page?.path.startsWith('/app')) {
+            page.meta ||= {}
+            page.meta.requiresAuth = true
+
+            if (!page.meta.middlware)
+              page.meta.middleware = ['auth']
+
+            else {
+              if (Array.isArray(page.meta.middleware))
+                page.meta.middleware = [...page.meta.middleware, 'auth']
+
+              else
+                page.meta.middleware = [page.meta.middleware, 'auth']
+            }
+          }
+          if (page.children)
+            requireAuth(page.children)
+        }
+      }
+      requireAuth(pages)
     },
   },
 
