@@ -7,14 +7,13 @@ export default defineNuxtPlugin({
   setup: () => {
     const status = useMatrixStatus()
     const { onSync } = useMatrixHooks()
-    const ready = ref(false)
+    // always ready in e2e tests
+    const ready = ref(isTestMode())
 
     const init = async () => {
       try {
-        if (isTestMode()) {
-          await delay(1000)
-          return ready.value = true
-        }
+        if (isTestMode())
+          return
 
         status.value.isStarting = true
         status.value.isDataSynced = false
