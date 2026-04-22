@@ -12,6 +12,5 @@ test.describe('Middleware', () => {
 
     await page.goto('/login', { waitUntil: 'load' })
     await expect.poll(() => page.url(), { timeout: 5000 }).toContain('/app')
-    await page.pause()
   })
 })
