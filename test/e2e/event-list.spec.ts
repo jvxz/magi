@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@nuxt/test-utils/playwright'
 import { assert } from 'es-toolkit'
 import { randomInt } from 'es-toolkit/math'
+import { setFlag } from './utils'
 
 type Direction = 'backwards' | 'forwards'
 type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
@@ -13,6 +14,8 @@ test.describe.configure({ mode: 'serial' })
 test.beforeAll(async ({ browser }) => {
   const context = await browser.newContext()
   sharedPage = await context.newPage()
+
+  await setFlag(context, 'skip-auth-middleware', true)
 
   await sharedPage.addInitScript(() => {
     window.localStorage.setItem('magi:test:auth', JSON.stringify({

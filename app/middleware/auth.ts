@@ -1,6 +1,12 @@
 export default defineNuxtRouteMiddleware((to) => {
   const status = useMatrixStatus()
 
+  if (
+    isTestMode()
+    && (useCookie('test-flag:skip-auth-middleware').value || localStorage.getItem('magi:test:auth'))
+  )
+    status.value.isAuthed = true
+
   if (import.meta.server || status.value.isStarting)
     return
 
