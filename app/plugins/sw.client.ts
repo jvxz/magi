@@ -15,7 +15,6 @@ export default defineNuxtPlugin({
       }
     }
 
-    void init()
+    void init().catch(err => console.error('[SW]: ', err))
   },
-
 })
