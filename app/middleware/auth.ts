@@ -1,4 +1,4 @@
-defineNuxtRouteMiddleware((to) => {
+export default defineNuxtRouteMiddleware((to) => {
   const status = useMatrixStatus()
 
   if (import.meta.server || status.value.isStarting)
