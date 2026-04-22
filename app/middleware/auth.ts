@@ -1,11 +1,14 @@
 export default defineNuxtRouteMiddleware(async (to) => {
+  if (import.meta.server)
+    return
+
   const authInIdb = await idb.get('auth')
   if (authInIdb && to.name === 'login')
     return navigateTo('/app')
 
   const status = useMatrixStatus()
 
-  if (import.meta.server || status.value.isStarting)
+  if (status.value.isStarting)
     return
 
   if (
