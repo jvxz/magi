@@ -40,10 +40,10 @@ export default defineNuxtPlugin({
 
         status.value.isStarting = false
 
-        if (route.path.startsWith('/app') && !status.value.isAuthed)
+        if (!status.value.isAuthed && route.meta.requiresAuth)
           await router.replace('/login')
 
-        else if (route.path.startsWith('/login') && status.value.isAuthed)
+        else if (status.value.isAuthed && route.name === 'login')
           await router.replace('/app')
       }
     }
