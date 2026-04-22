@@ -11,10 +11,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (status.value.isStarting)
     return
 
-  if (
-    isTestMode()
-    && (useCookie('test-flag:skip-auth-middleware').value || localStorage.getItem('magi:test:auth'))
-  )
+  if (isAuthMocked())
     status.value.isAuthed = true
 
   if (!status.value.isAuthed && to.path.includes('/app'))

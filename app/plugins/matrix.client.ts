@@ -12,7 +12,7 @@ export default defineNuxtPlugin({
 
     const init = async () => {
       try {
-        if (isTestMode()) {
+        if (isAuthMocked()) {
           status.value.isAuthed = true
           status.value.isDataSynced = true
 
