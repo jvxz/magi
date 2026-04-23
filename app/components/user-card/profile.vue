@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { me } = useUser()
+const { self } = useSelf()
 </script>
 
 <template>
@@ -7,22 +7,22 @@ const { me } = useUser()
     <MatrixAvatar
       loading="eager"
       fetchpriority="high"
-      :user="me?.userId"
+      :user="self?.userId"
       :size="36"
       class="max-h-full"
     />
     <div class="flex-col size-full *:shrink-0 -translate-y-0.5">
-      <p v-if="me?.displayName" class="text-sm font-medium h-1lh">
-        {{ me.displayName }}
+      <p v-if="self?.displayName" class="text-sm font-medium h-1lh">
+        {{ self.displayName }}
       </p>
       <USkeleton v-else class="text-sm py-2 shrink h-1lh w-24" />
 
       <div class="h-0.6lh w-full relative overflow-hidden *:duration-150 *:ease">
         <p class="text-2xs text-muted-foreground bottom-0 absolute group-hover:bottom-1lh">
-          {{ me?.presence ? upperFirst(me?.presence) : 'Offline' }}
+          {{ self?.presence ? upperFirst(self?.presence) : 'Offline' }}
         </p>
         <p class="text-2xs text-muted-foreground top-1lh absolute group-hover:top-0">
-          {{ me?.userId }}
+          {{ self?.userId }}
         </p>
       </div>
     </div>
