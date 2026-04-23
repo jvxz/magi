@@ -57,7 +57,7 @@ watch(() => r$.$value.homeserver, () => {
 
 <template>
   <div class="flex h-screen items-center justify-center">
-    <div class="py-12 rounded bg-card-2 container flex size-fit w-lg shadow-xl">
+    <div class="py-12 rounded bg-card-lighter container flex size-fit w-lg shadow-xl">
       <div class="flex flex-col gap-10 h-full w-full">
         <div class="text-center flex flex-col gap-1 justify-center">
           <h1 class="text-2xl font-medium">

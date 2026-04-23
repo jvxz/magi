@@ -17,7 +17,7 @@ defineProps<PrimitiveProps & {
     data-testid="event-root"
     :data-event-id="eventId"
     :data-event-type="eventType"
-    :class="cn('px-6 data-[grouped=false]:mt-4.5 group hover:bg-card-2 shrink-0 group data-[grouped=true]:min-h-0', $props.class)"
+    :class="cn('px-6 data-[grouped=false]:mt-4.5 group hover:bg-card-lighter shrink-0 group data-[grouped=true]:min-h-0', $props.class)"
     :data-grouped="grouped"
   >
     <slot />

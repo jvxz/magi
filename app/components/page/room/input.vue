@@ -8,7 +8,7 @@ const msg = shallowRef('')
 
 <template>
   <div class="mb-3 px-3 rounded flex shrink-0 h-user-card-height w-full bottom-0 absolute overflow-hidden">
-    <div class="px-3.5 border rounded bg-card-2 flex gap-3.5 size-full items-center *:shrink-0">
+    <div class="px-3.5 border rounded bg-card-lighter flex gap-3.5 size-full items-center *:shrink-0">
       <UButton variant="ghost" size="icon">
         <Icon name="tabler:plus" class="size-5" />
       </UButton>

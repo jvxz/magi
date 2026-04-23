@@ -37,8 +37,8 @@ const src = computed(
       />
     </div>
 
-    <div class="mt-2/5 p-4 pt-1/8 border border-t-0 rounded-b-lg bg-card-2 flex flex-col gap-2 relative z-10 isolate">
-      <AvatarRoot class="border-5 border-card-2 rounded-2xl bg-card-2 flex size-16 items-center inset-0 left-4 justify-center absolute z-10 overflow-hidden -top-1/8">
+    <div class="mt-2/5 p-4 pt-1/8 border border-t-0 rounded-b-lg bg-card-lighter flex flex-col gap-2 relative z-10 isolate">
+      <AvatarRoot class="border-5 border-card-lighter rounded-2xl bg-card-lighter flex size-16 items-center inset-0 left-4 justify-center absolute z-10 overflow-hidden -top-1/8">
         <template v-if="room">
           <AvatarImage
             v-if="src"
