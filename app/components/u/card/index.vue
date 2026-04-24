@@ -10,7 +10,7 @@ const props = defineProps<{
     :class="cn(
       staticStyles.base,
       staticStyles.variant.default,
-      'flex flex-col gap-5',
+      'flex flex-col gap-5 shadow-lg',
       props.class,
     )"
   >
