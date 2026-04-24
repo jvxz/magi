@@ -39,34 +39,34 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
 
 <template>
   <div
-      ref="container"
-      class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
-      data-testid="scroll-container"
+    ref="container"
+    class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
+    data-testid="scroll-container"
+  >
+    <div
+      ref="wrapper"
+      class="w-full"
+      data-testid="scroll-container-wrapper"
     >
+      <div data-ignore class="h-4.25" />
+
+      <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
+
       <div
-        ref="wrapper"
-        class="w-full"
-        data-testid="scroll-container-wrapper"
+        v-for="(event, idx) in groupedEvents.events"
+        v-bind="createItemBind(event, idx)"
+        :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
+        :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
       >
-        <div data-ignore class="h-4.25" />
-
-        <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
-
-        <div
-          v-for="(event, idx) in groupedEvents.events"
-          v-bind="createItemBind(event, idx)"
-          :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
-          :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
-        >
-          <PageRoomEventGeneric
-            :event
-            :grouped="groupedEvents.grouped[idx] !== false"
-            :room
-          />
-        </div>
-        <div data-ignore class="h-12" />
+        <PageRoomEventGeneric
+          :event
+          :grouped="groupedEvents.grouped[idx] !== false"
+          :room
+        />
       </div>
+      <div data-ignore class="h-12" />
     </div>
+  </div>
 </template>
 
 <style scoped>

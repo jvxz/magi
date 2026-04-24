@@ -130,7 +130,11 @@ function handleCopyUserId() {
             </UBadge>
           </div>
 
-          <UInput v-if="!isSelf" :placeholder="`Message ${displayName}`" class="text-xs" />
+          <UInput
+            v-if="!isSelf"
+            :placeholder="`Message ${displayName}`"
+            class="text-xs"
+          />
         </div>
       </UCard>
     </PopoverContent>
