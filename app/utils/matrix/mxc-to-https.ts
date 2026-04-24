@@ -1,6 +1,6 @@
 import { getHttpUriForMxc } from 'matrix-js-sdk'
 
-interface Opts {
+export interface MxcToHttpsOptions {
   baseUrl?: string | undefined
   width?: number | undefined
   height?: number | undefined
@@ -11,7 +11,7 @@ interface Opts {
   animated?: boolean | undefined
 }
 
-export function mxcToHttps(mxc: string | undefined, opts?: Opts) {
+export function mxcToHttps(mxc: string | undefined, opts?: MxcToHttpsOptions) {
   try {
     return getHttpUriForMxc(
       opts?.baseUrl ?? MATRIX_BASE_URL,
