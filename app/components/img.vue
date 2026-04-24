@@ -13,6 +13,7 @@ export interface ImgProps {
   onLoad?: (e: Event) => void
   onError?: (e: Event) => void
   doPlaceholder?: boolean
+  classes?: DefineClasses<'span' | 'img'>
 }
 
 const props = defineProps<ImgProps>()
@@ -38,9 +39,7 @@ function handleCached(e: any) {
 <template>
   <span
     class="relative after:bg-card after:size-full after:content-[''] after:inset-0 after:absolute"
-    :class="{
-      'after:invisible': !error && !doPlaceholder,
-    }"
+    :class="cn([!error && !doPlaceholder ? 'after:invisible' : '', $props.classes?.span])"
   >
     <img
       v-bind="props"
@@ -52,7 +51,7 @@ function handleCached(e: any) {
       :class="cn(
         'select-none relative',
         !loaded && 'bg-muted',
-        $props.class,
+        $props.classes?.img,
       )"
       :data-loaded="loaded ? 'true' : 'false'"
       :data-error="error ? 'true' : 'false'"
