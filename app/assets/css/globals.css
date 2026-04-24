@@ -123,3 +123,13 @@ body[style*='padding-right'] {
 .zoom-leave-to {
   @apply animate-out fade-out-0 duration-100 zoom-out-95;
 }
+
+@keyframes skeleton {
+  0% {
+    translate: -100% 0;
+  }
+
+  100% {
+    translate: 300% 0;
+  }
+}
