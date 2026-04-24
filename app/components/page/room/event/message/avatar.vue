@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { Room } from 'matrix-js-sdk'
+import type { Room, User } from 'matrix-js-sdk'
 import type { MatrixAvatarProps } from '~/components/matrix/avatar.vue'
 import { MatrixAvatar } from '#components'
 
-defineProps<MatrixAvatarProps & { ghost?: boolean, room?: Room }>()
+defineProps<MatrixAvatarProps & { ghost?: boolean, room?: Room, user?: User }>()
 </script>
 
 <template>
@@ -14,8 +14,9 @@ defineProps<MatrixAvatarProps & { ghost?: boolean, room?: Room }>()
         :user
         :room
         :size="size ?? 32"
-        class="size-full"
+        class="size-full cursor-pointer squish"
       />
+
       <USkeleton v-else class="rounded-full size-full" />
     </template>
     <USkeleton v-else class="rounded-full size-full" />
