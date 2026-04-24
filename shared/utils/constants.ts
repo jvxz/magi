@@ -1,4 +1,4 @@
-import type { AvatarImageSize } from '~/utils/matrix/types'
+import type { AvatarImageSize } from '../../app/utils/matrix/types'
 
 export const appMeta = {
   description: 'A familiar Matrix client for humans',
