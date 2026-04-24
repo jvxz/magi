@@ -34,8 +34,8 @@ const isError = ref(false)
     :src="resolvedAvatar"
     :class="cn(!square && 'rounded-full', props.class)"
     :classes="{ img: 'object-cover' }"
-    @error="isError = true"
     :do-placeholder="false"
+    @error="isError = true"
   />
   <div v-else :class="cn('rounded-full bg-primary size-full', props.class)" />
 </template>
