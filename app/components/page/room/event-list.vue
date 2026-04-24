@@ -38,8 +38,7 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
 </script>
 
 <template>
-  <UProfilePopoverRoot>
-    <div
+  <div
       ref="container"
       class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
       data-testid="scroll-container"
@@ -68,8 +67,6 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
         <div data-ignore class="h-12" />
       </div>
     </div>
-    <UProfilePopoverContent side="right" />
-  </UProfilePopoverRoot>
 </template>
 
 <style scoped>
