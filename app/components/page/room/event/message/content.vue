@@ -6,7 +6,7 @@ defineProps<PrimitiveProps>()
 
 <template>
   <Primitive v-bind="$props" :class="cn('flex-1  ', $attrs.class)">
-    <div v-if="$slots.header" class="text-sm font-medium space-x-2">
+    <div v-if="$slots.header" class="text-sm font-medium flex gap-2 items-center">
       <slot name="header" />
     </div>
     <slot />
