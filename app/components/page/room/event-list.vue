@@ -38,35 +38,38 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
-    data-testid="scroll-container"
-  >
+  <UProfilePopoverRoot>
     <div
-      ref="wrapper"
-      class="w-full"
-      data-testid="scroll-container-wrapper"
+      ref="container"
+      class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
+      data-testid="scroll-container"
     >
-      <div data-ignore class="h-4.25" />
-
-      <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
-
       <div
-        v-for="(event, idx) in groupedEvents.events"
-        v-bind="createItemBind(event, idx)"
-        :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
-        :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
+        ref="wrapper"
+        class="w-full"
+        data-testid="scroll-container-wrapper"
       >
-        <PageRoomEventGeneric
-          :event
-          :grouped="groupedEvents.grouped[idx] !== false"
-          :room
-        />
+        <div data-ignore class="h-4.25" />
+
+        <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
+
+        <div
+          v-for="(event, idx) in groupedEvents.events"
+          v-bind="createItemBind(event, idx)"
+          :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
+          :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
+        >
+          <PageRoomEventGeneric
+            :event
+            :grouped="groupedEvents.grouped[idx] !== false"
+            :room
+          />
+        </div>
+        <div data-ignore class="h-12" />
       </div>
-      <div data-ignore class="h-12" />
     </div>
-  </div>
+    <UProfilePopoverContent side="right" />
+  </UProfilePopoverRoot>
 </template>
 
 <style scoped>
