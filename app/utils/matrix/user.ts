@@ -24,7 +24,7 @@ export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: Partial<{
     animated: opts?.animated ?? true,
     baseUrl: opts?.baseUrl,
     height: size,
-    resizeMethod: 'scale',
+    resizeMethod: 'crop',
     useAuthentication: true,
     width: size,
   }, opts ||= {}))
