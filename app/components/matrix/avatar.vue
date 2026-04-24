@@ -26,7 +26,7 @@ const isError = ref(false)
 
 <template>
   <Img
-    v-if="resolvedAvatar && !isError"
+    v-if="resolvedAvatar"
     v-bind="props"
     :key="resolvedAvatar"
     data-slot="avatar"
@@ -35,6 +35,7 @@ const isError = ref(false)
     :class="cn(!square && 'rounded-full', props.class)"
     :classes="{ img: 'object-cover' }"
     @error="isError = true"
+    :do-placeholder="false"
   />
-  <div v-else class="rounded-full bg-primary size-full" />
+  <div v-else :class="cn('rounded-full bg-primary size-full', props.class)" />
 </template>
