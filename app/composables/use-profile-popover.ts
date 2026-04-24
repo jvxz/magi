@@ -1,12 +1,15 @@
+import type { PopoverContentProps } from 'reka-ui'
+
 export const useProfilePopover = createSharedComposable(() => {
   const open = shallowRef(false)
   const anchorElement = shallowRef<MaybeElement>()
   const userIdRef = shallowRef<string>()
+  const contentProps = shallowRef<PopoverContentProps>()
 
-  let currentEventRoot: MaybeElement
+  let currentRoot: MaybeElement
   whenever(() => !open.value, () => {
-    currentEventRoot?.removeAttribute('data-popover-open')
-    currentEventRoot = undefined
+    currentRoot?.removeAttribute('data-popover-open')
+    currentRoot = undefined
   })
 
   function openProfilePopover(trigger: MaybeElement, userId: string) {
@@ -14,11 +17,10 @@ export const useProfilePopover = createSharedComposable(() => {
       return
 
     const eventRoot = trigger?.closest('[data-event-id]') as HTMLElement | null
-    if (!eventRoot)
-      return
+    const root = eventRoot ?? trigger
 
-    eventRoot.setAttribute('data-popover-open', '')
-    currentEventRoot = eventRoot
+    root.setAttribute('data-popover-open', '')
+    currentRoot = root
 
     anchorElement.value = trigger
     open.value = true
@@ -29,6 +31,7 @@ export const useProfilePopover = createSharedComposable(() => {
 
   return {
     anchorElement,
+    contentProps,
     open,
     openProfilePopover,
     user,

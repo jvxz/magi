@@ -1,29 +1,19 @@
 <script lang="ts" setup>
-import type { PopoverContentProps } from 'reka-ui'
-
-withDefaults(
-  defineProps<PopoverContentProps>(),
-  {
-    align: 'start',
-    asChild: true,
-    avoidCollisions: true,
-    collisionPadding: 12,
-    disableOutsidePointerEvents: true,
-    sideOffset: 8,
-  },
-)
-
-const { anchorElement, user } = useProfilePopover()
+const { anchorElement, contentProps, user } = useProfilePopover()
 
 const profile = useUserProfile(() => user.value?.userId)
-
-const displayName = computed(() => profile.value?.displayname ?? getDisplayNameFallback(user.value?.userId))
-const avatarUrl = computed(() => resolveAvatarUrl(user.value?.avatarUrl))
-const parsedUserId = computed(() => parseUserId(user.value?.userId))
+const { self } = useSelf()
 
 const currentRoom = useCurrentRoom()
+
+const displayName = computed(() => profile.value?.displayname ?? getDisplayNameFallback(user.value?.userId))
+const avatarUrl = computed(() => resolveAvatarUrl(user.value?.avatarUrl, { size: 'small' }))
+const parsedUserId = computed(() => parseUserId(user.value?.userId))
+
 const powerLevel = useUserRoomPowerLevel(() => currentRoom.value?.roomId, () => user.value?.userId)
 const powerLevelName = computed(() => upperFirst(isNull(powerLevel.value) ? 'member' : getPowerLevelName(powerLevel.value)))
+
+const isSelf = computed(() => self.value?.userId === user.value?.userId)
 
 const { copy, isSupported } = useClipboard()
 const copied = refAutoReset(false, 750)
@@ -39,18 +29,25 @@ function handleCopyUserId() {
 <template>
   <PopoverPortal>
     <PopoverContent
-      v-bind="$props"
+      v-bind="contentProps"
+      align="start"
+      as-child
+      disable-outside-pointer-events
       :reference="anchorElement ?? undefined"
       :class="cn('z-1', $attrs.class)"
     >
       <UCard class="p-0 border-none bg-card-light gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3">
         <div class="shrink-0 h-24 inset-0 absolute overflow-clip">
-          <div class="flex h-full justify-end relative isolate">
+          <div class="flex h-full justify-end relative">
             <img
+              v-if="avatarUrl"
               :src="avatarUrl"
               :alt="`${displayName}'s avatar (banner)'`"
               class="size-full scale-150 absolute object-cover blur-xl -z-1"
             />
+
+            <div v-else class="bg-muted size-full absolute -z-1" />
+
             <div class="p-2 space-x-1">
               <UButton
                 size="icon"
@@ -71,13 +68,11 @@ function handleCopyUserId() {
         </div>
 
         <div class="px-4 pb-4 pt-14 border border-border rounded-b flex flex-1 flex-col gap-2">
-          <div class="size-20 relative isolate before:rounded-full before:bg-card-light before:size-full before:content-[''] before:scale-115 before:inset-0 before:absolute">
-            <MatrixAvatar
-              :user="user"
-              class="size-full"
-              image-size="medium"
-            />
-          </div>
+          <MatrixAvatar
+            :user="user"
+            class="size-20 ring-6 ring-card-light"
+            image-size="small"
+          />
 
           <div class="flex flex-col">
             <p class="text-lg font-medium">
@@ -127,17 +122,7 @@ function handleCopyUserId() {
             </div>
           </div>
 
-          <div class="px-2 underline-muted-foreground flex gap-1 w-fit cursor-pointer items-center -mx-2.5 hover:underline">
-            <div class="flex items-center relative *:border-2 *:border-card *:rounded-full *:bg-foreground *:size-4 *:not-first:-ml-2">
-              <div class=""></div>
-              <div class=""></div>
-              <div class=""></div>
-            </div>
-
-            <p class="text-xs text-muted-foreground w-fit">
-              5 mutual rooms
-            </p>
-          </div>
+          <UProfilePopoverMutualRooms v-if="!isSelf" />
 
           <div class="flex flex-wrap gap-1 *:text-xs *:font-normal *:rounded-full *:max-w-28 *:block *:truncate">
             <UBadge class="" variant="outline">
@@ -145,11 +130,7 @@ function handleCopyUserId() {
             </UBadge>
           </div>
 
-          <!-- <div class="flex-1" /> -->
-
-          <div class="">
-            <UInput :placeholder="`Message ${displayName}`" class="text-xs" />
-          </div>
+          <UInput v-if="!isSelf" :placeholder="`Message ${displayName}`" class="text-xs" />
         </div>
       </UCard>
     </PopoverContent>
