@@ -6,7 +6,8 @@ export function useMutualRooms(otherUserMaybeId: MaybeRefOrGetter<MaybeUserOrId 
     enabled: () => !!otherUser.value,
     queryFn: () => getMutualRooms(client.value, otherUser.value?.userId),
     queryKey: ['mutualRooms', () => otherUser.value?.userId],
-    retry: 1
+    retry: 1,
+    retryOnMount: false,
   })
 
   return query
