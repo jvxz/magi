@@ -1,6 +1,6 @@
 // @unocss-include
 const interactiveStyles = {
-  base: 'font-medium cursor-pointer focus-visible:border-primary/50 select-none focus-visible:ring-ring/40 focus-visible:ring-[3px] active:ring-ring/60 aria-invalid:ring-danger/20 aria-invalid:border-danger dark:aria-invalid:ring-danger/40 shrink-0 gap-2 rounded text-base whitespace-nowrap font-medium outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 transition-transform duration-75',
+  base: 'font-medium squish cursor-pointer focus-visible:border-primary/50 select-none focus-visible:ring-ring/40 focus-visible:ring-[3px] active:ring-ring/60 aria-invalid:ring-danger/20 aria-invalid:border-danger dark:aria-invalid:ring-danger/40 shrink-0 gap-2 rounded text-base whitespace-nowrap font-medium outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 transition-transform duration-75',
   size: {
     default: 'h-8 px-2.5 py-0.75 text-sm',
     icon: 'aspect-square size-8',
@@ -13,7 +13,7 @@ const interactiveStyles = {
     default:
       'bg-primary/85 border border-primary active:bg-primary/80 text-primary-foreground glow-primary',
     ghost: 'hover:bg-muted/50 hover:text-foreground active:bg-muted/75 text-muted-foreground active:text-foreground',
-    link: 'text-primary underline-offset-4 hover:underline',
+    link: 'text-foreground px-2.5 -mx-2.5 underline-offset-4 hover:underline',
     outline:
       'border-border/90 hover:bg-muted/90 active:bg-muted/75 hover:border-border active:border-border border bg-transparent',
     soft: 'border-border/90 text-muted-foreground hover:text-foreground hover:bg-muted/75 active:bg-muted/90 hover:border-border active:border-border border bg-input',
@@ -24,9 +24,9 @@ const staticStyles = {
   base: 'rounded p-6 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   variant: {
     danger:
-      'bg-card border-danger text-danger border [&>svg]:text-current',
+      'bg-card-light border-danger text-danger border [&>svg]:text-current',
     default:
-      'bg-card border border-border text-card-foreground',
+      'bg-card-light border border-border text-card-foreground',
   },
 }
 
