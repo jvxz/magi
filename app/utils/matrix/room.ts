@@ -182,3 +182,13 @@ export async function getRoomEventById(room: Room, client: MatrixClient, eventId
 
   return mapped
 }
+
+export function getPowerLevelName(powerLevel: number) {
+  if (powerLevel < 50)
+    return 'member'
+  if (powerLevel < 100)
+    return 'moderator'
+  if (powerLevel !== Infinity)
+    return 'admin'
+  return 'owner'
+}
