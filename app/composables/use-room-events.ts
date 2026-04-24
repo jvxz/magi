@@ -1,7 +1,7 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 import { Direction } from 'matrix-js-sdk'
 
-export const BATCH_SIZE = 120
+export const BATCH_SIZE = 80
 
 type Hooks = Prettify<Pick<Required<NonNullable<Parameters<typeof useRoomEventHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>
 
