@@ -30,7 +30,6 @@ function handleCopyUserId() {
   <PopoverPortal>
     <PopoverContent
       v-bind="contentProps"
-      align="start"
       as-child
       disable-outside-pointer-events
       :reference="anchorElement ?? undefined"
