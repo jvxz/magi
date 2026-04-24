@@ -106,22 +106,33 @@ body[style*='padding-right'] {
 
 .v-enter-active,
 .v-leave-active {
-  @apply animate-in fade-in-0 duration-100;
+  transition: opacity 100ms ease;
 }
 
 .v-enter-from,
 .v-leave-to {
-  @apply animate-out fade-out-0 duration-100;
+  opacity: 0;
 }
 
 .zoom-enter-active,
 .zoom-leave-active {
-  @apply animate-in fade-in-0 duration-100 zoom-in-95;
+  transition: all 100ms ease;
 }
 
 .zoom-enter-from,
 .zoom-leave-to {
-  @apply animate-out fade-out-0 duration-100 zoom-out-95;
+  opacity: 0;
+  scale: 96.5%;
+}
+
+@keyframes skeleton {
+  0% {
+    translate: -100% 0;
+  }
+
+  100% {
+    translate: 300% 0;
+  }
 }
 
 @keyframes skeleton {
