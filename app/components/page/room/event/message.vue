@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
+import type { PopoverContentProps } from 'reka-ui'
 import { MsgType } from 'matrix-js-sdk'
 
 const props = defineProps<{
@@ -32,6 +33,13 @@ const shouldRender = computed(() => {
 
   return (isMsg || isDecrypting.value) && !isEdit
 })
+
+const contentProps: PopoverContentProps = {
+  align: 'start',
+  collisionPadding: 12,
+  side: 'right',
+  sideOffset: 8,
+}
 </script>
 
 <template>
@@ -79,13 +87,21 @@ const shouldRender = computed(() => {
       </div>
 
       <div class="flex gap-4">
-        <UProfilePopoverTrigger :user="eventUser" as-child>
+        <UProfilePopoverTrigger
+          :content-props
+          :user="eventUser"
+          as-child
+        >
           <PageRoomEventMessageAvatar :user="eventUser ?? undefined" :ghost="grouped" />
         </UProfilePopoverTrigger>
 
         <PageRoomEventMessageContent>
           <template v-if="!grouped && isDefined(event.getTs())" #header>
-            <UProfilePopoverTrigger :user="eventUser" as-child>
+            <UProfilePopoverTrigger
+              :content-props
+              :user="eventUser"
+              as-child
+            >
               <span :class="cn(interactiveStyles.base, interactiveStyles.variant.link, 'text-sm')">{{ eventProfile?.displayname }}</span>
             </UProfilePopoverTrigger>
             <NuxtTime
