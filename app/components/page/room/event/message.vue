@@ -13,6 +13,7 @@ const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRo
 const { content: eventContent } = useEventContent(() => props.event)
 const eventBody = computed(() => trimReplyFromBody(eventContent.value?.body))
 const eventProfile = useUserProfile(() => props.event.getSender())
+const eventUser = useUser<true>(() => props.event.getSender())
 
 const { content: replyEventContent, isRedacted: isReplyEventRedacted } = useEventContent(() => replyEvent.value)
 const replyEventBody = computed(() => isReplyEventRedacted.value ? 'Original message was deleted' : formatReplyPreviewBody(replyEventContent.value?.body))
@@ -39,6 +40,7 @@ const shouldRender = computed(() => {
     :event-id="props.event.getId()"
     :event-type="props.event.getType()"
     :grouped
+    side="right"
     class="py-0.5"
   >
     <PageRoomEventMessageRoot class="flex-col gap-px">
@@ -77,10 +79,15 @@ const shouldRender = computed(() => {
       </div>
 
       <div class="flex gap-4">
-        <PageRoomEventMessageAvatar v-if="event.getSender()" :user="event.getSender()" />
+        <UProfilePopoverTrigger :user="eventUser" as-child>
+          <PageRoomEventMessageAvatar :user="eventUser ?? undefined" :ghost="grouped" />
+        </UProfilePopoverTrigger>
+
         <PageRoomEventMessageContent>
           <template v-if="!grouped && isDefined(event.getTs())" #header>
-            {{ eventProfile?.displayname }}
+            <UProfilePopoverTrigger :user="eventUser" as-child>
+              <span :class="cn(interactiveStyles.base, interactiveStyles.variant.link, 'text-sm')">{{ eventProfile?.displayname }}</span>
+            </UProfilePopoverTrigger>
             <NuxtTime
               :datetime="event.getTs()"
               hour="numeric"
