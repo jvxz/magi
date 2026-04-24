@@ -7,3 +7,5 @@ export interface RoomMemberTypingEventContent {
 }
 
 export type MaybeUserOrId = User | User['userId']
+
+export type AvatarImageSize = 'small' | 'medium' | 'large'
