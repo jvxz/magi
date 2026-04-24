@@ -66,6 +66,11 @@ export default defineConfig({
     ],
   ],
   safelist: ['group'],
+  shortcuts: [
+    {
+      squish: 'motion-safe:active:scale-96.5 duration-100 ease-out',
+    },
+  ],
   theme: {
     colors: {
       'accent': 'var(--accent)',
@@ -119,9 +124,6 @@ export default defineConfig({
         fontSize: '0.7rem',
         lineHeight: '0.875rem',
       },
-    },
-    tracking: {
-      normal: '0.015em',
     },
   },
   transformers: [transformerVariantGroup(), transformerDirectives({ throwOnMissing: false })],
