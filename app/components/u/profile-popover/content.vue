@@ -47,22 +47,7 @@ function handleCopyUserId() {
 
             <div v-else class="bg-muted size-full absolute -z-1" />
 
-            <div class="p-2 space-x-1">
-              <UButton
-                size="icon"
-                variant="soft"
-                class="rounded-full"
-              >
-                <Icon name="tabler:message" />
-              </UButton>
-              <UButton
-                size="icon"
-                variant="soft"
-                class="rounded-full"
-              >
-                <Icon name="tabler:dots" />
-              </UButton>
-            </div>
+            <UProfilePopoverContentButtons :user-id="user?.userId" />
           </div>
         </div>
 
