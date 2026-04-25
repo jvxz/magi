@@ -25,7 +25,7 @@ export function useSelf() {
   return {
     forceRefreshSelf,
     refreshMe,
-    self: self as ShallowRef<User>,
+    self: self as ShallowRef<User | undefined>,
     selfPending,
   }
 }
