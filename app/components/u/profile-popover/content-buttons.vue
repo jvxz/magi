@@ -19,8 +19,8 @@ function handleCopyUserId() {
     <UButton
       v-if="userId !== self?.userId"
       size="icon"
-      variant="soft"
-      class="rounded-full"
+      variant="ghost"
+      class="rounded-full bg-muted/50 active:bg-muted/50"
     >
       <Icon name="tabler:message" />
     </UButton>
@@ -28,8 +28,8 @@ function handleCopyUserId() {
       <UDropdownMenuTrigger as-child>
         <UButton
           size="icon"
-          variant="soft"
-          class="rounded-full"
+          variant="ghost"
+          class="rounded-full bg-muted/50 active:bg-muted/50"
         >
           <Icon name="tabler:dots" />
         </UButton>

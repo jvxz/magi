@@ -28,25 +28,25 @@ const { copy } = useClipboard()
       :class="cn('z-1', $attrs.class)"
     >
       <UCard class="p-0 border-none bg-card-light gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3">
-        <div class="shrink-0 h-24 inset-0 absolute overflow-clip">
-          <div class="flex h-full justify-end relative">
+        <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
+          <div class="rounded-t flex h-full justify-end relative">
             <img
               v-if="avatarUrl"
               :src="avatarUrl"
               :alt="`${displayName}'s avatar (banner)'`"
-              class="size-full scale-150 absolute object-cover blur-xl -z-1"
+              class="rounded-t size-full scale-150 absolute object-cover blur-xl -z-1"
             />
 
-            <div v-else class="bg-muted size-full absolute -z-1" />
+            <div v-else class="rounded-t bg-muted size-full absolute -z-1" />
 
             <UProfilePopoverContentButtons :user-id="user?.userId" />
           </div>
         </div>
 
-        <div class="px-4 pb-4 pt-14 border border-border rounded-b flex flex-1 flex-col gap-2">
+        <div class="px-4 pb-4 pt-14 border border-border rounded flex flex-1 flex-col gap-2">
           <MatrixAvatar
             :user="user"
-            class="size-20 ring-6 ring-card-light"
+            class="size-20 ring-6 ring-card-light z-1"
             image-size="small"
           />
 
