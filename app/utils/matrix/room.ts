@@ -192,3 +192,17 @@ export function getPowerLevelName(powerLevel: number) {
     return 'admin'
   return 'owner'
 }
+
+export async function getMutualRooms(client: MatrixClient, otherUser: MaybeUserOrId | undefined, throwOnError = false) {
+  try {
+    if (!otherUser)
+      return
+
+    const otherUserId = resolveUserId(otherUser)
+    return client._unstable_getSharedRooms(otherUserId)
+  }
+  catch {
+    if (throwOnError)
+      throw new $Error('Failed to get mutual rooms')
+  }
+}

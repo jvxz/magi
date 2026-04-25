@@ -1,3 +1,6 @@
+import type { User } from 'matrix-js-sdk'
+import type { ShallowRef } from 'vue'
+
 export function useSelf() {
   const { client } = useMatrixClient()
   const status = useMatrixStatus()
@@ -22,7 +25,7 @@ export function useSelf() {
   return {
     forceRefreshSelf,
     refreshMe,
-    self,
+    self: self as ShallowRef<User | undefined>,
     selfPending,
   }
 }
