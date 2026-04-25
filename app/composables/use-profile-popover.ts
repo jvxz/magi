@@ -12,19 +12,23 @@ export const useProfilePopover = createSharedComposable(() => {
     currentRoot = undefined
   })
 
-  function openProfilePopover(trigger: MaybeElement, userId: string) {
-    if (!trigger || open.value)
+  function openProfilePopover(trigger: MaybeElement, userId: string, nextContentProps?: PopoverContentProps) {
+    if (!trigger)
       return
 
-    const eventRoot = trigger?.closest('[data-event-id]') as HTMLElement | null
+    const eventRoot = trigger.closest('[data-event-id]') as HTMLElement | null
     const root = eventRoot ?? trigger
+
+    if (currentRoot && currentRoot !== root)
+      currentRoot.removeAttribute('data-popover-open')
 
     root.setAttribute('data-popover-open', '')
     currentRoot = root
 
     anchorElement.value = trigger
-    open.value = true
+    contentProps.value = nextContentProps
     userIdRef.value = userId
+    open.value = true
   }
 
   const user = useUser(userIdRef)
