@@ -4,6 +4,7 @@ const props = defineProps<{
   isFetchingInitial: boolean
   canPaginateBackward: boolean
   canPaginateForward: boolean
+  error: Error | null
 }>()
 
 const { page } = usePublicRoomsState(props.baseUrl)
@@ -31,10 +32,12 @@ function handlePaginate(dir: 'f' | 'b') {
     </div>
 
     <div class="text-sm font-medium mx-auto">
-      <p v-if="!isFetchingInitial">
-        Page {{ page }}
-      </p>
-      <USkeleton v-else class="h-1lh w-16" />
+      <template v-if="!error">
+        <p v-if="!isFetchingInitial">
+          Page {{ page }}
+        </p>
+        <USkeleton v-else class="h-1lh w-16" />
+      </template>
     </div>
 
     <div class="ml-auto flex gap-2 items-center justify-center">

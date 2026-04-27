@@ -85,24 +85,42 @@ const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching,
     </div>
   </LayoutAppSlot>
 
-  <div
-    class="py-page-y-padding h-full scrollbar-gutter-stable"
-    :class="currentPage ? 'overflow-y-auto' : 'overflow-y-hidden'"
-  >
+  <div class="py-page-y-padding h-full relative scrollbar-gutter-stable">
     <div class="mx-auto container max-w-screen-xl space-y-lg">
       <PageExplorePagination
         :base-url
         :is-fetching-initial="isLoading"
         :can-paginate-backward
         :can-paginate-forward
+        :error
       />
-      <PageExploreRoomList :has-error="!!error" :current-page />
+
+      <PageExploreRoomList :current-page :error />
+
       <PageExplorePagination
+        v-if="!error"
         :base-url
         :is-fetching-initial="isLoading"
         :can-paginate-backward
         :can-paginate-forward
+        :error
       />
     </div>
+
+    <Transition name="zoom">
+      <UCard
+        v-if="error"
+        variant="danger"
+        class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
+      >
+        <UCardTitle class="flex gap-2 items-center">
+          <Icon name="tabler:alert-triangle" />An error occurred
+        </UCardTitle>
+
+        <p class="text-pretty">
+          The desired homeserver's public rooms could not be loaded. Make sure you have inputted the correct URL
+        </p>
+      </UCard>
+    </Transition>
   </div>
 </template>
