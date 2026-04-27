@@ -57,9 +57,7 @@ const src = computed(
         {{ room && room.name }}
       </h3>
 
-      <p class="text-sm tracking-normal h-5lh w-full text-pretty line-clamp-5">
-        {{ room ? room?.topic ? room.topic : "(no description)" : "" }}
-      </p>
+      <RenderMd :content="room ? room?.topic ? room.topic : '(no description)' : ''" class="text-sm tracking-normal h-5lh w-full text-pretty line-clamp-5"/>
 
       <div class="text-xs text-muted-foreground pt-4 flex gap-2 items-center">
         <Icon
