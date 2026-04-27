@@ -19,13 +19,10 @@ const baseUrl = computed({
   }),
 })
 
-const { data: publicRooms, error, isLoading } = usePublicRooms(baseUrl)
-
 const servers = useLocalStorage('explore:servers', () => ['matrix.org', 'mozilla.org', 'unredacted.org'])
+const { page, query } = usePublicRoomsState(baseUrl.value)
 
-const params = useUrlSearchParams<{ q: string }>('history', {
-  removeFalsyValues: true,
-})
+const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching, isLoading } = usePublicRooms(baseUrl, page, query)
 </script>
 
 <template>
@@ -68,15 +65,14 @@ const params = useUrlSearchParams<{ q: string }>('history', {
         <div class="flex gap-2 items-center">
           <Icon name="tabler:server-2" />
           <p>{{ baseUrl }}</p>
-          <LazyUSpinner v-if="isLoading" class="size-4" />
+          <LazyUSpinner v-if="isFetching" class="size-4" />
         </div>
 
-        <div class="ml-auto">
+        <div>
           <UInput
-            v-model="params.q"
-            class="w-64"
+            v-model="query"
+            class="w-64 justify-self-end"
             placeholder="Search"
-            leading-icon="tabler:search"
           />
         </div>
       </div>
@@ -91,23 +87,22 @@ const params = useUrlSearchParams<{ q: string }>('history', {
 
   <div
     class="py-page-y-padding h-full scrollbar-gutter-stable"
-    :class="publicRooms ? 'overflow-y-auto' : 'overflow-y-hidden'"
+    :class="currentPage ? 'overflow-y-auto' : 'overflow-y-hidden'"
   >
-    <div class="mx-auto container gap-4 grid grid-cols-4 max-w-screen-xl">
-      <template v-if="!error && publicRooms">
-        <PageExploreRoom
-          v-for="room in publicRooms.chunk"
-          :key="room.room_id"
-          :room="room"
-        />
-      </template>
-      <template v-else-if="!error && !publicRooms">
-        <PageExploreRoom
-          v-for="(_, i) in Array.from({ length: 16 })"
-          :key="i"
-          :room="undefined"
-        />
-      </template>
+    <div class="mx-auto container max-w-screen-xl space-y-lg">
+      <PageExplorePagination
+        :base-url
+        :is-fetching-initial="isLoading"
+        :can-paginate-backward
+        :can-paginate-forward
+      />
+      <PageExploreRoomList :has-error="!!error" :current-page />
+      <PageExplorePagination
+        :base-url
+        :is-fetching-initial="isLoading"
+        :can-paginate-backward
+        :can-paginate-forward
+      />
     </div>
   </div>
 </template>
