@@ -5,6 +5,7 @@ const props = defineProps<{
   canPaginateBackward: boolean
   canPaginateForward: boolean
   error: Error | null
+  pageCount: number | undefined
 }>()
 
 const { page } = usePublicRoomsState(props.baseUrl)

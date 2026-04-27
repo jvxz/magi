@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { UInputTemplateRef } from '~/components/u/input.vue'
+
 definePageMeta({
   layout: 'app',
   middleware: ['explore'],
@@ -23,6 +25,9 @@ const servers = useLocalStorage('explore:servers', () => ['matrix.org', 'mozilla
 const { page, query } = usePublicRoomsState(baseUrl.value)
 
 const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching, isLoading } = usePublicRooms(baseUrl, page, query)
+
+const inputRef = useTemplateRef<UInputTemplateRef>('inputRef')
+onStartTyping(() => inputRef.value?.inputRef?.focus())
 </script>
 
 <template>
@@ -70,9 +75,11 @@ const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching,
 
         <div>
           <UInput
+            ref="inputRef"
             v-model="query"
             class="w-64 justify-self-end"
             placeholder="Search"
+            leading-icon="tabler:search"
           />
         </div>
       </div>
@@ -88,6 +95,7 @@ const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching,
   <div class="py-page-y-padding h-full relative scrollbar-gutter-stable">
     <div class="mx-auto container max-w-screen-xl space-y-lg">
       <PageExplorePagination
+        :page-count="currentPage?.chunk.length"
         :base-url
         :is-fetching-initial="isLoading"
         :can-paginate-backward
@@ -99,6 +107,7 @@ const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching,
 
       <PageExplorePagination
         v-if="!error"
+        :page-count="currentPage?.chunk.length"
         :base-url
         :is-fetching-initial="isLoading"
         :can-paginate-backward
@@ -119,6 +128,23 @@ const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching,
 
         <p class="text-pretty">
           The desired homeserver's public rooms could not be loaded. Make sure you have inputted the correct URL
+        </p>
+      </UCard>
+      <UCard
+        v-else-if="!currentPage?.chunk.length && !isFetching"
+        class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
+      >
+        <UCardTitle class="flex gap-2 items-center">
+          <Icon name="tabler:question-circle" /> No rooms found
+        </UCardTitle>
+
+        <p class="text-pretty">
+          <template v-if="!query">
+            The desired homeserver does not appear to have any public rooms
+          </template>
+          <template v-else>
+            The search query yielded no results. Try another one
+          </template>
         </p>
       </UCard>
     </Transition>
