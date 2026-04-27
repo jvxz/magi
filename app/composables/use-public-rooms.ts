@@ -10,19 +10,21 @@ export function usePublicRooms(server: MaybeRefOrGetter<string>, page?: MaybeRef
   const { client } = useMatrixClient()
   const serverResolved = computed(() => withoutTrailingSlash(withoutProtocol(toValue(server))))
   const pageRef = toRef(page)
-  const queryRef = throttledRef(toRef(query), 500)
+
+  const queryRef = toRef(query)
+  const debouncedQuery = debouncedRef(queryRef, () => queryRef.value ? 300 : 0) // don't debounce when no query is supplied
 
   const { data, fetchNextPage, fetchPreviousPage, hasNextPage, isFetching, ...q } = useInfiniteQuery({
     getNextPageParam: (lastPage: IPublicRoomsResponse) => lastPage.next_batch,
     getPreviousPageParam: (firstPage: IPublicRoomsResponse) => firstPage.prev_batch,
     initialPageParam: undefined as string | undefined,
     queryFn: async ({ pageParam }) => client.value.publicRooms({
-      filter: queryRef.value ? { generic_search_term: queryRef.value } : undefined,
+      filter: debouncedQuery.value ? { generic_search_term: debouncedQuery.value } : undefined,
       limit: PUBLIC_ROOM_PAGINATION_LIMIT,
       server: serverResolved.value,
       since: pageParam,
     }),
-    queryKey: ['publicRooms', serverResolved, queryRef],
+    queryKey: ['publicRooms', serverResolved, debouncedQuery],
     retry: 1,
   })
 
