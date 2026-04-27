@@ -42,8 +42,8 @@ const iconClass = 'text-muted-foreground h-[1em] absolute top-1/2 -translate-y-1
         interactiveStyles.size.default,
         staticStyles.variant.default,
         'flex w-full min-w-0 cursor-text truncate py-1 selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:text-foreground placeholder:text-muted-foreground focus-visible:ring-3 text-sm',
-        props.leadingIcon && 'placeholder:ps-[1.25em]',
-        props.trailingIcon && 'placeholder:pe-[1.25em]',
+        props.leadingIcon && 'ps-7',
+        props.trailingIcon && 'pe-7',
         $props.classes?.input,
       )"
     >
