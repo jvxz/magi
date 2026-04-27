@@ -32,36 +32,28 @@ onStartTyping(() => inputRef.value?.inputRef?.focus())
 
 <template>
   <LayoutAppSlot name="aside">
-    <div class="p-2.5 flex flex-col gap-2.5">
-      <UToggleGroupRoot
-        v-model="baseUrl"
-        class="flex flex-col gap-2.5 w-full"
-        required
+    <UAsideList>
+      <UAsideListTab
+        v-for="server in servers"
+        :key="server"
+        :to="{
+          name: 'explore',
+          params: {
+            baseUrl: server,
+          },
+        }"
       >
-        <UToggleGroupItem
-          v-for="server in servers"
-          :key="server"
-          :value="server"
-          class="text-base px-4 text-left h-12 w-full justify-start"
-        >
-          {{ server }}
-        </UToggleGroupItem>
-      </UToggleGroupRoot>
-      <UDialogRoot>
-        <UDialogTrigger as-child>
-          <UButton
-            variant="soft"
-            class="text-base px-4 h-12 w-full justify-start"
-          >
-            <Icon name="tabler:plus" class="" />
-            Add server
-          </UButton>
-        </UDialogTrigger>
-        <UDialogContent>
-          <p>Hello</p>
-        </UDialogContent>
-      </UDialogRoot>
-    </div>
+        <UAsideListButtonIcon icon="tabler:server-2" />
+        <span>{{ server }}</span>
+      </UAsideListTab>
+
+      <UAsideListSeparator />
+
+      <UAsideListButton>
+        <UAsideListButtonIcon icon="tabler:plus" />
+        <span class="font-medium">Add server</span>
+      </UAsideListButton>
+    </UAsideList>
   </LayoutAppSlot>
 
   <LayoutAppSlot name="page-header">
