@@ -19,8 +19,8 @@ const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
   </LayoutAppSlot>
 
   <LayoutAppSlot name="aside">
-    <URoomList>
-      <URoomListTab
+    <UAsideList>
+      <UAsideListTab
         :to="{
           name: 'space-browse',
           params: {
@@ -28,18 +28,18 @@ const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
           },
         }"
       >
-        <URoomListButtonIcon icon="tabler:list-search" />
+        <UAsideListButtonIcon icon="tabler:list-search" />
         Browse Rooms
-      </URoomListTab>
-      <URoomListButton>
-        <URoomListButtonIcon icon="tabler:users" />
+      </UAsideListTab>
+      <UAsideListButton>
+        <UAsideListButtonIcon icon="tabler:users" />
         Members
-      </URoomListButton>
+      </UAsideListButton>
 
-      <URoomListSeparator />
+      <UAsideListSeparator />
 
       <template v-if="!isTestMode()">
-        <URoomListTab
+        <UAsideListTab
           v-for="room in joinedRooms"
           :key="room.roomId"
           :to="{
@@ -50,12 +50,12 @@ const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
             },
           }"
         >
-          <URoomListButtonIcon icon="tabler:hash" />
+          <UAsideListButtonIcon icon="tabler:hash" />
           {{ room.name }}
-        </URoomListTab>
+        </UAsideListTab>
       </template>
       <template v-else>
-        <URoomListTab
+        <UAsideListTab
           v-for="room in [
             createMockRoom(250, '250'),
             createMockRoom(500, '500'),
@@ -71,11 +71,11 @@ const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
             },
           }"
         >
-          <URoomListButtonIcon icon="tabler:hash" />
+          <UAsideListButtonIcon icon="tabler:hash" />
           {{ room.name }}
-        </URoomListTab>
+        </UAsideListTab>
       </template>
-    </URoomList>
+    </UAsideList>
   </LayoutAppSlot>
 
   <NuxtPage />
