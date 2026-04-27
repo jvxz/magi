@@ -25,16 +25,17 @@ const src = computed(
 <template>
   <div
     class="rounded-lg w-full relative overflow-hidden"
-    :class="!room && 'animate-pulse border'"
+    :class="!room && 'border'"
   >
     <div class="h-full inset-0 absolute">
-      <LazyImg
+      <img
+        v-if="src"
         :size="32"
         :alt="room?.name"
         :src
-        class="size-full scale-120 object-cover -m-px -translate-y-1/3 data-[error=false]:blur-xl"
-        :do-placeholder="false"
+        class="size-full scale-120 object-cover blur-xl -m-px -translate-y-1/3"
       />
+      <div v-else class="bg-muted size-full"></div>
     </div>
 
     <div class="mt-2/5 p-4 pt-1/8 border border-t-0 rounded-b-lg bg-card-lighter flex flex-col gap-2 relative z-10 isolate">
@@ -57,9 +58,7 @@ const src = computed(
         {{ room && room.name }}
       </h3>
 
-      <p class="text-sm tracking-normal h-5lh w-full text-pretty line-clamp-5">
-        {{ room ? room?.topic ? room.topic : "(no description)" : "" }}
-      </p>
+      <RenderMd :content="room ? room?.topic ? room.topic : '(no description)' : ''" class="text-sm tracking-normal h-5lh w-full text-pretty line-clamp-5" />
 
       <div class="text-xs text-muted-foreground pt-4 flex gap-2 items-center">
         <Icon

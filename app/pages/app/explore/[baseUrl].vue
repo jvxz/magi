@@ -19,13 +19,10 @@ const baseUrl = computed({
   }),
 })
 
-const { data: publicRooms, error, isLoading } = usePublicRooms(baseUrl)
-
 const servers = useLocalStorage('explore:servers', () => ['matrix.org', 'mozilla.org', 'unredacted.org'])
+const { page, query } = usePublicRoomsState(baseUrl.value)
 
-const params = useUrlSearchParams<{ q: string }>('history', {
-  removeFalsyValues: true,
-})
+const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching, isLoading } = usePublicRooms(baseUrl, page, query)
 </script>
 
 <template>
@@ -68,15 +65,14 @@ const params = useUrlSearchParams<{ q: string }>('history', {
         <div class="flex gap-2 items-center">
           <Icon name="tabler:server-2" />
           <p>{{ baseUrl }}</p>
-          <LazyUSpinner v-if="isLoading" class="size-4" />
+          <LazyUSpinner v-if="isFetching" class="size-4" />
         </div>
 
-        <div class="ml-auto">
+        <div>
           <UInput
-            v-model="params.q"
-            class="w-64"
+            v-model="query"
+            class="w-64 justify-self-end"
             placeholder="Search"
-            leading-icon="tabler:search"
           />
         </div>
       </div>
@@ -89,25 +85,42 @@ const params = useUrlSearchParams<{ q: string }>('history', {
     </div>
   </LayoutAppSlot>
 
-  <div
-    class="py-page-y-padding h-full scrollbar-gutter-stable"
-    :class="publicRooms ? 'overflow-y-auto' : 'overflow-y-hidden'"
-  >
-    <div class="mx-auto container gap-4 grid grid-cols-4 max-w-screen-xl">
-      <template v-if="!error && publicRooms">
-        <PageExploreRoom
-          v-for="room in publicRooms.chunk"
-          :key="room.room_id"
-          :room="room"
-        />
-      </template>
-      <template v-else-if="!error && !publicRooms">
-        <PageExploreRoom
-          v-for="(_, i) in Array.from({ length: 16 })"
-          :key="i"
-          :room="undefined"
-        />
-      </template>
+  <div class="py-page-y-padding h-full relative scrollbar-gutter-stable">
+    <div class="mx-auto container max-w-screen-xl space-y-lg">
+      <PageExplorePagination
+        :base-url
+        :is-fetching-initial="isLoading"
+        :can-paginate-backward
+        :can-paginate-forward
+        :error
+      />
+
+      <PageExploreRoomList :current-page :error />
+
+      <PageExplorePagination
+        v-if="!error"
+        :base-url
+        :is-fetching-initial="isLoading"
+        :can-paginate-backward
+        :can-paginate-forward
+        :error
+      />
     </div>
+
+    <Transition name="zoom">
+      <UCard
+        v-if="error"
+        variant="danger"
+        class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
+      >
+        <UCardTitle class="flex gap-2 items-center">
+          <Icon name="tabler:alert-triangle" />An error occurred
+        </UCardTitle>
+
+        <p class="text-pretty">
+          The desired homeserver's public rooms could not be loaded. Make sure you have inputted the correct URL
+        </p>
+      </UCard>
+    </Transition>
   </div>
 </template>

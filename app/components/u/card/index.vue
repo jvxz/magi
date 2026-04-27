@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   class?: string
-}>()
+  variant?: keyof typeof staticStyles.variant
+}>(), {
+  variant: 'default',
+})
 </script>
 
 <template>
@@ -9,7 +12,7 @@ const props = defineProps<{
     data-slot="card"
     :class="cn(
       staticStyles.base,
-      staticStyles.variant.default,
+      staticStyles.variant[variant],
       'flex flex-col gap-5 shadow-lg',
       props.class,
     )"

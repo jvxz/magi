@@ -24,7 +24,7 @@ const staticStyles = {
   base: 'rounded p-6 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   variant: {
     danger:
-      'bg-card-light border-danger text-danger border [&>svg]:text-current',
+      'bg-card-light border-danger border [&>svg]:text-current',
     default:
       'bg-card-light border border-border text-card-foreground',
   },
