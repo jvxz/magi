@@ -47,7 +47,7 @@ export function usePublicRooms(server: MaybeRefOrGetter<string>, page?: MaybeRef
   const currentPage = computed(() => data.value?.pages[(pageRef.value ?? 0) - 1])
 
   const canPaginateForward = computed(() => !!currentPage.value?.next_batch)
-  const canPaginateBackward = computed(() => !!currentPage.value?.prev_batch)
+  const canPaginateBackward = computed(() => (pageRef.value ?? 1) > 1)
 
   return {
     ...q,
