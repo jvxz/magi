@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw, Router } from 'vue-router'
 import { useForwardPropsEmits } from 'reka-ui'
 
-export function resolveRoomListTabValue(route: RouteLocationRaw, router: Router) {
+export function resolveAsideListTabValue(route: RouteLocationRaw, router: Router) {
   const { name, params } = router.resolve(route)
 
   if (!params)
@@ -23,7 +23,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 const route = useRoute()
 const router = useRouter()
-const value = computed(() => resolveRoomListTabValue(route as RouteLocationRaw, router))
+const value = computed(() => resolveAsideListTabValue(route as RouteLocationRaw, router))
 </script>
 
 <template>
