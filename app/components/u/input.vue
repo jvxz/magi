@@ -1,8 +1,14 @@
-<script lang="ts" setup>
+<script lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
 import { useVModel } from '@vueuse/core'
 
+export interface UInputTemplateRef {
+  inputRef: HTMLInputElement | undefined
+}
+</script>
+
+<script lang="ts" setup>
 type Props = PrimitiveProps & {
   defaultValue?: string | number
   modelValue?: string | number
@@ -23,6 +29,11 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 })
 
 const iconClass = 'text-muted-foreground h-[1em] absolute top-1/2 -translate-y-1/2'
+
+const inputRef = useTemplateRef('inputRef')
+defineExpose({
+  inputRef,
+})
 </script>
 
 <template>
@@ -35,8 +46,9 @@ const iconClass = 'text-muted-foreground h-[1em] absolute top-1/2 -translate-y-1
     />
 
     <input
-      v-model="modelValue"
       v-bind="$attrs"
+      ref="inputRef"
+      v-model="modelValue"
       :class="cn(
         staticStyles.base,
         interactiveStyles.size.default,
