@@ -23,6 +23,7 @@ export function usePublicRooms(server: MaybeRefOrGetter<string>, page?: MaybeRef
       since: pageParam,
     }),
     queryKey: ['publicRooms', serverResolved, queryRef],
+    retry: 1,
   })
 
   watch([pageRef, data], async ([newPage, newData]) => {
