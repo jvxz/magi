@@ -27,6 +27,15 @@ const body = computed(() => {
     }
   }
 
+  if (parsed.type === 'kick') {
+    return {
+      icon: 'tabler:user-minus',
+      message: ` was kicked by `,
+      sender: parsed.data.kickedName,
+      subject: parsed.data.kickerName,
+    }
+  }
+
   if (parsed.type === 'displayName') {
     if (parsed.data.type === 'changed') {
       return {

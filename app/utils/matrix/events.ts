@@ -52,7 +52,7 @@ export function canDecryptEvent(event: MatrixEvent | Partial<IEvent> | undefined
   return matrixEvent.shouldAttemptDecryption()
 }
 
-type MembershipEventContent = Prettify<MembershipEventBan | MembershipEventInvite | MembershipEventKnock | MembershipEventDisplayName | MembershipEventUnban | MembershipEventUnknown | MembershipEventAvatar | MembershipEventLeave | MembershipEventJoin>
+type MembershipEventContent = Prettify<MembershipEventBan | MembershipEventInvite | MembershipEventKnock | MembershipEventDisplayName | MembershipEventUnban | MembershipEventKick | MembershipEventUnknown | MembershipEventAvatar | MembershipEventLeave | MembershipEventJoin>
 
 interface MembershipEventBan {
   type: 'ban'
@@ -71,6 +71,16 @@ interface MembershipEventUnban {
     unbannedName: string
     unbannerId: string
     unbannerName: string
+  }
+}
+
+interface MembershipEventKick {
+  type: 'kick'
+  data: {
+    kickedId: string
+    kickedName: string
+    kickerId: string
+    kickerName: string
   }
 }
 
@@ -159,79 +169,98 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
   const subjectName = content.displayname ?? getDisplayNameFallback(subject)
   const senderName = getDisplayNameFallback(sender)
 
-  // ban
-  if (content.membership === KnownMembership.Ban) {
-    return {
-      data: {
-        bannedId: subject,
-        bannedName: subjectName,
-        bannerId: sender,
-        bannerName: senderName,
-      },
-      type: 'ban',
+  const membership = content.membership
+  const prevMembership = prev?.membership
+
+  // membership state transitions take precedence over profile changes
+  if (membership !== prevMembership) {
+    // ban
+    if (membership === KnownMembership.Ban) {
+      return {
+        data: {
+          bannedId: subject,
+          bannedName: subjectName,
+          bannerId: sender,
+          bannerName: senderName,
+        },
+        type: 'ban',
+      }
+    }
+
+    // unban (ban -> leave)
+    if (membership === KnownMembership.Leave && prevMembership === KnownMembership.Ban) {
+      return {
+        data: {
+          unbannedId: subject,
+          unbannedName: subjectName,
+          unbannerId: sender,
+          unbannerName: senderName,
+        },
+        type: 'unban',
+      }
+    }
+
+    // kick (leave where sender !== subject, & not an unban)
+    if (membership === KnownMembership.Leave && sender !== subject) {
+      return {
+        data: {
+          kickedId: subject,
+          kickedName: subjectName,
+          kickerId: sender,
+          kickerName: senderName,
+        },
+        type: 'kick',
+      }
+    }
+
+    // join
+    if (membership === KnownMembership.Join) {
+      return {
+        data: {
+          id: subject,
+          name: subjectName,
+        },
+        type: 'join',
+      }
+    }
+
+    // leave
+    if (membership === KnownMembership.Leave) {
+      return {
+        data: {
+          id: subject,
+          name: subjectName,
+        },
+        type: 'leave',
+      }
+    }
+
+    // invite
+    if (membership === KnownMembership.Invite) {
+      return {
+        data: {
+          invitedId: subject,
+          invitedName: subjectName,
+          inviterId: sender,
+          inviterName: senderName,
+        },
+        type: 'invite',
+      }
+    }
+
+    // knock
+    if (membership === KnownMembership.Knock) {
+      return {
+        data: {
+          id: sender,
+          name: senderName,
+        },
+        type: 'knock',
+      }
     }
   }
 
-  // unban
-  if (prev?.membership === KnownMembership.Ban) {
-    return {
-      data: {
-        unbannedId: subject,
-        unbannedName: subjectName,
-        unbannerId: sender,
-        unbannerName: senderName,
-      },
-      type: 'unban',
-    }
-  }
-
-  // join
-  if (content.membership === KnownMembership.Join) {
-    return {
-      data: {
-        id: subject,
-        name: subjectName,
-      },
-      type: 'join',
-    }
-  }
-
-  // leave
-  if (content.membership === KnownMembership.Leave) {
-    return {
-      data: {
-        id: subject,
-        name: subjectName,
-      },
-      type: 'leave',
-    }
-  }
-
-  // invite
-  if (content.membership === KnownMembership.Invite) {
-    return {
-      data: {
-        invitedId: subject,
-        invitedName: subjectName,
-        inviterId: sender,
-        inviterName: senderName,
-      },
-      type: 'invite',
-    }
-  }
-
-  // knock
-  if (content.membership === KnownMembership.Knock) {
-    return {
-      data: {
-        id: sender,
-        name: senderName,
-      },
-      type: 'knock',
-    }
-  }
-
-  // displayName
+  // profile changes (membership stayed the same)
   if (content.displayname !== prev?.displayname) {
     if (!content.displayname && prev?.displayname) {
       return {
