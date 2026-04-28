@@ -26,33 +26,84 @@ const { page, query } = usePublicRoomsState(baseUrl.value)
 
 const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching, isLoading } = usePublicRooms(baseUrl, page, query)
 
+const contextMenuServer = shallowRef<string | undefined>()
+const contextMenuOpen = shallowRef(false)
+
+function handleServerAdd(server: string) {
+  servers.value.push(server)
+  baseUrl.value = server
+}
+
+function handleServerRemove(server?: string) {
+  const target = server ?? contextMenuServer.value
+  if (target === 'matrix.org')
+    return
+
+  servers.value = servers.value.filter(s => s !== target)
+}
+
 const inputRef = useTemplateRef<UInputTemplateRef>('inputRef')
 onStartTyping(() => inputRef.value?.inputRef?.focus())
+
+onKeyStrokeSafe((e) => {
+  const { key } = e
+  if (key === 'ArrowRight')
+    handlePaginate('f')
+
+  else if (key === 'ArrowLeft')
+    handlePaginate('b')
+}, { dedupe: true })
+
+function handlePaginate(dir: 'f' | 'b') {
+  if (dir === 'f') {
+    if (canPaginateForward.value)
+      page.value += 1
+
+    return
+  }
+
+  if (canPaginateBackward.value)
+    page.value -= 1
+}
 </script>
 
 <template>
   <LayoutAppSlot name="aside">
     <UAsideList>
-      <UAsideListTab
-        v-for="server in servers"
-        :key="server"
-        :to="{
-          name: 'explore',
-          params: {
-            baseUrl: server,
-          },
+      <UContextMenu
+        v-model="contextMenuOpen"
+        @update:open="(e) => {
+          if (!e) contextMenuServer = undefined
         }"
       >
-        <UAsideListButtonIcon icon="tabler:server-2" />
-        <span>{{ server }}</span>
-      </UAsideListTab>
+        <UContextMenuTrigger class="flex flex-col gap-[2px] w-full *:w-full *:justify-start">
+          <UAsideListTab
+            v-for="server in servers"
+            :key="server"
+            :to="{
+              name: 'explore',
+              params: {
+                baseUrl: server,
+              },
+            }"
+            @click.right="contextMenuServer = server"
+          >
+            <UAsideListButtonIcon icon="tabler:server-2" />
+
+            <span :title="server" class="truncate">{{ server }}</span>
+          </UAsideListTab>
+        </UContextMenuTrigger>
+        <UContextMenuContent v-if="contextMenuServer">
+          <UContextMenuItem :disabled="contextMenuServer === 'matrix.org'" @select="handleServerRemove()">
+            <Icon name="tabler:trash" />
+            Delete
+          </UContextMenuItem>
+        </UContextMenuContent>
+      </UContextMenu>
 
       <UAsideListSeparator />
 
-      <UAsideListButton>
-        <UAsideListButtonIcon icon="tabler:plus" />
-        <span class="font-medium">Add server</span>
-      </UAsideListButton>
+      <PageExploreAddServer :servers  @server-submit="handleServerAdd($event)"/>
     </UAsideList>
   </LayoutAppSlot>
 
@@ -61,7 +112,9 @@ onStartTyping(() => inputRef.value?.inputRef?.focus())
       <div class="px-6 grid grid-cols-2 h-full items-center">
         <div class="flex gap-2 items-center">
           <Icon name="tabler:server-2" />
-          <p>{{ baseUrl }}</p>
+          <p class="font-medium">
+            {{ baseUrl }}
+          </p>
           <LazyUSpinner v-if="isFetching" class="size-4" />
         </div>
 
@@ -84,7 +137,7 @@ onStartTyping(() => inputRef.value?.inputRef?.focus())
     </div>
   </LayoutAppSlot>
 
-  <div class="py-page-y-padding h-full relative scrollbar-gutter-stable">
+  <div class="py-page-y-padding h-full relative overflow-y-scroll scrollbar-gutter-stable">
     <div class="mx-auto container max-w-screen-xl space-y-lg">
       <PageExplorePagination
         :page-count="currentPage?.chunk.length"
@@ -115,7 +168,8 @@ onStartTyping(() => inputRef.value?.inputRef?.focus())
         class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
       >
         <UCardTitle class="flex gap-2 items-center">
-          <Icon name="tabler:alert-triangle" />An error occurred
+          <Icon name="tabler:alert-triangle" />
+          <span>An error occurred</span>
         </UCardTitle>
 
         <p class="text-pretty">
