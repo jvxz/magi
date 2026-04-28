@@ -102,3 +102,25 @@ export function getTotalNodeHeights<T extends ChildNode | HTMLElement | Dimensio
     totalHeights: currentHeight,
   }
 }
+
+// https://github.com/vueuse/vueuse/blob/main/packages/core/onStartTyping/index.ts#L6C1-L25C2
+export function isFocusedElementEditable() {
+  const { activeElement, body } = document
+
+  if (!activeElement)
+    return false
+
+  // If not element has focus, we assume it is not editable, too.
+  if (activeElement === body)
+    return false
+
+  // Assume <input> and <textarea> elements are editable.
+  switch (activeElement.tagName) {
+    case 'INPUT':
+    case 'TEXTAREA':
+      return true
+  }
+
+  // Check if any other focused element id editable.
+  return activeElement.hasAttribute('contenteditable')
+}
