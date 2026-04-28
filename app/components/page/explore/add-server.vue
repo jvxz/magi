@@ -20,7 +20,9 @@ const { r$ } = useRegle({ homeserver: '' }, {
 })
 
 function handleSubmit() {
-  if (!r$.homeserver.$value)
+  r$.$touch()
+
+  if (!r$.homeserver.$value || r$.$error)
     return
 
   open.value = false
