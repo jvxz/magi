@@ -46,7 +46,7 @@ const { copy } = useClipboard()
         <div class="px-4 pb-4 pt-14 border border-border rounded flex flex-1 flex-col gap-2">
           <MatrixAvatar
             :user="user"
-            class="size-20 ring-6 ring-card-light z-1"
+            class="size-20 ring-6 ring-card-light z-1 bg-card-light"
             image-size="small"
           />
 
@@ -97,7 +97,7 @@ const { copy } = useClipboard()
           <UInput
             v-if="!isSelf"
             :placeholder="`Message ${displayName}`"
-            class="text-xs"
+            :classes="{ input: 'text-xs' }"
           />
         </div>
       </UCard>
