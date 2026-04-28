@@ -103,7 +103,7 @@ function handlePaginate(dir: 'f' | 'b') {
 
       <UAsideListSeparator />
 
-      <PageExploreAddServer :servers  @server-submit="handleServerAdd($event)"/>
+      <PageExploreAddServer :servers @server-submit="handleServerAdd($event)" />
     </UAsideList>
   </LayoutAppSlot>
 
