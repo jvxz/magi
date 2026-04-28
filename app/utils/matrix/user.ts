@@ -7,7 +7,7 @@ export function getDisplayNameFallback(maybeUserOrId: MaybeUserOrId | undefined)
 
   const userId = resolveUserId(maybeUserOrId)
 
-  const match = userId.match(USER_ID_REG)?.at(1)
+  const match = userId.match(USER_ID_REG)?.at(2)
   assert(match, 'invalid user ID when getting display name fallback')
   return match
 }
