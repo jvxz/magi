@@ -1,3 +1,5 @@
+import type { RoomMember, User } from 'matrix-js-sdk'
+
 // https://github.com/cinnyapp/cinny/blob/098684973ebb28592158efa43e79741ab27afab9/src/app/utils/matrix.ts#L26
 export const USER_ID_REG = /^([@$+#])([^\s:]+):(\S+)$/
 
@@ -35,6 +37,13 @@ export function resolveUserId(maybeUserOrId: MaybeUserOrId) {
     return maybeUserOrId
 
   return maybeUserOrId.userId
+}
+
+export function resolveUserName(user: User | RoomMember) {
+  if (user.rawDisplayName)
+    return user.rawDisplayName
+
+  return getDisplayNameFallback(user.userId)
 }
 
 export function parseUserId(userId: string | undefined) {
