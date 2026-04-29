@@ -1,4 +1,4 @@
-import type { ClientEventHandlerMap, EmittedEvents, EventEmitterEvents, Listener, User } from 'matrix-js-sdk'
+import type { ClientEventHandlerMap, EmittedEvents, EventEmitterEvents, Listener, Room, User } from 'matrix-js-sdk'
 
 export type EmitterListener<T extends EventEmitterEvents | EmittedEvents> = Listener<EmittedEvents, ClientEventHandlerMap, T>
 
@@ -7,5 +7,8 @@ export interface RoomMemberTypingEventContent {
 }
 
 export type MaybeUserOrId = User | User['userId']
+export type MaybeRoomOrId = Room | Room['roomId']
 
 export type AvatarImageSize = 'small' | 'medium' | 'large'
+
+export type PowerLevelName = ReturnType<typeof getPowerLevelName>
