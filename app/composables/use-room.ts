@@ -1,13 +1,19 @@
-import type { Room } from 'matrix-js-sdk'
+import { toRef } from '@vueuse/core'
+import { Room } from 'matrix-js-sdk'
 
-export function useRoom(roomId: MaybeRefOrGetter<string | undefined>) {
-  const roomIdRef = toRef(roomId)
+export function useRoom(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
+  const maybeRoomOrIdRef = toRef(maybeRoomOrId)
   const { client } = useMatrixClient()
   const { onSync } = useMatrixHooks()
 
   const room = shallowRef<Room | undefined>(undefined)
   const get = () => {
-    const r = isTestMode() ? createMockRoom(500, roomIdRef.value!) : client.value.getRoom(roomIdRef.value)
+    const r = maybeRoomOrIdRef.value instanceof Room
+      ? maybeRoomOrIdRef.value
+      : isTestMode()
+        ? createMockRoom(500, maybeRoomOrIdRef.value!)
+        : client.value.getRoom(maybeRoomOrIdRef.value)
+
     void r?.loadMembersIfNeeded()
     if (r)
       room.value = r
@@ -17,7 +23,7 @@ export function useRoom(roomId: MaybeRefOrGetter<string | undefined>) {
     triggerRef(room)
   }
 
-  watch(roomIdRef, get, { immediate: true })
+  watch(maybeRoomOrIdRef, get, { immediate: true })
 
   onSync(get)
 
