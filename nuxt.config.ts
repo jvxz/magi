@@ -193,6 +193,9 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
+      include: [
+        'matrix-js-sdk'
+      ],
       exclude: [
         '@matrix-org/matrix-sdk-crypto-wasm',
         'workbox-core',
