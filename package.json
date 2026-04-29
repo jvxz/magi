@@ -7,6 +7,7 @@
     "build": "nuxt build",
     "build:test": "NITRO_PRESET=node-server NODE_ENV=test pnpm build",
     "dev": "VITE_PLUGIN_PWA=true nuxt dev",
+    "dev:prepare": "nuxt prepare",
     "dev:no-pwa": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "pnpm run build && nuxt preview",
