@@ -4,28 +4,7 @@ definePageMeta({
   name: 'space-room',
 })
 
-const currentRoom = useCurrentRoom()
-const currentSpace = useCurrentSpace()
-
-const isPaginating = shallowRef(false)
+// this page is here solely to allow for navigation to it. the actual logic for the page is
+// inside the `/pages/app/space/[spaceId].vue` page. the reason for this is to persist the
+// event list component instance across route changes
 </script>
-
-<template>
-  <LayoutAppSlot name="page-header">
-    <LayoutAppPageHeader class="px-3.5 flex gap-2 items-center">
-      {{ currentRoom?.name ?? currentSpace?.name }}
-      <DevOnly>
-        <USpinner v-if="isPaginating" class="size-4" />
-      </DevOnly>
-    </LayoutAppPageHeader>
-  </LayoutAppSlot>
-
-  <div class="flex flex-1 flex-col size-full relative">
-    <PageRoomEventList
-      v-if="currentRoom"
-      :room="currentRoom"
-      @is-paginating="isPaginating = $event"
-    />
-    <PageRoomInput />
-  </div>
-</template>
