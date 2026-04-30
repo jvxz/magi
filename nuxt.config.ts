@@ -160,7 +160,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    showLoadTime: false,
+    public: {
+      showLoadTime: false,
+    },
   },
 
   security: {
