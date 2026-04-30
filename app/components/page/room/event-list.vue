@@ -26,11 +26,19 @@ const {
   scrollEl: containerRef,
 })
 
-onMounted(async () => {
+onMounted(handleRoomUpdate)
+watch(() => props.room.roomId, handleRoomUpdate)
+
+async function handleRoomUpdate() {
+  const expectedRoomId = props.room.roomId
   await nextTick()
+
+  if (props.room.roomId !== expectedRoomId)
+    return
+
   scrollToBottom()
   await handleOnMounted()
-})
+}
 
 watch(isPaginating, v => emits('isPaginating', v))
 

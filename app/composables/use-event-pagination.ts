@@ -72,6 +72,10 @@ export function useEventPagination(opts: Opts) {
     if (isPaginating.value)
       return
 
+    const prevLastId = prevEvents?.at(-1)?.getId()
+    if (prevLastId && !newEvents.some(e => e.getId() === prevLastId))
+      return
+
     const container = unrefElement(scrollEl)
     if (!container)
       return
@@ -137,9 +141,11 @@ export function useEventPagination(opts: Opts) {
 
   const paginateMutex = new Mutex()
   async function paginate(dir: Direction) {
+    const startedForRoomId = opts.room.value.roomId
     await paginateMutex.acquire()
     isPaginating.value = true
 
+    let nextDir: Direction | null = null
     try {
       if (dir === Direction.Backward && !canPaginateBackward.value)
         return
@@ -151,6 +157,8 @@ export function useEventPagination(opts: Opts) {
         return
 
       const sentinels = await getNextPageSentinels(dir)
+      if (opts.room.value.roomId !== startedForRoomId)
+        return
       if (!sentinels)
         return
 
@@ -159,29 +167,37 @@ export function useEventPagination(opts: Opts) {
 
       await setRange({ dir })
       await nextTick()
-    }
-    finally {
-      const container = unrefElement(scrollEl)
 
-      if (container) {
+      if (opts.room.value.roomId !== startedForRoomId)
+        return
+
+      const containerAfter = unrefElement(scrollEl)
+      if (containerAfter) {
         const backwardEl = backwardSentinelEl.value
         const forwardEl = forwardSentinelEl.value
 
-        const backwardIntersecting = dir !== Direction.Backward && backwardEl && isIntersecting(container, backwardEl)
-        const forwardIntersecting = dir !== Direction.Forward && forwardEl && isIntersecting(container, forwardEl)
+        const backwardIntersecting = dir !== Direction.Backward && backwardEl && isIntersecting(containerAfter, backwardEl)
+        const forwardIntersecting = dir !== Direction.Forward && forwardEl && isIntersecting(containerAfter, forwardEl)
 
         if (backwardIntersecting)
-          void paginate(Direction.Backward)
+          nextDir = Direction.Backward
         else if (forwardIntersecting)
-          void paginate(Direction.Forward)
+          nextDir = Direction.Forward
       }
-
+    }
+    finally {
       isPaginating.value = false
       paginateMutex.release()
+      if (nextDir !== null && opts.room.value.roomId === startedForRoomId)
+        await paginate(nextDir)
     }
   }
 
   async function handleOnMounted() {
+    eventsPaginated.value = events.value.slice(-80)
+
+    await nextTick()
+
     const anchor = getAnchor(Direction.Backward, maxPageHeight.value * 0.75)
     const cachedScrollState = pageScrollStateCache.get(opts.room.value.roomId)
     const container = unrefElement(scrollEl)

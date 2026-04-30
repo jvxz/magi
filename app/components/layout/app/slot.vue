@@ -10,10 +10,16 @@ const props = defineProps<{
 }>()
 
 const to = computed(() => `#app-${props.name}`)
+
+const isAlive = useAlive()
 </script>
 
 <template>
-  <Teleport defer :to>
+  <Teleport
+    v-if="isAlive"
+    defer
+    :to
+  >
     <slot />
   </Teleport>
 </template>
