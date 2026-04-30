@@ -43,9 +43,6 @@ async function handleRoomUpdate() {
 // does not fire on mount (no immediate: true)
 watch(() => props.room.roomId, handleOnMounted)
 
-// does not fire on mount (no immediate: true)
-watch(() => props.room.roomId, handleOnMounted)
-
 watch(isPaginating, v => emits('isPaginating', v))
 
 const groupedEvents = useEventGrouping({ events, eventsPaginated })
