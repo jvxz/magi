@@ -93,7 +93,6 @@ const isPaginating = shallowRef(false)
   <div class="flex flex-1 flex-col size-full relative">
     <PageRoomEventList
       v-if="currentRoom"
-      v-show="currentRoom"
       :room="currentRoom"
       @is-paginating="isPaginating = $event"
     />
