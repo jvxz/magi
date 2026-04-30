@@ -147,8 +147,6 @@ export function useEventPagination(opts: Opts) {
 
     let nextDir: Direction | null = null
     try {
-      if (opts.room.value.roomId !== startedForRoomId)
-        return
       if (dir === Direction.Backward && !canPaginateBackward.value)
         return
       if (dir === Direction.Forward && !canPaginateForward.value)
