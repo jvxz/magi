@@ -7,6 +7,9 @@ definePageMeta({
 
 const currentSpace = useCurrentSpace()
 const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
+
+const currentRoom = useCurrentRoom()
+const isPaginating = shallowRef(false)
 </script>
 
 <template>
@@ -78,5 +81,24 @@ const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
     </UAsideList>
   </LayoutAppSlot>
 
-  <NuxtPage />
+  <LayoutAppSlot name="page-header">
+    <LayoutAppPageHeader class="px-3.5 flex gap-2 items-center">
+      {{ currentRoom?.name ?? currentSpace?.name }}
+      <DevOnly>
+        <USpinner v-if="isPaginating" class="size-4" />
+      </DevOnly>
+    </LayoutAppPageHeader>
+  </LayoutAppSlot>
+
+  <div class="flex flex-1 flex-col size-full relative">
+    <PageRoomEventList
+      v-if="currentRoom"
+      v-show="currentRoom"
+      :room="currentRoom"
+      @is-paginating="isPaginating = $event"
+    />
+    <PageRoomInput />
+  </div>
+
+  <NuxtPage keepalive :is-paginating />
 </template>
