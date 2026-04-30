@@ -141,7 +141,6 @@ export function useEventPagination(opts: Opts) {
 
   const paginateMutex = new Mutex()
   async function paginate(dir: Direction) {
-    const startedForRoomId = opts.room.value.roomId
     await paginateMutex.acquire()
     const startedForRoomId = opts.room.value.roomId
     isPaginating.value = true
