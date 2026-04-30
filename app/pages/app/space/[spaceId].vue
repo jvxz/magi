@@ -91,12 +91,13 @@ const isPaginating = shallowRef(false)
   </LayoutAppSlot>
 
   <div class="flex flex-1 flex-col size-full relative">
-    <PageRoomEventList
-      v-if="currentRoom"
-      :room="currentRoom"
-      @is-paginating="isPaginating = $event"
-    />
-    <PageRoomInput />
+    <template v-if="currentRoom">
+      <PageRoomEventList
+        :room="currentRoom"
+        @is-paginating="isPaginating = $event"
+      />
+      <PageRoomInput />
+    </template>
   </div>
 
   <NuxtPage keepalive :is-paginating />
