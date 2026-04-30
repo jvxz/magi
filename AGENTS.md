@@ -23,6 +23,7 @@ Use **pnpm** (see [`package.json`](package.json)).
 | `pnpm preview` | `pnpm build` then `nuxt preview` |
 | `pnpm lint` | ESLint (`AGENTS.md` ignored via `--ignore-pattern`) |
 | `pnpm postinstall` | `nuxt prepare` |
+| `pnpm tokens:export` | [`design-tokens/w3c/tokens.json`](design-tokens/w3c/tokens.json) (dual theme), [`light.json`](design-tokens/w3c/light.json) / [`dark.json`](design-tokens/w3c/dark.json) — Playwright + [`culori`](https://culorijs.org); `pnpm exec playwright install chromium` if needed |
 | `pnpm test` | Vitest (all projects in [`vitest.config.ts`](vitest.config.ts)) |
 | `pnpm test:unit` | Vitest — `unit` project (`test/unit/*.{test,spec}.ts`) |
 | `pnpm test:nuxt` | Vitest — `nuxt` project (`test/nuxt/**/*.{test,spec}.ts`) |
