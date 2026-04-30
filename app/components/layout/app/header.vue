@@ -17,9 +17,11 @@ const env = computed<string | undefined>(() => {
         {{ env }}
       </span>
     </div>
+
     <LayoutAppHeaderText />
+
     <div class="px-2 text-right">
-      <p v-if="$config.showLoadTime" class="text-sm text-muted-foreground tabular-nums">
+      <p v-if="$config.public.showLoadTime" class="text-sm text-muted-foreground tabular-nums">
         {{ $_loadTime }}
       </p>
     </div>

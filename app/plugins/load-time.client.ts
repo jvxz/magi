@@ -1,7 +1,7 @@
 export default defineNuxtPlugin({
   setup: (nuxt) => {
     const config = useRuntimeConfig()
-    if (!config.showLoadTime)
+    if (!config.public.showLoadTime)
       return
 
     const loadTime = ref(0)
