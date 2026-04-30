@@ -30,7 +30,12 @@ onMounted(handleRoomUpdate)
 watch(() => props.room.roomId, handleRoomUpdate)
 
 async function handleRoomUpdate() {
+  const expectedRoomId = props.room.roomId
   await nextTick()
+
+  if (props.room.roomId !== expectedRoomId)
+    return
+
   scrollToBottom()
   await handleOnMounted()
 }
