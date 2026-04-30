@@ -5,7 +5,7 @@ export const BATCH_SIZE = 80
 
 type Hooks = Prettify<Pick<Required<NonNullable<Parameters<typeof useRoomEventHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>
 
-const roomEventsFullyLoadedSet = new Set<string>()
+const roomEventsFullyLoadedSet = reactive(new Set<string>())
 
 export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
   const { client } = useMatrixClient()
