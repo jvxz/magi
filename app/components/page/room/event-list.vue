@@ -32,6 +32,9 @@ onMounted(async () => {
   await handleOnMounted()
 })
 
+// does not fire on mount (no immediate: true)
+watch(() => props.room.roomId, handleOnMounted)
+
 watch(isPaginating, v => emits('isPaginating', v))
 
 const groupedEvents = useEventGrouping({ events, eventsPaginated })
