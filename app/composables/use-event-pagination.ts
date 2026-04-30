@@ -143,10 +143,13 @@ export function useEventPagination(opts: Opts) {
   async function paginate(dir: Direction) {
     const startedForRoomId = opts.room.value.roomId
     await paginateMutex.acquire()
+    const startedForRoomId = opts.room.value.roomId
     isPaginating.value = true
 
     let nextDir: Direction | null = null
     try {
+      if (opts.room.value.roomId !== startedForRoomId)
+        return
       if (dir === Direction.Backward && !canPaginateBackward.value)
         return
       if (dir === Direction.Forward && !canPaginateForward.value)
