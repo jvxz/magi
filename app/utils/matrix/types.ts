@@ -12,4 +12,4 @@ export type MaybeRoomOrId = Room | Room['roomId']
 
 export type AvatarImageSize = 'small' | 'medium' | 'large'
 
-export type PowerLevelName = ReturnType<typeof getPowerLevelName>
+export type PowerLevelName = 'member' | 'moderator' | 'admin' | 'owner'
