@@ -5,13 +5,23 @@ export const BATCH_SIZE = 80
 
 type Hooks = Prettify<Pick<Required<NonNullable<Parameters<typeof useRoomEventHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>
 
+const roomEventsFullyLoadedSet = new Set<string>()
+
 export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
   const { client } = useMatrixClient()
 
   const events = shallowRef<MatrixEvent[]>([])
   const eventVersions = shallowReactive(new Map<string, number>())
 
-  const isFullyLoaded = useState(`${room.value.roomId}:isFullyLoaded`, () => false)
+  const isFullyLoaded = computed({
+    get: () => roomEventsFullyLoadedSet.has(room.value.roomId),
+    set: (v: boolean) => {
+      if (v)
+        roomEventsFullyLoadedSet.add(room.value.roomId)
+      else
+        roomEventsFullyLoadedSet.delete(room.value.roomId)
+    },
+  })
 
   const sync = () => {
     const liveEvents = room.value.getLiveTimeline().getEvents()
@@ -19,7 +29,7 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
     events.value = [...(liveEvents ?? [])]
   }
 
-  whenever(room, sync, { immediate: true, once: true })
+  whenever(room, sync, { immediate: true })
 
   let currentBatchSize = BATCH_SIZE
   const mutex = new Mutex()
@@ -34,6 +44,8 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
         if (!r)
           return
 
+        const targetRoomId = r.roomId
+
         if (dir === Direction.Backward) {
           const canLoadMore = await retry(
             scrollBack,
@@ -47,10 +59,12 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
             },
           )
 
-          isFullyLoaded.value = !canLoadMore
+          if (targetRoomId === toValue(room).roomId)
+            isFullyLoaded.value = !canLoadMore
         }
 
-        sync()
+        if (targetRoomId === toValue(room).roomId)
+          sync()
       }
       finally {
         mutex.release()
