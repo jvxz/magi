@@ -1,10 +1,10 @@
 import type { IContent, IEvent, IUnsigned } from 'matrix-js-sdk'
 import type { RoomMember } from 'matrix-js-sdk/lib/models/room-member'
+import { objectKeys } from '#shared/utils/object'
 import { faker } from '@faker-js/faker'
 import { sample } from 'es-toolkit'
 import { EventType, KnownMembership, MatrixEvent } from 'matrix-js-sdk'
 import { withoutProtocol } from 'ufo'
-import { objectKeys } from '../../../shared/utils/object'
 
 faker.seed(0)
 

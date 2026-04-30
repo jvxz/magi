@@ -1,9 +1,9 @@
 import type { MatrixClient, MatrixEvent, Room } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 import type { MaybeUserOrId } from './types'
+import { $Error } from '#shared/utils/$error'
+import { objectEntries } from '#shared/utils/object'
 import { EventTimeline, EventType, KnownMembership } from 'matrix-js-sdk'
-import { $Error } from '../../../shared/utils/$error'
-import { objectEntries } from '../../../shared/utils/object'
 import { mxcToHttps } from './mxc-to-https'
 import { resolveUserId } from './user'
 
@@ -188,7 +188,7 @@ export async function getRoomEventById(room: Room, client: MatrixClient, eventId
   return mapped
 }
 
-export function getPowerLevelName(powerLevel: number, ownerIsAdmin = false) {
+export function getPowerLevelName(powerLevel: number, ownerIsAdmin = false): PowerLevelName {
   if (powerLevel < 50)
     return 'member'
   if (powerLevel < 100)
