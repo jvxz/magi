@@ -1,4 +1,5 @@
 import type { EventTimelineSet, Listener, MatrixEvent, Room, RoomEmittedEvents, RoomEventHandlerMap, RoomMember, RoomState } from 'matrix-js-sdk'
+import { toRef } from '@vueuse/core'
 import { RoomEvent } from 'matrix-js-sdk'
 
 type EmitterListener<T extends RoomEmittedEvents> = Listener<RoomEmittedEvents, RoomEventHandlerMap, T>
@@ -12,10 +13,9 @@ type Params = Partial<{
   onRoomMemberTyping: (event: MatrixEvent, member: RoomMember) => void
 }>
 
-export function useRoomEventHooks(roomId: MaybeRefOrGetter<string | undefined>, params?: Params) {
-  const roomIdRef = toRef(roomId)
-
-  const room = useRoom(roomIdRef)
+export function useRoomEventHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>, params?: Params) {
+  const roomInputRef = toRef(roomInput)
+  const room = useRoom(roomInputRef)
 
   const disposers: (() => void)[] = []
   const cleanup = () => disposers.forEach(disposer => disposer())
