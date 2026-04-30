@@ -10,9 +10,6 @@ const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
 
 const currentRoom = useCurrentRoom()
 const isPaginating = shallowRef(false)
-
-const currentRoom = useCurrentRoom()
-const isPaginating = shallowRef(false)
 </script>
 
 <template>
