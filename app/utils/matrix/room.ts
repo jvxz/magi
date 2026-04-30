@@ -1,6 +1,11 @@
 import type { MatrixClient, MatrixEvent, Room } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
+import type { MaybeUserOrId } from './types'
 import { EventTimeline, EventType, KnownMembership } from 'matrix-js-sdk'
+import { $Error } from '../../../shared/utils/$error'
+import { objectEntries } from '../../../shared/utils/object'
+import { mxcToHttps } from './mxc-to-https'
+import { resolveUserId } from './user'
 
 interface MDirect extends MatrixEvent {
   event: {
@@ -10,7 +15,7 @@ interface MDirect extends MatrixEvent {
 }
 
 export function getDirectRooms(client: MatrixClient) {
-  const data = client.getAccountData('m.direct') as MDirect | undefined
+  const data = client.getAccountData(EventType.Direct) as MDirect | undefined
   if (!data)
     return []
 

@@ -1,4 +1,9 @@
 import type { RoomMember, User } from 'matrix-js-sdk'
+import type { MxcToHttpsOptions } from './mxc-to-https'
+import type { AvatarImageSize, MaybeUserOrId } from './types'
+import { assert, merge } from 'es-toolkit'
+import { AVATAR_IMAGE_SIZE_VALUES } from '../../../shared/utils/constants'
+import { mxcToHttps } from './mxc-to-https'
 
 // https://github.com/cinnyapp/cinny/blob/098684973ebb28592158efa43e79741ab27afab9/src/app/utils/matrix.ts#L26
 export const USER_ID_REG = /^([@$+#])([^\s:]+):(\S+)$/
