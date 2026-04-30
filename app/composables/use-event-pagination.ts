@@ -72,6 +72,10 @@ export function useEventPagination(opts: Opts) {
     if (isPaginating.value)
       return
 
+    const prevLastId = prevEvents?.at(-1)?.getId()
+    if (prevLastId && !newEvents.some(e => e.getId() === prevLastId))
+      return
+
     const container = unrefElement(scrollEl)
     if (!container)
       return
