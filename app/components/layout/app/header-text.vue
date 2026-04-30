@@ -21,7 +21,7 @@ const motionProps: MotionProps = {
 </script>
 
 <template>
-  <div class="text-sm font-medium text-center w-auto relative">
+  <div class="text-sm font-medium flex w-auto items-center justify-center relative">
     <AnimatePresence mode="popLayout" :initial="false">
       <motion.div
         v-if="!status.clientState && !showInitializing"
