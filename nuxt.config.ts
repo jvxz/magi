@@ -159,6 +159,10 @@ export default defineNuxtConfig({
     '/playground': { appLayout: false },
   },
 
+  runtimeConfig: {
+    showLoadTime: false,
+  },
+
   security: {
     headers: {
       contentSecurityPolicy: {
