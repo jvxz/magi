@@ -70,6 +70,9 @@ export default defineConfig({
     {
       squish: 'motion-safe:active:scale-96.5 duration-100 ease-out',
     },
+    {
+      'resize-handle': 'bg-muted-foreground opacity-75 h-full w-1.5 pointer-events-none transition-all duration-75 delay-150 ease-in-out inset-0 absolute z-10 z-100 group-data-[state=inactive]:opacity-0 group-data-[state=inactive]:w-0.5 -translate-x-1/2 group-data-[state=inactive]:delay-0',
+    },
   ],
   theme: {
     colors: {

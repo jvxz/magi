@@ -34,7 +34,7 @@
               </div>
             </SplitterPanel>
             <SplitterResizeHandle id="aside-extra-splitter-resize-handle" class="group relative">
-              <div class="bg-muted-foreground opacity-75 h-full w-1.5 pointer-events-none transition-all duration-75 delay-150 ease-in-out inset-0 absolute z-10 z-100 group-data-[state=inactive]:opacity-0 group-data-[state=inactive]:w-0.5 -translate-x-1/2 group-data-[state=inactive]:delay-0" />
+              <div class="resize-handle" />
             </SplitterResizeHandle>
             <SplitterPanel id="aside-extra-splitter-panel-2">
               <div class="border-t flex flex-col h-full">
