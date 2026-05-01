@@ -100,8 +100,7 @@ export function useRoomMembers(roomId: MaybeRefOrGetter<MaybeRoomOrId | undefine
       if (
         roomState.roomId !== room.value?.roomId
         || !members.value
-        || event.getType() !== EventType.RoomMember
-        || event.getType() !== EventType.RoomPowerLevels
+        || (event.getType() !== EventType.RoomMember && event.getType() !== EventType.RoomPowerLevels)
       )
         return
 
