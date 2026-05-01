@@ -101,12 +101,15 @@ export function useRoomMembers(roomId: MaybeRefOrGetter<MaybeRoomOrId | undefine
         roomState.roomId !== room.value?.roomId
         || !members.value
         || event.getType() !== EventType.RoomMember
+        || event.getType() !== EventType.RoomPowerLevels
       )
         return
 
-      const membershipEventContent = parseMembershipEvent(event)
-      if (!['join', 'leave', 'ban', 'kick'].includes(membershipEventContent.type))
-        return
+      if (event.getType() === EventType.RoomMember) {
+        const membershipEventContent = parseMembershipEvent(event)
+        if (!['join', 'leave', 'ban', 'kick'].includes(membershipEventContent.type))
+          return
+      }
 
       updateMembers(true)
     },
