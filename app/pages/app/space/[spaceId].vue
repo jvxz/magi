@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 definePageMeta({
+  key: 'space',
   layout: 'app',
   middleware: ['space'],
   name: 'space',
