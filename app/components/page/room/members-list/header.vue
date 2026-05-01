@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="text-xs font-medium px-1.5 pb-1 flex h-8 w-full items-end">
+  <div class="text-xs text-muted-foreground font-medium px-1.5 pb-1 flex h-8 w-full items-end">
     <p>{{ upperFirst(title) }} — {{ total }}</p>
   </div>
 </template>

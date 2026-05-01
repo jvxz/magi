@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 const props = defineProps<{
   userId: string
+  isOwner?: boolean
 }>()
 
 const profile = useUserProfile(props.userId)
+const creator = useCurrentRoomCreator()
 
 const triggerRef = useTemplateRef('trigger')
 onMounted(() => {
@@ -24,12 +26,26 @@ onMounted(() => {
   >
     <UButton
       ref="trigger"
-      class="h-10 w-full justify-start data-[popover-open]:bg-muted/75 data-[popover-open]:text-foreground" 
+      class="text-foreground font-normal gap-2 h-10 w-full justify-start data-[popover-open]:bg-muted/75"
       variant="ghost"
     >
-      <MatrixAvatar :user="userId" class="size-6" /> <p class="truncate">
+      <MatrixAvatar :user="userId" class="size-6" />
+      <p class="shrink-0 truncate">
         {{ profile?.displayname }}
       </p>
+
+      <UTooltipRoot>
+        <UTooltipTrigger as-child>
+          <Icon
+            v-if="userId === creator"
+            name="tabler:crown"
+            class="text-primary"
+          />
+        </UTooltipTrigger>
+        <UTooltipContent>
+          Owner
+        </UTooltipContent>
+      </UTooltipRoot>
     </UButton>
   </UProfilePopoverTrigger>
 </template>
