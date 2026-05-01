@@ -12,8 +12,6 @@ const props = defineProps<{
 const to = computed(() => `#app-${props.name}`)
 
 const isAlive = useAlive()
-
-const isAlive = useAlive()
 </script>
 
 <template>
