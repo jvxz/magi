@@ -274,13 +274,12 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
       }
     }
 
-    assert(content.displayname, 'display name is required when displayName changed')
-
+    // display name was added or changed from one value to another
     return {
       data: {
         from: prev?.displayname,
         id: subject,
-        to: content.displayname,
+        to: content.displayname!,
         type: 'changed',
       },
       type: 'displayName',
@@ -301,14 +300,14 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
       }
     }
 
-    assert(content.avatar_url, 'avatar URL is required when avatar changed')
+    // avatar was added or changed from one URL to another
 
     return {
       data: {
         from: prev?.avatar_url,
         id: subject,
         name: subjectName,
-        to: content.avatar_url,
+        to: content.avatar_url!,
         type: 'changed',
       },
       type: 'avatar',
