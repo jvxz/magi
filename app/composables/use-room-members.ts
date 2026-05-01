@@ -31,6 +31,7 @@ export function useRoomMembers(roomId: MaybeRefOrGetter<MaybeRoomOrId | undefine
 
       // clear the members state to avoid stale data
       members.value = undefined
+      await nextTick()
 
       const cached = membersCache.get(room.value.roomId)
       if (cached && !force)
