@@ -90,13 +90,17 @@ const isPaginating = shallowRef(false)
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
-  <div class="flex flex-1 flex-col size-full relative">
+  <div class="flex flex-1 size-full">
     <template v-if="currentRoom">
-      <PageRoomEventList
-        :room="currentRoom"
-        @is-paginating="isPaginating = $event"
-      />
-      <PageRoomInput />
+      <div class="flex flex-col size-full relative">
+        <PageRoomEventList
+          :room="currentRoom"
+          @is-paginating="isPaginating = $event"
+        />
+        <PageRoomInput />
+      </div>
+
+      <PageRoomMembersList />
     </template>
   </div>
 
