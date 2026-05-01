@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+const { delay = 1400 } = defineProps<{ delay?: number }>()
+</script>
+
 <template>
   <div
     v-bind="$attrs"
@@ -5,9 +9,9 @@
     aria-busy
   >
     <div
-      class="bg-gradient-linear h-full w-10 ease from-transparent to-transparent via-foreground/3 bg-gradient-to-r/oklch"
+      class="bg-gradient-linear size-full ease from-transparent to-transparent via-foreground/3 bg-gradient-to-r/oklch"
       :style="{
-        animation: 'skeleton 1.4s infinite',
+        animation: `skeleton ${delay}ms infinite`,
         willChange: 'transform',
       }"
     />
