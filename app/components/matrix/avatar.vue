@@ -32,8 +32,7 @@ const isError = ref(false)
     data-slot="avatar"
     :alt="userProfile?.displayname ? `${userProfile?.displayname}'s avatar` : 'Avatar'"
     :src="resolvedAvatar"
-    :class="cn(!square && 'rounded-full', props.class)"
-    :classes="{ img: 'object-cover' }"
+    :class="cn('object-cover', !square && 'rounded-full', props.class)"
     :do-placeholder="false"
     @error="isError = true"
   />
