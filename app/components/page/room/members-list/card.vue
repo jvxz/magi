@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 const props = defineProps<{
   userId: string
-  isOwner?: boolean
 }>()
 
 const profile = useUserProfile(props.userId)
