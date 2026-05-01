@@ -20,7 +20,7 @@
     "test:e2e:ui": "pnpm build:test && pnpm test:e2e:prebuilt --ui",
     "test:e2e:prebuilt": "playwright test",
     "test:e2e:webserver": "NODE_ENV=test pnpm exec nuxt preview --port 5678",
-    "test:typecheck": "vue-tsc -b --noEmit",
+    "test:typecheck": "nuxt typecheck",
     "test:unit": "vitest --project unit",
     "test:watch": "vitest --watch"
   },
