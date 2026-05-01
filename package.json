@@ -43,7 +43,7 @@
     "marked": "^18.0.2",
     "matrix-js-sdk": "^41.4.0",
     "motion-v": "^2.2.1",
-    "nuxt": "^4.4.2",
+    "nuxt": "^4.4.4",
     "nuxt-security": "2.5.1",
     "nuxt-vitalizer": "2.0.0",
     "quick-lru": "^7.3.0",
