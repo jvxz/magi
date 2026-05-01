@@ -19,15 +19,15 @@ watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
     >
       <PageRoomMembersListHeader
         v-if="'type' in item && item.type === 'header'"
-        :key="currentRoom?.roomId"
+        :key="item.title"
         :title="item.title"
         :total="roomMembers.groupTotals[item.title]"
       />
 
       <PageRoomMembersListCard
         v-else
-        :is-owner="item.powerLevel >= 100"
         :key="item.userId"
+        :is-owner="item.powerLevel >= 100"
         :user-id="item.userId"
       />
     </VList>
