@@ -13,7 +13,6 @@ export interface ImgProps {
   onLoad?: (e: Event) => void
   onError?: (e: Event) => void
   doPlaceholder?: boolean
-  classes?: DefineClasses<'span' | 'img'>
 }
 
 const props = defineProps<ImgProps>()
@@ -37,33 +36,27 @@ function handleCached(e: any) {
 </script>
 
 <template>
-  <span
-    class="relative after:bg-card after:size-full after:content-[''] after:inset-0 after:absolute"
-    :class="cn([!error && !doPlaceholder ? 'after:invisible' : '', $props.classes?.span])"
-  >
-    <img
-      v-bind="props"
-      :loading="loading ?? 'lazy'"
-      :alt="alt ?? fallbackAlt ?? 'Unknown image'"
-      :width="size ?? width ?? 400"
-      :height="size ?? height ?? 400"
-      :src="!src ? IMG_PLACEHOLDER_URL : src"
-      :class="cn(
-        'select-none relative',
-        !loaded && 'bg-muted',
-        $props.classes?.img,
-      )"
-      :data-loaded="loaded ? 'true' : 'false'"
-      :data-error="error ? 'true' : 'false'"
-      @load="(e: Event) => {
-        loaded = true
-        onLoad?.(e)
-      }"
-      @error="(e) => {
-        error = true
-        onError?.(e)
-      }"
-      @vue:mounted="handleCached"
-    />
-  </span>
+  <img
+    v-bind="props"
+    :loading="loading ?? 'lazy'"
+    :alt="alt ?? fallbackAlt ?? 'Unknown image'"
+    :width="size ?? width ?? 400"
+    :height="size ?? height ?? 400"
+    :src="!src ? IMG_PLACEHOLDER_URL : src"
+    :class="cn(
+      'select-none relative',
+      props.class,
+    )"
+    :data-loaded="loaded ? 'true' : 'false'"
+    :data-error="error ? 'true' : 'false'"
+    @load="(e: Event) => {
+      loaded = true
+      onLoad?.(e)
+    }"
+    @error="(e) => {
+      error = true
+      onError?.(e)
+    }"
+    @vue:mounted="handleCached"
+  />
 </template>
