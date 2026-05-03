@@ -1,6 +1,6 @@
 import type { EventTimelineSet, Listener, MatrixEvent, Room, RoomEmittedEvents, RoomEventHandlerMap, RoomMember, RoomState } from 'matrix-js-sdk'
 import { toRef } from '@vueuse/core'
-import { RoomEvent } from 'matrix-js-sdk'
+import { RoomEvent, RoomStateEvent } from 'matrix-js-sdk'
 
 type EmitterListener<T extends RoomEmittedEvents> = Listener<RoomEmittedEvents, RoomEventHandlerMap, T>
 
@@ -11,6 +11,7 @@ type Params = Partial<{
   onCurrentStateUpdated: (room: Room, previousRoomState: RoomState, roomState: RoomState) => void
   onAccountData: (event: MatrixEvent, room: Room, prevEvent?: MatrixEvent | undefined) => void
   onRoomMemberTyping: (event: MatrixEvent, member: RoomMember) => void
+  onMembers: (event: MatrixEvent, state: RoomState, member: RoomMember) => void
 }>
 
 export function useRoomEventHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>, params?: Params) {
@@ -28,6 +29,7 @@ export function useRoomEventHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | un
     bindListener(RoomEvent.TimelineReset, params?.onTimelineReset, disposers, room.value)
     bindListener(RoomEvent.CurrentStateUpdated, params?.onCurrentStateUpdated, disposers, room.value)
     bindListener(RoomEvent.AccountData, params?.onAccountData, disposers, room.value)
+    bindListener(RoomStateEvent.Members, params?.onMembers, disposers, room.value)
   }, { immediate: true })
 
   params?.onRoomMemberTyping && roomMemberTypingHook.on((event, member) => {
