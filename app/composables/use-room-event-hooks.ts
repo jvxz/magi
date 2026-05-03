@@ -12,6 +12,7 @@ type Params = Partial<{
   onAccountData: (event: MatrixEvent, room: Room, prevEvent?: MatrixEvent | undefined) => void
   onMemberUpdate: (event: MatrixEvent, state: RoomState, member: RoomMember) => void
   onRoomMemberTyping: (event: MatrixEvent, member: RoomMember) => void
+  onMembers: (event: MatrixEvent, state: RoomState, member: RoomMember) => void
 }>
 
 export function useRoomEventHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>, params?: Params) {
@@ -30,6 +31,7 @@ export function useRoomEventHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | un
     bindListener(RoomEvent.CurrentStateUpdated, params?.onCurrentStateUpdated, disposers, room.value)
     bindListener(RoomStateEvent.Members, params?.onMemberUpdate, disposers, room.value)
     bindListener(RoomEvent.AccountData, params?.onAccountData, disposers, room.value)
+    bindListener(RoomStateEvent.Members, params?.onMembers, disposers, room.value)
   }, { immediate: true })
 
   params?.onRoomMemberTyping && roomMemberTypingHook.on((event, member) => {
