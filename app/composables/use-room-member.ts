@@ -1,9 +1,14 @@
-export function useRoomMember(roomId: MaybeRefOrGetter<string | undefined>, userId: MaybeRefOrGetter<string | undefined>) {
-  const userIdRef = toRef(userId)
-  const roomIdRef = toRef(roomId)
-  const { client } = useMatrixClient()
+export function useRoomMember(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>, maybeUserOrId: MaybeRefOrGetter<MaybeUserOrId | undefined>) {
+  const room = useRoom(maybeRoomOrId)
 
-  const member = computed(() => getMember(client.value, userIdRef.value, roomIdRef.value))
+  const member = computed(() => {
+    const user = toValue(maybeUserOrId)
+    if (!user)
+      return
+
+    const id = resolveUserId(user)
+    return room.value?.getMember(id) ?? undefined
+  })
 
   return member
 }
