@@ -1,9 +1,9 @@
-import type { MatrixClient, MatrixEvent, Room } from 'matrix-js-sdk'
+import type { MatrixClient, MatrixEvent } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 import type { MaybeUserOrId } from './types'
 import { $Error } from '#shared/utils/$error'
 import { objectEntries } from '#shared/utils/object'
-import { EventTimeline, EventType, KnownMembership } from 'matrix-js-sdk'
+import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 import { mxcToHttps } from './mxc-to-https'
 import { resolveUserId } from './user'
 
@@ -188,7 +188,10 @@ export async function getRoomEventById(room: Room, client: MatrixClient, eventId
   return mapped
 }
 
-export function getPowerLevelName(powerLevel: number, ownerIsAdmin = false): PowerLevelName {
+export function getPowerLevelName(powerLevel: number | undefined, ownerIsAdmin = false): PowerLevelName {
+  if (isNil(powerLevel))
+    return 'unknown'
+
   if (powerLevel < 50)
     return 'member'
   if (powerLevel < 100)
@@ -210,4 +213,11 @@ export async function getMutualRooms(client: MatrixClient, otherUser: MaybeUserO
     if (throwOnError)
       throw new $Error('Failed to get mutual rooms')
   }
+}
+
+export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
+  if (maybeRoomOrId instanceof Room)
+    return maybeRoomOrId.roomId
+
+  return maybeRoomOrId
 }
