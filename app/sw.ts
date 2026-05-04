@@ -2,6 +2,7 @@
 
 /// <reference lib="WebWorker" />
 /// <reference types="vite/client" />
+import * as v from 'valibot'
 import { clientsClaim } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
@@ -52,11 +53,11 @@ const matrixMediaStrategy = new CacheFirst({
 })
 
 self.addEventListener('message', async (e) => {
-  const res = SwMessageSchema.safeParse(e.data)
+  const res = v.safeParse(SwMessageSchema, e.data)
   if (!res.success)
     return console.warn('Unknown message sent to service worker: ', e.data)
 
-  const { payload, type } = res.data
+  const { payload, type } = res.output
 
   switch (type) {
     case 'session': {

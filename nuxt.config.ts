@@ -92,8 +92,8 @@ export default defineNuxtConfig({
       { ignore: ['isEqual'], package: 'es-toolkit' },
       { package: 'ufo' },
       {
-        from: 'zod',
-        imports: [{ as: 'z', name: '*' }],
+        from: 'valibot',
+        imports: [{ as: 'v', name: '*' }],
       },
     ],
   },
@@ -130,8 +130,8 @@ export default defineNuxtConfig({
       ],
       presets: [
         {
-          from: 'zod',
-          imports: ['z'],
+          from: 'valibot',
+          imports: [{ as: 'v', name: '*' }],
         },
       ],
     },
@@ -205,7 +205,6 @@ export default defineNuxtConfig({
         'workbox-expiration',
         'workbox-precaching',
         'workbox-strategies',
-        'zod',
         '@vue/devtools-core',
         '@vue/devtools-kit',
         'workbox-window',

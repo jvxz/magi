@@ -1,27 +1,27 @@
-import * as z from 'zod'
+import * as v from 'valibot'
 
-export const SwMessageSchema = z.union([
-  makeMessage('session', z.object({
-    accessToken: z.string().nullish(),
-    baseUrl: z.string().nullish(),
+export const SwMessageSchema = v.union([
+  makeMessage('session', v.object({
+    accessToken: v.nullish(v.string()),
+    baseUrl: v.nullish(v.string()),
   })),
-  makeMessage('cache', z.object({
-    action: z.union([z.literal('evict')]),
-    cacheName: z.string(),
-    urls: z.union([
-      z.literal('all'),
-      z.array(z.string()),
+  makeMessage('cache', v.object({
+    action: v.union([v.literal('evict')]),
+    cacheName: v.string(),
+    urls: v.union([
+      v.literal('all'),
+      v.array(v.string()),
     ]),
   })),
 ])
 
-export type SwMessage = z.infer<typeof SwMessageSchema>
+export type SwMessage = v.InferOutput<typeof SwMessageSchema>
 export type SwMessageType = SwMessage['type']
 export type SwMessagePayload<T extends SwMessage['type']> = Extract<SwMessage, { type: T }>['payload']
 
-function makeMessage<T extends string, P extends z.ZodType>(type: T, payload: P) {
-  return z.object({
+function makeMessage<T extends string, P extends v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>(type: T, payload: P) {
+  return v.object({
     payload,
-    type: z.literal(type),
+    type: v.literal(type),
   })
 }
