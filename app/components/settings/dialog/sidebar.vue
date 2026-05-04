@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 const { self } = useSelf()
+const { tab } = useSettingsDialog()
+
+onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
 </script>
 
 <template>
-  <div class="p-4 rounded-l-lg bg-background shrink-0 w-64">
-    <UButton variant="ghost" class="group text-foreground font-normal p-3 gap-3.5 h-[4.25rem] w-full items-center justify-between">
+  <div class="p-4 rounded-l-lg bg-background flex shrink-0 flex-col gap-4 w-64">
+    <UButton variant="ghost" class="group text-foreground font-normal shrink-0 gap-3.5 h-14 w-full items-center justify-center">
       <MatrixAvatar
         :user="self?.userId"
         :size="48"
@@ -18,5 +21,34 @@ const { self } = useSelf()
         </span>
       </div>
     </UButton>
+    <div class="grid place-items-center">
+      <UInput placeholder="Search" />
+    </div>
+    <TabsRoot
+      v-model:model-value="tab"
+      activation-mode="manual"
+      orientation="vertical"
+    >
+      <TabsList class="tab-list flex flex-col gap-1 isolate">
+        <TabsTrigger
+          v-for="[key, meta] in objectEntries(SETTINGS_ENTRIES)"
+          :key
+          :value="key"
+          as-child
+          @pointerdown.prevent
+          @click="tab = key"
+        >
+          <UButton
+            variant="ghost"
+            class="active:bg-card-lighter/50 data-[active]:bg-card-lighter/50 hover:bg-card-lighter/50 justify-start data-[active]:text-foreground data-[active]:anchor-name-item"
+          >
+            <Icon :name="meta.icon" class="size-4" />
+            {{ upperFirst(key) }}
+          </UButton>
+        </TabsTrigger>
+
+        <div class="bg-card-lighter rounded pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1" />
+      </TabsList>
+    </TabsRoot>
   </div>
 </template>
