@@ -24,31 +24,26 @@ onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
     <div class="grid place-items-center">
       <UInput placeholder="Search" />
     </div>
-    <TabsRoot
-      v-model:model-value="tab"
-      activation-mode="manual"
-      orientation="vertical"
-    >
-      <TabsList class="tab-list flex flex-col gap-1 isolate">
-        <TabsTrigger
-          v-for="[key, meta] in objectEntries(SETTINGS_ENTRIES)"
-          :key
-          :value="key"
-          as-child
-          @pointerdown.prevent
-          @click="tab = key"
-        >
-          <UButton
-            variant="ghost"
-            class="active:bg-card-lighter/50 data-[active]:bg-card-lighter/50 hover:bg-card-lighter/50 justify-start data-[active]:text-foreground data-[active]:anchor-name-item"
-          >
-            <Icon :name="meta.icon" class="size-4" />
-            {{ upperFirst(key) }}
-          </UButton>
-        </TabsTrigger>
 
-        <div class="bg-card-lighter rounded pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1" />
-      </TabsList>
-    </TabsRoot>
+    <TabsList class="tab-list flex flex-col gap-1 isolate">
+      <TabsTrigger
+        v-for="[key, meta] in objectEntries(SETTINGS_ENTRIES)"
+        :key
+        :value="key"
+        as-child
+        @pointerdown.prevent
+        @click="tab = key"
+      >
+        <UButton
+          variant="ghost"
+          class="active:bg-card-lighter/50 data-[active]:bg-card-lighter/50 hover:bg-card-lighter/50 justify-start data-[active]:text-foreground data-[active]:anchor-name-item"
+        >
+          <Icon :name="meta.icon" class="size-4" />
+          {{ upperFirst(key) }}
+        </UButton>
+      </TabsTrigger>
+
+      <div class="bg-card-lighter rounded pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1" />
+    </TabsList>
   </div>
 </template>

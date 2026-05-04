@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-const { open } = useSettingsDialog()
+const { open, tab } = useSettingsDialog()
+
+onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
 </script>
 
 <template>
@@ -16,26 +18,42 @@ const { open } = useSettingsDialog()
           )"
         @close-auto-focus.prevent
       >
-        <div class="flex">
+        <TabsRoot
+          v-model:model-value="tab"
+          activation-mode="manual"
+          orientation="vertical"
+          class="flex"
+        >
           <SettingsDialogSidebar />
-          <header class="pe-2.5 ps-4 border-b flex flex-1 h-header-height items-center">
-            <DialogTitle class="font-medium">
-              My Account
-            </DialogTitle>
-            <div class="flex-1" />
-            <DialogClose
-              :class="cn(
-                interactiveStyles.base,
-                interactiveStyles.variant.ghost,
-                interactiveStyles.size.icon,
-                'inline-flex size-8 items-center justify-center opacity-70',
-              )"
+
+          <div class="flex flex-1 flex-col">
+            <header class="pe-2.5 ps-4 border-b flex shrink-0 h-header-height items-center justify-between">
+              <DialogTitle class="font-medium">
+                My Account
+              </DialogTitle>
+
+              <DialogClose
+                :class="cn(
+                  interactiveStyles.base,
+                  interactiveStyles.variant.ghost,
+                  interactiveStyles.size.icon,
+                  'inline-flex size-8 items-center justify-center opacity-70',
+                )"
+              >
+                <Icon name="tabler:x" class="size-5" />
+                <VisuallyHidden>Close</VisuallyHidden>
+              </DialogClose>
+            </header>
+
+            <TabsContent
+              v-for="setting in SETTINGS_CATEGORIES"
+              :key="setting"
+              :value="setting"
             >
-              <Icon name="tabler:x" class="size-5" />
-              <span class="sr-only">Close</span>
-            </DialogClose>
-          </header>
-        </div>
+              <SettingsContent :category="setting" />
+            </TabsContent>
+          </div>
+        </TabsRoot>
       </DialogContent>
     </DialogPortal>
   </UDialogRoot>
