@@ -72,7 +72,7 @@ watch(() => r$.$value.homeserver, () => {
             label="Homeserver"
             required
             :is-loading="pending"
-            class="text-base w-full"
+            :ui="{ container: 'text-base w-full' }"
             :error="(homeserverError ? upperFirst(homeserverError.message) : undefined) ?? r$.homeserver.$errors"
           >
             <UAutocompleteRoot

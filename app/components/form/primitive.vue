@@ -1,7 +1,9 @@
 <script lang="ts">
-export interface FormPrimitiveProps {
+import type { PrimitiveProps } from 'reka-ui'
+
+export interface FormPrimitiveProps extends PrimitiveProps {
   label: string
-  class?: string
+  ui?: DefineClasses<'container' | 'label' | 'error' | 'footer'>
   required?: boolean
   error?: string | string[] | undefined
   isLoading?: boolean
@@ -21,11 +23,11 @@ const errorMessage = computed(() => {
 </script>
 
 <template>
-  <div v-bind="$attrs" :class="cn('space-y-1.5', $props.class)">
-    <div class="flex w-full items-center justify-between">
+  <Primitive v-bind="$props" :class="cn('space-y-1.5', $props.ui?.container)">
+    <div class="flex size-fit w-full items-center justify-between">
       <ULabel
         :for="id"
-        class="text-sm font-medium gap-1"
+        :class="cn('text-sm font-medium gap-1', $props.ui?.label)"
       >
         {{ label }}
         <span v-if="required" class="text-danger">*</span>
@@ -38,7 +40,7 @@ const errorMessage = computed(() => {
       <p
         v-else-if="errorMessage"
         :title="errorMessage"
-        class="text-xs text-danger text-end max-w-2/3 truncate"
+        :class="cn('text-xs text-danger text-end max-w-2/3 truncate', $props.ui?.error)"
       >
         {{ errorMessage }}
       </p>
@@ -46,8 +48,8 @@ const errorMessage = computed(() => {
     <Slot :id :data-error="errorMessage ? '' : undefined">
       <slot />
     </Slot>
-    <div v-if="$slots.footer" class="text-xs text-muted-foreground text-end">
+    <div v-if="$slots.footer" :class="cn('text-xs text-muted-foreground text-end', $props.ui?.footer)">
       <slot name="footer" />
     </div>
-  </div>
+  </Primitive>
 </template>
