@@ -2,7 +2,7 @@ import type { PopoverContentProps } from 'reka-ui'
 
 export const useProfilePopover = createSharedComposable(() => {
   const open = shallowRef(false)
-  const anchorElement = shallowRef<MaybeElement>()
+  const referenceElement = shallowRef<MaybeElement | VirtualElement>()
   const userIdRef = shallowRef<string>()
   const contentProps = shallowRef<PopoverContentProps>()
 
@@ -10,12 +10,17 @@ export const useProfilePopover = createSharedComposable(() => {
   whenever(() => !open.value, () => {
     currentRoot?.removeAttribute('data-popover-open')
     currentRoot = undefined
+    referenceElement.value = undefined
+    contentProps.value = undefined
+    userIdRef.value = undefined
   })
 
-  function openProfilePopover(trigger: MaybeElement, userId: string, nextContentProps?: PopoverContentProps) {
-    if (!trigger)
-      return
-
+  function openProfilePopover(
+    trigger: HTMLElement,
+    userId: string,
+    nextContentProps?: PopoverContentProps,
+    options: { freezeReference?: boolean } = {},
+  ) {
     const eventRoot = trigger.closest('[data-event-id]') as HTMLElement | null
     const root = eventRoot ?? trigger
 
@@ -25,7 +30,8 @@ export const useProfilePopover = createSharedComposable(() => {
     root.setAttribute('data-popover-open', '')
     currentRoot = root
 
-    anchorElement.value = trigger
+    referenceElement.value = options.freezeReference ? createFrozenReference(trigger) : trigger
+
     contentProps.value = nextContentProps
     userIdRef.value = userId
     open.value = true
@@ -34,10 +40,19 @@ export const useProfilePopover = createSharedComposable(() => {
   const user = useUser(userIdRef)
 
   return {
-    anchorElement,
     contentProps,
     open,
     openProfilePopover,
+    referenceElement,
     user,
   }
 })
+
+function createFrozenReference(trigger: HTMLElement): VirtualElement {
+  const rect = trigger.getBoundingClientRect()
+
+  return {
+    contextElement: trigger,
+    getBoundingClientRect: () => rect,
+  }
+}
