@@ -1,5 +1,11 @@
 <script lang="ts" setup>
-const { delay = 1400 } = defineProps<{ delay?: number }>()
+withDefaults(
+  defineProps<{ delay?: number, shimmer?: boolean }>(),
+  {
+    delay: 1400,
+    shimmer: true,
+  },
+)
 </script>
 
 <template>
@@ -9,6 +15,7 @@ const { delay = 1400 } = defineProps<{ delay?: number }>()
     aria-busy
   >
     <div
+      v-if="shimmer"
       class="bg-gradient-linear size-full ease from-transparent to-transparent via-foreground/3 bg-gradient-to-r/oklch"
       :style="{
         animation: `skeleton ${delay}ms infinite`,
