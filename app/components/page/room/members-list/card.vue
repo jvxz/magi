@@ -19,8 +19,15 @@ onMounted(() => {
 
 <template>
   <UProfilePopoverTrigger
+    freeze-reference
     :user="userId"
-    :content-props="{ side: 'left', align: 'start', collisionPadding: 12, sideOffset: 8.5 }"
+    :content-props="{
+      side: 'left',
+      align: 'start',
+      collisionPadding: 12,
+      sideOffset: 22,
+      disableUpdateOnLayoutShift: true,
+    }"
     as-child
   >
     <UButton
@@ -28,7 +35,8 @@ onMounted(() => {
       class="text-foreground font-normal gap-2 h-10 w-full justify-start data-[popover-open]:bg-muted/75"
       variant="ghost"
     >
-      <MatrixAvatar :user="userId" class="size-6" />
+      <MatrixAvatar :user="userId" class="shrink-0 size-6" />
+
       <p class="shrink-0 truncate">
         {{ profile?.displayname }}
       </p>

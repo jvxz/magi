@@ -2,7 +2,9 @@
 import { VList } from 'virtua/vue'
 
 const currentRoom = useCurrentRoom()
-const roomMembers = useRoomMembers(currentRoom)
+
+const { isLoaded, members } = useRoomMembers(currentRoom)
+const membersGrouped = useRoomMemberGrouping(members, () => currentRoom.value?.roomId, isLoaded)
 
 const listRef = useTemplateRef('list')
 watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
@@ -11,17 +13,18 @@ watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
 <template>
   <div class="border-l border-border shrink-0 h-full w-72">
     <VList
-      v-if="roomMembers"
+      v-if="membersGrouped && isLoaded"
       v-slot="{ item }"
       ref="list"
-      :data="roomMembers.members"
-      class="p-1"
+      :item-size="40"
+      :data="membersGrouped.members"
+      class="px-2 py-1"
     >
       <PageRoomMembersListHeader
         v-if="'type' in item && item.type === 'header'"
         :key="item.title"
         :title="item.title"
-        :total="roomMembers.groupTotals[item.title]"
+        :total="membersGrouped.groupTotals[item.title]"
       />
 
       <PageRoomMembersListCard
@@ -32,14 +35,14 @@ watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
       />
     </VList>
 
-    <div v-else class="p-1.5 h-full relative">
+    <div v-else class="p-3 h-full relative">
       <!-- <div class="size-full inset-0 absolute z-1 from-transparent to-card to-80% bg-gradient-to-b" /> -->
 
-      <div class="h-10" />
-      <div
-        v-for="item in 32"
+      <!-- <div class="h-10" /> -->
+      <USkeleton
+        v-for="item in 12"
         :key="item"
-        class="mb-1.5 rounded bg-muted/25 h-10 w-full"
+        class="mb-3 h-10 w-full"
       />
     </div>
   </div>
