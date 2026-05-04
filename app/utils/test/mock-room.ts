@@ -10,12 +10,14 @@ export function createMockRoom(eventCount: number = 250, id: string): Room {
   const events = createMockEvents(eventCount, id)
 
   const room = {
+    getJoinedMembers: () => [],
     getLiveTimeline: () => ({
       getEvents: () => events,
       getPaginationToken: () => 'token',
     }),
     id,
     loadMembersIfNeeded: async () => {},
+    membersLoaded: () => true,
     name: `Mock room: ${id}`,
     off: () => {},
     on: () => {},
