@@ -12,6 +12,8 @@ export function useRoomMembership(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId 
     },
   })
 
+  watch([room, user], () => membership.value = getMembership())
+
   function getMembership() {
     return user.value?.userId ? room.value?.getMember(user.value?.userId)?.membership as KnownMembership : undefined
   }
