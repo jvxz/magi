@@ -28,7 +28,7 @@ export function useRoomMemberGrouping(members: MaybeRefOrGetter<RoomMember[] | u
       return
 
     const cached = roomMemberGroupCache.get(roomId.value)
-    if (cached && !forceRef.value)
+    if (cached && (!forceRef.value || cached.members.length === members.length))
       return membersGrouped.value = cached
 
     const payload = createMembersList(members)

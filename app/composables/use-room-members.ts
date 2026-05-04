@@ -1,5 +1,5 @@
-import type { Room, RoomMember } from 'matrix-js-sdk'
-import { EventType, KnownMembership } from 'matrix-js-sdk'
+import type { RoomMember } from 'matrix-js-sdk'
+import { EventType } from 'matrix-js-sdk'
 
 export function useRoomMembers(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
   const room = useRoom(maybeRoomOrId)
@@ -20,7 +20,7 @@ export function useRoomMembers(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | u
     }
 
     if (r.membersLoaded()) {
-      setMembers(getMembers(r))
+      setMembers(r.getJoinedMembers())
       isLoaded.value = true
       return
     }
@@ -32,7 +32,7 @@ export function useRoomMembers(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | u
     if (token !== loadToken || room.value?.roomId !== r.roomId)
       return
 
-    setMembers(getMembers(r))
+    setMembers(r.getJoinedMembers())
     isLoaded.value = true
   }, { immediate: true })
 
@@ -44,15 +44,9 @@ export function useRoomMembers(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | u
       if (event.getType() !== EventType.RoomMember && event.getType() !== EventType.RoomPowerLevels)
         return
 
-      setMembers(getMembers(room.value))
+      setMembers(room.value.getJoinedMembers())
     },
   })
 
   return { isLoaded, members }
-}
-
-function getMembers(room: Room) {
-  const members = room.getMembers() ?? []
-
-  return members.filter(member => member.membership === KnownMembership.Join)
 }
