@@ -4,7 +4,7 @@ import { VList } from 'virtua/vue'
 const currentRoom = useCurrentRoom()
 
 const { isLoaded, members } = useRoomMembers(currentRoom)
-const membersGrouped = useRoomMemberGrouping(members, () => currentRoom.value?.roomId, isLoaded)
+const membersGrouped = useRoomMemberGrouping(members, () => currentRoom.value?.roomId)
 
 const listRef = useTemplateRef('list')
 watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
@@ -14,11 +14,13 @@ watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
   <div class="border-l border-border shrink-0 h-full w-72">
     <VList
       v-if="membersGrouped && isLoaded"
+      :key="currentRoom?.roomId"
       v-slot="{ item }"
       ref="list"
       :item-size="40"
       :data="membersGrouped.members"
       class="px-2 py-1"
+      @vue:mounted="console.log"
     >
       <PageRoomMembersListHeader
         v-if="'type' in item && item.type === 'header'"
@@ -35,12 +37,12 @@ watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
       />
     </VList>
 
-    <div v-else class="p-3 h-full relative">
+    <div v-else class="p-2 h-full relative">
       <!-- <div class="size-full inset-0 absolute z-1 from-transparent to-card to-80% bg-gradient-to-b" /> -->
 
       <!-- <div class="h-10" /> -->
       <USkeleton
-        v-for="item in 12"
+        v-for="item in 8"
         :key="item"
         class="mb-3 h-10 w-full"
       />
