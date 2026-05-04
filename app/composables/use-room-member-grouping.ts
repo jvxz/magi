@@ -9,6 +9,7 @@ interface MemberHeader { type: 'header', title: PowerLevelName }
 interface MemberCachePayload {
   members: Prettify<Member | MemberHeader>[]
   groupTotals: Record<PowerLevelName, number>
+  memberCount: number
 }
 
 export type GroupedMemberListItem = Prettify<Member | MemberHeader>
@@ -28,10 +29,10 @@ export function useRoomMemberGrouping(members: MaybeRefOrGetter<RoomMember[] | u
       return
 
     const cached = roomMemberGroupCache.get(roomId.value)
-    if (cached && (!forceRef.value || cached.members.length === members.length))
+    if (cached && !forceRef.value && cached.memberCount === members.length)
       return membersGrouped.value = cached
 
-    const payload = createMembersList(members)
+    const payload = { ...createMembersList(members), memberCount: members.length }
     roomMemberGroupCache.set(roomId.value, payload)
 
     membersGrouped.value = payload
