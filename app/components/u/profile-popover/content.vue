@@ -1,17 +1,22 @@
 <script lang="ts" setup>
-const { anchorElement, contentProps, open, user } = useProfilePopover()
+import { KnownMembership } from 'matrix-js-sdk'
 
-const profile = useUserProfile(() => user.value?.userId)
+const { contentProps, open, referenceElement, user } = useProfilePopover()
+
 const { self } = useSelf()
 
 const currentRoom = useCurrentRoom()
+const roomId = computed(() => currentRoom.value?.roomId)
+const userId = computed(() => user.value?.userId)
 
-const displayName = computed(() => profile.value?.displayname ?? getDisplayNameFallback(user.value?.userId))
-const avatarUrl = computed(() => resolveAvatarUrl(user.value?.avatarUrl, { size: 'small' }))
-const parsedUserId = computed(() => parseUserId(user.value?.userId))
+const roomMember = useRoomMember(roomId, userId)
+const displayName = computed(() => roomMember.value ? resolveUserName(roomMember.value) : getDisplayNameFallback(user.value?.userId))
+const avatarUrl = computed(() => resolveAvatarUrl(roomMember.value?.getMxcAvatarUrl(), { size: 'small' }))
+const parsedUserId = computed(() => parseUserId(roomMember.value?.userId))
 
-const powerLevel = useUserRoomPowerLevel(() => currentRoom.value?.roomId, () => user.value?.userId)
-const powerLevelName = computed(() => upperFirst(isNull(powerLevel.value) ? 'member' : getPowerLevelName(powerLevel.value)))
+const membership = useRoomMembership(roomId, userId)
+const powerLevel = useRoomMemberPowerLevel(roomId, userId)
+const powerLevelName = computed(() => upperFirst(getPowerLevelName(powerLevel.value)))
 
 const isSelf = computed(() => self.value?.userId === user.value?.userId)
 
@@ -24,7 +29,7 @@ const { copy } = useClipboard()
       v-bind="contentProps"
       as-child
       disable-outside-pointer-events
-      :reference="anchorElement ?? undefined"
+      :reference="referenceElement ?? undefined"
       :class="cn('z-1', $attrs.class)"
     >
       <UCard class="p-0 border-none bg-card-light gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3">
@@ -88,7 +93,7 @@ const { copy } = useClipboard()
 
           <UProfilePopoverMutualRooms v-if="!isSelf" />
 
-          <div class="flex flex-wrap gap-1 *:text-xs *:font-normal *:rounded-full *:max-w-28 *:block *:truncate">
+          <div v-if="isDefined(membership) && membership === KnownMembership.Join" class="flex flex-wrap gap-1 *:text-xs *:font-normal *:rounded-full *:max-w-28 *:block *:truncate">
             <UBadge class="" variant="outline">
               {{ powerLevelName }}
             </UBadge>
