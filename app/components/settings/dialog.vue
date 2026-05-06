@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-const { open, tab } = useSettingsDialog()
+const { open, searchQuery, tab } = useSettingsDialog()
 
-onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
+onUnmounted(() => {
+  tab.value = SETTINGS_DEFAULT_TAB
+  searchQuery.value = ''
+})
 </script>
 
 <template>
