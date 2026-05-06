@@ -27,23 +27,23 @@ onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
 
     <TabsList class="tab-list flex flex-col gap-1 isolate">
       <TabsTrigger
-        v-for="[key, meta] in objectEntries(SETTINGS_ENTRIES)"
-        :key
-        :value="key"
+        v-for="entry in SETTINGS_CATEGORY_METADATA"
+        :key="entry.key"
+        :value="entry.key"
         as-child
         @pointerdown.prevent
-        @click="tab = key"
+        @click="tab = entry.key"
       >
         <UButton
           variant="ghost"
-          class="active:bg-card-lighter/50 data-[active]:bg-card-lighter/50 hover:bg-card-lighter/50 justify-start data-[active]:text-foreground data-[active]:anchor-name-item"
+          class="justify-start data-[active]:text-foreground active:bg-card-lighter/50 data-[active]:bg-card-lighter/50 hover:bg-card-lighter/50 data-[active]:anchor-name-item"
         >
-          <Icon :name="meta.icon" class="size-4" />
-          {{ upperFirst(key) }}
+          <Icon :name="entry.icon" class="size-4" />
+          {{ upperFirst(entry.title) }}
         </UButton>
       </TabsTrigger>
 
-      <div class="bg-card-lighter rounded pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1" />
+      <div class="rounded bg-card-lighter pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1" />
     </TabsList>
   </div>
 </template>

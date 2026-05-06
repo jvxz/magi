@@ -46,11 +46,11 @@ onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
             </header>
 
             <TabsContent
-              v-for="setting in SETTINGS_CATEGORIES"
-              :key="setting"
-              :value="setting"
+              v-for="setting in SETTINGS_CATEGORY_METADATA"
+              :key="setting.key"
+              :value="setting.key"
             >
-              <SettingsContent :category="setting" />
+              <SettingsContent :category="setting.key" />
             </TabsContent>
           </div>
         </TabsRoot>
