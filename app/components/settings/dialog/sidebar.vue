@@ -1,8 +1,28 @@
 <script lang="ts" setup>
+import type { UInputTemplateRef } from '~/components/u/input.vue'
+import { useFilter } from 'reka-ui'
+
 const { self } = useSelf()
-const { tab } = useSettingsDialog()
+const { searchQuery, tab } = useSettingsDialog()
 
 onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
+
+const inputRef = useTemplateRef<UInputTemplateRef>('input')
+onStartTyping(() => inputRef.value?.inputRef?.focus())
+
+const { contains } = useFilter({ sensitivity: 'base' })
+
+function categorySearchText<K extends SettingsCategory>(categoryKey: K): string {
+  const cat = SETTINGS_CATEGORY_METADATA[categoryKey]
+  const items = SETTINGS_ITEM_METADATA[categoryKey]
+  const fromItems: string[] = []
+  for (const [settingKey, meta] of objectEntries(items))
+    fromItems.push(String(settingKey), meta.title, meta.description)
+
+  return [cat.key, cat.title, ...fromItems].join(' ')
+}
+
+const filteredCategories = computed(() => objectValues(SETTINGS_CATEGORY_METADATA).filter(cat => contains(categorySearchText(cat.key), searchQuery.value.trim())))
 </script>
 
 <template>
@@ -22,12 +42,18 @@ onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
       </div>
     </UButton>
     <div class="grid place-items-center">
-      <UInput placeholder="Search" />
+      <UInput
+        ref="input"
+        v-model:model-value="searchQuery"
+        placeholder="Search"
+        class="w-full"
+        leading-icon="tabler:search"
+      />
     </div>
 
     <TabsList class="tab-list flex flex-col gap-1 isolate">
       <TabsTrigger
-        v-for="entry in SETTINGS_CATEGORY_METADATA"
+        v-for="entry in filteredCategories"
         :key="entry.key"
         :value="entry.key"
         as-child
