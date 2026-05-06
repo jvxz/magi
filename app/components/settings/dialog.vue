@@ -29,7 +29,7 @@ onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
           <div class="flex flex-1 flex-col">
             <header class="pe-2.5 ps-4 border-b flex shrink-0 h-header-height items-center justify-between">
               <DialogTitle class="font-medium">
-                My Account
+                {{ SETTINGS_CATEGORY_METADATA[tab].title }}
               </DialogTitle>
 
               <DialogClose
