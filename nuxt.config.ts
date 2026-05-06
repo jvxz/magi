@@ -95,6 +95,10 @@ export default defineNuxtConfig({
         from: 'valibot',
         imports: [{ as: 'v', name: '*' }],
       },
+      {
+        from: 'temporal-polyfill',
+        imports: ['Temporal'],
+      },
     ],
   },
 
