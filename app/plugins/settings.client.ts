@@ -1,7 +1,7 @@
 export default defineNuxtPlugin({
   parallel: true,
   setup: () => {
-    const settings = useLocalStorage<Settings>('settings', DEFAULT_SETTINGS, { initOnMounted: true })
+    const settings = useLocalStorage<Settings>('settings', DEFAULT_SETTINGS)
 
     return {
       provide: {
