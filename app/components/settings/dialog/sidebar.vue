@@ -5,8 +5,6 @@ import { useFilter } from 'reka-ui'
 const { self } = useSelf()
 const { searchQuery, tab } = useSettingsDialog()
 
-onUnmounted(() => tab.value = SETTINGS_DEFAULT_TAB)
-
 const inputRef = useTemplateRef<UInputTemplateRef>('input')
 onStartTyping(() => inputRef.value?.inputRef?.focus())
 
