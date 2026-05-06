@@ -9,7 +9,7 @@ const Content = defineAsyncComponent(async () => {
     return c
   }
   catch {
-    return h('div', { innerHTML: `Please create ~/components/settings/content/${props.category}.vue` })
+    return h('div', `Please create ~/components/settings/content/${props.category}.vue`)
   }
 })
 </script>
