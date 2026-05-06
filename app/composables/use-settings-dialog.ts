@@ -5,7 +5,7 @@ export const useSettingsDialog = createGlobalState(() => {
 
   return {
     open,
-    tab,
     searchQuery,
+    tab,
   }
 })
