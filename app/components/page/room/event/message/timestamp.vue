@@ -6,7 +6,7 @@ const props = defineProps<PrimitiveProps & { datetime: number }>()
 
 const isOld = computed(() => {
   const yesterday = Temporal.Now.plainDateISO().subtract({ days: 1 })
-  const eventDate = Temporal.Instant.fromEpochMilliseconds(props.datetime).toZonedDateTimeISO('UTC').toPlainDate()
+  const eventDate = Temporal.Instant.fromEpochMilliseconds(props.datetime).toZonedDateTimeISO(Temporal.Now.timeZoneId()).toPlainDate()
 
   return Temporal.PlainDate.compare(eventDate, yesterday) <= 0
 })
