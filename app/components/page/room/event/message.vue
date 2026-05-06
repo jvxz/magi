@@ -104,12 +104,7 @@ const contentProps: PopoverContentProps = {
             >
               <span :class="cn(interactiveStyles.base, interactiveStyles.variant.link, 'text-sm')">{{ eventProfile?.displayname }}</span>
             </UProfilePopoverTrigger>
-            <NuxtTime
-              :datetime="event.getTs()"
-              hour="numeric"
-              minute="numeric"
-              class="text-xs text-muted-foreground"
-            />
+            <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
           </template>
 
           <RenderMd
