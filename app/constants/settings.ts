@@ -50,7 +50,6 @@ export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
 
 export type SettingsCategory = (typeof SETTINGS_CATEGORIES)[number]
 export type SettingsCategoryValue<T extends SettingsCategory> = Settings[T]
-export type SettingsCategoryItems<T extends SettingsCategory> = SettingsCategoryValue<T>
 
 type EnforcedSettingsKeys<T extends Record<string, any>> = {
   [K in keyof T]: K extends SettingsCategory ? T[K] : never
