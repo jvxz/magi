@@ -1,57 +1,77 @@
-import { EventType } from 'matrix-js-sdk'
-import * as v from 'valibot'
-
+export const SETTINGS_CATEGORIES = ['appearance', 'accessibility'] as const
 export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
 
-export const AppearanceSettingsSchema = v.pipe(
-  v.object({
-    font: v.optional(
-      v.union([v.literal('Inter'), v.literal('System')]),
-      'System',
-    ),
-  }),
-  v.metadata({
-    icon: 'tabler:palette',
-    title: 'Appearance',
-  }),
-)
-
-export const AccessibilitySettingsSchema = v.pipe(
-  v.object({
-    doAnimations: v.optional(v.boolean(), true as boolean),
-    saturationPercent: v.optional(v.number(), 50 as number),
-  }),
-  v.metadata({
-    icon: 'tabler:accessible',
-    title: 'Accessibility',
-  }),
-)
-
-export const EventSettingsSchema = v.pipe(
-  v.object({
-    toggledEventTypes: v.optional(v.array(EventTypeSchema), [
-      EventType.RoomMessage,
-      EventType.RoomMember,
-    ]),
-  }),
-  v.metadata({
-    icon: 'tabler:calendar-event',
-    title: 'Events',
-  }),
-)
-
-const settingsSchemas = {
-  accessibility: AccessibilitySettingsSchema,
-  appearance: AppearanceSettingsSchema,
-  events: EventSettingsSchema,
-} as const
-
-export const SettingsSchema = v.object(settingsSchemas)
-
-export type Settings = {
-  [K in SettingsCategory]: v.InferOutput<(typeof settingsSchemas)[K]>
+export interface Settings {
+  appearance: {
+    font: 'Inter' | 'System'
+  }
+  accessibility: {
+    uiAnimations: boolean
+  }
 }
-export type SettingsCategory = keyof typeof settingsSchemas
 
-export const SETTINGS_CATEGORIES = objectKeys(SettingsSchema.entries)
-export const SETTINGS_ENTRIES = mapValues(SettingsSchema.entries, v.getMetadata)
+export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
+  accessibility: {
+    uiAnimations: true,
+  },
+  appearance: {
+    font: 'System',
+  },
+}
+
+export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
+  accessibility: {
+    icon: 'tabler:accessible',
+    key: 'accessibility',
+    title: 'Accessibility',
+  },
+  appearance: {
+    icon: 'tabler:palette',
+    key: 'appearance',
+    title: 'Appearance',
+  },
+}
+export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
+  accessibility: {
+    uiAnimations: {
+      description: 'Whether to enable animations in the app',
+      options: [true, false],
+      title: 'UI animations',
+    },
+  },
+  appearance: {
+    font: {
+      description: 'The font to use in the app',
+      options: ['Inter', 'System'],
+      title: 'Font',
+    },
+  },
+}
+
+export type SettingsCategory = (typeof SETTINGS_CATEGORIES)[number]
+export type SettingsCategoryValue<T extends SettingsCategory> = Settings[T]
+export type SettingsCategoryItems<T extends SettingsCategory> = SettingsCategoryValue<T>
+
+type EnforcedSettingsKeys<T extends Record<string, any>> = {
+  [K in keyof T]: K extends SettingsCategory ? T[K] : never
+}
+
+interface SettingsMetadataItem<T> {
+  title: string
+  description: string
+  options?: T[]
+}
+
+type SettingsCategoryMetadata = {
+  [K in SettingsCategory]: {
+    title: string
+    icon: string
+    key: K
+  }
+}
+
+type SettingsItemMetadata = {
+  [K in SettingsCategory]: {
+    [T in keyof SettingsCategoryValue<K>]: SettingsMetadataItem<SettingsCategoryValue<K>[T]>
+  }
+}
