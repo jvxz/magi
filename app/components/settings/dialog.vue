@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-const { open } = useSettingsDialog()
+const { open, searchQuery, tab } = useSettingsDialog()
+
+onUnmounted(() => {
+  tab.value = SETTINGS_DEFAULT_TAB
+  searchQuery.value = ''
+})
 </script>
 
 <template>
@@ -16,26 +21,42 @@ const { open } = useSettingsDialog()
           )"
         @close-auto-focus.prevent
       >
-        <div class="flex">
-          <LazySettingsDialogSidebar />
-          <header class="pe-2.5 ps-4 border-b flex flex-1 h-header-height items-center">
-            <DialogTitle class="font-medium">
-              My Account
-            </DialogTitle>
-            <div class="flex-1" />
-            <DialogClose
-              :class="cn(
-                interactiveStyles.base,
-                interactiveStyles.variant.ghost,
-                interactiveStyles.size.icon,
-                'inline-flex size-8 items-center justify-center opacity-70',
-              )"
+        <TabsRoot
+          v-model:model-value="tab"
+          activation-mode="manual"
+          orientation="vertical"
+          class="flex"
+        >
+          <SettingsDialogSidebar />
+
+          <div class="flex flex-1 flex-col">
+            <header class="pe-2.5 ps-4 border-b flex shrink-0 h-header-height items-center justify-between">
+              <DialogTitle class="font-medium">
+                {{ SETTINGS_CATEGORY_METADATA[tab].title }}
+              </DialogTitle>
+
+              <DialogClose
+                :class="cn(
+                  interactiveStyles.base,
+                  interactiveStyles.variant.ghost,
+                  interactiveStyles.size.icon,
+                  'inline-flex size-8 items-center justify-center opacity-70',
+                )"
+              >
+                <Icon name="tabler:x" class="size-5" />
+                <VisuallyHidden>Close</VisuallyHidden>
+              </DialogClose>
+            </header>
+
+            <TabsContent
+              v-for="setting in SETTINGS_CATEGORY_METADATA"
+              :key="setting.key"
+              :value="setting.key"
             >
-              <Icon name="tabler:x" class="size-5" />
-              <span class="sr-only">Close</span>
-            </DialogClose>
-          </header>
-        </div>
+              <SettingsContent :category="setting.key" />
+            </TabsContent>
+          </div>
+        </TabsRoot>
       </DialogContent>
     </DialogPortal>
   </UDialogRoot>

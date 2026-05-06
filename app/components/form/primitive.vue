@@ -24,30 +24,45 @@ const errorMessage = computed(() => {
 
 <template>
   <Primitive v-bind="$props" :class="cn('space-y-1.5', $props.ui?.container)">
-    <div class="flex size-fit w-full items-center justify-between">
-      <ULabel
-        :for="id"
-        :class="cn('text-sm font-medium gap-1', $props.ui?.label)"
-      >
-        {{ label }}
-        <span v-if="required" class="text-danger">*</span>
-      </ULabel>
-      <LazyUSpinner
-        v-if="isLoading"
-        class="shrink-0 size-4.5"
-        :data-testid="`loading-spinner-${label}`"
-      />
-      <p
-        v-else-if="errorMessage"
-        :title="errorMessage"
-        :class="cn('text-xs text-danger text-end max-w-2/3 truncate', $props.ui?.error)"
-      >
-        {{ errorMessage }}
-      </p>
-    </div>
+    <template v-if="!$slots.label && !$slots.error">
+      <div class="flex size-fit w-full items-center justify-between">
+        <ULabel
+          :for="id"
+          :class="cn('text-sm font-medium gap-1', $props.ui?.label)"
+        >
+          {{ label }}
+          <span v-if="required" class="text-danger">*</span>
+        </ULabel>
+        <LazyUSpinner
+          v-if="isLoading"
+          class="shrink-0 size-4.5"
+          :data-testid="`loading-spinner-${label}`"
+        />
+        <p
+          v-else-if="errorMessage"
+          :title="errorMessage"
+          :class="cn('text-xs text-danger text-end max-w-2/3 truncate', $props.ui?.error)"
+        >
+          {{ errorMessage }}
+        </p>
+      </div>
+    </template>
+
+    <slot
+      v-if="$slots.label"
+      :id
+      name="label"
+    />
+    <slot
+      v-if="$slots.error"
+      name="error"
+      :message="errorMessage"
+    />
+
     <Slot :id :data-error="errorMessage ? '' : undefined">
       <slot />
     </Slot>
+
     <div v-if="$slots.footer" :class="cn('text-xs text-muted-foreground text-end', $props.ui?.footer)">
       <slot name="footer" />
     </div>
