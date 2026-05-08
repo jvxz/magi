@@ -226,6 +226,7 @@ export default defineNuxtConfig({
         'marked',
         'virtua/vue',
         'quick-lru',
+        '@tanstack/vue-hotkeys',
       ],
     },
   },
