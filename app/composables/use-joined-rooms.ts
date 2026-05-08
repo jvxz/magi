@@ -1,13 +1,15 @@
-export function useJoinedRooms(_spaceId: MaybeRefOrGetter<string | undefined>) {
-  const spaceId = toRef(_spaceId)
+import type { Room } from 'matrix-js-sdk'
+
+export const useJoinedRooms = createGlobalState(() => {
   const { client } = useMatrixClient()
+  const joinedRooms = shallowRef<Set<Room['roomId']>>(new Set())
 
-  const room = useRoom(spaceId)
+  const refresh = debounce(async () => {
+    const rooms = await client.value.getJoinedRooms()
+    joinedRooms.value = new Set(rooms.joined_rooms)
+  }, 100)
 
-  return computed(() => {
-    if (!room.value)
-      return []
+  watch(client, refresh, { immediate: true })
 
-    return getJoinedRooms(client.value, room.value)
-  })
-}
+  return readonly(joinedRooms)
+})
