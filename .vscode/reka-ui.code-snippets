@@ -1,0 +1,1178 @@
+{
+  // ============================================================================
+  // Accordion
+  // ============================================================================
+  "Reka UI - Accordion": {
+    "prefix": ["reka-accordion", "rui-accordion"],
+    "description": "Accordion component with collapsible content sections",
+    "body": [
+      "<AccordionRoot type=\"single\" collapsible>",
+      "  <AccordionItem value=\"item-1\">",
+      "    <AccordionHeader>",
+      "      <AccordionTrigger>${1:Section 1}</AccordionTrigger>",
+      "    </AccordionHeader>",
+      "    <AccordionContent>",
+      "      ${2:Content for section 1}",
+      "    </AccordionContent>",
+      "  </AccordionItem>",
+      "",
+      "  <AccordionItem value=\"item-2\">",
+      "    <AccordionHeader>",
+      "      <AccordionTrigger>${3:Section 2}</AccordionTrigger>",
+      "    </AccordionHeader>",
+      "    <AccordionContent>",
+      "      ${4:Content for section 2}",
+      "    </AccordionContent>",
+      "  </AccordionItem>",
+      "</AccordionRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Alert Dialog
+  // ============================================================================
+  "Reka UI - Alert Dialog": {
+    "prefix": ["reka-alert-dialog", "rui-alert-dialog"],
+    "description": "Alert dialog for critical confirmations",
+    "body": [
+      "<AlertDialogRoot>",
+      "  <AlertDialogTrigger as-child>",
+      "    <button>${1:Open Alert}</button>",
+      "  </AlertDialogTrigger>",
+      "  <AlertDialogPortal>",
+      "    <AlertDialogOverlay />",
+      "    <AlertDialogContent>",
+      "      <AlertDialogTitle>${2:Are you sure?}</AlertDialogTitle>",
+      "      <AlertDialogDescription>",
+      "        ${3:This action cannot be undone.}",
+      "      </AlertDialogDescription>",
+      "      <div class=\"flex gap-2\">",
+      "        <AlertDialogCancel as-child>",
+      "          <button>${4:Cancel}</button>",
+      "        </AlertDialogCancel>",
+      "        <AlertDialogAction as-child>",
+      "          <button>${5:Confirm}</button>",
+      "        </AlertDialogAction>",
+      "      </div>",
+      "    </AlertDialogContent>",
+      "  </AlertDialogPortal>",
+      "</AlertDialogRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Aspect Ratio
+  // ============================================================================
+  "Reka UI - Aspect Ratio": {
+    "prefix": ["reka-aspect-ratio", "rui-aspect-ratio"],
+    "description": "Maintains a consistent aspect ratio for content",
+    "body": [
+      "<AspectRatio :ratio=\"${1:16} / ${2:9}\">",
+      "  ${3:<img src=\"image.jpg\" alt=\"Image\" />}",
+      "</AspectRatio>"
+    ]
+  },
+
+  // ============================================================================
+  // Avatar
+  // ============================================================================
+  "Reka UI - Avatar": {
+    "prefix": ["reka-avatar", "rui-avatar"],
+    "description": "Avatar with image fallback support",
+    "body": [
+      "<AvatarRoot>",
+      "  <AvatarImage :src=\"${1:userImage}\" :alt=\"${2:'User avatar'}\" />",
+      "  <AvatarFallback>${3:JD}</AvatarFallback>",
+      "</AvatarRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Checkbox
+  // ============================================================================
+  "Reka UI - Checkbox": {
+    "prefix": ["reka-checkbox", "rui-checkbox"],
+    "description": "Checkbox with checked state",
+    "body": [
+      "<CheckboxRoot v-model=\"${1:checked}\">",
+      "  <CheckboxIndicator>",
+      "    <CheckIcon v-if=\"$1\" />",
+      "  </CheckboxIndicator>",
+      "</CheckboxRoot>",
+      "<label>${2:Accept terms}</label>"
+    ]
+  },
+
+  "Reka UI - Checkbox Group": {
+    "prefix": ["reka-checkbox-group", "rui-checkbox-group"],
+    "description": "Group of checkboxes",
+    "body": [
+      "<CheckboxGroupRoot v-model=\"${1:selectedItems}\">",
+      "  <CheckboxRoot v-for=\"item in ${2:items}\" :key=\"item.id\" :value=\"item.id\">",
+      "    <CheckboxIndicator>",
+      "      <CheckIcon v-if=\"$1.includes(item.id)\" />",
+      "    </CheckboxIndicator>",
+      "    <label>{{ item.label }}</label>",
+      "  </CheckboxRoot>",
+      "</CheckboxGroupRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Collapsible
+  // ============================================================================
+  "Reka UI - Collapsible": {
+    "prefix": ["reka-collapsible", "rui-collapsible"],
+    "description": "Collapsible content section",
+    "body": [
+      "<CollapsibleRoot v-model:open=\"${1:isOpen}\">",
+      "  <CollapsibleTrigger as-child>",
+      "    <button>{{ $1 ? '${2:Hide}' : '${3:Show}' }} content</button>",
+      "  </CollapsibleTrigger>",
+      "  <CollapsibleContent>",
+      "    ${4:Collapsible content goes here}",
+      "  </CollapsibleContent>",
+      "</CollapsibleRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Combobox
+  // ============================================================================
+  "Reka UI - Combobox": {
+    "prefix": ["reka-combobox", "rui-combobox"],
+    "description": "Autocomplete combobox with filtering",
+    "body": [
+      "<ComboboxRoot v-model=\"${1:selectedValue}\" :items=\"${2:items}\">",
+      "  <ComboboxAnchor>",
+      "    <ComboboxInput placeholder=\"${3:Search...}\" />",
+      "    <ComboboxTrigger>",
+      "      <ChevronDownIcon />",
+      "    </ComboboxTrigger>",
+      "  </ComboboxAnchor>",
+      "  <ComboboxPortal>",
+      "    <ComboboxContent>",
+      "      <ComboboxViewport>",
+      "        <ComboboxEmpty>No results found</ComboboxEmpty>",
+      "        <ComboboxGroup>",
+      "          <ComboboxItem v-for=\"item in $2\" :key=\"item.value\" :value=\"item.value\">",
+      "            <ComboboxItemIndicator>",
+      "              <CheckIcon />",
+      "            </ComboboxItemIndicator>",
+      "            <span>{{ item.label }}</span>",
+      "          </ComboboxItem>",
+      "        </ComboboxGroup>",
+      "      </ComboboxViewport>",
+      "    </ComboboxContent>",
+      "  </ComboboxPortal>",
+      "</ComboboxRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Context Menu
+  // ============================================================================
+  "Reka UI - Context Menu": {
+    "prefix": ["reka-context-menu", "rui-context-menu"],
+    "description": "Right-click context menu",
+    "body": [
+      "<ContextMenuRoot>",
+      "  <ContextMenuTrigger as-child>",
+      "    <div class=\"${1:context-area}\">${2:Right click here}</div>",
+      "  </ContextMenuTrigger>",
+      "  <ContextMenuPortal>",
+      "    <ContextMenuContent>",
+      "      <ContextMenuItem @select=\"${3:handleCut}\">",
+      "        Cut",
+      "        <kbd>⌘X</kbd>",
+      "      </ContextMenuItem>",
+      "      <ContextMenuItem @select=\"${4:handleCopy}\">",
+      "        Copy",
+      "        <kbd>⌘C</kbd>",
+      "      </ContextMenuItem>",
+      "      <ContextMenuItem @select=\"${5:handlePaste}\">",
+      "        Paste",
+      "        <kbd>⌘V</kbd>",
+      "      </ContextMenuItem>",
+      "      <ContextMenuSeparator />",
+      "      <ContextMenuSub>",
+      "        <ContextMenuSubTrigger>More</ContextMenuSubTrigger>",
+      "        <ContextMenuSubContent>",
+      "          <ContextMenuItem @select=\"${6:handleDelete}\">Delete</ContextMenuItem>",
+      "        </ContextMenuSubContent>",
+      "      </ContextMenuSub>",
+      "    </ContextMenuContent>",
+      "  </ContextMenuPortal>",
+      "</ContextMenuRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Dialog
+  // ============================================================================
+  "Reka UI - Dialog": {
+    "prefix": ["reka-dialog", "rui-dialog"],
+    "description": "Modal dialog component",
+    "body": [
+      "<DialogRoot>",
+      "  <DialogTrigger as-child>",
+      "    <button>${1:Open Dialog}</button>",
+      "  </DialogTrigger>",
+      "  <DialogPortal>",
+      "    <DialogOverlay />",
+      "    <DialogContent>",
+      "      <DialogTitle>${2:Dialog Title}</DialogTitle>",
+      "      <DialogDescription>",
+      "        ${3:Dialog description goes here.}",
+      "      </DialogDescription>",
+      "      <div class=\"${4:dialog-content}\">",
+      "        ${5:Your dialog content}",
+      "      </div>",
+      "      <DialogClose as-child>",
+      "        <button>${6:Close}</button>",
+      "      </DialogClose>",
+      "    </DialogContent>",
+      "  </DialogPortal>",
+      "</DialogRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Dropdown Menu
+  // ============================================================================
+  "Reka UI - Dropdown Menu": {
+    "prefix": ["reka-dropdown-menu", "rui-dropdown-menu"],
+    "description": "Dropdown menu with items",
+    "body": [
+      "<DropdownMenuRoot>",
+      "  <DropdownMenuTrigger as-child>",
+      "    <button>${1:Menu}</button>",
+      "  </DropdownMenuTrigger>",
+      "  <DropdownMenuPortal>",
+      "    <DropdownMenuContent :side-offset=\"${2:5}\">",
+      "      <DropdownMenuItem @select=\"${3:handleItem1}\">",
+      "        ${4:Item 1}",
+      "      </DropdownMenuItem>",
+      "      <DropdownMenuItem @select=\"${5:handleItem2}\">",
+      "        ${6:Item 2}",
+      "      </DropdownMenuItem>",
+      "      <DropdownMenuSeparator />",
+      "      <DropdownMenuGroup>",
+      "        <DropdownMenuLabel>${7:Group Label}</DropdownMenuLabel>",
+      "        <DropdownMenuItem @select=\"${8:handleGroupItem}\">",
+      "          ${9:Group Item}",
+      "        </DropdownMenuItem>",
+      "      </DropdownMenuGroup>",
+      "    </DropdownMenuContent>",
+      "  </DropdownMenuPortal>",
+      "</DropdownMenuRoot>"
+    ]
+  },
+
+  "Reka UI - Dropdown Menu with Checkbox": {
+    "prefix": ["reka-dropdown-checkbox", "rui-dropdown-checkbox"],
+    "description": "Dropdown menu with checkbox items",
+    "body": [
+      "<DropdownMenuRoot>",
+      "  <DropdownMenuTrigger as-child>",
+      "    <button>${1:Options}</button>",
+      "  </DropdownMenuTrigger>",
+      "  <DropdownMenuPortal>",
+      "    <DropdownMenuContent>",
+      "      <DropdownMenuCheckboxItem v-model=\"${2:showStatusBar}\">",
+      "        <DropdownMenuItemIndicator>",
+      "          <CheckIcon />",
+      "        </DropdownMenuItemIndicator>",
+      "        Show Status Bar",
+      "      </DropdownMenuCheckboxItem>",
+      "      <DropdownMenuCheckboxItem v-model=\"${3:showActivityBar}\">",
+      "        <DropdownMenuItemIndicator>",
+      "          <CheckIcon />",
+      "        </DropdownMenuItemIndicator>",
+      "        Show Activity Bar",
+      "      </DropdownMenuCheckboxItem>",
+      "    </DropdownMenuContent>",
+      "  </DropdownMenuPortal>",
+      "</DropdownMenuRoot>"
+    ]
+  },
+
+  "Reka UI - Dropdown Menu with Radio": {
+    "prefix": ["reka-dropdown-radio", "rui-dropdown-radio"],
+    "description": "Dropdown menu with radio items",
+    "body": [
+      "<DropdownMenuRoot>",
+      "  <DropdownMenuTrigger as-child>",
+      "    <button>${1:View}</button>",
+      "  </DropdownMenuTrigger>",
+      "  <DropdownMenuPortal>",
+      "    <DropdownMenuContent>",
+      "      <DropdownMenuRadioGroup v-model=\"${2:selectedView}\">",
+      "        <DropdownMenuRadioItem value=\"list\">",
+      "          <DropdownMenuItemIndicator>",
+      "            <DotFilledIcon />",
+      "          </DropdownMenuItemIndicator>",
+      "          List View",
+      "        </DropdownMenuRadioItem>",
+      "        <DropdownMenuRadioItem value=\"grid\">",
+      "          <DropdownMenuItemIndicator>",
+      "            <DotFilledIcon />",
+      "          </DropdownMenuItemIndicator>",
+      "          Grid View",
+      "        </DropdownMenuRadioItem>",
+      "      </DropdownMenuRadioGroup>",
+      "    </DropdownMenuContent>",
+      "  </DropdownMenuPortal>",
+      "</DropdownMenuRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Hover Card
+  // ============================================================================
+  "Reka UI - Hover Card": {
+    "prefix": ["reka-hover-card", "rui-hover-card"],
+    "description": "Card that appears on hover",
+    "body": [
+      "<HoverCardRoot :open-delay=\"${1:200}\" :close-delay=\"${2:300}\">",
+      "  <HoverCardTrigger as-child>",
+      "    <a href=\"${3:#}\">${4:@username}</a>",
+      "  </HoverCardTrigger>",
+      "  <HoverCardPortal>",
+      "    <HoverCardContent :side-offset=\"${5:5}\">",
+      "      ${6:<div>Hover card content</div>}",
+      "      <HoverCardArrow />",
+      "    </HoverCardContent>",
+      "  </HoverCardPortal>",
+      "</HoverCardRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Label
+  // ============================================================================
+  "Reka UI - Label": {
+    "prefix": ["reka-label", "rui-label"],
+    "description": "Accessible label component",
+    "body": [
+      "<Label for=\"${1:input-id}\">${2:Label text}</Label>"
+    ]
+  },
+
+  // ============================================================================
+  // Menubar
+  // ============================================================================
+  "Reka UI - Menubar": {
+    "prefix": ["reka-menubar", "rui-menubar"],
+    "description": "Horizontal menu bar with nested menus",
+    "body": [
+      "<MenubarRoot>",
+      "  <MenubarMenu>",
+      "    <MenubarTrigger>${1:File}</MenubarTrigger>",
+      "    <MenubarPortal>",
+      "      <MenubarContent>",
+      "        <MenubarItem @select=\"${2:handleNew}\">",
+      "          New",
+      "          <kbd>⌘N</kbd>",
+      "        </MenubarItem>",
+      "        <MenubarItem @select=\"${3:handleOpen}\">",
+      "          Open",
+      "          <kbd>⌘O</kbd>",
+      "        </MenubarItem>",
+      "        <MenubarSeparator />",
+      "        <MenubarSub>",
+          "          <MenubarSubTrigger>Recent</MenubarSubTrigger>",
+      "          <MenubarSubContent>",
+      "            <MenubarItem v-for=\"file in ${4:recentFiles}\" :key=\"file\" @select=\"() => openFile(file)\">",
+      "              {{ file }}",
+      "            </MenubarItem>",
+      "          </MenubarSubContent>",
+      "        </MenubarSub>",
+      "      </MenubarContent>",
+      "    </MenubarPortal>",
+      "  </MenubarMenu>",
+      "",
+      "  <MenubarMenu>",
+      "    <MenubarTrigger>${5:Edit}</MenubarTrigger>",
+      "    <MenubarPortal>",
+      "      <MenubarContent>",
+      "        <MenubarItem @select=\"${6:handleUndo}\">Undo</MenubarItem>",
+      "        <MenubarItem @select=\"${7:handleRedo}\">Redo</MenubarItem>",
+      "      </MenubarContent>",
+      "    </MenubarPortal>",
+      "  </MenubarMenu>",
+      "</MenubarRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Navigation Menu
+  // ============================================================================
+  "Reka UI - Navigation Menu": {
+    "prefix": ["reka-nav-menu", "rui-nav-menu", "reka-navigation-menu"],
+    "description": "Navigation menu with dropdowns",
+    "body": [
+      "<NavigationMenuRoot>",
+      "  <NavigationMenuList>",
+      "    <NavigationMenuItem>",
+      "      <NavigationMenuTrigger>${1:Overview}</NavigationMenuTrigger>",
+      "      <NavigationMenuContent>",
+      "        ${2:Navigation content}",
+      "      </NavigationMenuContent>",
+      "    </NavigationMenuItem>",
+      "",
+      "    <NavigationMenuItem>",
+      "      <NavigationMenuLink href=\"${3:/}\">${4:Home}</NavigationMenuLink>",
+      "    </NavigationMenuItem>",
+      "  </NavigationMenuList>",
+      "  <NavigationMenuViewport />",
+      "</NavigationMenuRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Number Field
+  // ============================================================================
+  "Reka UI - Number Field": {
+    "prefix": ["reka-number-field", "rui-number-field"],
+    "description": "Number input with increment/decrement buttons",
+    "body": [
+      "<NumberFieldRoot v-model=\"${1:value}\" :min=\"${2:0}\" :max=\"${3:100}\" :step=\"${4:1}\">",
+      "  <NumberFieldDecrement>",
+      "    <MinusIcon />",
+      "  </NumberFieldDecrement>",
+      "  <NumberFieldInput />",
+      "  <NumberFieldIncrement>",
+      "    <PlusIcon />",
+      "  </NumberFieldIncrement>",
+      "</NumberFieldRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Pagination
+  // ============================================================================
+  "Reka UI - Pagination": {
+    "prefix": ["reka-pagination", "rui-pagination"],
+    "description": "Pagination controls",
+    "body": [
+      "<PaginationRoot v-model:page=\"${1:currentPage}\" :total=\"${2:100}\" :items-per-page=\"${3:10}\">",
+      "  <PaginationList class=\"flex gap-2\">",
+      "    <PaginationFirst />",
+      "    <PaginationPrev />",
+      "    <PaginationListItem v-for=\"page in pages\" :key=\"page\" :value=\"page\" as-child>",
+      "      <button :class=\"{ active: page === $1 }\">{{ page }}</button>",
+      "    </PaginationListItem>",
+      "    <PaginationNext />",
+      "    <PaginationLast />",
+      "  </PaginationList>",
+      "</PaginationRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Pin Input
+  // ============================================================================
+  "Reka UI - Pin Input": {
+    "prefix": ["reka-pin-input", "rui-pin-input"],
+    "description": "PIN code input component",
+    "body": [
+      "<PinInputRoot v-model=\"${1:pin}\" :length=\"${2:4}\" otp>",
+      "  <PinInputInput v-for=\"(id, index) in $1\" :key=\"id\" :index=\"index\" />",
+      "</PinInputRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Popover
+  // ============================================================================
+  "Reka UI - Popover": {
+    "prefix": ["reka-popover", "rui-popover"],
+    "description": "Popover floating content",
+    "body": [
+      "<PopoverRoot>",
+      "  <PopoverTrigger as-child>",
+      "    <button>${1:Open Popover}</button>",
+      "  </PopoverTrigger>",
+      "  <PopoverPortal>",
+      "    <PopoverContent :side-offset=\"${2:5}\">",
+      "      <div class=\"${3:popover-content}\">",
+      "        ${4:Popover content goes here}",
+      "      </div>",
+      "      <PopoverClose as-child>",
+      "        <button>${5:Close}</button>",
+      "      </PopoverClose>",
+      "      <PopoverArrow />",
+      "    </PopoverContent>",
+      "  </PopoverPortal>",
+      "</PopoverRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Progress
+  // ============================================================================
+  "Reka UI - Progress": {
+    "prefix": ["reka-progress", "rui-progress"],
+    "description": "Progress indicator",
+    "body": [
+      "<ProgressRoot v-model=\"${1:progress}\" :max=\"${2:100}\">",
+      "  <ProgressIndicator :style=\"{ width: $1 + '%' }\" />",
+      "</ProgressRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Radio Group
+  // ============================================================================
+  "Reka UI - Radio Group": {
+    "prefix": ["reka-radio-group", "rui-radio-group"],
+    "description": "Radio button group",
+    "body": [
+      "<RadioGroupRoot v-model=\"${1:selected}\">",
+      "  <RadioGroupItem v-for=\"option in ${2:options}\" :key=\"option.value\" :value=\"option.value\">",
+      "    <RadioGroupIndicator />",
+      "    <label>{{ option.label }}</label>",
+      "  </RadioGroupItem>",
+      "</RadioGroupRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Scroll Area
+  // ============================================================================
+  "Reka UI - Scroll Area": {
+    "prefix": ["reka-scroll-area", "rui-scroll-area"],
+    "description": "Custom scrollable area with styled scrollbars",
+    "body": [
+      "<ScrollAreaRoot class=\"${1:scroll-area}\">",
+      "  <ScrollAreaViewport class=\"${2:scroll-viewport}\">",
+      "    ${3:Scrollable content here}",
+      "  </ScrollAreaViewport>",
+      "  <ScrollAreaScrollbar orientation=\"vertical\">",
+      "    <ScrollAreaThumb />",
+      "  </ScrollAreaScrollbar>",
+      "  <ScrollAreaScrollbar orientation=\"horizontal\">",
+      "    <ScrollAreaThumb />",
+      "  </ScrollAreaScrollbar>",
+      "  <ScrollAreaCorner />",
+      "</ScrollAreaRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Select
+  // ============================================================================
+  "Reka UI - Select": {
+    "prefix": ["reka-select", "rui-select"],
+    "description": "Dropdown select component",
+    "body": [
+      "<SelectRoot v-model=\"${1:selected}\">",
+      "  <SelectTrigger aria-label=\"${2:Options}\">",
+      "    <SelectValue placeholder=\"${3:Select an option...}\" />",
+      "    <SelectIcon>",
+      "      <ChevronDownIcon />",
+      "    </SelectIcon>",
+      "  </SelectTrigger>",
+      "",
+      "  <SelectPortal>",
+      "    <SelectContent>",
+      "      <SelectScrollUpButton>",
+      "        <ChevronUpIcon />",
+      "      </SelectScrollUpButton>",
+      "",
+      "      <SelectViewport>",
+      "        <SelectGroup>",
+      "          <SelectLabel>${4:Group Label}</SelectLabel>",
+      "          <SelectItem v-for=\"option in ${5:options}\" :key=\"option.value\" :value=\"option.value\">",
+      "            <SelectItemText>{{ option.label }}</SelectItemText>",
+      "            <SelectItemIndicator>",
+      "              <CheckIcon />",
+      "            </SelectItemIndicator>",
+      "          </SelectItem>",
+      "        </SelectGroup>",
+      "      </SelectViewport>",
+      "",
+      "      <SelectScrollDownButton>",
+      "        <ChevronDownIcon />",
+      "      </SelectScrollDownButton>",
+      "    </SelectContent>",
+      "  </SelectPortal>",
+      "</SelectRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Separator
+  // ============================================================================
+  "Reka UI - Separator": {
+    "prefix": ["reka-separator", "rui-separator"],
+    "description": "Visual divider between elements",
+    "body": [
+      "<Separator orientation=\"${1|horizontal,vertical|}\" decorative />",
+      "<Separator orientation=\"horizontal\" />"
+    ]
+  },
+
+  // ============================================================================
+  // Slider
+  // ============================================================================
+  "Reka UI - Slider": {
+    "prefix": ["reka-slider", "rui-slider"],
+    "description": "Range slider input",
+    "body": [
+      "<SliderRoot v-model=\"${1:value}\" :min=\"${2:0}\" :max=\"${3:100}\" :step=\"${4:1}\">",
+      "  <SliderTrack>",
+      "    <SliderRange />",
+      "  </SliderTrack>",
+      "  <SliderThumb />",
+      "</SliderRoot>"
+    ]
+  },
+
+  "Reka UI - Range Slider": {
+    "prefix": ["reka-range-slider", "rui-range-slider"],
+    "description": "Dual-thumb range slider",
+    "body": [
+      "<SliderRoot v-model=\"${1:range}\" :min=\"${2:0}\" :max=\"${3:100}\" :step=\"${4:1}\">",
+      "  <SliderTrack>",
+      "    <SliderRange />",
+      "  </SliderTrack>",
+      "  <SliderThumb v-for=\"(_, index) in $1\" :key=\"index\" />",
+      "</SliderRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Splitter
+  // ============================================================================
+  "Reka UI - Splitter": {
+    "prefix": ["reka-splitter", "rui-splitter", "reka-resizable"],
+    "description": "Resizable split panels",
+    "body": [
+      "<SplitterGroup direction=\"${1|horizontal,vertical|}\">",
+      "  <SplitterPanel :default-size=\"${2:30}\" :min-size=\"${3:20}\">",
+      "    ${4:Panel 1 content}",
+      "  </SplitterPanel>",
+      "  <SplitterResizeHandle />",
+      "  <SplitterPanel :min-size=\"${5:20}\">",
+      "    ${6:Panel 2 content}",
+      "  </SplitterPanel>",
+      "</SplitterGroup>"
+    ]
+  },
+
+  // ============================================================================
+  // Stepper
+  // ============================================================================
+  "Reka UI - Stepper": {
+    "prefix": ["reka-stepper", "rui-stepper"],
+    "description": "Step-by-step wizard component",
+    "body": [
+      "<StepperRoot v-model=\"${1:currentStep}\">",
+      "  <StepperItem v-for=\"step in ${2:steps}\" :key=\"step.id\" :step=\"step.id\">",
+      "    <StepperTrigger>",
+      "      <StepperIndicator>{{ step.id }}</StepperIndicator>",
+      "      <div>",
+      "        <StepperTitle>{{ step.title }}</StepperTitle>",
+      "        <StepperDescription>{{ step.description }}</StepperDescription>",
+      "      </div>",
+      "    </StepperTrigger>",
+      "    <StepperSeparator />",
+      "  </StepperItem>",
+      "</StepperRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Switch
+  // ============================================================================
+  "Reka UI - Switch": {
+    "prefix": ["reka-switch", "rui-switch"],
+    "description": "Toggle switch component",
+    "body": [
+      "<SwitchRoot v-model=\"${1:checked}\" class=\"${2:switch-root}\">",
+      "  <SwitchThumb class=\"${3:switch-thumb}\" />",
+      "</SwitchRoot>",
+      "<label>${4:Enable feature}</label>"
+    ]
+  },
+
+  // ============================================================================
+  // Tabs
+  // ============================================================================
+  "Reka UI - Tabs": {
+    "prefix": ["reka-tabs", "rui-tabs"],
+    "description": "Tabbed interface component",
+    "body": [
+      "<TabsRoot v-model=\"${1:selectedTab}\" class=\"${2:tabs-root}\">",
+      "  <TabsList class=\"${3:tabs-list}\">",
+      "    <TabsTrigger value=\"${4:tab1}\" class=\"${5:tabs-trigger}\">",
+      "      ${6:Tab 1}",
+      "    </TabsTrigger>",
+      "    <TabsTrigger value=\"${7:tab2}\" class=\"${8:tabs-trigger}\">",
+      "      ${9:Tab 2}",
+      "    </TabsTrigger>",
+      "  </TabsList>",
+      "",
+      "  <TabsContent value=\"$4\" class=\"${10:tabs-content}\">",
+      "    ${11:Content for tab 1}",
+      "  </TabsContent>",
+      "  <TabsContent value=\"$7\" class=\"$10\">",
+      "    ${12:Content for tab 2}",
+      "  </TabsContent>",
+      "</TabsRoot>"
+    ]
+  },
+
+  "Reka UI - Tabs with Indicator": {
+    "prefix": ["reka-tabs-indicator", "rui-tabs-indicator"],
+    "description": "Tabs with animated indicator",
+    "body": [
+      "<TabsRoot v-model=\"${1:selectedTab}\">",
+      "  <TabsList>",
+      "    <TabsIndicator>",
+      "      <div class=\"${2:indicator}\" />",
+      "    </TabsIndicator>",
+      "    <TabsTrigger value=\"${3:tab1}\">${4:Tab 1}</TabsTrigger>",
+      "    <TabsTrigger value=\"${5:tab2}\">${6:Tab 2}</TabsTrigger>",
+      "  </TabsList>",
+      "  <TabsContent value=\"$3\">${7:Content 1}</TabsContent>",
+      "  <TabsContent value=\"$5\">${8:Content 2}</TabsContent>",
+      "</TabsRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Tags Input
+  // ============================================================================
+  "Reka UI - Tags Input": {
+    "prefix": ["reka-tags-input", "rui-tags-input"],
+    "description": "Input for managing multiple tags",
+    "body": [
+      "<TagsInputRoot v-model=\"${1:tags}\">",
+      "  <TagsInputItem v-for=\"tag in $1\" :key=\"tag\" :value=\"tag\">",
+      "    <TagsInputItemText>{{ tag }}</TagsInputItemText>",
+      "    <TagsInputItemDelete>",
+      "      <Cross2Icon />",
+      "    </TagsInputItemDelete>",
+      "  </TagsInputItem>",
+      "  <TagsInputInput placeholder=\"${2:Add tag...}\" />",
+      "</TagsInputRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Toast
+  // ============================================================================
+  "Reka UI - Toast Provider": {
+    "prefix": ["reka-toast-provider", "rui-toast-provider"],
+    "description": "Toast notification provider (add to app root)",
+    "body": [
+      "<ToastProvider :duration=\"${1:5000}\">",
+      "  <ToastViewport class=\"${2:toast-viewport}\" />",
+      "  ${3:<!-- Your app content -->}",
+      "</ToastProvider>"
+    ]
+  },
+
+  "Reka UI - Toast": {
+    "prefix": ["reka-toast", "rui-toast"],
+    "description": "Individual toast notification",
+    "body": [
+      "<ToastRoot v-model:open=\"${1:open}\" class=\"${2:toast-root}\">",
+      "  <ToastTitle class=\"${3:toast-title}\">${4:Notification}</ToastTitle>",
+      "  <ToastDescription class=\"${5:toast-description}\">",
+      "    ${6:Your toast message here}",
+      "  </ToastDescription>",
+      "  <ToastAction alt-text=\"${7:Action}\" as-child>",
+      "    <button>Undo</button>",
+      "  </ToastAction>",
+      "  <ToastClose aria-label=\"Close\">",
+      "    <Cross2Icon />",
+      "  </ToastClose>",
+      "</ToastRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Toggle
+  // ============================================================================
+  "Reka UI - Toggle": {
+    "prefix": ["reka-toggle", "rui-toggle"],
+    "description": "Two-state button that can be on or off",
+    "body": [
+      "<Toggle v-model:pressed=\"${1:pressed}\" aria-label=\"${2:Toggle feature}\">",
+      "  ${3:<Icon />}",
+      "</Toggle>"
+    ]
+  },
+
+  // ============================================================================
+  // Toggle Group
+  // ============================================================================
+  "Reka UI - Toggle Group": {
+    "prefix": ["reka-toggle-group", "rui-toggle-group"],
+    "description": "Group of toggle buttons",
+    "body": [
+      "<ToggleGroupRoot v-model=\"${1:selected}\" type=\"${2|single,multiple|}\">",
+      "  <ToggleGroupItem v-for=\"item in ${3:items}\" :key=\"item.value\" :value=\"item.value\">",
+      "    {{ item.label }}",
+      "  </ToggleGroupItem>",
+      "</ToggleGroupRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Toolbar
+  // ============================================================================
+  "Reka UI - Toolbar": {
+    "prefix": ["reka-toolbar", "rui-toolbar"],
+    "description": "Accessible toolbar with controls",
+    "body": [
+      "<ToolbarRoot class=\"${1:toolbar}\" aria-label=\"${2:Formatting options}\">",
+      "  <ToolbarToggleGroup type=\"multiple\" aria-label=\"${3:Text formatting}\">",
+      "    <ToolbarToggleItem value=\"bold\" aria-label=\"Bold\">",
+      "      <BoldIcon />",
+      "    </ToolbarToggleItem>",
+      "    <ToolbarToggleItem value=\"italic\" aria-label=\"Italic\">",
+      "      <ItalicIcon />",
+      "    </ToolbarToggleItem>",
+      "  </ToolbarToggleGroup>",
+      "  <ToolbarSeparator />",
+      "  <ToolbarButton @click=\"${4:handleAction}\">${5:Action}</ToolbarButton>",
+      "</ToolbarRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Tooltip
+  // ============================================================================
+  "Reka UI - Tooltip": {
+    "prefix": ["reka-tooltip", "rui-tooltip"],
+    "description": "Tooltip on hover/focus",
+    "body": [
+      "<TooltipProvider :delay-duration=\"${1:200}\">",
+      "  <TooltipRoot>",
+      "    <TooltipTrigger as-child>",
+      "      <button>${2:Hover me}</button>",
+      "    </TooltipTrigger>",
+      "    <TooltipPortal>",
+      "      <TooltipContent :side-offset=\"${3:5}\">",
+      "        ${4:Tooltip content}",
+      "        <TooltipArrow />",
+      "      </TooltipContent>",
+      "    </TooltipPortal>",
+      "  </TooltipRoot>",
+      "</TooltipProvider>"
+    ]
+  },
+
+  // ============================================================================
+  // Tree
+  // ============================================================================
+  "Reka UI - Tree": {
+    "prefix": ["reka-tree", "rui-tree"],
+    "description": "Hierarchical tree view",
+    "body": [
+      "<TreeRoot v-model=\"${1:selected}\" :items=\"${2:treeItems}\">",
+      "  <TreeItem v-for=\"item in flattenedItems\" :key=\"item.id\" v-bind=\"item\">",
+      "    {{ item.label }}",
+      "  </TreeItem>",
+      "</TreeRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Editable
+  // ============================================================================
+  "Reka UI - Editable": {
+    "prefix": ["reka-editable", "rui-editable"],
+    "description": "Inline editable text field",
+    "body": [
+      "<EditableRoot v-model=\"${1:text}\" placeholder=\"${2:Click to edit...}\">",
+      "  <EditableArea>",
+      "    <EditablePreview />",
+      "    <EditableInput />",
+      "  </EditableArea>",
+      "  <div class=\"${3:editable-controls}\">",
+      "    <EditableEditTrigger>Edit</EditableEditTrigger>",
+      "    <EditableSubmitTrigger>Save</EditableSubmitTrigger>",
+      "    <EditableCancelTrigger>Cancel</EditableCancelTrigger>",
+      "  </div>",
+      "</EditableRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Date/Time Pickers
+  // ============================================================================
+  "Reka UI - Date Field": {
+    "prefix": ["reka-date-field", "rui-date-field"],
+    "description": "Date input field with segments",
+    "body": [
+      "<DateFieldRoot v-model=\"${1:date}\">",
+      "  <DateFieldInput />",
+      "</DateFieldRoot>"
+    ]
+  },
+
+  "Reka UI - Date Picker": {
+    "prefix": ["reka-date-picker", "rui-date-picker"],
+    "description": "Date picker with calendar popup",
+    "body": [
+      "<DatePickerRoot v-model=\"${1:date}\">",
+      "  <DatePickerField>",
+      "    <DatePickerInput />",
+      "    <DatePickerTrigger>",
+      "      <CalendarIcon />",
+      "    </DatePickerTrigger>",
+      "  </DatePickerField>",
+      "  <DatePickerContent>",
+      "    <DatePickerCalendar />",
+      "  </DatePickerContent>",
+      "</DatePickerRoot>"
+    ]
+  },
+
+  "Reka UI - Calendar": {
+    "prefix": ["reka-calendar", "rui-calendar"],
+    "description": "Standalone calendar component",
+    "body": [
+      "<CalendarRoot v-model=\"${1:date}\">",
+      "  <CalendarHeader>",
+      "    <CalendarPrev>",
+      "      <ChevronLeftIcon />",
+      "    </CalendarPrev>",
+      "    <CalendarHeading />",
+      "    <CalendarNext>",
+      "      <ChevronRightIcon />",
+      "    </CalendarNext>",
+      "  </CalendarHeader>",
+      "  <CalendarGrid>",
+      "    <CalendarGridHead>",
+      "      <CalendarGridRow>",
+      "        <CalendarHeadCell v-for=\"day in weekDays\" :key=\"day\">",
+      "          {{ day }}",
+      "        </CalendarHeadCell>",
+      "      </CalendarGridRow>",
+      "    </CalendarGridHead>",
+      "    <CalendarGridBody>",
+      "      <CalendarGridRow v-for=\"week in weeks\" :key=\"week\">",
+      "        <CalendarCell v-for=\"day in week\" :key=\"day\" :date=\"day\">",
+      "          <CalendarCellTrigger />",
+      "        </CalendarCell>",
+      "      </CalendarGridRow>",
+      "    </CalendarGridBody>",
+      "  </CalendarGrid>",
+      "</CalendarRoot>"
+    ]
+  },
+
+  "Reka UI - Range Calendar": {
+    "prefix": ["reka-range-calendar", "rui-range-calendar"],
+    "description": "Calendar for selecting date ranges",
+    "body": [
+      "<RangeCalendarRoot v-model=\"${1:dateRange}\">",
+      "  <RangeCalendarHeader>",
+      "    <RangeCalendarPrev />",
+      "    <RangeCalendarHeading />",
+      "    <RangeCalendarNext />",
+      "  </RangeCalendarHeader>",
+      "  <RangeCalendarGrid>",
+      "    <RangeCalendarGridHead>",
+      "      <RangeCalendarGridRow>",
+      "        <RangeCalendarHeadCell v-for=\"day in weekDays\" :key=\"day\">",
+      "          {{ day }}",
+      "        </RangeCalendarHeadCell>",
+      "      </RangeCalendarGridRow>",
+      "    </RangeCalendarGridHead>",
+      "    <RangeCalendarGridBody>",
+      "      <RangeCalendarGridRow v-for=\"week in weeks\" :key=\"week\">",
+      "        <RangeCalendarCell v-for=\"day in week\" :key=\"day\" :date=\"day\">",
+      "          <RangeCalendarCellTrigger />",
+      "        </RangeCalendarCell>",
+      "      </RangeCalendarGridRow>",
+      "    </RangeCalendarGridBody>",
+      "  </RangeCalendarGrid>",
+      "</RangeCalendarRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Color Picker
+  // ============================================================================
+  "Reka UI - Color Picker": {
+    "prefix": ["reka-color-picker", "rui-color-picker"],
+    "description": "Color picker with area and sliders",
+    "body": [
+      "<ColorPickerRoot v-model=\"${1:color}\">",
+      "  <ColorAreaRoot>",
+      "    <ColorAreaArea />",
+      "    <ColorAreaThumb />",
+      "  </ColorAreaRoot>",
+      "  <ColorSliderRoot>",
+      "    <ColorSliderTrack />",
+      "    <ColorSliderThumb />",
+      "  </ColorSliderRoot>",
+      "  <ColorFieldRoot>",
+      "    <ColorFieldInput />",
+      "  </ColorFieldRoot>",
+      "  <ColorSwatch :color=\"$1\" />",
+      "</ColorPickerRoot>"
+    ]
+  },
+
+  "Reka UI - Color Swatch Picker": {
+    "prefix": ["reka-swatch-picker", "rui-swatch-picker"],
+    "description": "Color picker with preset swatches",
+    "body": [
+      "<ColorSwatchPickerRoot v-model=\"${1:selectedColor}\">",
+      "  <ColorSwatchPickerItem v-for=\"color in ${2:colors}\" :key=\"color\" :color=\"color\">",
+      "    <ColorSwatchPickerItemIndicator />",
+      "    <ColorSwatchPickerItemSwatch />",
+      "  </ColorSwatchPickerItem>",
+      "</ColorSwatchPickerRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Rating
+  // ============================================================================
+  "Reka UI - Rating": {
+    "prefix": ["reka-rating", "rui-rating"],
+    "description": "Star rating input",
+    "body": [
+      "<RatingRoot v-model=\"${1:rating}\" :max=\"${2:5}\">",
+      "  <RatingItem v-for=\"item in items\" :key=\"item\" :index=\"item\">",
+      "    <RatingItemIndicator>",
+      "      <StarIcon v-if=\"item <= $1\" />",
+      "      <StarFilledIcon v-else />",
+      "    </RatingItemIndicator>",
+      "  </RatingItem>",
+      "</RatingRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Listbox
+  // ============================================================================
+  "Reka UI - Listbox": {
+    "prefix": ["reka-listbox", "rui-listbox"],
+    "description": "Selectable list of items",
+    "body": [
+      "<ListboxRoot v-model=\"${1:selected}\">",
+      "  <ListboxContent>",
+      "    <ListboxItem v-for=\"item in ${2:items}\" :key=\"item.value\" :value=\"item.value\">",
+      "      <ListboxItemIndicator />",
+      "      {{ item.label }}",
+      "    </ListboxItem>",
+      "  </ListboxContent>",
+      "</ListboxRoot>"
+    ]
+  },
+
+  // ============================================================================
+  // Config Provider
+  // ============================================================================
+  "Reka UI - Config Provider": {
+    "prefix": ["reka-config", "rui-config"],
+    "description": "Global configuration for Reka UI",
+    "body": [
+      "<ConfigProvider :scroll-body=\"${1:false}\">",
+      "  ${2:<!-- Your app content -->}",
+      "</ConfigProvider>"
+    ]
+  },
+
+  // ============================================================================
+  // Primitive
+  // ============================================================================
+  "Reka UI - Primitive": {
+    "prefix": ["reka-primitive", "rui-primitive"],
+    "description": "Primitive element with asChild support",
+    "body": [
+      "<Primitive :as=\"${1|'div','button','a','span'|}\" as-child>",
+      "  ${2:<element />}",
+      "</Primitive>"
+    ]
+  },
+
+  "Reka UI - Slot": {
+    "prefix": ["reka-slot", "rui-slot"],
+    "description": "Slot component for composition",
+    "body": [
+      "<Slot>",
+      "  ${1:<!-- Content merges with child element -->}",
+      "</Slot>"
+    ]
+  },
+
+  // ============================================================================
+  // Utility Components
+  // ============================================================================
+  "Reka UI - Visually Hidden": {
+    "prefix": ["reka-visually-hidden", "rui-visually-hidden"],
+    "description": "Hidden content for screen readers",
+    "body": [
+      "<VisuallyHidden>",
+      "  ${1:Hidden label for accessibility}",
+      "</VisuallyHidden>"
+    ]
+  },
+
+  "Reka UI - Focus Scope": {
+    "prefix": ["reka-focus-scope", "rui-focus-scope"],
+    "description": "Trap focus within an element",
+    "body": [
+      "<FocusScope :trapped=\"${1:true}\" @mount-auto-focus=\"${2:handleMount}\" @unmount-auto-focus=\"${3:handleUnmount}\">",
+      "  ${4:<!-- Focus trapped content -->}",
+      "</FocusScope>"
+    ]
+  },
+
+  "Reka UI - Presence": {
+    "prefix": ["reka-presence", "rui-presence"],
+    "description": "Animate element presence (mount/unmount)",
+    "body": [
+      "<Presence :present=\"${1:isVisible}\">",
+      "  ${2:<!-- Content animates in/out -->}",
+      "</Presence>"
+    ]
+  },
+
+  "Reka UI - Roving Focus": {
+    "prefix": ["reka-roving-focus", "rui-roving-focus"],
+    "description": "Keyboard navigation for collections",
+    "body": [
+      "<RovingFocusGroup orientation=\"${1|horizontal,vertical,both|}\">",
+      "  <RovingFocusItem v-for=\"item in ${2:items}\" :key=\"item\" as-child focusable>",
+      "    <button>{{ item }}</button>",
+      "  </RovingFocusItem>",
+      "</RovingFocusGroup>"
+    ]
+  },
+
+  // ============================================================================
+  // Import Statement
+  // ============================================================================
+  "Reka UI - Import": {
+    "prefix": ["reka-import", "rui-import"],
+    "description": "Import Reka UI components",
+    "body": [
+      "import { ${1:ComponentName} } from 'reka-ui'"
+    ]
+  },
+
+  "Reka UI - Import Multiple": {
+    "prefix": ["reka-import-multiple", "rui-import-multiple"],
+    "description": "Import multiple Reka UI components",
+    "body": [
+      "import {",
+      "  ${1:RootComponent},",
+      "  ${2:ChildComponent},",
+      "  ${3:AnotherComponent}",
+      "} from 'reka-ui'"
+    ]
+  }
+}
