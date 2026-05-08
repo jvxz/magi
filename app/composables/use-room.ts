@@ -1,10 +1,12 @@
 import { toRef } from '@vueuse/core'
 import { Room } from 'matrix-js-sdk'
 
-export function useRoom(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
+export function useRoom(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>, allowUnjoined: MaybeRefOrGetter<boolean> = false) {
   const maybeRoomOrIdRef = toRef(maybeRoomOrId)
+  const allowUnjoinedRef = toRef(allowUnjoined)
   const { client } = useMatrixClient()
-  const { onSync } = useMatrixHooks()
+  const joinedRooms = useJoinedRooms()
+  const { onRoom } = useMatrixHooks()
 
   const room = shallowRef<Room | undefined>(undefined)
   const get = () => {
@@ -12,7 +14,11 @@ export function useRoom(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefine
       ? maybeRoomOrIdRef.value
       : isTestMode()
         ? createMockRoom(500, maybeRoomOrIdRef.value!)
-        : client.value.getRoom(maybeRoomOrIdRef.value)
+        : isDefined(maybeRoomOrIdRef.value)
+          ? getRoom(client.value, maybeRoomOrIdRef.value, allowUnjoinedRef.value
+              ? undefined
+              : new Set(joinedRooms.value))
+          : undefined
 
     void r?.loadMembersIfNeeded()
     if (r)
@@ -23,9 +29,9 @@ export function useRoom(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefine
     triggerRef(room)
   }
 
-  watch(maybeRoomOrIdRef, get, { immediate: true })
+  watch([maybeRoomOrIdRef, allowUnjoinedRef], get, { immediate: true })
 
-  onSync(get)
+  onRoom(get)
 
   return room
 }
