@@ -14,6 +14,27 @@ interface MDirect extends MatrixEvent {
   }
 }
 
+interface GetAvatarUrlOpts {
+  client: MatrixClient
+  room: Room
+  useAuthentication?: boolean
+  size?: 32 | 96
+}
+export interface RoomsWithBatchToken {
+  nextBatchToken?: string
+  rooms: IHierarchyRoom[]
+}
+
+export function getRoom(client: MatrixClient, roomId: Room['roomId'], allowedIds?: MaybeReadonlySet<Room['roomId']>) {
+  if (!allowedIds)
+    return client.getRoom(roomId)
+
+  if (allowedIds.has(roomId))
+    return client.getRoom(roomId)
+
+  return undefined
+}
+
 export function getDirectRooms(client: MatrixClient) {
   const data = client.getAccountData(EventType.Direct) as MDirect | undefined
   if (!data)
@@ -37,11 +58,8 @@ export function getDirectRooms(client: MatrixClient) {
   return directRooms
 }
 
-interface GetAvatarUrlOpts {
-  client: MatrixClient
-  room: Room
-  useAuthentication?: boolean
-  size?: 32 | 96
+export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] {
+  return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType) ?? []
 }
 
 export function getRoomAvatarUrl({ client, room, size = 32, useAuthentication = false }: GetAvatarUrlOpts): string | undefined {
@@ -74,11 +92,6 @@ export function getDirectRoomAvatarUrl({ client, room, size = 32, useAuthenticat
     useAuthentication,
     width: size,
   })
-}
-
-export interface RoomsWithBatchToken {
-  nextBatchToken?: string
-  rooms: IHierarchyRoom[]
 }
 
 export async function getSpaceRooms(client: MatrixClient, space: Room, nextBatchToken?: string): Promise<RoomsWithBatchToken> {
@@ -215,9 +228,30 @@ export async function getMutualRooms(client: MatrixClient, otherUser: MaybeUserO
   }
 }
 
+// https://github.com/cinnyapp/cinny/blob/098684973ebb28592158efa43e79741ab27afab9/src/app/utils/room.ts#L96-L100
+export function isSpaceChild(event: MatrixEvent) {
+  return event.getType() === EventType.SpaceChild && Array.isArray(event.getContent().via)
+}
+
 export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
   if (maybeRoomOrId instanceof Room)
     return maybeRoomOrId.roomId
 
   return maybeRoomOrId
+}
+
+const ROOM_ID_RE = /^!(?<localpart>[^:]+):(?<server_name>.+)$/
+export function parseRoomId(roomId: string) {
+  const match = roomId.match(ROOM_ID_RE)
+  if (!match)
+    return undefined
+
+  return {
+    localpart: match.groups?.localpart,
+    serverName: match.groups?.server_name,
+  }
+}
+
+export function isRoomId(roomId: string) {
+  return ROOM_ID_RE.test(roomId)
 }
