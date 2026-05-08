@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-const props = withDefaults(defineProps<{
+import type { PrimitiveProps } from 'reka-ui'
+
+const props = withDefaults(defineProps<PrimitiveProps & {
   class?: string
   variant?: keyof typeof staticStyles.variant
 }>(), {
@@ -8,7 +10,8 @@ const props = withDefaults(defineProps<{
 </script>
 
 <template>
-  <div
+  <Primitive
+    v-bind="$props"
     data-slot="card"
     :class="cn(
       staticStyles.base,
@@ -18,5 +21,5 @@ const props = withDefaults(defineProps<{
     )"
   >
     <slot />
-  </div>
+  </Primitive>
 </template>
