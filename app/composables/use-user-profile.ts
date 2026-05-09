@@ -1,6 +1,5 @@
 import type { IMatrixProfile, User } from 'matrix-js-sdk'
 import type { EffectScope, ShallowRef } from 'vue'
-import { toRef } from '@vueuse/core'
 
 interface Entry {
   scope: EffectScope
@@ -74,11 +73,15 @@ function release(key: string) {
   }
 }
 
-export function useUserProfile(userId: MaybeRefOrGetter<string | undefined>) {
-  const userIdRef = toRef(userId)
+export function useUserProfile(user: MaybeRefOrGetter<MaybeUserOrId | undefined>) {
+  const userRef = computed(() => {
+    const u = toValue(user)
+    if (u)
+      return resolveUserId(u)
+  })
   const current = shallowRef<Entry | undefined>(undefined)
 
-  watch(userIdRef, (key, _, onCleanup) => {
+  watch(userRef, (key, _, onCleanup) => {
     if (!key) {
       current.value = undefined
       return
