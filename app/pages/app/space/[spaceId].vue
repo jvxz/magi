@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 const currentSpace = useCurrentSpace()
-const joinedRooms = useJoinedRooms(() => currentSpace.value?.roomId)
+const joinedRooms = useJoinedRooms(currentSpace)
 
 const currentRoom = useCurrentRoom()
 const isPaginating = shallowRef(false)
