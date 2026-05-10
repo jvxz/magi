@@ -1,31 +1,110 @@
+import type { EffectScope, ShallowRef } from 'vue'
 import { toRef } from '@vueuse/core'
-import { Room } from 'matrix-js-sdk'
+import { Room, RoomEvent, RoomStateEvent } from 'matrix-js-sdk'
 
-export function useRoom(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
-  const maybeRoomOrIdRef = toRef(maybeRoomOrId)
-  const { client } = useMatrixClient()
-  const { onSync } = useMatrixHooks()
+type Key = string
 
-  const room = shallowRef<Room | undefined>(undefined)
-  const get = () => {
-    const r = maybeRoomOrIdRef.value instanceof Room
-      ? maybeRoomOrIdRef.value
-      : isTestMode()
-        ? createMockRoom(500, maybeRoomOrIdRef.value!)
-        : client.value.getRoom(maybeRoomOrIdRef.value)
+interface Entry {
+  scope: EffectScope
+  ref: ShallowRef<Room | undefined>
+  subs: number
+}
 
-    void r?.loadMembersIfNeeded()
-    if (r)
-      room.value = r
+const cache = new Map<string, Entry>()
 
-    else room.value = undefined
+const createKey = (roomId: string) => roomId
 
-    triggerRef(room)
+function acquire(roomId: string) {
+  const key = createKey(roomId)
+
+  let entry = cache.get(key)
+  if (!entry) {
+    const scope = effectScope(true)
+
+    const ref = scope.run(() => {
+      const { client } = useMatrixClient()
+      const { onRoom } = useMatrixHooks()
+
+      const room = shallowRef<Room | undefined>(client.value.getRoom(key) ?? undefined)
+      const refresh = debounce(() => {
+        const r = isTestMode() ? createMockRoom(500, key) : client.value.getRoom(key)
+
+        room.value = r ?? undefined
+        triggerRef(room)
+      }, 50)
+
+      onRoom(refresh)
+
+      watchEffect((onCleanup) => {
+        const r = room.value
+        if (!r)
+          return
+
+        const update = () => triggerRef(room)
+        r.on(RoomEvent.MyMembership, update)
+        r.on(RoomStateEvent.Events, update)
+
+        onCleanup(() => {
+          r.off(RoomEvent.MyMembership, update)
+          r.off(RoomStateEvent.Events, update)
+        })
+      })
+
+      return room
+    })!
+
+    entry = { ref, scope, subs: 0 }
+
+    cache.set(key, entry)
   }
+  entry.subs++
+  return entry
+}
 
-  watch(maybeRoomOrIdRef, get, { immediate: true })
+function release(key: Key) {
+  const entry = cache.get(key)
+  if (!entry)
+    return
 
-  onSync(get)
+  entry.subs--
+
+  if (entry.subs <= 0) {
+    entry.scope.stop()
+    cache.delete(key)
+  }
+}
+
+export function useRoom(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
+  const roomInputRef = toRef(roomInput)
+
+  const room = shallowRef<Room | undefined>()
+
+  watch(roomInputRef, () => {
+    const resolved = roomInputRef.value
+
+    if (!resolved) {
+      room.value = undefined
+      return
+    }
+
+    if (resolved instanceof Room) {
+      room.value = resolved
+      triggerRef(room)
+      return
+    }
+
+    const entry = acquire(resolved)
+
+    const { stop } = watch(entry.ref, (value) => {
+      room.value = value
+      triggerRef(room)
+    }, { immediate: true })
+
+    onWatcherCleanup(() => {
+      stop()
+      release(createKey(resolved))
+    })
+  }, { immediate: true })
 
   return room
 }
