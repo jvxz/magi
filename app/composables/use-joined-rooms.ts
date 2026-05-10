@@ -1,8 +1,6 @@
-export function useJoinedRooms(_spaceId: MaybeRefOrGetter<string | undefined>) {
-  const spaceId = toRef(_spaceId)
+export function useJoinedRooms(spaceOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
+  const room = useRoom(spaceOrId)
   const { client } = useMatrixClient()
-
-  const room = useRoom(spaceId)
 
   return computed(() => {
     if (!room.value)
