@@ -22,19 +22,17 @@ const props = withDefaults(
 const room = useRoom(() => props.room ?? undefined)
 const userProfile = useUserProfile(() => props.user ?? undefined)
 
-const src = computed(() => {
-if (props.src) return props.src
-
+const roomOrUserUrl = computed(() => {
   if (room.value)
     return room.value.getMxcAvatarUrl() ?? undefined
 
   if (userProfile.value)
     return userProfile.value.avatar_url
 
-    return undefined
+  return undefined
 })
 
-const resolvedAvatar = useResolveAvatarUrl(src, { size: props.imageSize })
+const resolvedAvatar = useResolveAvatarUrl(roomOrUserUrl, { size: props.imageSize })
 
 const isError = ref(false)
 
@@ -43,12 +41,12 @@ const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'ima
 
 <template>
   <Img
-    v-if="resolvedAvatar"
+    v-if="props.src || resolvedAvatar"
     v-bind="delegatedProps"
-    :key="resolvedAvatar"
+    :key="props.src ?? resolvedAvatar"
     data-slot="avatar"
     :alt="userProfile?.displayname ? `${userProfile?.displayname}'s avatar` : 'Avatar'"
-    :src="resolvedAvatar"
+    :src="props.src ?? resolvedAvatar"
     :class="cn('object-cover', !square && 'rounded-full', props.class)"
     :do-placeholder="false"
     @error="isError = true"

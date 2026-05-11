@@ -58,6 +58,8 @@ export function useSpaceHierarchy(spaceId: MaybeRefOrGetter<string | undefined>,
     return map
   })
 
+  const suggestedRooms = computed(() => new Set(rooms.value.get(spaceIdRef.value)?.children_state.filter(r => r.content.suggested).map(r => r.state_key) ?? []))
+
   const orphanedRooms = computed(() => {
     const map = new Map<string, IHierarchyRoom>()
     if (!rooms.value)
@@ -136,5 +138,6 @@ export function useSpaceHierarchy(spaceId: MaybeRefOrGetter<string | undefined>,
     orphanedRooms,
     rooms,
     subspaces,
+    suggestedRooms,
   }
 }

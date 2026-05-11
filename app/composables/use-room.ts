@@ -25,22 +25,24 @@ function acquire(roomId: string) {
       const { client } = useMatrixClient()
       const { onRoom } = useMatrixHooks()
 
-      const room = shallowRef<Room | undefined>(client.value.getRoom(key) ?? undefined)
+      const rawRoom = client.value.getRoom(key)
+      // markRaw is needed because the room mutates itself under the hood, breaking vue's proxy system
+      const room = shallowRef<Room | undefined>(rawRoom ? markRaw(rawRoom) : undefined)
       const refresh = debounce(() => {
         const r = isTestMode() ? createMockRoom(500, key) : client.value.getRoom(key)
 
-        room.value = r ?? undefined
+        room.value = r ? markRaw(r) : undefined
         triggerRef(room)
       }, 50)
 
       onRoom(refresh)
 
+      const update = debounce(() => triggerRef(room), 50)
       watchEffect((onCleanup) => {
         const r = room.value
         if (!r)
           return
 
-        const update = () => triggerRef(room)
         r.on(RoomEvent.MyMembership, update)
         r.on(RoomStateEvent.Events, update)
 
@@ -88,7 +90,7 @@ export function useRoom(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>) 
     }
 
     if (resolved instanceof Room) {
-      room.value = resolved
+      room.value = markRaw(resolved)
       triggerRef(room)
       return
     }

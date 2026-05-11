@@ -27,7 +27,8 @@ function acquire(roomId: string, userId: string) {
     const ref = scope.run(() => {
       const room = useRoom(roomId)
 
-      const member = shallowRef<Value>(room.value?.getMember(userId) ?? undefined)
+      const rawMember = room.value?.getMember(userId)
+      const member = shallowRef<Value>(rawMember ? markRaw(rawMember) : undefined)
 
       useRoomEventHooks(room, {
         onMembers: handleUpdate,
@@ -36,7 +37,7 @@ function acquire(roomId: string, userId: string) {
 
       function handleUpdate(_event: MatrixEvent, _state: RoomState, newMember: RoomMember) {
         if (newMember.userId === userId) {
-          member.value = newMember
+          member.value = markRaw(newMember)
           triggerRef(member)
         }
       }

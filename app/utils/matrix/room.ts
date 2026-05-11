@@ -233,6 +233,24 @@ export function isSpaceChild(event: MatrixEvent) {
   return event.getType() === EventType.SpaceChild && Array.isArray(event.getContent().via)
 }
 
+export function getRoomTopic(room: Room | undefined) {
+  if (!room)
+    return
+
+  const events = getStateEvents(room, EventType.RoomTopic)
+  if (events[0])
+    return events[0].getContent<{ topic?: string }>().topic
+}
+
+export function getRoomCreationTs(room: Room | undefined) {
+  if (!room)
+    return
+
+  const events = getStateEvents(room, EventType.RoomCreate)
+  if (events[0])
+    return events[0].getTs()
+}
+
 export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
   if (maybeRoomOrId instanceof Room)
     return maybeRoomOrId.roomId

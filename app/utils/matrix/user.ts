@@ -19,7 +19,6 @@ export function getDisplayNameFallback(maybeUserOrId: MaybeUserOrId | undefined)
   return match
 }
 
-
 export type ResolveAvatarUrlOpts = Partial<{ baseUrl?: string, animated?: boolean, size?: AvatarImageSize } & MxcToHttpsOptions>
 export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: ResolveAvatarUrlOpts) {
   if (!avatarUrl)

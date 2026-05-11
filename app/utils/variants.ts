@@ -29,12 +29,18 @@ export const buttonVariants = cva(
 )
 
 export const badgeVariants = cva(
-  `${interactiveStyles.base} inline-flex w-fit shrink-0 cursor-default items-center justify-center px-2 py-0.5 text-xs tracking-wide select-none`,
+  `${interactiveStyles.base} inline-flex w-fit shrink-0 cursor-default items-center justify-center tracking-wide select-none`,
   {
     defaultVariants: {
+      size: 'default',
       variant: 'default',
     },
     variants: {
+      size: {
+        default: 'px-2 py-0.5 text-xs',
+        lg: 'px-2.5 py-1 text-sm',
+        sm: 'px-1.5 py-px text-2xs',
+      },
       variant: {
         danger: `${interactiveStyles.variant.danger}`,
         default: `${interactiveStyles.variant.default}`,
