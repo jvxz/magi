@@ -7,7 +7,7 @@ const props = defineProps<{
   count: number | undefined
 }>()
 
-const { error, isLoading, orphanedRooms, suggestedRooms } = useSpaceHierarchy(props.space.room_id, props.open)
+const { error, isLoading, orphanedRooms, suggestedRooms } = useSpaceHierarchy(() => props.space.room_id, () => props.open)
 </script>
 
 <template>
@@ -27,7 +27,6 @@ const { error, isLoading, orphanedRooms, suggestedRooms } = useSpaceHierarchy(pr
 
   <div
     v-else-if="!isLoading && !error && !orphanedRooms.size"
-    v-bind="$props"
     :class="cn('w-full relative text-sm flex items-center gap-2 text-muted-foreground px-3.5 ', $attrs.class)"
   >
     <Icon name="tabler-ghost-3" class="h-1lh" />
