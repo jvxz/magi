@@ -37,6 +37,10 @@ export function getDirectRooms(client: MatrixClient) {
   return directRooms
 }
 
+export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] {
+  return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType) ?? []
+}
+
 interface GetAvatarUrlOpts {
   client: MatrixClient
   room: Room
@@ -213,6 +217,24 @@ export async function getMutualRooms(client: MatrixClient, otherUser: MaybeUserO
     if (throwOnError)
       throw new $Error('Failed to get mutual rooms')
   }
+}
+
+export function getRoomTopic(room: Room | undefined) {
+  if (!room)
+    return
+
+  const events = getStateEvents(room, EventType.RoomTopic)
+  if (events[0])
+    return events[0].getContent<{ topic?: string }>().topic
+}
+
+export function getRoomCreationTs(room: Room | undefined) {
+  if (!room)
+    return
+
+  const events = getStateEvents(room, EventType.RoomCreate)
+  if (events[0])
+    return events[0].getTs()
 }
 
 export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
