@@ -38,6 +38,9 @@ importers:
       '@tanstack/vue-hotkeys':
         specifier: ^0.10.0
         version: 0.10.0(vue@3.5.33(typescript@6.0.3))
+      '@tanstack/vue-query':
+        specifier: ^5.100.10
+        version: 5.100.10(vue@3.5.33(typescript@6.0.3))
       '@vite-pwa/nuxt':
         specifier: ^1.1.1
         version: 1.1.1(magicast@0.5.2)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))(workbox-build@7.4.0)(workbox-window@7.4.0)
@@ -3552,11 +3555,11 @@ packages:
     resolution: {integrity: sha512-Wo1iKt2b9OT7d+YGhvEPD3DXvPv2etTusIMhMUoG7fbhmxcXCtIjJDEygy91Y2JFlwGyjqiBPRozme7UD8hoqg==}
     engines: {node: '>=12'}
 
+  '@tanstack/query-core@5.100.10':
+    resolution: {integrity: sha512-8UR0yJR+GiQ40m3lPhUr0xbfAupe6GSQiksSBSa9SM2NjezFyxXCIA69/lz8cSoNKZLrw1/PktIyQBJcVeMi3w==}
+
   '@tanstack/query-core@5.100.9':
     resolution: {integrity: sha512-SJSFw1S8+kQ0+knv/XGfrbocWoAlT7vDKsSImtLx3ZPQmEcR46hkDjLSvynSy25N8Ms4tIEini1FuBd5k7IscQ==}
-
-  '@tanstack/query-core@5.97.0':
-    resolution: {integrity: sha512-QdpLP5VzVMgo4VtaPppRA2W04UFjIqX+bxke/ZJhE5cfd5UPkRzqIAJQt9uXkQJjqE8LBOMbKv7f8HCsZltXlg==}
 
   '@tanstack/query-persist-client-core@5.100.9':
     resolution: {integrity: sha512-sCPZZp3D9sOeqcA4SDxjUIm4wVq8PwHebH4ouFZetwjT4xvGjT/cLBQ4Sst+BFcFuk745pCPkf3T4MFliLHECQ==}
@@ -3577,8 +3580,8 @@ packages:
     peerDependencies:
       vue: '>=3.0.0'
 
-  '@tanstack/vue-query@5.97.0':
-    resolution: {integrity: sha512-lziGgJTrEVXX98nQ9D+MfvjHgD92uHPrVXjB1GSfK+mq0rTr/I0ovwraGqaNTfwORmzHtQOObksPVf2NH17djw==}
+  '@tanstack/vue-query@5.100.10':
+    resolution: {integrity: sha512-S1aOmIPQNd5axR2Sw7H8d96EybY3kEZ396KA90e0SGLDYSfd2QgWi7+ItYXRGIDiSjOjlPUnthKDP0mDDBV8Kw==}
     peerDependencies:
       '@vue/composition-api': ^1.1.2
       vue: ^2.6.0 || ^3.3.0
@@ -12095,7 +12098,7 @@ snapshots:
       '@nuxt/devtools-kit': 3.2.4(magicast@0.5.2)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))
       '@nuxt/devtools-ui-kit': 3.2.4(f4f55fe35d2fcc7e46ae54907ea95965)
       '@nuxt/kit': 4.4.2(magicast@0.5.2)
-      '@tanstack/vue-query': 5.97.0(vue@3.5.33(typescript@6.0.3))
+      '@tanstack/vue-query': 5.100.10(vue@3.5.33(typescript@6.0.3))
       defu: 6.1.7
       pkg-types: 2.3.0
       sirv: 3.0.2
@@ -12745,9 +12748,9 @@ snapshots:
     dependencies:
       remove-accents: 0.5.0
 
-  '@tanstack/query-core@5.100.9': {}
+  '@tanstack/query-core@5.100.10': {}
 
-  '@tanstack/query-core@5.97.0': {}
+  '@tanstack/query-core@5.100.9': {}
 
   '@tanstack/query-persist-client-core@5.100.9':
     dependencies:
@@ -12767,10 +12770,10 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
 
-  '@tanstack/vue-query@5.97.0(vue@3.5.33(typescript@6.0.3))':
+  '@tanstack/vue-query@5.100.10(vue@3.5.33(typescript@6.0.3))':
     dependencies:
       '@tanstack/match-sorter-utils': 8.19.4
-      '@tanstack/query-core': 5.97.0
+      '@tanstack/query-core': 5.100.10
       '@vue/devtools-api': 6.6.4
       vue: 3.5.33(typescript@6.0.3)
       vue-demi: 0.14.10(vue@3.5.33(typescript@6.0.3))
