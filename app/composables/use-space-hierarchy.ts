@@ -66,7 +66,7 @@ export function useSpaceHierarchy(spaceId: MaybeRefOrGetter<string | undefined>,
       return map
 
     for (const room of rooms.value.values()) {
-      if (!isOrphanedRoom(room.room_type) && room.room_id === spaceIdRef.value)
+      if (!isOrphanedRoom(room.room_type))
         continue
 
       map.set(room.room_id, room)
