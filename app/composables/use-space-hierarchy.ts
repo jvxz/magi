@@ -37,7 +37,7 @@ export function useSpaceHierarchy(spaceId: MaybeRefOrGetter<string | undefined>,
   const joinedRooms = useJoinedRooms()
   const spaceIdRef = refDefault(toRef(spaceId), '')
   const enabledRef = toRef(enabled)
-  const queryKey = computed(() => ['spaceSubspaces', spaceIdRef.value, enabledRef.value] as const)
+  const queryKey = computed(() => ['spaceSubspaces', spaceIdRef.value] as const)
 
   const q = useQuery({
     enabled: enabledRef,
