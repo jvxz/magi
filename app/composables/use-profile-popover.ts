@@ -1,3 +1,4 @@
+import type { Room } from 'matrix-js-sdk'
 import type { PopoverContentProps } from 'reka-ui'
 
 export const useProfilePopover = createSharedComposable(() => {
@@ -5,6 +6,7 @@ export const useProfilePopover = createSharedComposable(() => {
   const referenceElement = shallowRef<MaybeElement | VirtualElement>()
   const userIdRef = shallowRef<string>()
   const contentProps = shallowRef<PopoverContentProps>()
+  const manualRoom = shallowRef<Room>()
 
   let currentRoot: MaybeElement
   whenever(() => !open.value, () => {
@@ -13,19 +15,23 @@ export const useProfilePopover = createSharedComposable(() => {
     referenceElement.value = undefined
     contentProps.value = undefined
     userIdRef.value = undefined
+    manualRoom.value = undefined
   })
 
   function openProfilePopover(
     trigger: HTMLElement,
     userId: string,
     nextContentProps?: PopoverContentProps,
-    options: { freezeReference?: boolean } = {},
+    options: { freezeReference?: boolean, manualRoom?: Room | undefined } = {},
   ) {
     const eventRoot = trigger.closest('[data-event-id]') as HTMLElement | null
     const root = eventRoot ?? trigger
 
     if (currentRoot && currentRoot !== root)
       currentRoot.removeAttribute('data-popover-open')
+
+    if (options.manualRoom)
+      manualRoom.value = options.manualRoom
 
     root.setAttribute('data-popover-open', '')
     currentRoot = root
@@ -43,6 +49,7 @@ export const useProfilePopover = createSharedComposable(() => {
     contentProps,
     open,
     openProfilePopover,
+    manualRoom,
     referenceElement,
     user,
   }
