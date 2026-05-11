@@ -1,6 +1,6 @@
 // @unocss-include
 const interactiveStyles = {
-  base: 'font-medium squish cursor-pointer focus-visible:border-primary/50 select-none focus-visible:ring-ring/40 focus-visible:ring-[3px] active:ring-ring/60 aria-invalid:ring-danger/20 aria-invalid:border-danger dark:aria-invalid:ring-danger/40 shrink-0 gap-2 rounded text-base whitespace-nowrap font-medium outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 transition-transform duration-75',
+  base: 'font-medium cursor-pointer focus-visible:border-primary/50 select-none focus-visible:ring-ring/40 focus-visible:ring-[3px] active:ring-ring/60 aria-invalid:ring-danger/20 aria-invalid:border-danger dark:aria-invalid:ring-danger/40 shrink-0 gap-2 rounded text-base whitespace-nowrap font-medium outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4 transition-transform duration-75',
   size: {
     default: 'h-8 px-2.5 py-0.75 text-sm',
     icon: 'aspect-square size-8',
