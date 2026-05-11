@@ -1,21 +1,22 @@
 <script lang="ts" setup>
 import { KnownMembership } from 'matrix-js-sdk'
 
-const { contentProps, open, referenceElement, user } = useProfilePopover()
+const { contentProps, open, referenceElement, user, manualRoom } = useProfilePopover()
 
 const { self } = useSelf()
 
 const currentRoom = useCurrentRoom()
-const roomId = computed(() => currentRoom.value?.roomId)
+const room = computed(() => manualRoom.value ?? currentRoom.value)
+
 const userId = computed(() => user.value?.userId)
 
-const roomMember = useRoomMember(roomId, userId)
+const roomMember = useRoomMember(room, userId)
 const displayName = computed(() => roomMember.value ? resolveUserName(roomMember.value) : getDisplayNameFallback(user.value?.userId))
 const avatarUrl = computed(() => resolveAvatarUrl(roomMember.value?.getMxcAvatarUrl(), { size: 'small' }))
 const parsedUserId = computed(() => parseUserId(roomMember.value?.userId))
 
-const membership = useRoomMembership(roomId, userId)
-const powerLevel = useRoomMemberPowerLevel(roomId, userId)
+const membership = useRoomMembership(room, userId)
+const powerLevel = useRoomMemberPowerLevel(room, userId)
 const powerLevelName = computed(() => upperFirst(getPowerLevelName(powerLevel.value)))
 
 const isSelf = computed(() => self.value?.userId === user.value?.userId)
