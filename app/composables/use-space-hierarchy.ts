@@ -37,7 +37,7 @@ export function useSpaceHierarchy(spaceId: MaybeRefOrGetter<string | undefined>,
   const joinedRooms = useJoinedRooms()
   const spaceIdRef = refDefault(toRef(spaceId), '')
   const enabledRef = toRef(enabled)
-  const queryKey = computed(() => ['spaceSubspaces', spaceIdRef.value, enabledRef.value] as const)
+  const queryKey = computed(() => ['spaceSubspaces', spaceIdRef.value] as const)
 
   const q = useQuery({
     enabled: enabledRef,
@@ -66,7 +66,7 @@ export function useSpaceHierarchy(spaceId: MaybeRefOrGetter<string | undefined>,
       return map
 
     for (const room of rooms.value.values()) {
-      if (!isOrphanedRoom(room.room_type) && room.room_id === spaceIdRef.value)
+      if (!isOrphanedRoom(room.room_type))
         continue
 
       map.set(room.room_id, room)
