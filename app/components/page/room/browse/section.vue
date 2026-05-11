@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+defineOptions({ inheritAttrs: false })
+
 const props = defineProps<{
   defaultOpen?: boolean
   title: string
