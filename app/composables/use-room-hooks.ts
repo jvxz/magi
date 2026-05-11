@@ -16,7 +16,7 @@ type Params = Partial<{
   onSummary: (summary: IRoomSummary) => void
 }>
 
-export function useRoomEventHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>, params?: Params) {
+export function useRoomHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>, params?: Params) {
   const roomInputRef = toRef(roomInput)
   const room = useRoom(roomInputRef)
 

@@ -3,7 +3,7 @@ import { Direction } from 'matrix-js-sdk'
 
 export const BATCH_SIZE = 80
 
-type Hooks = Prettify<Pick<Required<NonNullable<Parameters<typeof useRoomEventHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>
+type Hooks = Prettify<Pick<Required<NonNullable<Parameters<typeof useRoomHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>
 
 const roomEventsFullyLoadedSet = reactive(new Set<string>())
 
@@ -74,7 +74,7 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
     mutationKey: ['scrollEvents', () => room.value?.roomId],
   })
 
-  useRoomEventHooks(() => room.value.roomId, {
+  useRoomHooks(() => room.value.roomId, {
     onTimeline: (...params) => {
       if (!isScrolling.value) {
         sync()

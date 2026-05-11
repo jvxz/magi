@@ -5,7 +5,7 @@ export function useRoomMembership(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId 
   const user = useUser(maybeUserOrId)
   const membership = shallowRef<KnownMembership | undefined>(getMembership())
 
-  useRoomEventHooks(maybeRoomOrId, {
+  useRoomHooks(maybeRoomOrId, {
     onMembers: (_event, _state, member) => {
       if (member.userId === user.value?.userId)
         membership.value = member.membership as KnownMembership

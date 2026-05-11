@@ -30,7 +30,7 @@ function acquire(roomId: string, userId: string) {
       const rawMember = room.value?.getMember(userId)
       const member = shallowRef<Value>(rawMember ? markRaw(rawMember) : undefined)
 
-      useRoomEventHooks(room, {
+      useRoomHooks(room, {
         onMembers: handleUpdate,
         onMemberUpdate: handleUpdate,
       })

@@ -36,7 +36,7 @@ export function useRoomMembers(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | u
     isLoaded.value = true
   }, { immediate: true })
 
-  useRoomEventHooks(room, {
+  useRoomHooks(room, {
     onMemberUpdate: (event, roomState) => {
       if (!room.value || room.value.roomId !== roomState.roomId || !isLoaded.value)
         return
