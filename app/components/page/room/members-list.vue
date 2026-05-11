@@ -20,7 +20,6 @@ watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
       :item-size="40"
       :data="membersGrouped.members"
       class="px-2 py-1"
-      @vue:mounted="console.log"
     >
       <PageRoomMembersListHeader
         v-if="'type' in item && item.type === 'header'"
