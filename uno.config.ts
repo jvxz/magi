@@ -107,17 +107,18 @@ export default defineConfig({
     },
     font: {
       mono: 'Paper Mono',
-      sans: 'Inter',
+      // sans: 'Inter',
     },
     fontWeight: {
-      medium: '550',
-      normal: '425',
+      // medium: '550',
+      // normal: '425',
     },
     radius: {
       DEFAULT: 'var(--radius)',
     },
     spacing: {
       'app-header-height': '2rem',
+      'generic-page-max-width': '72rem',
       'header-height': '49px',
       'page-y-padding': '6rem',
       'user-card-height': '3.625rem',
