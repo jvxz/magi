@@ -1,7 +1,4 @@
 import { describe, expect, it, vi } from 'vitest'
-import { LocalStorage } from '../mocks/localstorage.mock'
-
-vi.stubGlobal('localStorage', new LocalStorage(vi))
 
 describe('page meta', () => {
   const routes = {

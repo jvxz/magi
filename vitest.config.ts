@@ -31,6 +31,7 @@ export default defineConfig({
           },
           include: ['test/nuxt/**/*.{test,spec}.ts'],
           name: 'nuxt',
+          setupFiles: ['vitest-localstorage-mock'],
         },
       }),
     ],
