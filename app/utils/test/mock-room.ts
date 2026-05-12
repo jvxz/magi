@@ -30,6 +30,8 @@ export function createMockRoom(eventCount: number = 250, id: string): Room {
 }
 
 function createMockEvents(eventCount: number, roomId: string): MatrixEvent[] {
+  const startTs = Date.UTC(2026, 0, 1)
+
   return Array.from({ length: eventCount }, (_, i) => {
     const id = i === 0
       ? 'oldest-event'
@@ -52,7 +54,7 @@ function createMockEvents(eventCount: number, roomId: string): MatrixEvent[] {
       getId: () => id,
       getRoomId: () => roomId,
       getSender: () => '@test:localhost',
-      getTs: () => Math.random(),
+      getTs: () => startTs + i * 1000,
       getType: () => 'm.room.message',
       isBeingDecrypted: () => false,
       isDecryptionFailure: () => false,

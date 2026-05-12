@@ -25,11 +25,18 @@ function acquire(roomId: string) {
       const { client } = useMatrixClient()
       const { onRoom } = useMatrixHooks()
 
-      const rawRoom = client.value.getRoom(key)
+      const getRoom = () => {
+        if (!isTestMode())
+          return client.value.getRoom(key)
+
+        const mockEventCount = /^\d+$/.test(key) ? Number(key) : 500
+        return createMockRoom(mockEventCount, key)
+      }
+      const rawRoom = getRoom()
       // markRaw is needed because the room mutates itself under the hood, breaking vue's proxy system
       const room = shallowRef<Room | undefined>(rawRoom ? markRaw(rawRoom) : undefined)
       const refresh = debounce(() => {
-        const r = isTestMode() ? createMockRoom(500, key) : client.value.getRoom(key)
+        const r = getRoom()
 
         room.value = r ? markRaw(r) : undefined
         triggerRef(room)
