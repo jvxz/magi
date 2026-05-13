@@ -8,12 +8,16 @@ export const buttonVariants = tv({
     variant: 'soft',
   },
   extend: interactiveBase,
+  compoundVariants: [{
+    variant: 'link',
+    class: 'h-fit py-0'
+  }]
 })
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>
 
 export const badgeVariants = tv({
-  base: 'inline-flex w-fit shrink-0 cursor-default items-center justify-center tracking-wide select-none',
+  base: 'inline-flex  shrink-0 cursor-default items-center justify-center tracking-wide select-none',
   defaultVariants: {
     size: 'default',
     variant: 'default',
@@ -21,12 +25,14 @@ export const badgeVariants = tv({
   extend: interactiveBase,
   variants: {
     size: {
-      default: 'px-2 py-0.5 text-xs',
-      lg: 'px-2.5 py-1 text-sm',
-      sm: 'px-1.5 py-px text-2xs',
+      default: 'px-2 h-fit py-0.5 text-xs',
+      lg: 'px-2.5 py-1 h-fit text-sm',
+      sm: 'px-1.5 py-px h-fit text-2xs ',
     },
   },
 })
+
+export type BadgeVariants = VariantProps<typeof badgeVariants>
 
 export const avatarVariants = tv({
   base: 'inline-flex shrink-0 items-center justify-center overflow-hidden bg-secondary font-normal text-foreground select-none',
