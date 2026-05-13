@@ -3,15 +3,15 @@ import type { VariantProps } from 'tailwind-variants'
 
 export const buttonVariants = tv({
   base: 'relative inline-flex items-center justify-center',
+  compoundVariants: [{
+    class: 'h-fit py-0',
+    variant: 'link',
+  }],
   defaultVariants: {
     size: 'default',
     variant: 'soft',
   },
   extend: interactiveBase,
-  compoundVariants: [{
-    variant: 'link',
-    class: 'h-fit py-0'
-  }]
 })
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>
