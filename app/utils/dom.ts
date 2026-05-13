@@ -33,7 +33,7 @@ export function getIntersectingNodes(
     overrides?.containerScrollTop === undefined &&
     overrides?.containerClientHeight === undefined
   )
-    return Array.from(el.children).filter(c => !c.hasAttribute('data-ignore')) as HTMLElement[]
+    return [...el.children].filter(c => !c.hasAttribute('data-ignore')) as HTMLElement[]
 
   const containerScrollTop = overrides?.containerScrollTop ?? el.scrollTop
   const containerClientHeight = overrides?.containerClientHeight ?? el.clientHeight

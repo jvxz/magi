@@ -288,7 +288,7 @@ export function useEventPagination(opts: Opts) {
 
       const sliceIndices = getSentinelIndices(false)
 
-      const arr = Array.from(itemsContainer.children) as HTMLElement[]
+      const arr = [...itemsContainer.children] as HTMLElement[]
 
       nodes =
         dir === Direction.Backward

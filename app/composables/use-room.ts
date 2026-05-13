@@ -14,6 +14,8 @@ const cache = new Map<string, Entry>()
 
 const createKey = (roomId: string) => roomId
 
+const DIGIT_RE = /^\d+$/
+
 function acquire(roomId: string) {
   const key = createKey(roomId)
 
@@ -28,7 +30,7 @@ function acquire(roomId: string) {
       const getRoom = () => {
         if (!isTestMode()) return client.value.getRoom(key)
 
-        const mockEventCount = /^\d+$/.test(key) ? Number(key) : 500
+        const mockEventCount = DIGIT_RE.test(key) ? Number(key) : 500
         return createMockRoom(mockEventCount, key)
       }
       const rawRoom = getRoom()

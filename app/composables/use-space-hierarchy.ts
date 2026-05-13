@@ -81,7 +81,7 @@ export function useSpaceHierarchy(
     return map
   })
   const subspaceList = computed(() =>
-    Array.from(rooms.value.values()).filter(r => r.room_id !== spaceIdRef.value && r.room_type === RoomType.Space),
+    [...rooms.value.values()].filter(r => r.room_id !== spaceIdRef.value && r.room_type === RoomType.Space),
   )
 
   const subspacesQueries = useQueries({
