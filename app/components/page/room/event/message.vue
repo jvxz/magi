@@ -102,7 +102,9 @@ const contentProps: PopoverContentProps = {
               :user="eventUser"
               as-child
             >
-              <span :class="cn(interactiveStyles.base, interactiveStyles.variant.link, 'text-sm')">{{ eventProfile?.displayname }}</span>
+              <UButton variant="link">
+                {{ eventProfile?.displayname }}
+              </UButton>
             </UProfilePopoverTrigger>
             <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
           </template>
