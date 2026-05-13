@@ -11,19 +11,12 @@ export default withNuxt(
       'node/prefer-global/buffer': 'off',
       'node/prefer-global/process': 'off',
       'perfectionist/sort-objects': 'warn',
+      'vue/html-closing-bracket-newline': 'off',
+      'vue/html-indent': 'off',
       'vue/html-self-closing': 'off',
-      'vue/max-attributes-per-line': [
-        'warn',
-        {
-          multiline: {
-            max: 1,
-          },
-          singleline: {
-            max: 2,
-          },
-        },
-      ],
+      'vue/multiline-html-element-content-newline': 'off',
       'vue/no-multiple-template-root': 'off',
+      'vue/singleline-html-element-content-newline': 'off',
       'vue/sort-keys': 'warn',
     },
     stylistic: false,

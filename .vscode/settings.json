@@ -3,9 +3,6 @@
   "biome.enabled": false,
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
-  "[vue]": {
-    "editor.formatOnSave": false
-  },
   "[typescript]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "oxc.oxc-vscode"
