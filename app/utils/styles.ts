@@ -36,12 +36,19 @@ export const staticBase = tv({
 
 export const popoverContentBase = tv({
   base: 'duration-75 data-[state=open]:animate-in shadow-lg data-[state=open]:fade-in-0 data-[state=closed]:animate-out zoom-in-95 z-50 min-w-52 overflow-hidden p-1',
+  defaultVariants: {
+    variant: 'default',
+  },
   extend: staticBase,
 })
 
 export const popoverItemBase = tv({
   base: 'focus:bg-muted focus:text-accent-foreground text-foreground font-normal duration-0 [&_svg:not([class*=\'size-\'])]:size-12 data-[variant=danger]:text-danger-foreground data-[variant=danger]:focus:bg-danger/10 data-[variant=danger]:focus:text-danger-foreground data-[variant=danger]:*:[svg]:!text-danger-foreground dark:data-[variant=danger]:focus:bg-danger/40 relative flex cursor-default items-center p-1 px-2 text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
-  extend: interactiveBase({ size: 'default', variant: 'ghost' }),
+  defaultVariants: {
+    size: 'default',
+    variant: 'ghost',
+  },
+  extend: interactiveBase,
 })
 
 export const overlayStyles

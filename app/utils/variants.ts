@@ -53,7 +53,7 @@ export const alertVariants = tv({
   extend: staticBase,
   variants: {
     variant: {
-      danger: staticBase({ class: 'bg-danger/40 text-danger-foreground' }),
+      danger: 'bg-danger/40 text-danger-foreground',
     },
   },
 })
@@ -74,7 +74,7 @@ export const toggleVariants = tv({
         variant: 'ghost',
       }),
       ghost: interactiveBase({
-        class: 'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:bg-muted data-[state=on]:text-foreground',
+        class: 'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:(bg-muted hover:bg-muted) data-[state=on]:text-foreground',
         variant: 'ghost',
       }),
       outline: interactiveBase({
