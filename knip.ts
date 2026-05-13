@@ -8,6 +8,7 @@ const config: KnipConfig = {
     'vue',
     '@vueuse/core',
     '@regle/rules',
+    'temporal-polyfill',
     'vitest-environment-nuxt',
     'workbox-core',
     'workbox-expiration',
