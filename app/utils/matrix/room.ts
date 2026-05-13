@@ -1,9 +1,9 @@
 import type { MatrixClient, MatrixEvent } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 import type { MaybeUserOrId } from './types'
+import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 import { $Error } from '#shared/utils/$error'
 import { objectEntries } from '#shared/utils/object'
-import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 import { mxcToHttps } from './mxc-to-https'
 import { resolveUserId } from './user'
 
