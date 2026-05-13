@@ -21,7 +21,11 @@ Use **pnpm** (see [`package.json`](package.json)).
 | `pnpm build:test`         | Build with `NITRO_PRESET=node-server` and `NODE_ENV=test` (used before e2e)                                                      |
 | `pnpm generate`           | Static generation (`nuxt generate`)                                                                                              |
 | `pnpm preview`            | `pnpm build` then `nuxt preview`                                                                                                 |
-| `pnpm lint`               | ESLint (`AGENTS.md` ignored via `--ignore-pattern`)                                                                              |
+| `pnpm oxlint`             | Oxlint on `app`, `server`, `shared`                                                                                              |
+| `pnpm lint`               | `pnpm oxlint` then ESLint (`AGENTS.md` ignored via `--ignore-pattern`)                                                           |
+| `pnpm lint:fix`           | Oxlint `--fix` plus ESLint `--fix` (same scope as `pnpm lint`)                                                                   |
+| `pnpm fmt`                | Apply **oxfmt** to the repo                                                                                                      |
+| `pnpm fmt:check`          | Verify formatting (**oxfmt** `--check`), used in CI                                                                              |
 | `pnpm postinstall`        | `nuxt prepare`                                                                                                                   |
 | `pnpm test`               | Vitest (all projects in [`vitest.config.ts`](vitest.config.ts))                                                                  |
 | `pnpm test:unit`          | Vitest — `unit` project (`test/unit/*.{test,spec}.ts`)                                                                           |
@@ -36,7 +40,7 @@ Use **pnpm** (see [`package.json`](package.json)).
 
 **Do not** start the dev server (`pnpm dev`, etc.) unless the user explicitly asks.
 
-CI (`.github/workflows/ci.yml`) runs: `pnpm nuxt prepare`, `pnpm test:typecheck`, `pnpm lint`, `pnpm test`, then Playwright install + `pnpm test:e2e` (Node 25, ubicloud-standard-4).
+CI (`.github/workflows/ci.yml`) runs: `pnpm nuxt prepare`, `pnpm test:typecheck`, `pnpm lint`, `pnpm fmt:check`, `pnpm test`, then Playwright install + `pnpm test:e2e` (Node 25, ubicloud-standard-4).
 
 ---
 
