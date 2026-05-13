@@ -105,6 +105,9 @@ importers:
       '@antfu/eslint-config':
         specifier: ^8.3.0
         version: 8.3.0(@typescript-eslint/rule-tester@8.58.1(eslint@10.3.0(jiti@2.6.1))(typescript@6.0.3))(@typescript-eslint/typescript-estree@8.59.3(typescript@6.0.3))(@typescript-eslint/utils@8.59.3(eslint@10.3.0(jiti@2.6.1))(typescript@6.0.3))(@unocss/eslint-plugin@66.6.8(eslint@10.3.0(jiti@2.6.1))(typescript@6.0.3))(@vue/compiler-sfc@3.5.33)(eslint-plugin-format@2.0.1(eslint@10.3.0(jiti@2.6.1)))(eslint@10.3.0(jiti@2.6.1))(oxlint@1.64.0)(typescript@6.0.3)(vitest@4.1.6)
+      '@e18e/eslint-plugin':
+        specifier: ^0.5.0
+        version: 0.5.0(eslint@10.3.0(jiti@2.6.1))(oxlint@1.64.0)
       '@faker-js/faker':
         specifier: ^10.4.0
         version: 10.4.0
@@ -863,6 +866,17 @@ packages:
     peerDependencies:
       eslint: ^9.0.0 || ^10.0.0
       oxlint: ^1.61.0
+    peerDependenciesMeta:
+      eslint:
+        optional: true
+      oxlint:
+        optional: true
+
+  '@e18e/eslint-plugin@0.5.0':
+    resolution: {integrity: sha512-UtClP/mXtMPAxSe5c+OaNQ2nEMCNCdNAkAoKfVCT9jKeC5Y4O6cV/jjXxN7/bRVC75XmNjbVz7YAQtHvU9McyQ==}
+    peerDependencies:
+      eslint: ^9.0.0 || ^10.0.0
+      oxlint: ^1.63.0
     peerDependenciesMeta:
       eslint:
         optional: true
@@ -5541,6 +5555,10 @@ packages:
     resolution: {integrity: sha512-i6UzDscO/XfAcNYD75CfICkmfLedpyPDdozrLMmQc5ORaQcdMoc21OnlEylMIqI7U8eniKrPMxxtj8k0vhmJhA==}
     engines: {node: '>=14'}
 
+  empathic@2.0.1:
+    resolution: {integrity: sha512-YGRs8knHhKHVShLkFET/rWAU8kmHbOV5LwN938RHI0pljAJ1Gf6SzXsSmRaEzcXTtOOmVqJ5+WtQPL5uigY50Q==}
+    engines: {node: '>=14'}
+
   encodeurl@2.0.0:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
     engines: {node: '>= 0.8'}
@@ -8178,6 +8196,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.8.0:
+    resolution: {integrity: sha512-AcM7dV/5ul4EekoQ29Agm5vri8JNqRyj39o0qpX6vDF2GZrtutZl5RwgD1XnZjiTAfncsJhMI48QQH3sN87YNA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   send@1.2.1:
     resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
@@ -10314,6 +10337,15 @@ snapshots:
       empathic: 2.0.0
       module-replacements: 3.0.0-beta.7
       semver: 7.7.4
+    optionalDependencies:
+      eslint: 10.3.0(jiti@2.6.1)
+      oxlint: 1.64.0
+
+  '@e18e/eslint-plugin@0.5.0(eslint@10.3.0(jiti@2.6.1))(oxlint@1.64.0)':
+    dependencies:
+      empathic: 2.0.1
+      module-replacements: 3.0.0-beta.7
+      semver: 7.8.0
     optionalDependencies:
       eslint: 10.3.0(jiti@2.6.1)
       oxlint: 1.64.0
@@ -14927,6 +14959,8 @@ snapshots:
 
   empathic@2.0.0: {}
 
+  empathic@2.0.1: {}
+
   encodeurl@2.0.0: {}
 
   enhanced-resolve@5.20.1:
@@ -18710,6 +18744,8 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.7.4: {}
+
+  semver@7.8.0: {}
 
   send@1.2.1:
     dependencies:
