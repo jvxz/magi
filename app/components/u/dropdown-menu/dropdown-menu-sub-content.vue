@@ -14,7 +14,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 <template>
   <DropdownMenuSubContent
     v-bind="forwarded"
-    :class="cn(popoverStyles.content, props.class)"
+    :class="cn(popoverContentBase(), props.class)"
   >
     <slot />
   </DropdownMenuSubContent>

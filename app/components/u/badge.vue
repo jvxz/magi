@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import type { VariantProps } from 'class-variance-authority'
+import type { PrimitiveProps } from 'reka-ui'
 
 defineProps<Props>()
 
-interface BadgeVariantProps extends VariantProps<typeof badgeVariants> {}
-
-interface Props {
-  size?: BadgeVariantProps['size']
-  variant?: BadgeVariantProps['variant']
+interface Props extends PrimitiveProps {
+  size?: BadgeVariants['size']
+  variant?: BadgeVariants['variant']
 }
 </script>
 
 <template>
-  <div :class="cn(badgeVariants({ size, variant }), $attrs.class ?? '')">
+  <Primitive :class="cn(badgeVariants({ size, variant }), $attrs.class)">
     <slot />
-  </div>
+  </Primitive>
 </template>

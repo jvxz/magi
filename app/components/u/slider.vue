@@ -27,8 +27,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       :key="key"
       :class="
         cn(
-          interactiveStyles.base,
-          interactiveStyles.variant.default,
+          interactiveBase({ variant: 'default' }),
           'block size-4.5 cursor-pointer rounded-full bg-primary glow-primary hover:bg-primary active:bg-primary',
         )"
     />

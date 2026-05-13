@@ -16,7 +16,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <DropdownMenuRadioItem
     v-bind="forwarded"
     :class="cn(
-      popoverStyles.item,
+      popoverItemBase(),
       props.class,
     )"
   >

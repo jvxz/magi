@@ -15,7 +15,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <DropdownMenuCheckboxItem
     v-bind="forwarded"
     :class=" cn(
-      popoverStyles.item,
+      popoverItemBase(),
       props.class,
     )"
   >

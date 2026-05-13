@@ -2,7 +2,6 @@
 import type { AutocompleteInputEmits, AutocompleteInputProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { AutocompleteInput, useForwardPropsEmits } from 'reka-ui'
-import { cn, interactiveStyles, staticStyles } from '#imports'
 
 defineOptions({
   inheritAttrs: false,
@@ -26,7 +25,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 <template>
   <div
     data-slot="autocomplete-input-wrapper"
-    :class="cn(staticStyles.base, interactiveStyles.size.default, 'flex items-center gap-2 px-0 w-full', props.class)"
+    :class="cn(staticBase(), interactiveBase({ size: 'default' }), 'flex items-center gap-2 px-0 w-full', props.class)"
   >
     <Icon
       v-if="props.showIcon"

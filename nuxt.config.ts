@@ -91,6 +91,8 @@ export default defineNuxtConfig({
     presets: [
       { ignore: ['isEqual'], package: 'es-toolkit' },
       { package: 'ufo' },
+      { package: 'tailwind-variants' },
+      { package: 'tailwind-merge' },
       {
         from: 'valibot',
         imports: [{ as: 'v', name: '*' }],

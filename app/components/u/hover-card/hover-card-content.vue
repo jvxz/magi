@@ -21,7 +21,7 @@ const forwardedProps = useForwardProps(delegatedProps)
       v-bind="forwardedProps"
       :class="
         cn(
-          popoverStyles.content,
+          popoverContentBase(),
           'w-64 p-4 text-sm',
           props.class,
         )

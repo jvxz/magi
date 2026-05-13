@@ -19,8 +19,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       <DialogContent
         :class="
           cn(
-            staticStyles.base,
-            staticStyles.variant.default,
+            staticBase({ variant: 'default' }),
             'fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-2 sm:max-w-xl',
             props.class,
           )
@@ -38,9 +37,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
         <DialogClose
           :class="cn(
-            interactiveStyles.base,
-            interactiveStyles.variant.ghost,
-            interactiveStyles.size.icon,
+            interactiveBase({ variant: 'ghost', size: 'icon' }),
             'absolute top-3 right-3 inline-flex size-6 items-center justify-center opacity-70',
           )"
         >

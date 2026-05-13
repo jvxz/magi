@@ -24,8 +24,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       v-bind="{ ...forwarded, ...$attrs }"
       id="tooltip-content"
       :class="cn(
-        staticStyles.base,
-        staticStyles.variant.default,
+        staticBase({ variant: 'default' }),
         'will-change-transform will-change-opacity z-50 p-0 bg-card-lighter px-3 py-1.5 text-sm text-balance font-medium',
         props.class,
       )"

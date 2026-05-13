@@ -18,8 +18,7 @@ const forwarded = useForwardProps(delegatedProps)
     :data-size="size"
     v-bind="forwarded"
     :class="cn(
-      interactiveStyles.base,
-      interactiveStyles.size.icon,
+      interactiveBase({ size: 'icon' }),
       props.class,
     )"
   >

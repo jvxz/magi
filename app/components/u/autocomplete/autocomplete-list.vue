@@ -23,7 +23,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <AutocompleteContent
     data-slot="autocomplete-list"
     v-bind="{ ...$attrs, ...forwarded }"
-    :class="cn(popoverStyles.content, 'absolute top-(--reka-autocomplete-trigger-height) mt-1 w-full overflow-hidden', props.class)"
+    :class="cn(popoverContentBase(), 'absolute top-(--reka-autocomplete-trigger-height) mt-1 w-full overflow-hidden', props.class)"
   >
     <slot />
   </AutocompleteContent>
@@ -31,7 +31,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     <AutocompleteContent
       data-slot="autocomplete-list"
       v-bind="{ ...$attrs, ...forwarded }"
-      :class="cn(popoverStyles.content, 'absolute w-full overflow-hidden top-0', props.class)"
+      :class="cn(popoverContentBase(), 'absolute w-full overflow-hidden top-0', props.class)"
     >
       <slot />
     </AutocompleteContent>

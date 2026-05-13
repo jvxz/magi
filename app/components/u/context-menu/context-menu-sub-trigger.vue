@@ -14,7 +14,7 @@ const forwardedProps = useForwardProps(delegatedProps)
   <ContextMenuSubTrigger
     v-bind="forwardedProps"
     :class="cn(
-      popoverStyles.item,
+      popoverItemBase(),
       props.class,
     )"
   >

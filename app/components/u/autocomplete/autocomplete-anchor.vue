@@ -15,7 +15,7 @@ const forwarded = useForwardProps(delegatedProps)
     data-slot="autocomplete-anchor"
     v-bind="forwarded"
     :class="cn(
-      staticStyles.base, interactiveStyles.size.default, staticStyles.variant.default,
+      staticBase({ variant: 'default' }), interactiveBase({ size: 'default' }),
       'flex items-center justify-between pr-0 data-placeholder:text-muted-foreground',
       props.class,
     )"

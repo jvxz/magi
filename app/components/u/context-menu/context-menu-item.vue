@@ -16,7 +16,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <ContextMenuItem
     v-bind="forwarded"
     :class="cn(
-      popoverStyles.item,
+      popoverItemBase(),
       'has-[svg]:px-1.5 [&_.iconify]:!size-4 [&_svg]:!text-foreground',
     )"
   >
