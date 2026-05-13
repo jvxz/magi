@@ -5,3 +5,6 @@ allowBuilds:
   unrs-resolver: true
   vue-demi: true
 shamefullyHoist: true
+shellEmulator: true
+
+trustPolicy: no-downgrade

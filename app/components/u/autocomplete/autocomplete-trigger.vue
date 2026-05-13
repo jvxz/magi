@@ -2,6 +2,7 @@
 import type { ComboboxTriggerProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { AutocompleteTrigger, useForwardProps } from 'reka-ui'
+import { cn, interactiveStyles } from '#imports'
 
 const props = withDefaults(
   defineProps<ComboboxTriggerProps & { class?: HTMLAttributes['class'], size?: 'sm' | 'default' }>(),

@@ -47,9 +47,9 @@ export const useProfilePopover = createSharedComposable(() => {
 
   return {
     contentProps,
+    manualRoom,
     open,
     openProfilePopover,
-    manualRoom,
     referenceElement,
     user,
   }

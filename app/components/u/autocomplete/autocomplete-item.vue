@@ -2,6 +2,7 @@
 import type { ComboboxItemEmits, ComboboxItemProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { AutocompleteItem, useForwardPropsEmits } from 'reka-ui'
+import { cn, popoverStyles } from '#imports'
 
 const props = defineProps<ComboboxItemProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<ComboboxItemEmits>()
