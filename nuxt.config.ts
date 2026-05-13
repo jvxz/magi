@@ -217,7 +217,6 @@ export default defineNuxtConfig({
       ],
       include: [
         'matrix-js-sdk',
-        'clsx',
         'tailwind-merge',
         'class-variance-authority',
         '@tanstack/vue-query',
@@ -231,6 +230,7 @@ export default defineNuxtConfig({
         'valibot',
         '@tanstack/query-persist-client-core',
         'temporal-polyfill',
+        'tailwind-variants',
       ],
     },
   },
