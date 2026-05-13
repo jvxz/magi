@@ -49,7 +49,7 @@ const contentProps: PopoverContentProps = {
     :event-type="props.event.getType()"
     :grouped
     side="right"
-    class="py-0.5"
+    class="py-0.5 w-full"
   >
     <PageRoomEventMessageRoot class="flex-col gap-px">
       <div v-if="isReplyEvent" class="text-sm flex gap-1.5 items-center relative">
@@ -87,25 +87,30 @@ const contentProps: PopoverContentProps = {
       </div>
 
       <div class="flex gap-4">
-        <UProfilePopoverTrigger
-          :content-props
-          :user="eventUser"
-          as-child
-        >
-          <PageRoomEventMessageAvatar :user="eventUser ?? undefined" :ghost="grouped" />
-        </UProfilePopoverTrigger>
+        <PageRoomEventMessageMemberContextMenu as-child>
+          <UProfilePopoverTrigger
+            :content-props
+            :user="eventUser"
+            as-child
+          >
+            <PageRoomEventMessageAvatar :user="eventUser ?? undefined" :ghost="grouped" />
+          </UProfilePopoverTrigger>
+        </PageRoomEventMessageMemberContextMenu>
 
         <PageRoomEventMessageContent>
           <template v-if="!grouped && isDefined(event.getTs())" #header>
-            <UProfilePopoverTrigger
-              :content-props
-              :user="eventUser"
-              as-child
-            >
-              <UButton variant="link">
-                {{ eventProfile?.displayname }}
-              </UButton>
-            </UProfilePopoverTrigger>
+            <PageRoomEventMessageMemberContextMenu as-child>
+              <UProfilePopoverTrigger
+                :content-props
+                :user="eventUser"
+                as-child
+              >
+                <UButton variant="link">
+                  {{ eventProfile?.displayname }}
+                </UButton>
+              </UProfilePopoverTrigger>
+            </PageRoomEventMessageMemberContextMenu>
+
             <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
           </template>
 
@@ -118,6 +123,10 @@ const contentProps: PopoverContentProps = {
             Decrypting message...
           </p>
         </PageRoomEventMessageContent>
+
+        <UContextMenuContent>
+          <UContextMenuItem> Edit </UContextMenuItem>
+        </UContextMenuContent>
       </div>
     </PageRoomEventMessageRoot>
   </PageRoomEvent>
