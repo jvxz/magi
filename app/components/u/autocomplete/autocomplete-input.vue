@@ -2,7 +2,6 @@
 import type { AutocompleteInputEmits, AutocompleteInputProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { AutocompleteInput, useForwardPropsEmits } from 'reka-ui'
-import { cn } from '#imports'
 
 defineOptions({
   inheritAttrs: false,
