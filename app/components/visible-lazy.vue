@@ -33,7 +33,11 @@ function onObserve(entry: IntersectionObserverEntry | undefined) {
 </script>
 
 <template>
-  <div data-slot="lazy" ref="el" :style="{ minHeight: visible ? undefined : `${height}px` }">
+  <div
+    ref="el"
+    data-slot="lazy"
+    :style="{ minHeight: visible ? undefined : `${height}px` }"
+  >
     <slot v-if="visible" />
   </div>
 </template>

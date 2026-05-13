@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<ToggleProps & {
 }>(), {
   disabled: false,
   size: 'default',
-  variant: 'default',
+  variant: 'ghost',
 })
 
 const emits = defineEmits<ToggleEmits>()

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
+import type { VariantProps } from 'tailwind-variants'
 
 const props = withDefaults(defineProps<PrimitiveProps & {
   class?: string
-  variant?: keyof typeof staticStyles.variant
+  variant?: VariantProps<typeof staticBase>['variant']
 }>(), {
   variant: 'default',
 })
@@ -14,8 +15,7 @@ const props = withDefaults(defineProps<PrimitiveProps & {
     v-bind="$props"
     data-slot="card"
     :class="cn(
-      staticStyles.base,
-      staticStyles.variant[variant],
+      staticBase({ variant }),
       'flex flex-col gap-5 shadow-lg',
       props.class,
     )"

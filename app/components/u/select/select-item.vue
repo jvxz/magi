@@ -15,7 +15,7 @@ const forwardedProps = useForwardProps(delegatedProps)
     data-slot="select-item"
     v-bind="forwardedProps"
     :class="cn(
-      popoverStyles.item,
+      popoverItemBase(),
       'relative flex w-full cursor-default items-center gap-2 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2',
       props.class,
     )"

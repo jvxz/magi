@@ -9,8 +9,7 @@ const props = defineProps<{
     data-slot="button-card"
     :class="cn(
       buttonVariants({ variant: 'soft' }),
-      staticStyles.base,
-      staticStyles.variant.default,
+      staticBase({ variant: 'default' }),
       'w-full',
       props.class,
     )"

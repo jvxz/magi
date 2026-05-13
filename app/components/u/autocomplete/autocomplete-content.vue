@@ -26,7 +26,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       data-slot="autocomplete-content"
       v-bind="{ ...$attrs, ...forwarded }"
       :class="cn(
-        popoverStyles.content, 'z-10 w-[var(--reka-combobox-trigger-width)] overflow-hidden will-change-[opacity,transform] data-[state=closed]:animate-none data-[state=open]:animate-none',
+        popoverContentBase(), 'z-10 w-[var(--reka-combobox-trigger-width)] overflow-hidden will-change-[opacity,transform] data-[state=closed]:animate-none data-[state=open]:animate-none',
         props.class,
       )"
     >

@@ -4,6 +4,10 @@ const { open } = useProfilePopover()
 
 <template>
   <PopoverRoot v-model:open="open" modal>
+    <VisuallyHidden>
+      <PopoverAnchor />
+    </VisuallyHidden>
+
     <slot />
   </PopoverRoot>
 </template>

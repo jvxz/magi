@@ -17,7 +17,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     v-bind="forwarded"
     :class="
       cn(
-        popoverStyles.content,
+        popoverContentBase(),
         props.class,
       )
     "

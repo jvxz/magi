@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { KnownMembership } from 'matrix-js-sdk'
 
-const { contentProps, open, referenceElement, user, manualRoom } = useProfilePopover()
+const { contentProps, manualRoom, open, referenceElement, user } = useProfilePopover()
 
 const { self } = useSelf()
 

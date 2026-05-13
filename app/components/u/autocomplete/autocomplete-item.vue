@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ComboboxItemEmits, ComboboxItemProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { cn, popoverStyles } from '#imports'
 import { AutocompleteItem, useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<ComboboxItemProps & { class?: HTMLAttributes['class'] }>()
@@ -17,7 +16,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     data-slot="autocomplete-item"
     v-bind="forwarded"
     :class="cn(
-      popoverStyles.item,
+      popoverItemBase(),
       'w-full gap-2 data-[highlighted]:bg-muted! data-[highlighted]:text-accent-foreground!',
       props.class,
     )"

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ComboboxTriggerProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { cn, interactiveStyles } from '#imports'
 import { AutocompleteTrigger, useForwardProps } from 'reka-ui'
 
 const props = withDefaults(
@@ -19,9 +18,7 @@ const forwarded = useForwardProps(delegatedProps)
     :data-size="size"
     v-bind="forwarded"
     :class="cn(
-      interactiveStyles.base,
-      interactiveStyles.size.icon,
-      interactiveStyles.variant.ghost,
+      interactiveBase({ size: 'icon', variant: 'ghost' }),
       'mr-2 size-6',
       props.class,
 

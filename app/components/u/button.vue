@@ -4,8 +4,8 @@ import { Slot } from 'reka-ui'
 export interface ButtonProps {
   asChild?: boolean
   disabled?: MaybeRefOrGetter<boolean>
-  size?: 'default' | 'icon' | 'lg' | 'sm'
-  variant?: 'default' | 'danger' | 'ghost' | 'link' | 'outline' | 'soft'
+  size?: ButtonVariants['size']
+  variant?: ButtonVariants['variant']
   class?: string
   isLoading?: MaybeRefOrGetter<boolean>
 }
@@ -19,6 +19,7 @@ const loading = computed(() => toValue(props.isLoading))
   <Slot
     v-if="asChild"
     :disabled="toValue(disabled) || loading"
+    :data-variant="variant"
     :class="cn(
       buttonVariants({ variant, size }),
       props.class,
@@ -32,6 +33,7 @@ const loading = computed(() => toValue(props.isLoading))
   <button
     v-else
     :disabled="toValue(disabled) || loading"
+    :data-variant="variant"
     :class="cn(
       buttonVariants({ variant, size }),
       props.class,

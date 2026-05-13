@@ -13,7 +13,7 @@ const forwardedProps = useForwardProps(delegatedProps)
 <template>
   <DropdownMenuItem
     v-bind="forwardedProps"
-    :class="cn(popoverStyles.item, props.class)"
+    :class="cn(popoverItemBase(), props.class)"
   >
     <slot />
   </DropdownMenuItem>

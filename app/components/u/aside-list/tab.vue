@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { NuxtLinkProps } from '#app'
 import type { RouteLocationRaw } from 'vue-router'
+import type { NuxtLinkProps } from '#app'
 import { resolveAsideListTabValue } from './index.vue'
 
 const props = defineProps<NuxtLinkProps>()

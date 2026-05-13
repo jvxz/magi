@@ -24,9 +24,7 @@ const forwardedProps = useForwardProps(delegatedProps)
     :data-size="size"
     v-bind="forwardedProps"
     :class="cn(
-      interactiveStyles.base,
-      interactiveStyles.variant[props.variant],
-      interactiveStyles.size[props.size],
+      interactiveBase({ variant: props.variant, size: props.size }),
       'flex items-center justify-between data-placeholder:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2',
       withIcon && 'pr-1.5',
       props.class,
