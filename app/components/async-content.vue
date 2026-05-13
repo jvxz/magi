@@ -2,10 +2,12 @@
 import type { PrimitiveProps } from 'reka-ui'
 import { Primitive, VisuallyHidden } from 'reka-ui'
 
-const { data, loadingLabel, ...primitiveProps } = defineProps<PrimitiveProps & {
-  data: T | null | undefined
-  loadingLabel: string
-}>()
+const { data, loadingLabel, ...primitiveProps } = defineProps<
+  PrimitiveProps & {
+    data: T | null | undefined
+    loadingLabel: string
+  }
+>()
 </script>
 
 <template>

@@ -5,22 +5,15 @@ const sizes = [48, 64, 80, 96, 112, 128]
 const rows = Array.from({ length: 7 }, () => ({
   header: sample(sizes),
   lines: Array.from({ length: sample(colCounts) }, () =>
-    Array.from({ length: sample(colCounts) }, () => sample(sizes))),
+    Array.from({ length: sample(colCounts) }, () => sample(sizes)),
+  ),
 }))
 </script>
 
 <template>
   <div class="pb-4.25" data-ignore>
-    <div
-      v-for="(row, idx) in rows"
-      :key="idx"
-      class="pb-4.25"
-    >
-      <PageRoomEvent
-        event-id=""
-        event-type=""
-        class="hover:bg-transparent"
-      >
+    <div v-for="(row, idx) in rows" :key="idx" class="pb-4.25">
+      <PageRoomEvent event-id="" event-type="" class="hover:bg-transparent">
         <PageRoomEventMessageRoot>
           <PageRoomEventMessageAvatar :user="undefined" ghost />
           <PageRoomEventMessageContent class="flex flex-col gap-1.5 translate-y-1">
@@ -31,17 +24,8 @@ const rows = Array.from({ length: 7 }, () => ({
               />
             </template>
 
-            <div
-              v-for="(line, idx) in row.lines"
-              :key="idx"
-              class="flex gap-1.5"
-            >
-              <USkeleton
-                v-for="(size, idx) in line"
-                :key="idx"
-                class="h-4"
-                :style="{ width: `${size}px` }"
-              />
+            <div v-for="(line, idx) in row.lines" :key="idx" class="flex gap-1.5">
+              <USkeleton v-for="(size, idx) in line" :key="idx" class="h-4" :style="{ width: `${size}px` }" />
             </div>
           </PageRoomEventMessageContent>
         </PageRoomEventMessageRoot>

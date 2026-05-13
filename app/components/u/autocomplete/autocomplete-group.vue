@@ -3,10 +3,12 @@ import type { ComboboxGroupProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { AutocompleteGroup, AutocompleteLabel } from 'reka-ui'
 
-const props = defineProps<ComboboxGroupProps & {
-  class?: HTMLAttributes['class']
-  heading?: string
-}>()
+const props = defineProps<
+  ComboboxGroupProps & {
+    class?: HTMLAttributes['class']
+    heading?: string
+  }
+>()
 
 const delegatedProps = reactiveOmit(props, 'class')
 </script>

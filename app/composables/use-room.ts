@@ -26,8 +26,7 @@ function acquire(roomId: string) {
       const { onRoom } = useMatrixHooks()
 
       const getRoom = () => {
-        if (!isTestMode())
-          return client.value.getRoom(key)
+        if (!isTestMode()) return client.value.getRoom(key)
 
         const mockEventCount = /^\d+$/.test(key) ? Number(key) : 500
         return createMockRoom(mockEventCount, key)
@@ -45,10 +44,9 @@ function acquire(roomId: string) {
       onRoom(refresh)
 
       const update = debounce(() => triggerRef(room), 50)
-      watchEffect((onCleanup) => {
+      watchEffect(onCleanup => {
         const r = room.value
-        if (!r)
-          return
+        if (!r) return
 
         r.on(RoomEvent.MyMembership, update)
         r.on(RoomStateEvent.Events, update)
@@ -72,8 +70,7 @@ function acquire(roomId: string) {
 
 function release(key: Key) {
   const entry = cache.get(key)
-  if (!entry)
-    return
+  if (!entry) return
 
   entry.subs--
 
@@ -88,32 +85,40 @@ export function useRoom(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>) 
 
   const room = shallowRef<Room | undefined>()
 
-  watch(roomInputRef, () => {
-    const resolved = roomInputRef.value
+  watch(
+    roomInputRef,
+    () => {
+      const resolved = roomInputRef.value
 
-    if (!resolved) {
-      room.value = undefined
-      return
-    }
+      if (!resolved) {
+        room.value = undefined
+        return
+      }
 
-    if (resolved instanceof Room) {
-      room.value = markRaw(resolved)
-      triggerRef(room)
-      return
-    }
+      if (resolved instanceof Room) {
+        room.value = markRaw(resolved)
+        triggerRef(room)
+        return
+      }
 
-    const entry = acquire(resolved)
+      const entry = acquire(resolved)
 
-    const { stop } = watch(entry.ref, (value) => {
-      room.value = value
-      triggerRef(room)
-    }, { immediate: true })
+      const { stop } = watch(
+        entry.ref,
+        value => {
+          room.value = value
+          triggerRef(room)
+        },
+        { immediate: true },
+      )
 
-    onWatcherCleanup(() => {
-      stop()
-      release(createKey(resolved))
-    })
-  }, { immediate: true })
+      onWatcherCleanup(() => {
+        stop()
+        release(createKey(resolved))
+      })
+    },
+    { immediate: true },
+  )
 
   return room
 }

@@ -14,7 +14,9 @@ const { self } = useSelf()
     as-child
     class="group"
   >
-    <button class="px-1.75 py-1.25 rounded-sm flex flex-1 shrink-0 gap-2 h-full cursor-pointer duration-150 items-center -mx-1.75 -my-1.25 hover:bg-white/7.5">
+    <button
+      class="px-1.75 py-1.25 rounded-sm flex flex-1 shrink-0 gap-2 h-full cursor-pointer duration-150 items-center -mx-1.75 -my-1.25 hover:bg-white/7.5"
+    >
       <MatrixAvatar
         loading="eager"
         fetchpriority="high"
@@ -30,7 +32,9 @@ const { self } = useSelf()
         <USkeleton v-else class="text-sm py-2 shrink h-1lh w-24" />
 
         <div class="h-0.6lh w-full relative overflow-hidden *:duration-150 *:ease">
-          <p class="text-2xs text-muted-foreground bottom-0 absolute group-data-[popover-open]:bottom-1lh group-hover:bottom-1lh">
+          <p
+            class="text-2xs text-muted-foreground bottom-0 absolute group-data-[popover-open]:bottom-1lh group-hover:bottom-1lh"
+          >
             {{ self?.presence ? upperFirst(self?.presence) : 'Offline' }}
           </p>
           <p class="text-2xs text-muted-foreground top-1lh absolute group-data-[popover-open]:top-0 group-hover:top-0">

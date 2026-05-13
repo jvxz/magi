@@ -39,8 +39,9 @@ function filterItems() {
   for (const [id, value] of allItems.value) {
     const score = contains(value, filterState.search)
     filterState.filtered.items.set(id, score ? 1 : 0)
-    if (score)
+    if (score) {
       itemCount++
+    }
   }
 
   for (const [groupId, group] of allGroups.value) {
@@ -55,9 +56,12 @@ function filterItems() {
   filterState.filtered.count = itemCount
 }
 
-watch(() => filterState.search, () => {
-  filterItems()
-})
+watch(
+  () => filterState.search,
+  () => {
+    filterItems()
+  },
+)
 
 provideCommandContext({
   allGroups,
@@ -67,10 +71,7 @@ provideCommandContext({
 </script>
 
 <template>
-  <ListboxRoot
-    v-bind="forwarded"
-    :class="cn('flex h-full w-full flex-col overflow-hidden p-0', props.class)"
-  >
+  <ListboxRoot v-bind="forwarded" :class="cn('flex h-full w-full flex-col overflow-hidden p-0', props.class)">
     <slot />
   </ListboxRoot>
 </template>

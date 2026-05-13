@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const currentRoom = useCurrentRoom()
 
-const placeholder = computed(() => currentRoom.value ? `Message in ${currentRoom.value.name}` : '...')
+const placeholder = computed(() => (currentRoom.value ? `Message in ${currentRoom.value.name}` : '...'))
 
 const msg = shallowRef('')
 </script>
@@ -12,17 +12,8 @@ const msg = shallowRef('')
       <UButton variant="ghost" size="icon">
         <Icon name="tabler:plus" class="size-5" />
       </UButton>
-      <input
-        v-model="msg"
-        type="text"
-        class="text-sm font-sans outline-none flex-1 shrink size-full"
-        :placeholder
-      />
-      <UButton
-        variant="ghost"
-        size="icon"
-        :disabled="!msg"
-      >
+      <input v-model="msg" type="text" class="text-sm font-sans outline-none flex-1 shrink size-full" :placeholder />
+      <UButton variant="ghost" size="icon" :disabled="!msg">
         <Icon name="tabler:send" class="size-5" />
       </UButton>
     </div>

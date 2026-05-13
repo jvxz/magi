@@ -7,7 +7,10 @@ const { isLoaded, members } = useRoomMembers(currentRoom)
 const membersGrouped = useRoomMemberGrouping(members, () => currentRoom.value?.roomId)
 
 const listRef = useTemplateRef('list')
-watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
+watch(
+  () => currentRoom.value?.roomId,
+  () => listRef.value?.scrollTo(0),
+)
 </script>
 
 <template>
@@ -28,23 +31,14 @@ watch(() => currentRoom.value?.roomId, () => listRef.value?.scrollTo(0))
         :total="membersGrouped.groupTotals[item.title]"
       />
 
-      <PageRoomMembersListCard
-        v-else
-        :key="item.userId"
-        :is-owner="item.powerLevel >= 100"
-        :user-id="item.userId"
-      />
+      <PageRoomMembersListCard v-else :key="item.userId" :is-owner="item.powerLevel >= 100" :user-id="item.userId" />
     </VList>
 
     <div v-else class="p-2 h-full relative">
       <!-- <div class="size-full inset-0 absolute z-1 from-transparent to-card to-80% bg-gradient-to-b" /> -->
 
       <!-- <div class="h-10" /> -->
-      <USkeleton
-        v-for="item in 8"
-        :key="item"
-        class="mb-3 h-10 w-full"
-      />
+      <USkeleton v-for="item in 8" :key="item" class="mb-3 h-10 w-full" />
     </div>
   </div>
 </template>

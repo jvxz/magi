@@ -15,8 +15,7 @@ const props = defineProps<FormPrimitiveProps>()
 
 const id = useId()
 const errorMessage = computed(() => {
-  if (Array.isArray(props.error))
-    return props.error[0]
+  if (Array.isArray(props.error)) return props.error[0]
 
   return props.error
 })
@@ -26,18 +25,11 @@ const errorMessage = computed(() => {
   <Primitive v-bind="$props" :class="cn('space-y-1.5', $props.ui?.container)">
     <template v-if="!$slots.label && !$slots.error">
       <div class="flex size-fit w-full items-center justify-between">
-        <ULabel
-          :for="id"
-          :class="cn('text-sm font-medium gap-1', $props.ui?.label)"
-        >
+        <ULabel :for="id" :class="cn('text-sm font-medium gap-1', $props.ui?.label)">
           {{ label }}
           <span v-if="required" class="text-danger">*</span>
         </ULabel>
-        <LazyUSpinner
-          v-if="isLoading"
-          class="shrink-0 size-4.5"
-          :data-testid="`loading-spinner-${label}`"
-        />
+        <LazyUSpinner v-if="isLoading" class="shrink-0 size-4.5" :data-testid="`loading-spinner-${label}`" />
         <p
           v-else-if="errorMessage"
           :title="errorMessage"
@@ -48,16 +40,8 @@ const errorMessage = computed(() => {
       </div>
     </template>
 
-    <slot
-      v-if="$slots.label"
-      :id
-      name="label"
-    />
-    <slot
-      v-if="$slots.error"
-      name="error"
-      :message="errorMessage"
-    />
+    <slot v-if="$slots.label" :id name="label" />
+    <slot v-if="$slots.error" name="error" :message="errorMessage" />
 
     <Slot :id :data-error="errorMessage ? '' : undefined">
       <slot />

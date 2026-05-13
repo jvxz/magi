@@ -12,13 +12,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
-  <DropdownMenuCheckboxItem
-    v-bind="forwarded"
-    :class=" cn(
-      popoverItemBase(),
-      props.class,
-    )"
-  >
+  <DropdownMenuCheckboxItem v-bind="forwarded" :class="cn(popoverItemBase(), props.class)">
     <span class="flex size-3.5 pointer-events-none items-center left-2 justify-center absolute">
       <DropdownMenuItemIndicator>
         <Icon name="tabler:check" class="size-4" />

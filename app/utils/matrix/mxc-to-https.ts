@@ -25,8 +25,7 @@ export function mxcToHttps(mxc: string | undefined, opts?: MxcToHttpsOptions) {
       opts?.useAuthentication,
       opts?.animated,
     )
-  }
-  catch {
+  } catch {
     return undefined
   }
 }

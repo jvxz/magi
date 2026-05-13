@@ -1,7 +1,11 @@
 import type { ClientEventHandlerMap, EmittedEvents, EventEmitterEvents, Listener, Room, User } from 'matrix-js-sdk'
 import type { MatrixClient } from 'matrix-js-sdk/lib/client'
 
-export type EmitterListener<T extends EventEmitterEvents | EmittedEvents> = Listener<EmittedEvents, ClientEventHandlerMap, T>
+export type EmitterListener<T extends EventEmitterEvents | EmittedEvents> = Listener<
+  EmittedEvents,
+  ClientEventHandlerMap,
+  T
+>
 
 export interface RoomMemberTypingEventContent {
   user_ids: string[]

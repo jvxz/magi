@@ -9,8 +9,7 @@ import { mxcToHttps } from './mxc-to-https'
 export const USER_ID_REG = /^([@$+#])([^\s:]+):(\S+)$/
 
 export function getDisplayNameFallback(maybeUserOrId: MaybeUserOrId | undefined) {
-  if (!maybeUserOrId)
-    return 'Unknown user'
+  if (!maybeUserOrId) return 'Unknown user'
 
   const userId = resolveUserId(maybeUserOrId)
 
@@ -19,35 +18,40 @@ export function getDisplayNameFallback(maybeUserOrId: MaybeUserOrId | undefined)
   return match
 }
 
-export type ResolveAvatarUrlOpts = Partial<{ baseUrl?: string, animated?: boolean, size?: AvatarImageSize } & MxcToHttpsOptions>
+export type ResolveAvatarUrlOpts = Partial<
+  { baseUrl?: string; animated?: boolean; size?: AvatarImageSize } & MxcToHttpsOptions
+>
 export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: ResolveAvatarUrlOpts) {
-  if (!avatarUrl)
-    return undefined
+  if (!avatarUrl) return undefined
 
   const size = opts?.size ? AVATAR_IMAGE_SIZE_VALUES[opts.size] : AVATAR_IMAGE_SIZE_VALUES.medium
 
-  return mxcToHttps(avatarUrl, merge({
-    allowDirectLinks: false,
-    allowRedirects: true,
-    animated: opts?.animated ?? true,
-    baseUrl: opts?.baseUrl,
-    height: size,
-    resizeMethod: 'crop',
-    useAuthentication: true,
-    width: size,
-  }, opts ||= {}))
+  return mxcToHttps(
+    avatarUrl,
+    merge(
+      {
+        allowDirectLinks: false,
+        allowRedirects: true,
+        animated: opts?.animated ?? true,
+        baseUrl: opts?.baseUrl,
+        height: size,
+        resizeMethod: 'crop',
+        useAuthentication: true,
+        width: size,
+      },
+      (opts ||= {}),
+    ),
+  )
 }
 
 export function resolveUserId(maybeUserOrId: MaybeUserOrId) {
-  if (typeof maybeUserOrId === 'string')
-    return maybeUserOrId
+  if (typeof maybeUserOrId === 'string') return maybeUserOrId
 
   return maybeUserOrId.userId
 }
 
 export function resolveUserName(user: User | RoomMember) {
-  if (user.rawDisplayName)
-    return user.rawDisplayName
+  if (user.rawDisplayName) return user.rawDisplayName
 
   return getDisplayNameFallback(user.userId)
 }

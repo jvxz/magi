@@ -10,21 +10,25 @@ definePageMeta({
 const route = useRoute()
 const baseUrl = computed({
   get: () => {
-    if (typeof route.params.baseUrl === 'string')
-      return route.params.baseUrl
+    if (typeof route.params.baseUrl === 'string') return route.params.baseUrl
 
     return route.params.baseUrl?.[0]
   },
-  set: value => navigateTo({
-    name: 'explore',
-    params: { baseUrl: value },
-  }),
+  set: value =>
+    navigateTo({
+      name: 'explore',
+      params: { baseUrl: value },
+    }),
 })
 
 const servers = useLocalStorage('explore:servers', () => ['matrix.org', 'mozilla.org', 'unredacted.org'])
 const { page, query } = usePublicRoomsState(baseUrl.value)
 
-const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching, isLoading } = usePublicRooms(baseUrl, page, query)
+const { canPaginateBackward, canPaginateForward, currentPage, error, isFetching, isLoading } = usePublicRooms(
+  baseUrl,
+  page,
+  query,
+)
 
 const contextMenuServer = shallowRef<string | undefined>()
 const contextMenuOpen = shallowRef(false)
@@ -36,8 +40,7 @@ function handleServerAdd(server: string) {
 
 function handleServerRemove(server?: string) {
   const target = server ?? contextMenuServer.value
-  if (target === 'matrix.org')
-    return
+  if (target === 'matrix.org') return
 
   servers.value = servers.value.filter(s => s !== target)
 }
@@ -45,25 +48,23 @@ function handleServerRemove(server?: string) {
 const inputRef = useTemplateRef<UInputTemplateRef>('inputRef')
 onStartTyping(() => inputRef.value?.inputRef?.focus())
 
-onKeyStrokeSafe((e) => {
-  const { key } = e
-  if (key === 'ArrowRight')
-    handlePaginate('f')
-
-  else if (key === 'ArrowLeft')
-    handlePaginate('b')
-}, { dedupe: true })
+onKeyStrokeSafe(
+  e => {
+    const { key } = e
+    if (key === 'ArrowRight') handlePaginate('f')
+    else if (key === 'ArrowLeft') handlePaginate('b')
+  },
+  { dedupe: true },
+)
 
 function handlePaginate(dir: 'f' | 'b') {
   if (dir === 'f') {
-    if (canPaginateForward.value)
-      page.value += 1
+    if (canPaginateForward.value) page.value += 1
 
     return
   }
 
-  if (canPaginateBackward.value)
-    page.value -= 1
+  if (canPaginateBackward.value) page.value -= 1
 }
 </script>
 
@@ -72,9 +73,11 @@ function handlePaginate(dir: 'f' | 'b') {
     <UAsideList>
       <UContextMenu
         v-model="contextMenuOpen"
-        @update:open="(e) => {
-          if (!e) contextMenuServer = undefined
-        }"
+        @update:open="
+          e => {
+            if (!e) contextMenuServer = undefined
+          }
+        "
       >
         <UContextMenuTrigger class="flex flex-col gap-[2px] w-full *:w-full *:justify-start">
           <UAsideListTab
@@ -162,11 +165,7 @@ function handlePaginate(dir: 'f' | 'b') {
     </div>
 
     <Transition name="zoom">
-      <UCard
-        v-if="error"
-        variant="danger"
-        class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
-      >
+      <UCard v-if="error" variant="danger" class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2">
         <UCardTitle class="flex gap-2 items-center">
           <Icon name="tabler:alert-triangle" />
           <span>An error occurred</span>
@@ -180,17 +179,11 @@ function handlePaginate(dir: 'f' | 'b') {
         v-else-if="!currentPage?.chunk.length && !isFetching"
         class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
       >
-        <UCardTitle class="flex gap-2 items-center">
-          <Icon name="tabler:question-circle" /> No rooms found
-        </UCardTitle>
+        <UCardTitle class="flex gap-2 items-center"> <Icon name="tabler:question-circle" /> No rooms found </UCardTitle>
 
         <p class="text-pretty">
-          <template v-if="!query">
-            The desired homeserver does not appear to have any public rooms
-          </template>
-          <template v-else>
-            The search query yielded no results. Try another one
-          </template>
+          <template v-if="!query"> The desired homeserver does not appear to have any public rooms </template>
+          <template v-else> The search query yielded no results. Try another one </template>
         </p>
       </UCard>
     </Transition>

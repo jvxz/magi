@@ -5,10 +5,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div
-    data-slot="card-title"
-    :class="cn('text-lg leading-none font-medium', props.class)"
-  >
+  <div data-slot="card-title" :class="cn('text-lg leading-none font-medium', props.class)">
     <slot />
   </div>
 </template>

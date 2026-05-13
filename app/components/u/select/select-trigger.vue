@@ -5,12 +5,14 @@ import type { ButtonProps } from '../button.vue'
 import { useForwardProps } from 'reka-ui'
 
 const props = withDefaults(
-  defineProps<SelectTriggerProps & {
-    class?: HTMLAttributes['class']
-    size?: 'sm' | 'default'
-    variant?: ButtonProps['variant']
-    withIcon?: boolean
-  }>(),
+  defineProps<
+    SelectTriggerProps & {
+      class?: HTMLAttributes['class']
+      size?: 'sm' | 'default'
+      variant?: ButtonProps['variant']
+      withIcon?: boolean
+    }
+  >(),
   { size: 'default', variant: 'soft', withIcon: true },
 )
 
@@ -23,12 +25,14 @@ const forwardedProps = useForwardProps(delegatedProps)
     data-slot="select-trigger"
     :data-size="size"
     v-bind="forwardedProps"
-    :class="cn(
-      interactiveBase({ variant: props.variant, size: props.size }),
-      'flex items-center justify-between data-placeholder:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2',
-      withIcon && 'pr-1.5',
-      props.class,
-    )"
+    :class="
+      cn(
+        interactiveBase({ variant: props.variant, size: props.size }),
+        'flex items-center justify-between data-placeholder:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2',
+        withIcon && 'pr-1.5',
+        props.class,
+      )
+    "
   >
     <slot />
 

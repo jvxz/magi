@@ -6,8 +6,7 @@ export const useMatrixClient = createGlobalState(() => {
 
   async function initAuthedClient(waitForPrepared = true) {
     const auth = await idb.getItem<AuthPayload>('auth')
-    if (!auth)
-      return
+    if (!auth) return
 
     try {
       const authedClient = await createAuthedClient(auth)
@@ -21,8 +20,7 @@ export const useMatrixClient = createGlobalState(() => {
               resolve()
             }
 
-            if (syncState === SyncState.Error)
-              reject(new Error('sync state was ERROR'))
+            if (syncState === SyncState.Error) reject(new Error('sync state was ERROR'))
           }
           authedClient.on(ClientEvent.Sync, onSync)
         })
@@ -32,8 +30,7 @@ export const useMatrixClient = createGlobalState(() => {
       await messageSw('session', auth)
 
       return authedClient
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Error when initializing authed client: ', err)
     }
   }

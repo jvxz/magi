@@ -16,11 +16,7 @@ const founder = useRoomFounder(() => props.space)
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex gap-3 items-center *:text-clip">
-      <MatrixAvatar
-        v-if="space"
-        :room="space"
-        class="rounded shrink-0 size-10"
-      />
+      <MatrixAvatar v-if="space" :room="space" class="rounded shrink-0 size-10" />
       <USkeleton v-else class="rounded shrink-0 size-10" />
 
       <h1 v-if="space" class="text-3xl font-semibold">

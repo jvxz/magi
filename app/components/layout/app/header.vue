@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 const env = computed<string | undefined>(() => {
-  if (isTestMode())
-    return 'Testing'
+  if (isTestMode()) return 'Testing'
 
-  if (import.meta.dev)
-    return 'Development'
+  if (import.meta.dev) return 'Development'
 
   return undefined
 })

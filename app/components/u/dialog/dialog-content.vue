@@ -13,9 +13,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 <template>
   <DialogPortal>
-    <DialogOverlay
-      :class="cn(overlayStyles)"
-    />
+    <DialogOverlay :class="cn(overlayStyles)" />
     <DialogContent
       v-bind="forwarded"
       data-slot="dialog-content"
@@ -24,15 +22,18 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
           staticBase({ variant: 'default' }),
           'fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=closed]:animate-out data-[state=open]:zoom-in-95 sm:max-w-xl',
           props.class,
-        )"
+        )
+      "
     >
       <slot />
 
       <DialogClose
-        :class="cn(
-          interactiveBase({ variant: 'ghost', size: 'icon' }),
-          'absolute top-3 right-3 inline-flex size-6 items-center justify-center opacity-70',
-        )"
+        :class="
+          cn(
+            interactiveBase({ variant: 'ghost', size: 'icon' }),
+            'absolute top-3 right-3 inline-flex size-6 items-center justify-center opacity-70',
+          )
+        "
       >
         <Icon name="tabler:x" class="size-4" />
         <span class="sr-only">Close</span>

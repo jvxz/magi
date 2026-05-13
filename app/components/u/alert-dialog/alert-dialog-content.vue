@@ -13,12 +13,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 <template>
   <AlertDialogPortal>
-    <AlertDialogOverlay
-      :class="cn(
-        overlayStyles,
-        props.class,
-      )"
-    />
+    <AlertDialogOverlay :class="cn(overlayStyles, props.class)" />
     <AlertDialogContent
       v-bind="forwarded"
       :class="

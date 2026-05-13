@@ -27,24 +27,17 @@ export default defineNuxtPlugin({
         const authPayload = await idb.get<AuthPayload>('auth')
         if (authPayload) {
           const authedClient = await initAuthedClient(false)
-          if (!authedClient)
-            logoutClient(client.value)
-
-          else
-            status.value.isAuthed = true
+          if (!authedClient) logoutClient(client.value)
+          else status.value.isAuthed = true
         }
-      }
-      finally {
+      } finally {
         const router = useRouter()
         const route = useRoute()
 
         status.value.isStarting = false
 
-        if (!status.value.isAuthed && route.meta.requiresAuth)
-          await router.replace('/login')
-
-        else if (status.value.isAuthed && route.name === 'login')
-          await router.replace('/app')
+        if (!status.value.isAuthed && route.meta.requiresAuth) await router.replace('/login')
+        else if (status.value.isAuthed && route.name === 'login') await router.replace('/app')
       }
     }
 

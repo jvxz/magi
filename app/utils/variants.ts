@@ -3,10 +3,12 @@ import type { VariantProps } from 'tailwind-variants'
 
 export const buttonVariants = tv({
   base: 'relative inline-flex items-center justify-center',
-  compoundVariants: [{
-    class: 'h-fit py-0',
-    variant: 'link',
-  }],
+  compoundVariants: [
+    {
+      class: 'h-fit py-0',
+      variant: 'link',
+    },
+  ],
   defaultVariants: {
     size: 'default',
     variant: 'soft',
@@ -76,11 +78,13 @@ export const toggleVariants = tv({
   variants: {
     variant: {
       accent: interactiveBase({
-        class: 'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground',
+        class:
+          'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground',
         variant: 'ghost',
       }),
       ghost: interactiveBase({
-        class: 'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:(bg-muted hover:bg-muted) data-[state=on]:text-foreground',
+        class:
+          'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:(bg-muted hover:bg-muted) data-[state=on]:text-foreground',
         variant: 'ghost',
       }),
       outline: interactiveBase({

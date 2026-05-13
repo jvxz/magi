@@ -7,10 +7,9 @@ const { copy, isSupported } = useClipboard()
 const copied = refAutoReset(false, 750)
 
 function handleCopyUserId() {
-  if (!isSupported.value || !props.userId)
-    return
+  if (!isSupported.value || !props.userId) return
 
-  copy(props.userId).then(() => copied.value = true)
+  copy(props.userId).then(() => (copied.value = true))
 }
 </script>
 
@@ -26,19 +25,12 @@ function handleCopyUserId() {
     </UButton>
     <UDropdownMenuRoot>
       <UDropdownMenuTrigger as-child>
-        <UButton
-          size="icon"
-          variant="ghost"
-          class="rounded-full bg-muted/50 active:bg-muted/50"
-        >
+        <UButton size="icon" variant="ghost" class="rounded-full bg-muted/50 active:bg-muted/50">
           <Icon name="tabler:dots" />
         </UButton>
       </UDropdownMenuTrigger>
       <UDropdownMenuContent>
-        <UDropdownMenuItem
-          :disabled="!isSupported || !props.userId"
-          @click="handleCopyUserId"
-        >
+        <UDropdownMenuItem :disabled="!isSupported || !props.userId" @click="handleCopyUserId">
           <Icon name="tabler:tag" /> Copy ID
         </UDropdownMenuItem>
       </UDropdownMenuContent>

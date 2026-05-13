@@ -3,7 +3,7 @@ import type { DropdownMenuItemProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { useForwardProps } from 'reka-ui'
 
-const props = defineProps<DropdownMenuItemProps & { class?: HTMLAttributes['class'], inset?: boolean }>()
+const props = defineProps<DropdownMenuItemProps & { class?: HTMLAttributes['class']; inset?: boolean }>()
 
 const delegatedProps = reactiveOmit(props, 'class')
 
@@ -11,10 +11,7 @@ const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>
-  <DropdownMenuItem
-    v-bind="forwardedProps"
-    :class="cn(popoverItemBase(), props.class)"
-  >
+  <DropdownMenuItem v-bind="forwardedProps" :class="cn(popoverItemBase(), props.class)">
     <slot />
   </DropdownMenuItem>
 </template>

@@ -4,8 +4,7 @@ const mockRoomMap = new Map<string, Room>()
 
 export function createMockRoom(eventCount: number = 250, id: string): Room {
   const cached = mockRoomMap.get(id)
-  if (cached)
-    return cached
+  if (cached) return cached
 
   const events = createMockEvents(eventCount, id)
 
@@ -33,11 +32,7 @@ function createMockEvents(eventCount: number, roomId: string): MatrixEvent[] {
   const startTs = Date.UTC(2026, 0, 1)
 
   return Array.from({ length: eventCount }, (_, i) => {
-    const id = i === 0
-      ? 'oldest-event'
-      : i === eventCount - 1
-        ? 'newest-event'
-        : crypto.randomUUID()
+    const id = i === 0 ? 'oldest-event' : i === eventCount - 1 ? 'newest-event' : crypto.randomUUID()
     const content = {
       body: `Event ${id} (${i})`,
       msgtype: 'm.text',

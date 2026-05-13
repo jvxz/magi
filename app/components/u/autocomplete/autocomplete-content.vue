@@ -7,13 +7,10 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(
-  defineProps<ComboboxContentProps & { class?: HTMLAttributes['class'] }>(),
-  {
-    position: 'popper',
-    sideOffset: 6,
-  },
-)
+const props = withDefaults(defineProps<ComboboxContentProps & { class?: HTMLAttributes['class'] }>(), {
+  position: 'popper',
+  sideOffset: 6,
+})
 const emits = defineEmits<ComboboxContentEmits>()
 
 const delegatedProps = reactiveOmit(props, 'class')
@@ -25,10 +22,13 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     <AutocompleteContent
       data-slot="autocomplete-content"
       v-bind="{ ...$attrs, ...forwarded }"
-      :class="cn(
-        popoverContentBase(), 'z-10 w-[var(--reka-combobox-trigger-width)] overflow-hidden will-change-[opacity,transform] data-[state=closed]:animate-none data-[state=open]:animate-none',
-        props.class,
-      )"
+      :class="
+        cn(
+          popoverContentBase(),
+          'z-10 w-[var(--reka-combobox-trigger-width)] overflow-hidden will-change-[opacity,transform] data-[state=closed]:animate-none data-[state=open]:animate-none',
+          props.class,
+        )
+      "
     >
       <slot />
     </AutocompleteContent>

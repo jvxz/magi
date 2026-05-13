@@ -6,11 +6,7 @@
       <LayoutAppHeader />
       <main class="bg-card flex-1 h-fit z-1">
         <ClientOnly>
-          <SplitterGroup
-            auto-save-id="aside-extra-splitter-group"
-            direction="horizontal"
-            class="h-full"
-          >
+          <SplitterGroup auto-save-id="aside-extra-splitter-group" direction="horizontal" class="h-full">
             <SplitterPanel
               id="aside-extra-splitter-panel-1"
               class="bg-background shrink-0 top-0 sticky"

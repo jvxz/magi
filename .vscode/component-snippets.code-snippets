@@ -3,85 +3,85 @@
     "scope": "vue,vue-html,html",
     "prefix": "u-badge",
     "body": ["<UBadge>", "  $1", "</UBadge>"],
-    "description": "UBadge"
+    "description": "UBadge",
   },
   "U button": {
     "scope": "vue,vue-html,html",
     "prefix": "u-button",
     "body": ["<UButton>", "  $1", "</UButton>"],
-    "description": "UButton"
+    "description": "UButton",
   },
   "U button card": {
     "scope": "vue,vue-html,html",
     "prefix": "u-button-card",
     "body": ["<UButtonCard>", "  $1", "</UButtonCard>"],
-    "description": "UButtonCard"
+    "description": "UButtonCard",
   },
   "U copy button": {
     "scope": "vue,vue-html,html",
     "prefix": "u-copy-button",
     "body": ["<UCopyButton :value=\"$1\" />"],
-    "description": "UCopyButton (icon-only; pass value ref/getter)"
+    "description": "UCopyButton (icon-only; pass value ref/getter)",
   },
   "U hold button": {
     "scope": "vue,vue-html,html",
     "prefix": "u-hold-button",
     "body": ["<UHoldButton @onComplete=\"$1\">", "  $2", "</UHoldButton>"],
-    "description": "UHoldButton (emits onComplete)"
+    "description": "UHoldButton (emits onComplete)",
   },
   "U input": {
     "scope": "vue,vue-html,html",
     "prefix": "u-input",
     "body": ["<UInput v-model=\"$1\" />"],
-    "description": "UInput"
+    "description": "UInput",
   },
   "U kbd": {
     "scope": "vue,vue-html,html",
     "prefix": "u-kbd",
     "body": ["<UKbd>$1</UKbd>"],
-    "description": "UKbd"
+    "description": "UKbd",
   },
   "U label": {
     "scope": "vue,vue-html,html",
     "prefix": "u-label",
     "body": ["<ULabel for=\"$1\">$2</ULabel>"],
-    "description": "ULabel"
+    "description": "ULabel",
   },
   "U separator": {
     "scope": "vue,vue-html,html",
     "prefix": "u-separator",
     "body": ["<USeparator />"],
-    "description": "USeparator"
+    "description": "USeparator",
   },
   "U skeleton": {
     "scope": "vue,vue-html,html",
     "prefix": "u-skeleton",
     "body": ["<USkeleton class=\"$1\" />"],
-    "description": "USkeleton"
+    "description": "USkeleton",
   },
   "U slider": {
     "scope": "vue,vue-html,html",
     "prefix": "u-slider",
     "body": ["<USlider v-model=\"$1\" />"],
-    "description": "USlider"
+    "description": "USlider",
   },
   "U spinner": {
     "scope": "vue,vue-html,html",
     "prefix": "u-spinner",
     "body": ["<USpinner />"],
-    "description": "USpinner"
+    "description": "USpinner",
   },
   "U switch": {
     "scope": "vue,vue-html,html",
     "prefix": "u-switch",
     "body": ["<USwitch v-model=\"$1\" />"],
-    "description": "USwitch"
+    "description": "USwitch",
   },
   "U toggle": {
     "scope": "vue,vue-html,html",
     "prefix": "u-toggle",
     "body": ["<UToggle />"],
-    "description": "UToggle"
+    "description": "UToggle",
   },
   "U alert": {
     "scope": "vue,vue-html,html",
@@ -90,9 +90,9 @@
       "<UAlertRoot>",
       "  <UAlertTitle>$1</UAlertTitle>",
       "  <UAlertDescription>$2</UAlertDescription>",
-      "</UAlertRoot>"
+      "</UAlertRoot>",
     ],
-    "description": "Alert anatomy (UAlertRoot)"
+    "description": "Alert anatomy (UAlertRoot)",
   },
   "U alert dialog": {
     "scope": "vue,vue-html,html",
@@ -112,9 +112,9 @@
       "      <UAlertDialogAction />",
       "    </UAlertDialogFooter>",
       "  </UAlertDialogContent>",
-      "</UAlertDialogRoot>"
+      "</UAlertDialogRoot>",
     ],
-    "description": "Alert dialog anatomy (portal+overlay in UAlertDialogContent)"
+    "description": "Alert dialog anatomy (portal+overlay in UAlertDialogContent)",
   },
   "U autocomplete": {
     "scope": "vue,vue-html,html",
@@ -135,9 +135,9 @@
       "      </UAutocompleteGroup>",
       "    </UAutocompleteViewport>",
       "  </UAutocompleteContent>",
-      "</UAutocompleteRoot>"
+      "</UAutocompleteRoot>",
     ],
-    "description": "Autocomplete anatomy (see login.vue)"
+    "description": "Autocomplete anatomy (see login.vue)",
   },
   "U avatar": {
     "scope": "vue,vue-html,html",
@@ -146,9 +146,9 @@
       "<UAvatar>",
       "  <UAvatarImage :src=\"$1\" :alt=\"$2\" />",
       "  <UAvatarFallback>$3</UAvatarFallback>",
-      "</UAvatar>"
+      "</UAvatar>",
     ],
-    "description": "Avatar anatomy"
+    "description": "Avatar anatomy",
   },
   "U card": {
     "scope": "vue,vue-html,html",
@@ -161,9 +161,9 @@
       "  </UCardHeader>",
       "  $3",
       "  <UCardFooter>$4</UCardFooter>",
-      "</UCard>"
+      "</UCard>",
     ],
-    "description": "Card anatomy"
+    "description": "Card anatomy",
   },
   "U command": {
     "scope": "vue,vue-html,html",
@@ -180,9 +180,9 @@
       "      </UCommandItem>",
       "    </UCommandGroup>",
       "  </UCommandList>",
-      "</UCommandRoot>"
+      "</UCommandRoot>",
     ],
-    "description": "Command palette (inline UCommandRoot)"
+    "description": "Command palette (inline UCommandRoot)",
   },
   "U command dialog": {
     "scope": "vue,vue-html,html",
@@ -199,9 +199,9 @@
       "      </UCommandItem>",
       "    </UCommandGroup>",
       "  </UCommandList>",
-      "</UCommandDialog>"
+      "</UCommandDialog>",
     ],
-    "description": "Command dialog (UCommandDialog wraps dialog + UCommandRoot)"
+    "description": "Command dialog (UCommandDialog wraps dialog + UCommandRoot)",
   },
   "U context menu": {
     "scope": "vue,vue-html,html",
@@ -225,9 +225,9 @@
       "    </UContextMenuSub>",
       "    <UContextMenuSeparator />",
       "  </UContextMenuContent>",
-      "</UContextMenu>"
+      "</UContextMenu>",
     ],
-    "description": "Context menu anatomy (portal in UContextMenuContent)"
+    "description": "Context menu anatomy (portal in UContextMenuContent)",
   },
   "U dialog": {
     "scope": "vue,vue-html,html",
@@ -249,9 +249,9 @@
       "      </UDialogClose>",
       "    </UDialogFooter>",
       "  </UDialogContent>",
-      "</UDialogRoot>"
+      "</UDialogRoot>",
     ],
-    "description": "Dialog anatomy (portal+overlay in UDialogContent; built-in close on content)"
+    "description": "Dialog anatomy (portal+overlay in UDialogContent; built-in close on content)",
   },
   "U dialog scroll": {
     "scope": "vue,vue-html,html",
@@ -268,9 +268,9 @@
       "    </UDialogHeader>",
       "    $4",
       "  </UDialogScrollContent>",
-      "</UDialogRoot>"
+      "</UDialogRoot>",
     ],
-    "description": "Dialog with UDialogScrollContent"
+    "description": "Dialog with UDialogScrollContent",
   },
   "U dropdown menu": {
     "scope": "vue,vue-html,html",
@@ -296,9 +296,9 @@
       "    </UDropdownMenuSub>",
       "    <UDropdownMenuSeparator />",
       "  </UDropdownMenuContent>",
-      "</UDropdownMenuRoot>"
+      "</UDropdownMenuRoot>",
     ],
-    "description": "Dropdown menu anatomy (portal in UDropdownMenuContent; no arrow component)"
+    "description": "Dropdown menu anatomy (portal in UDropdownMenuContent; no arrow component)",
   },
   "U hover card": {
     "scope": "vue,vue-html,html",
@@ -311,9 +311,9 @@
       "  <UHoverCardContent>",
       "    $2",
       "  </UHoverCardContent>",
-      "</UHoverCardRoot>"
+      "</UHoverCardRoot>",
     ],
-    "description": "Hover card anatomy (portal in UHoverCardContent)"
+    "description": "Hover card anatomy (portal in UHoverCardContent)",
   },
   "U tabs": {
     "scope": "vue,vue-html,html",
@@ -326,19 +326,15 @@
       "  <UTabsContent value=\"$1\">",
       "    $3",
       "  </UTabsContent>",
-      "</UTabsRoot>"
+      "</UTabsRoot>",
     ],
-    "description": "Tabs anatomy"
+    "description": "Tabs anatomy",
   },
   "U toggle group": {
     "scope": "vue,vue-html,html",
     "prefix": "u-toggle-group",
-    "body": [
-      "<UToggleGroupRoot>",
-      "  <UToggleGroupItem value=\"$1\">$2</UToggleGroupItem>",
-      "</UToggleGroupRoot>"
-    ],
-    "description": "Toggle group anatomy"
+    "body": ["<UToggleGroupRoot>", "  <UToggleGroupItem value=\"$1\">$2</UToggleGroupItem>", "</UToggleGroupRoot>"],
+    "description": "Toggle group anatomy",
   },
   "U tooltip": {
     "scope": "vue,vue-html,html",
@@ -351,8 +347,8 @@
       "  <UTooltipContent>",
       "    $2",
       "  </UTooltipContent>",
-      "</UTooltipRoot>"
+      "</UTooltipRoot>",
     ],
-    "description": "Tooltip anatomy (UTooltipProvider is global in app.vue)"
-  }
+    "description": "Tooltip anatomy (UTooltipProvider is global in app.vue)",
+  },
 }

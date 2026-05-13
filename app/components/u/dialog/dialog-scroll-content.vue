@@ -13,9 +13,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 <template>
   <DialogPortal>
-    <DialogOverlay
-      :class="cn(overlayStyles)"
-    >
+    <DialogOverlay :class="cn(overlayStyles)">
       <DialogContent
         :class="
           cn(
@@ -25,21 +23,25 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
           )
         "
         v-bind="forwarded"
-        @pointer-down-outside="(event) => {
-          const originalEvent = event.detail.originalEvent;
-          const target = originalEvent.target as HTMLElement;
-          if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
-            event.preventDefault();
+        @pointer-down-outside="
+          event => {
+            const originalEvent = event.detail.originalEvent
+            const target = originalEvent.target as HTMLElement
+            if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
+              event.preventDefault()
+            }
           }
-        }"
+        "
       >
         <slot />
 
         <DialogClose
-          :class="cn(
-            interactiveBase({ variant: 'ghost', size: 'icon' }),
-            'absolute top-3 right-3 inline-flex size-6 items-center justify-center opacity-70',
-          )"
+          :class="
+            cn(
+              interactiveBase({ variant: 'ghost', size: 'icon' }),
+              'absolute top-3 right-3 inline-flex size-6 items-center justify-center opacity-70',
+            )
+          "
         >
           <Icon name="tabler:x" class="size-4" />
           <span class="sr-only">Close</span>

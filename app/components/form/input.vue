@@ -11,7 +11,7 @@ export type FormInputProps = FormPrimitiveProps & {
 const props = defineProps<FormInputProps>()
 const modelValue = defineModel<string | number>()
 
-const hasError = computed(() => props.error && Array.isArray(props.error) ? props.error.length > 0 : !!props.error)
+const hasError = computed(() => (props.error && Array.isArray(props.error) ? props.error.length > 0 : !!props.error))
 </script>
 
 <template>

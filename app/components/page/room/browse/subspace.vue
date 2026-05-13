@@ -7,21 +7,16 @@ const props = defineProps<{
   count: number | undefined
 }>()
 
-const { error, isLoading, orphanedRooms, suggestedRooms } = useSpaceHierarchy(() => props.space.room_id, () => props.open)
+const { error, isLoading, orphanedRooms, suggestedRooms } = useSpaceHierarchy(
+  () => props.space.room_id,
+  () => props.open,
+)
 </script>
 
 <template>
   <template v-if="!isLoading && !error && orphanedRooms.size">
-    <VisibleLazy
-      v-for="room in orphanedRooms.values()"
-      :key="room.room_id"
-      :height="72"
-      use-injection
-    >
-      <PageRoomBrowseCard
-        :room
-        :suggested="suggestedRooms.has(room.room_id)"
-      />
+    <VisibleLazy v-for="room in orphanedRooms.values()" :key="room.room_id" :height="72" use-injection>
+      <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
     </VisibleLazy>
   </template>
 
@@ -34,11 +29,7 @@ const { error, isLoading, orphanedRooms, suggestedRooms } = useSpaceHierarchy(()
   </div>
 
   <template v-else-if="isLoading && !error">
-    <USkeleton
-      v-for="i in Math.max(1, count ?? 4)"
-      :key="i"
-      class="h-18 w-full"
-    />
+    <USkeleton v-for="i in Math.max(1, count ?? 4)" :key="i" class="h-18 w-full" />
   </template>
 
   <UCard

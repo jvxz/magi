@@ -18,11 +18,14 @@ test.beforeAll(async ({ browser }) => {
   await setFlag(context, 'skip-auth-middleware', true)
 
   await sharedPage.addInitScript(() => {
-    window.localStorage.setItem('magi:test:auth', JSON.stringify({
-      accessToken: 'fake-token',
-      deviceId: 'TEST_DEVICE',
-      userId: '@test:localhost',
-    }))
+    window.localStorage.setItem(
+      'magi:test:auth',
+      JSON.stringify({
+        accessToken: 'fake-token',
+        deviceId: 'TEST_DEVICE',
+        userId: '@test:localhost',
+      }),
+    )
   })
 
   await sharedPage.goto('/app/space/test/test', { waitUntil: 'domcontentloaded' })
@@ -57,7 +60,7 @@ test.describe('Event list', () => {
     const scrollHeightVal = await oldContainer.evaluate(el => el.scrollHeight)
     const scrollTopVal = randomInt(scrollHeightVal * 0.25, scrollHeightVal)
 
-    await oldContainer.evaluate((el, value) => el.scrollTop = value, scrollTopVal)
+    await oldContainer.evaluate((el, value) => (el.scrollTop = value), scrollTopVal)
 
     await navToRoom(sharedPage, '250')
     await navToRoom(sharedPage, '750')
@@ -79,18 +82,22 @@ async function paginateUntilBoundary(
   for (let step = 0; step < maxSteps; step++) {
     const current = await getPaginatedEvent(dir, page)
 
-    if (current.id === boundaryId)
-      return
+    if (current.id === boundaryId) return
 
     await current.el.evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'start' }))
 
-    await expect.poll(async () => {
-      const next = await getPaginatedEvent(dir, page)
-      return next.id
-    }, {
-      message: `Boundary did not move after scroll (dir=${dir}, step=${step})`,
-      timeout: 2000,
-    }).not.toBe(current.id)
+    await expect
+      .poll(
+        async () => {
+          const next = await getPaginatedEvent(dir, page)
+          return next.id
+        },
+        {
+          message: `Boundary did not move after scroll (dir=${dir}, step=${step})`,
+          timeout: 2000,
+        },
+      )
+      .not.toBe(current.id)
   }
 
   throw new Error(`Did not reach ${boundaryId} within ${maxSteps} steps`)

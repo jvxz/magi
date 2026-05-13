@@ -5,7 +5,10 @@ definePageMeta({
 })
 
 const currentSpace = useCurrentSpace()
-const { isLoading, orphanedRooms, subspaces, suggestedRooms } = useSpaceHierarchy(() => currentSpace.value?.roomId, true)
+const { isLoading, orphanedRooms, subspaces, suggestedRooms } = useSpaceHierarchy(
+  () => currentSpace.value?.roomId,
+  true,
+)
 
 const scrollEl = useTemplateRef('scrollEl')
 provideIntersectionObserver(scrollEl)
@@ -15,9 +18,7 @@ provideIntersectionObserver(scrollEl)
   <LayoutAppSlot name="page-header">
     <LayoutAppPageHeader class="px-3.5 flex gap-2 items-center">
       <Icon name="tabler:home" />
-      <p class="text-sm font-medium">
-        Home
-      </p>
+      <p class="text-sm font-medium">Home</p>
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
@@ -30,32 +31,15 @@ provideIntersectionObserver(scrollEl)
       </div>
 
       <div class="flex flex-col gap-2 *:w-full">
-        <PageRoomBrowseSection
-          title="Rooms"
-          :default-open="true"
-          class="h-fit"
-        >
+        <PageRoomBrowseSection title="Rooms" :default-open="true" class="h-fit">
           <template v-if="!isLoading">
-            <VisibleLazy
-              v-for="room in orphanedRooms.values()"
-              :key="room.room_id"
-              :height="72"
-              use-injection
-            >
-              <PageRoomBrowseCard
-                :room
-                :suggested="suggestedRooms.has(room.room_id)"
-              />
+            <VisibleLazy v-for="room in orphanedRooms.values()" :key="room.room_id" :height="72" use-injection>
+              <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
             </VisibleLazy>
           </template>
 
           <template v-else>
-            <VisibleLazy
-              v-for="i in 12"
-              :key="i"
-              :height="72"
-              use-injection
-            >
+            <VisibleLazy v-for="i in 12" :key="i" :height="72" use-injection>
               <USkeleton class="h-18 w-full" />
             </VisibleLazy>
           </template>
@@ -73,20 +57,12 @@ provideIntersectionObserver(scrollEl)
             :member-count="space.num_joined_members"
             avatar-placeholder
           >
-            <PageRoomBrowseSubspace
-              :space="space"
-              :open
-              :count="space.roomCount"
-            />
+            <PageRoomBrowseSubspace :space="space" :open :count="space.roomCount" />
           </PageRoomBrowseSection>
         </template>
 
         <template v-else>
-          <USkeleton
-            v-for="key in 4"
-            :key
-            class="h-12"
-          />
+          <USkeleton v-for="key in 4" :key class="h-12" />
         </template>
       </div>
     </div>

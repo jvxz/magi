@@ -12,18 +12,20 @@ const emit = defineEmits<{
 
 const open = shallowRef(false)
 
-const { r$ } = useRegle({ homeserver: '' }, {
-  homeserver: {
-    exists: withMessage(v => v ? !props.servers.includes(v.toString()) : true, 'This homeserver is already added'),
-    required: withMessage(required, 'Value must not be empty'),
+const { r$ } = useRegle(
+  { homeserver: '' },
+  {
+    homeserver: {
+      exists: withMessage(v => (v ? !props.servers.includes(v.toString()) : true), 'This homeserver is already added'),
+      required: withMessage(required, 'Value must not be empty'),
+    },
   },
-})
+)
 
 function handleSubmit() {
   r$.$touch()
 
-  if (!r$.homeserver.$value || r$.$error)
-    return
+  if (!r$.homeserver.$value || r$.$error) return
 
   open.value = false
   emit('serverSubmit', r$.homeserver.$value)
@@ -31,17 +33,18 @@ function handleSubmit() {
 
 const inputRef = useTemplateRef<UInputTemplateRef>('input')
 onStartTyping(() => {
-  if (inputRef.value)
-    inputRef.value.inputRef?.focus()
+  if (inputRef.value) inputRef.value.inputRef?.focus()
 })
 </script>
 
 <template>
   <UAlertDialogRoot
     v-model:open="open"
-    @update:open="(e) => {
-      if (e) r$.$reset()
-    }"
+    @update:open="
+      e => {
+        if (e) r$.$reset()
+      }
+    "
   >
     <UAlertDialogTrigger as-child>
       <UAsideListButton>
@@ -52,18 +55,11 @@ onStartTyping(() => {
 
     <UAlertDialogContent>
       <VisuallyHidden>
-        <UAlertDialogTitle>
-          Enter a homeserver URL
-        </UAlertDialogTitle>
+        <UAlertDialogTitle> Enter a homeserver URL </UAlertDialogTitle>
       </VisuallyHidden>
 
       <form class="contents" @submit.prevent="handleSubmit">
-        <UInput
-          ref="input"
-          v-model="r$.$value.homeserver"
-          required
-          placeholder="matrix.org"
-        />
+        <UInput ref="input" v-model="r$.$value.homeserver" required placeholder="matrix.org" />
       </form>
 
       <UAlertDialogFooter class="flex w-full items-center">
@@ -74,9 +70,7 @@ onStartTyping(() => {
         </Transition>
 
         <div class="flex gap-2 items-center">
-          <UAlertDialogCancel>
-            Cancel
-          </UAlertDialogCancel>
+          <UAlertDialogCancel> Cancel </UAlertDialogCancel>
 
           <UAlertDialogAction :disabled="!r$.$dirty || r$.$error" @click="handleSubmit">
             Add server

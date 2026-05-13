@@ -19,14 +19,12 @@ export function useQuerySelector<T extends HTMLElement>(selector: MaybeRefOrGett
   const get = () => {
     try {
       const selector = selectorRef.value
-      if (!selector)
-        return undefined
+      if (!selector) return undefined
 
       const root = toValue(scope) ?? document.body
 
       return root.querySelector<T>(selector) ?? undefined
-    }
-    catch {
+    } catch {
       return undefined
     }
   }
@@ -35,8 +33,7 @@ export function useQuerySelector<T extends HTMLElement>(selector: MaybeRefOrGett
 
   const refresh = () => {
     const next = get()
-    if (element.value !== next)
-      element.value = next
+    if (element.value !== next) element.value = next
   }
 
   watch([selectorRef, scope], refresh)
@@ -45,8 +42,7 @@ export function useQuerySelector<T extends HTMLElement>(selector: MaybeRefOrGett
     useMutationObserver(
       scope,
       () => {
-        if (!element.value || !document.contains(element.value))
-          refresh()
+        if (!element.value || !document.contains(element.value)) refresh()
       },
       {
         childList: true,

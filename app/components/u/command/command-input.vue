@@ -8,9 +8,11 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<ListboxFilterProps & {
-  class?: HTMLAttributes['class']
-}>()
+const props = defineProps<
+  ListboxFilterProps & {
+    class?: HTMLAttributes['class']
+  }
+>()
 
 const delegatedProps = reactiveOmit(props, 'class')
 
@@ -26,7 +28,12 @@ const { filterState } = useCommand()
       v-bind="{ ...forwardedProps, ...$attrs }"
       v-model="filterState.search"
       auto-focus
-      :class="cn('mr-6 flex w-full text-sm outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50', props.class)"
+      :class="
+        cn(
+          'mr-6 flex w-full text-sm outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
+          props.class,
+        )
+      "
     />
   </div>
 </template>

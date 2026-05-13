@@ -1,6 +1,5 @@
-export default defineNuxtRouteMiddleware((to) => {
-  if (import.meta.server)
-    return
+export default defineNuxtRouteMiddleware(to => {
+  if (import.meta.server) return
 
   if (!('spaceId' in to.params)) {
     return navigateTo({
@@ -10,8 +9,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const lastRouteKey = getLastSpaceRouteKey(to.params.spaceId)
   const lastRoute = localStorage.getItem(lastRouteKey)
 
-  if (to.name === 'space' && lastRoute)
-    return navigateTo(lastRoute)
+  if (to.name === 'space' && lastRoute) return navigateTo(lastRoute)
 
   if (to.name !== 'space-browse' && !('roomId' in to.params)) {
     return navigateTo({

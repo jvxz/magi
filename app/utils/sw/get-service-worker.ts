@@ -1,6 +1,5 @@
 export async function getServiceWorker() {
-  if (!('serviceWorker' in navigator))
-    return
+  if (!('serviceWorker' in navigator)) return
 
   await withTimeout(() => navigator.serviceWorker.ready, 2000)
 

@@ -11,9 +11,7 @@ export default defineConfig<ConfigOptions>({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        ...(process.env.CI
-          ? { launchOptions: { args: ['--disable-dev-shm-usage'] } }
-          : {}),
+        ...(process.env.CI ? { launchOptions: { args: ['--disable-dev-shm-usage'] } } : {}),
       },
     },
   ],

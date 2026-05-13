@@ -45,8 +45,7 @@ function createTokenRefreshFunction(): TokenRefreshFunction {
   return async (refreshToken: string) => {
     try {
       const auth = await idb.getItem<AuthPayload>('auth')
-      if (!auth)
-        throw new TokenRefreshLogoutError()
+      if (!auth) throw new TokenRefreshLogoutError()
 
       const tempClient = createTempClient(withHttps(auth.baseUrl), {
         accessToken: auth.accessToken,
@@ -73,13 +72,12 @@ function createTokenRefreshFunction(): TokenRefreshFunction {
         expiry: expiresAt ? new Date(expiresAt) : undefined,
         refreshToken: refreshed.refresh_token,
       }
-    }
-    catch (error) {
-      if (error instanceof TokenRefreshLogoutError)
-        throw error
+    } catch (error) {
+      if (error instanceof TokenRefreshLogoutError) throw error
+
       if (error instanceof MatrixError) {
-        if (error.isRateLimitError())
-          throw error
+        if (error.isRateLimitError()) throw error
+
         if (error.errcode === 'M_UNKNOWN_TOKEN') {
           console.error('Unknown refresh token. Client will be unable to refresh')
           throw new TokenRefreshLogoutError()

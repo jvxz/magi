@@ -7,8 +7,7 @@ const Content = defineAsyncComponent(async () => {
   try {
     const c = await import(`~/components/settings/content/${props.category}.vue`)
     return c
-  }
-  catch {
+  } catch {
     return h('div', `Please create ~/components/settings/content/${props.category}.vue`)
   }
 })

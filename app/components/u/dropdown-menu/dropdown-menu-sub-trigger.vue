@@ -11,13 +11,7 @@ const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>
-  <DropdownMenuSubTrigger
-    v-bind="forwardedProps"
-    :class="cn(
-      popoverItemBase(),
-      props.class,
-    )"
-  >
+  <DropdownMenuSubTrigger v-bind="forwardedProps" :class="cn(popoverItemBase(), props.class)">
     <slot />
     <Icon name="tabler:chevron-right" class="ml-auto size-4" />
   </DropdownMenuSubTrigger>

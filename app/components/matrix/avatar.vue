@@ -5,29 +5,24 @@ export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   square?: boolean
   imageSize?: AvatarImageSize
 } & (
-  | { room: MaybeRoomOrId | undefined | null, user?: never, src?: never }
-  | { user: MaybeUserOrId | undefined | null, room?: never, src?: never }
-  | { src: string | undefined | null, room?: never, user?: never }
-)
+    | { room: MaybeRoomOrId | undefined | null; user?: never; src?: never }
+    | { user: MaybeUserOrId | undefined | null; room?: never; src?: never }
+    | { src: string | undefined | null; room?: never; user?: never }
+  )
 </script>
 
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<MatrixAvatarProps>(),
-  {
-    imageSize: 'small',
-  },
-)
+const props = withDefaults(defineProps<MatrixAvatarProps>(), {
+  imageSize: 'small',
+})
 
 const room = useRoom(() => props.room ?? undefined)
 const userProfile = useUserProfile(() => props.user ?? undefined)
 
 const roomOrUserUrl = computed(() => {
-  if (room.value)
-    return room.value.getMxcAvatarUrl() ?? undefined
+  if (room.value) return room.value.getMxcAvatarUrl() ?? undefined
 
-  if (userProfile.value)
-    return userProfile.value.avatar_url
+  if (userProfile.value) return userProfile.value.avatar_url
 
   return undefined
 })

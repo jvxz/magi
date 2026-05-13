@@ -1,1 +1,2 @@
-export const getLastSpaceRouteKey = (spaceId: MaybeRefOrGetter<string | undefined>) => `lastSpaceRoute:${toValue(spaceId)}`
+export const getLastSpaceRouteKey = (spaceId: MaybeRefOrGetter<string | undefined>) =>
+  `lastSpaceRoute:${toValue(spaceId)}`

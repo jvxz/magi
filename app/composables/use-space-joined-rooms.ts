@@ -4,8 +4,7 @@ export function useSpaceJoinedRooms(spaceId: MaybeRefOrGetter<MaybeRoomOrId | un
   const room = useRoom(spaceId)
 
   return computed(() => {
-    if (!room.value)
-      return []
+    if (!room.value) return []
 
     return getJoinedRooms(client.value, room.value)
   })

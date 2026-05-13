@@ -7,7 +7,7 @@ export default defineNuxtPlugin({
 
     useHotkeys([
       {
-        callback: () => open.value = !open.value,
+        callback: () => (open.value = !open.value),
         hotkey: 'Mod+,',
       },
     ])

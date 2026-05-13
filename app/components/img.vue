@@ -20,18 +20,19 @@ const props = defineProps<ImgProps>()
 const error = shallowRef(false)
 const loaded = shallowRef(false)
 
-watch(() => props.src, () => {
-  error.value = false
-  loaded.value = false
-})
+watch(
+  () => props.src,
+  () => {
+    error.value = false
+    loaded.value = false
+  },
+)
 
 function handleCached(e: any) {
   const el = e.el as HTMLImageElement
-  if (!(el instanceof HTMLImageElement))
-    return
+  if (!(el instanceof HTMLImageElement)) return
 
-  if (el.complete && el.naturalWidth > 0)
-    loaded.value = true
+  if (el.complete && el.naturalWidth > 0) loaded.value = true
 }
 </script>
 
@@ -43,20 +44,21 @@ function handleCached(e: any) {
     :width="size ?? width ?? 400"
     :height="size ?? height ?? 400"
     :src="!src ? IMG_PLACEHOLDER_URL : src"
-    :class="cn(
-      'select-none relative',
-      props.class,
-    )"
+    :class="cn('select-none relative', props.class)"
     :data-loaded="loaded ? 'true' : 'false'"
     :data-error="error ? 'true' : 'false'"
-    @load="(e: Event) => {
-      loaded = true
-      onLoad?.(e)
-    }"
-    @error="(e) => {
-      error = true
-      onError?.(e)
-    }"
+    @load="
+      (e: Event) => {
+        loaded = true
+        onLoad?.(e)
+      }
+    "
+    @error="
+      e => {
+        error = true
+        onError?.(e)
+      }
+    "
     @vue:mounted="handleCached"
   />
 </template>

@@ -1,11 +1,9 @@
 export default defineNuxtRouteMiddleware(({ params }) => {
   function getBaseUrl() {
     const baseUrl = 'baseUrl' in params ? params.baseUrl : undefined
-    if (!baseUrl)
-      return MATRIX_BASE_URL
+    if (!baseUrl) return MATRIX_BASE_URL
 
-    if (Array.isArray(baseUrl))
-      return baseUrl[0]
+    if (Array.isArray(baseUrl)) return baseUrl[0]
 
     return baseUrl
   }
@@ -20,8 +18,7 @@ export default defineNuxtRouteMiddleware(({ params }) => {
 
   const { host, pathname, protocol } = parseURL(baseUrl)
 
-  if (pathname)
-    return
+  if (pathname) return
 
   if (!host) {
     return navigateTo({

@@ -55,8 +55,7 @@ function acquire(roomId: string, userId: string) {
 
 function release(key: Key) {
   const entry = cache.get(key)
-  if (!entry)
-    return
+  if (!entry) return
 
   entry.subs--
 
@@ -66,33 +65,44 @@ function release(key: Key) {
   }
 }
 
-export function useRoomMember(roomId: MaybeRefOrGetter<MaybeRoomOrId | undefined>, userId: MaybeRefOrGetter<MaybeUserOrId | undefined>) {
+export function useRoomMember(
+  roomId: MaybeRefOrGetter<MaybeRoomOrId | undefined>,
+  userId: MaybeRefOrGetter<MaybeUserOrId | undefined>,
+) {
   const roomIdRef = toRef(roomId)
   const userIdRef = toRef(userId)
 
   const member = shallowRef<Value>()
 
-  watch([roomIdRef, userIdRef], (_arr, _prev, onCleanup) => {
-    const roomId = roomIdRef.value && resolveRoomId(roomIdRef.value)
-    const userId = userIdRef.value && resolveUserId(userIdRef.value)
+  watch(
+    [roomIdRef, userIdRef],
+    (_arr, _prev, onCleanup) => {
+      const roomId = roomIdRef.value && resolveRoomId(roomIdRef.value)
+      const userId = userIdRef.value && resolveUserId(userIdRef.value)
 
-    if (!roomId || !userId) {
-      member.value = undefined
-      return
-    }
+      if (!roomId || !userId) {
+        member.value = undefined
+        return
+      }
 
-    const entry = acquire(roomId, userId)
+      const entry = acquire(roomId, userId)
 
-    const { stop } = watch(entry.ref, (value) => {
-      member.value = value
-      triggerRef(member)
-    }, { immediate: true })
+      const { stop } = watch(
+        entry.ref,
+        value => {
+          member.value = value
+          triggerRef(member)
+        },
+        { immediate: true },
+      )
 
-    onCleanup(() => {
-      stop()
-      release(createKey(roomId, userId))
-    })
-  }, { immediate: true })
+      onCleanup(() => {
+        stop()
+        release(createKey(roomId, userId))
+      })
+    },
+    { immediate: true },
+  )
 
   return member
 }

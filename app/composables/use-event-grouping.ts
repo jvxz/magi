@@ -32,8 +32,7 @@ export function useEventGrouping(opts: Opts) {
       const withinWindow = currentGroupTsCutoff !== -1 && event.getTs() < currentGroupTsCutoff
       const shouldGroup = !!(sameSender && sameEventType && withinWindow && !isReply)
 
-      if (!shouldGroup)
-        currentGroupTsCutoff = event.getTs() + GROUP_WINDOW_MS
+      if (!shouldGroup) currentGroupTsCutoff = event.getTs() + GROUP_WINDOW_MS
 
       grouped.push(shouldGroup)
       events.push(event)
@@ -48,14 +47,12 @@ export function useEventGrouping(opts: Opts) {
 }
 
 function getPreviousEvent(eventList: MatrixEvent[], event: MatrixEvent | undefined) {
-  if (!event)
-    return
+  if (!event) return
 
   for (let i = 0; i < eventList.length; i++) {
     const eventTarget = eventList[i]
     assert(eventTarget, '`eventTarget` was undefined when getting previous event')
 
-    if (eventTarget.getId() === event.getId())
-      return i === 0 ? undefined : eventList.at(i - 1)
+    if (eventTarget.getId() === event.getId()) return i === 0 ? undefined : eventList.at(i - 1)
   }
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const { icon = 'tabler:hash' } = defineProps<{
-  icon: string
+  icon?: string
 }>()
 </script>
 

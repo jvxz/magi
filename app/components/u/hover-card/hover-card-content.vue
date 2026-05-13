@@ -3,12 +3,9 @@ import type { HoverCardContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { useForwardProps } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<HoverCardContentProps & { class?: HTMLAttributes['class'] }>(),
-  {
-    sideOffset: 8,
-  },
-)
+const props = withDefaults(defineProps<HoverCardContentProps & { class?: HTMLAttributes['class'] }>(), {
+  sideOffset: 8,
+})
 
 const delegatedProps = reactiveOmit(props, 'class')
 
@@ -17,16 +14,7 @@ const forwardedProps = useForwardProps(delegatedProps)
 
 <template>
   <HoverCardPortal>
-    <HoverCardContent
-      v-bind="forwardedProps"
-      :class="
-        cn(
-          popoverContentBase(),
-          'w-64 p-4 text-sm',
-          props.class,
-        )
-      "
-    >
+    <HoverCardContent v-bind="forwardedProps" :class="cn(popoverContentBase(), 'w-64 p-4 text-sm', props.class)">
       <slot />
     </HoverCardContent>
   </HoverCardPortal>

@@ -3,10 +3,9 @@ import type { AlertDialogCancelProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type { ButtonProps } from '../button.vue'
 
-const props = withDefaults(
-  defineProps<AlertDialogCancelProps & ButtonProps & { class?: HTMLAttributes['class'] }>(),
-  { variant: 'ghost' },
-)
+const props = withDefaults(defineProps<AlertDialogCancelProps & ButtonProps & { class?: HTMLAttributes['class'] }>(), {
+  variant: 'ghost',
+})
 
 const delegatedProps = reactiveOmit(props, 'class')
 </script>
@@ -14,13 +13,15 @@ const delegatedProps = reactiveOmit(props, 'class')
 <template>
   <AlertDialogCancel
     v-bind="delegatedProps"
-    :class="cn(
-      buttonVariants({
-        variant,
-        size,
-      }),
-      props.class,
-    )"
+    :class="
+      cn(
+        buttonVariants({
+          variant,
+          size,
+        }),
+        props.class,
+      )
+    "
   >
     <slot />
   </AlertDialogCancel>

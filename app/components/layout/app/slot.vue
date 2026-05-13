@@ -15,11 +15,7 @@ const isAlive = useAlive()
 </script>
 
 <template>
-  <Teleport
-    v-if="isAlive"
-    defer
-    :to
-  >
+  <Teleport v-if="isAlive" defer :to>
     <slot />
   </Teleport>
 </template>

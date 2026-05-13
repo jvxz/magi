@@ -1,4 +1,14 @@
-import type { EventTimelineSet, IRoomSummary, Listener, MatrixEvent, Room, RoomEmittedEvents, RoomEventHandlerMap, RoomMember, RoomState } from 'matrix-js-sdk'
+import type {
+  EventTimelineSet,
+  IRoomSummary,
+  Listener,
+  MatrixEvent,
+  Room,
+  RoomEmittedEvents,
+  RoomEventHandlerMap,
+  RoomMember,
+  RoomState,
+} from 'matrix-js-sdk'
 import { toRef } from '@vueuse/core'
 import { RoomEvent, RoomStateEvent } from 'matrix-js-sdk'
 
@@ -23,34 +33,42 @@ export function useRoomHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefin
   const disposers: (() => void)[] = []
   const cleanup = () => disposers.forEach(disposer => disposer())
 
-  watch(room, (room) => {
-    cleanup()
+  watch(
+    room,
+    room => {
+      cleanup()
 
-    bindListener(RoomEvent.Timeline, params?.onTimeline, disposers, room)
-    bindListener(RoomEvent.TimelineRefresh, params?.onTimelineRefresh, disposers, room)
-    bindListener(RoomEvent.TimelineReset, params?.onTimelineReset, disposers, room)
-    bindListener(RoomEvent.CurrentStateUpdated, params?.onCurrentStateUpdated, disposers, room)
-    bindListener(RoomStateEvent.Members, params?.onMemberUpdate, disposers, room)
-    bindListener(RoomEvent.AccountData, params?.onAccountData, disposers, room)
-    bindListener(RoomStateEvent.Members, params?.onMembers, disposers, room)
-    bindListener(RoomEvent.Summary, params?.onSummary, disposers, room)
-  }, { immediate: true })
+      bindListener(RoomEvent.Timeline, params?.onTimeline, disposers, room)
+      bindListener(RoomEvent.TimelineRefresh, params?.onTimelineRefresh, disposers, room)
+      bindListener(RoomEvent.TimelineReset, params?.onTimelineReset, disposers, room)
+      bindListener(RoomEvent.CurrentStateUpdated, params?.onCurrentStateUpdated, disposers, room)
+      bindListener(RoomStateEvent.Members, params?.onMemberUpdate, disposers, room)
+      bindListener(RoomEvent.AccountData, params?.onAccountData, disposers, room)
+      bindListener(RoomStateEvent.Members, params?.onMembers, disposers, room)
+      bindListener(RoomEvent.Summary, params?.onSummary, disposers, room)
+    },
+    { immediate: true },
+  )
 
-  params?.onRoomMemberTyping && roomMemberTypingHook.on((event, member) => {
-    params?.onRoomMemberTyping?.(event, member)
-  })
+  params?.onRoomMemberTyping &&
+    roomMemberTypingHook.on((event, member) => {
+      params?.onRoomMemberTyping?.(event, member)
+    })
 
   onScopeDispose(cleanup)
 }
 
-function bindListener<T extends RoomEmittedEvents>(event: T, listener: EmitterListener<T> | undefined, disposers: (() => void)[], room: Room | undefined) {
-  if (!room || !listener)
-    return
+function bindListener<T extends RoomEmittedEvents>(
+  event: T,
+  listener: EmitterListener<T> | undefined,
+  disposers: (() => void)[],
+  room: Room | undefined,
+) {
+  if (!room || !listener) return
 
   room.on<T>(event, listener)
 
   disposers.push(() => {
-    if (room)
-      room.off<T>(event, listener)
+    if (room) room.off<T>(event, listener)
   })
 }

@@ -12,14 +12,12 @@ const { page } = usePublicRoomsState(props.baseUrl)
 
 function handlePaginate(dir: 'f' | 'b') {
   if (dir === 'f') {
-    if (props.canPaginateForward)
-      page.value += 1
+    if (props.canPaginateForward) page.value += 1
 
     return
   }
 
-  if (props.canPaginateBackward)
-    page.value -= 1
+  if (props.canPaginateBackward) page.value -= 1
 }
 </script>
 
@@ -34,9 +32,7 @@ function handlePaginate(dir: 'f' | 'b') {
 
     <div class="text-sm font-medium mx-auto">
       <template v-if="!error">
-        <p v-if="!isFetchingInitial">
-          Page {{ page }}
-        </p>
+        <p v-if="!isFetchingInitial">Page {{ page }}</p>
         <USkeleton v-else class="h-1lh w-16" />
       </template>
     </div>

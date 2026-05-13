@@ -60,11 +60,7 @@ const isPaginating = shallowRef(false)
       </template>
       <template v-else>
         <UAsideListTab
-          v-for="room in [
-            createMockRoom(250, '250'),
-            createMockRoom(500, '500'),
-            createMockRoom(750, '750'),
-          ]"
+          v-for="room in [createMockRoom(250, '250'), createMockRoom(500, '500'), createMockRoom(750, '750')]"
           :key="room.name"
           :data-testid="`mock-room-${room.roomId}`"
           :to="{
@@ -93,10 +89,7 @@ const isPaginating = shallowRef(false)
 
   <div v-if="currentRoom" class="flex flex-1 size-full">
     <div class="flex flex-col size-full relative">
-      <PageRoomEventList
-        :room="currentRoom"
-        @is-paginating="isPaginating = $event"
-      />
+      <PageRoomEventList :room="currentRoom" @is-paginating="isPaginating = $event" />
       <PageRoomInput />
     </div>
 

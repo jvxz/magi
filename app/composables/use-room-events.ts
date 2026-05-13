@@ -3,7 +3,12 @@ import { Direction } from 'matrix-js-sdk'
 
 export const BATCH_SIZE = 80
 
-type Hooks = Prettify<Pick<Required<NonNullable<Parameters<typeof useRoomHooks>[1]>>, 'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'>>
+type Hooks = Prettify<
+  Pick<
+    Required<NonNullable<Parameters<typeof useRoomHooks>[1]>>,
+    'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'
+  >
+>
 
 const roomEventsFullyLoadedSet = reactive(new Set<string>())
 
@@ -16,10 +21,8 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
   const isFullyLoaded = computed({
     get: () => roomEventsFullyLoadedSet.has(room.value.roomId),
     set: (v: boolean) => {
-      if (v)
-        roomEventsFullyLoadedSet.add(room.value.roomId)
-      else
-        roomEventsFullyLoadedSet.delete(room.value.roomId)
+      if (v) roomEventsFullyLoadedSet.add(room.value.roomId)
+      else roomEventsFullyLoadedSet.delete(room.value.roomId)
     },
   })
 
@@ -33,40 +36,37 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
 
   let currentBatchSize = BATCH_SIZE
   const mutex = new Mutex()
-  const { isPending: isScrolling, mutate: scrollEvents, mutateAsync: scrollEventsAsync, status: scrollEventsStatus } = useMutation({
+  const {
+    isPending: isScrolling,
+    mutate: scrollEvents,
+    mutateAsync: scrollEventsAsync,
+    status: scrollEventsStatus,
+  } = useMutation({
     mutationFn: async (dir: Direction) => {
-      if (mutex.isLocked)
-        return
+      if (mutex.isLocked) return
 
       await mutex.acquire()
       try {
         const r = toValue(room)
-        if (!r)
-          return
+        if (!r) return
 
         const targetRoomId = r.roomId
 
         if (dir === Direction.Backward) {
-          const canLoadMore = await retry(
-            scrollBack,
-            {
-              delay: (attempts) => {
-                currentBatchSize = currentBatchSize + 10
-                return attempts * 50
-              },
-              retries: 6,
-              shouldRetry: err => err instanceof $Error,
+          const canLoadMore = await retry(scrollBack, {
+            delay: attempts => {
+              currentBatchSize = currentBatchSize + 10
+              return attempts * 50
             },
-          )
+            retries: 6,
+            shouldRetry: err => err instanceof $Error,
+          })
 
-          if (targetRoomId === toValue(room).roomId)
-            isFullyLoaded.value = !canLoadMore
+          if (targetRoomId === toValue(room).roomId) isFullyLoaded.value = !canLoadMore
         }
 
-        if (targetRoomId === toValue(room).roomId)
-          sync()
-      }
-      finally {
+        if (targetRoomId === toValue(room).roomId) sync()
+      } finally {
         mutex.release()
         currentBatchSize = BATCH_SIZE
       }
@@ -96,13 +96,11 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
   })
 
   const { onDecrypted } = useMatrixHooks()
-  onDecrypted((event) => {
-    if (room.value.roomId !== event.getRoomId())
-      return
+  onDecrypted(event => {
+    if (room.value.roomId !== event.getRoomId()) return
 
     const id = event.getId()
-    if (!id)
-      return
+    if (!id) return
 
     eventVersions.set(id, (eventVersions.get(id) ?? 0) + 1)
   })
@@ -112,8 +110,7 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
   }
 
   async function scrollBack() {
-    if (isFullyLoaded.value)
-      return false
+    if (isFullyLoaded.value) return false
 
     const tl = room.value.getLiveTimeline()
     const prevLen = tl.getEvents().length
@@ -122,8 +119,7 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
     const newLen = tl.getEvents().length
 
     if (prevLen === newLen) {
-      if (!canLoadMore)
-        return false
+      if (!canLoadMore) return false
 
       throw new $Error('previous event length equals new event length')
     }

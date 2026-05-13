@@ -9,9 +9,7 @@ definePageMeta({
   <LayoutAppSlot name="aside-header">
     <div class="p-2.5 size-full">
       <UButton variant="soft" class="py-4 w-full">
-        <p class="text-xs">
-          Find or start a conversation
-        </p>
+        <p class="text-xs">Find or start a conversation</p>
       </UButton>
     </div>
   </LayoutAppSlot>
@@ -27,9 +25,7 @@ definePageMeta({
       <div class="px-6 flex gap-2 h-full items-center">
         <div class="flex gap-2 items-center">
           <Icon name="tabler:door" />
-          <p>
-            Recent rooms
-          </p>
+          <p>Recent rooms</p>
         </div>
       </div>
     </LayoutAppPageHeader>

@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import { AutocompleteCancel, useForwardProps } from 'reka-ui'
 
 const props = withDefaults(
-  defineProps<ComboboxCancelProps & { class?: HTMLAttributes['class'], size?: 'sm' | 'default' }>(),
+  defineProps<ComboboxCancelProps & { class?: HTMLAttributes['class']; size?: 'sm' | 'default' }>(),
   { size: 'default' },
 )
 
@@ -17,10 +17,7 @@ const forwarded = useForwardProps(delegatedProps)
     data-slot="autocomplete-cancel"
     :data-size="size"
     v-bind="forwarded"
-    :class="cn(
-      interactiveBase({ size: 'icon' }),
-      props.class,
-    )"
+    :class="cn(interactiveBase({ size: 'icon' }), props.class)"
   >
     <slot>
       <Icon name="tabler:x" class="text-muted-foreground size-3.5" />

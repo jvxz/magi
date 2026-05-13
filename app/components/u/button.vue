@@ -20,12 +20,14 @@ const loading = computed(() => toValue(props.isLoading))
     v-if="asChild"
     :disabled="toValue(disabled) || loading"
     :data-variant="variant"
-    :class="cn(
-      buttonVariants({ variant, size }),
-      props.class,
-      loading && 'pointer-events-none',
-      toValue(disabled) && 'pointer-events-none',
-    )"
+    :class="
+      cn(
+        buttonVariants({ variant, size }),
+        props.class,
+        loading && 'pointer-events-none',
+        toValue(disabled) && 'pointer-events-none',
+      )
+    "
     :aria-busy="loading || undefined"
   >
     <slot />
@@ -34,18 +36,10 @@ const loading = computed(() => toValue(props.isLoading))
     v-else
     :disabled="toValue(disabled) || loading"
     :data-variant="variant"
-    :class="cn(
-      buttonVariants({ variant, size }),
-      props.class,
-      toValue(disabled) && 'pointer-events-none',
-    )"
+    :class="cn(buttonVariants({ variant, size }), props.class, toValue(disabled) && 'pointer-events-none')"
     :aria-busy="loading || undefined"
   >
-    <LazyUSpinner
-      v-if="loading"
-      :invert="true"
-      class="shrink-0 size-4.5"
-    />
+    <LazyUSpinner v-if="loading" :invert="true" class="shrink-0 size-4.5" />
     <span v-else class="contents"><slot /></span>
   </button>
 </template>
