@@ -81,7 +81,7 @@ watch(() => r$.$value.homeserver, () => {
               reset-search-term-on-blur
             >
               <UAutocompleteAnchor class="border-muted bg-card h-10 group-data-[error]:border-danger">
-                <UAutocompleteInput :show-icon="false" data-testid="homeserver-input" />
+                <UAutocompleteInput :show-icon="false" data-testid="homeserver-input" class="shrink" />
                 <UAutocompleteTrigger>
                   <Icon name="tabler:chevron-down" class="text-muted-foreground size-3.25!" />
                 </UAutocompleteTrigger>
