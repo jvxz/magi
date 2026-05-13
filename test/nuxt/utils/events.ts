@@ -23,7 +23,7 @@ export function generateMembershipEvents(count: number) {
   )
 }
 
-export function generateFakeRoomId() {
+function generateFakeRoomId() {
   return `!${faker.word.sample()}.${generateFakeHomeserver()}`
 }
 
@@ -39,7 +39,7 @@ function generateFakeEventId() {
   return `$${faker.number.float()}-${faker.number.float()}`
 }
 
-export function mkMatrixEvent(opts: {
+function mkMatrixEvent(opts: {
   roomId: string
   sender: string
   type: EventType | string

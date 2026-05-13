@@ -17,7 +17,7 @@ export async function mockLogin(page: TestArgs['page']) {
   }, MOCK_AUTH_KEY)
 }
 
-export async function mockLogout(page: TestArgs['page'], reload = true) {
+async function _mockLogout(page: TestArgs['page'], reload = true) {
   await page.addInitScript(k => window.localStorage.removeItem(k), MOCK_AUTH_KEY)
   if (reload) await page.reload()
 }
