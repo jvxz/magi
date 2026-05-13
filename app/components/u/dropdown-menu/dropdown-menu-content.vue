@@ -4,12 +4,9 @@ import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>(),
-  {
-    sideOffset: 6,
-  },
-)
+const props = withDefaults(defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>(), {
+  sideOffset: 6,
+})
 const emits = defineEmits<DropdownMenuContentEmits>()
 
 const delegatedProps = reactiveOmit(props, 'class')
@@ -19,10 +16,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 <template>
   <DropdownMenuPortal>
-    <DropdownMenuContent
-      v-bind="forwarded"
-      :class="cn(popoverContentBase(), props.class)"
-    >
+    <DropdownMenuContent v-bind="forwarded" :class="cn(popoverContentBase(), props.class)">
       <slot />
     </DropdownMenuContent>
   </DropdownMenuPortal>

@@ -16,31 +16,20 @@ const motionProps: MotionProps = {
   animate: { opacity: 1, scale: 1, y: 0 },
   exit: { opacity: 0, y: -20 },
   initial: { opacity: 0, y: 20 },
-  transition: { duration: 0.20, ease: [0.33, 1, 0.68, 1] },
+  transition: { duration: 0.2, ease: [0.33, 1, 0.68, 1] },
 }
 </script>
 
 <template>
   <div class="text-sm font-medium flex w-auto items-center justify-center relative">
     <AnimatePresence mode="popLayout" :initial="false">
-      <motion.div
-        v-if="!status.clientState && !showInitializing"
-        key="room"
-        v-bind="motionProps"
-      >
+      <motion.div v-if="!status.clientState && !showInitializing" key="room" v-bind="motionProps">
         {{ roomLabel }}
       </motion.div>
 
-      <motion.div
-        v-else-if="showInitializing"
-        key="ready"
-        class="flex gap-2 items-center"
-        v-bind="motionProps"
-      >
+      <motion.div v-else-if="showInitializing" key="ready" class="flex gap-2 items-center" v-bind="motionProps">
         <USpinner class="size-4" />
-        <p class="text-sm font-medium">
-          Initializing
-        </p>
+        <p class="text-sm font-medium">Initializing</p>
       </motion.div>
 
       <motion.div
@@ -50,9 +39,7 @@ const motionProps: MotionProps = {
         v-bind="motionProps"
       >
         <Icon name="tabler:cloud-off" class="text-danger animate-pulse-alt" />
-        <p class="text-danger">
-          Disconnected
-        </p>
+        <p class="text-danger">Disconnected</p>
       </motion.div>
 
       <motion.div
@@ -62,9 +49,7 @@ const motionProps: MotionProps = {
         v-bind="motionProps"
       >
         <USpinner class="size-4 stroke-orange-900" />
-        <p class="text-sm text-orange-400 font-medium">
-          Reconnecting
-        </p>
+        <p class="text-sm text-orange-400 font-medium">Reconnecting</p>
       </motion.div>
     </AnimatePresence>
   </div>

@@ -7,8 +7,7 @@ import { useForwardPropsEmits } from 'reka-ui'
 export function resolveAsideListTabValue(route: RouteLocationRaw, router: Router) {
   const { name, params } = router.resolve(route)
 
-  if (!params)
-    return name
+  if (!params) return name
 
   return Object.values(params).join('-')
 }

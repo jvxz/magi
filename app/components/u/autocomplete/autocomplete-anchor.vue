@@ -14,11 +14,14 @@ const forwarded = useForwardProps(delegatedProps)
   <AutocompleteAnchor
     data-slot="autocomplete-anchor"
     v-bind="forwarded"
-    :class="cn(
-      staticBase({ variant: 'default' }), interactiveBase({ size: 'default' }),
-      'flex items-center justify-between pr-0 data-placeholder:text-muted-foreground',
-      props.class,
-    )"
+    :class="
+      cn(
+        staticBase({ variant: 'default' }),
+        interactiveBase({ size: 'default' }),
+        'flex items-center justify-between pr-0 data-placeholder:text-muted-foreground',
+        props.class,
+      )
+    "
   >
     <slot />
   </AutocompleteAnchor>

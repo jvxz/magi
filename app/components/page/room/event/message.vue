@@ -17,7 +17,9 @@ const eventProfile = useUserProfile(() => props.event.getSender())
 const eventUser = useUser<true>(() => props.event.getSender())
 
 const { content: replyEventContent, isRedacted: isReplyEventRedacted } = useEventContent(() => replyEvent.value)
-const replyEventBody = computed(() => isReplyEventRedacted.value ? 'Original message was deleted' : formatReplyPreviewBody(replyEventContent.value?.body))
+const replyEventBody = computed(() =>
+  isReplyEventRedacted.value ? 'Original message was deleted' : formatReplyPreviewBody(replyEventContent.value?.body),
+)
 const replyEventProfile = useUserProfile(() => replyEvent.value?.getSender())
 
 const isDecrypting = computed(() => props.event.isBeingDecrypted())
@@ -56,16 +58,8 @@ const contentProps: PopoverContentProps = {
         <Icon name="custom:reply" class="text-muted-foreground shrink-0 h-6 w-12 translate-x-2.5 translate-y-1" />
 
         <div class="ms-1.5 size-3.5 aspect-square">
-          <MatrixAvatar
-            v-if="!isReplyEventRedacted"
-            class="size-full"
-            :user="replyEvent?.getSender()"
-          />
-          <Icon
-            v-else
-            class="text-muted-foreground -translate-y-0.5"
-            name="tabler:arrow-back-up"
-          />
+          <MatrixAvatar v-if="!isReplyEventRedacted" class="size-full" :user="replyEvent?.getSender()" />
+          <Icon v-else class="text-muted-foreground -translate-y-0.5" name="tabler:arrow-back-up" />
         </div>
 
         <template v-if="!isReplyEventLoading">
@@ -76,7 +70,10 @@ const contentProps: PopoverContentProps = {
           <p
             v-if="!isReplyEventRedacted"
             class="max-w-2/3 truncate"
-            :class="{ 'italic text-muted-foreground': replyEvent?.isDecryptionFailure() || !replyEventBody || isReplyEventRedacted }"
+            :class="{
+              'italic text-muted-foreground':
+                replyEvent?.isDecryptionFailure() || !replyEventBody || isReplyEventRedacted,
+            }"
           >
             {{ replyEventBody }}
           </p>
@@ -88,11 +85,7 @@ const contentProps: PopoverContentProps = {
 
       <div class="flex gap-4">
         <PageRoomEventMessageMemberContextMenu as-child>
-          <UProfilePopoverTrigger
-            :content-props
-            :user="eventUser"
-            as-child
-          >
+          <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
             <PageRoomEventMessageAvatar :user="eventUser ?? undefined" :ghost="grouped" />
           </UProfilePopoverTrigger>
         </PageRoomEventMessageMemberContextMenu>
@@ -100,11 +93,7 @@ const contentProps: PopoverContentProps = {
         <PageRoomEventMessageContent>
           <template v-if="!grouped && isDefined(event.getTs())" #header>
             <PageRoomEventMessageMemberContextMenu as-child>
-              <UProfilePopoverTrigger
-                :content-props
-                :user="eventUser"
-                as-child
-              >
+              <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
                 <UButton variant="link">
                   {{ eventProfile?.displayname }}
                 </UButton>
@@ -119,9 +108,7 @@ const contentProps: PopoverContentProps = {
             :content="eventBody"
             :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body }"
           />
-          <p v-else class="italic">
-            Decrypting message...
-          </p>
+          <p v-else class="italic">Decrypting message...</p>
         </PageRoomEventMessageContent>
 
         <UContextMenuContent>

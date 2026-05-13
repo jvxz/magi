@@ -6,7 +6,10 @@ const props = defineProps<{
   event: MatrixEvent
 }>()
 
-assert(props.event.getType() === EventType.RoomMember, 'Event provided in PageRoomEventMember is not a RoomMember event')
+assert(
+  props.event.getType() === EventType.RoomMember,
+  'Event provided in PageRoomEventMember is not a RoomMember event',
+)
 const body = computed(() => {
   const parsed = parseMembershipEvent(props.event)
   if (parsed.type === 'ban') {

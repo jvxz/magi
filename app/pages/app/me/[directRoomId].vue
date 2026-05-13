@@ -2,7 +2,7 @@
 definePageMeta({
   layout: 'app',
   middleware: ({ params }) => {
-    if (('directRoomId' in params) && !params.directRoomId) {
+    if ('directRoomId' in params && !params.directRoomId) {
       return navigateTo({
         name: 'me',
       })

@@ -3,15 +3,20 @@ import type { ToggleEmits, ToggleProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { Toggle, useForwardPropsEmits } from 'reka-ui'
 
-const props = withDefaults(defineProps<ToggleProps & {
-  class?: HTMLAttributes['class']
-  variant?: ToggleVariants['variant']
-  size?: ToggleVariants['size']
-}>(), {
-  disabled: false,
-  size: 'default',
-  variant: 'ghost',
-})
+const props = withDefaults(
+  defineProps<
+    ToggleProps & {
+      class?: HTMLAttributes['class']
+      variant?: ToggleVariants['variant']
+      size?: ToggleVariants['size']
+    }
+  >(),
+  {
+    disabled: false,
+    size: 'default',
+    variant: 'ghost',
+  },
+)
 
 const emits = defineEmits<ToggleEmits>()
 

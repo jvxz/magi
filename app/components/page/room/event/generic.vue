@@ -18,8 +18,5 @@ const type = computed(() => props.event.getType())
     :grouped
     :room
   />
-  <PageRoomEventMember
-    v-else-if="type === EventType.RoomMember"
-    :event
-  />
+  <PageRoomEventMember v-else-if="type === EventType.RoomMember" :event />
 </template>

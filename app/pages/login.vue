@@ -20,20 +20,29 @@ const { r$ } = useRegle(
   },
 )
 
-const runCheck = useDebounceFn(async () => r$.$value.homeserver?.trim() ? validateHomeserver(r$.$value.homeserver.trim(), true) : false, 300)
-const { data: isHomeserverValid, error: homeserverError, execute, pending } = useAsyncData(
-  runCheck,
-  {
-    default: () => true,
-    immediate: true,
-    lazy: false,
-    server: false,
-    timeout: 10000,
-  },
+const runCheck = useDebounceFn(
+  async () => (r$.$value.homeserver?.trim() ? validateHomeserver(r$.$value.homeserver.trim(), true) : false),
+  300,
 )
+const {
+  data: isHomeserverValid,
+  error: homeserverError,
+  execute,
+  pending,
+} = useAsyncData(runCheck, {
+  default: () => true,
+  immediate: true,
+  lazy: false,
+  server: false,
+  timeout: 10000,
+})
 
 const { login } = useAuth()
-const { error: loginError, isPending: loginPending, mutate: handleLogin } = useMutation({
+const {
+  error: loginError,
+  isPending: loginPending,
+  mutate: handleLogin,
+} = useMutation({
   mutationFn: async () => {
     await login({
       baseUrl: r$.$value.homeserver,
@@ -49,10 +58,13 @@ const { error: loginError, isPending: loginPending, mutate: handleLogin } = useM
   },
 })
 
-watch(() => r$.$value.homeserver, () => {
-  homeserverError.value = undefined
-  execute()
-})
+watch(
+  () => r$.$value.homeserver,
+  () => {
+    homeserverError.value = undefined
+    execute()
+  },
+)
 </script>
 
 <template>
@@ -60,12 +72,8 @@ watch(() => r$.$value.homeserver, () => {
     <div class="py-12 rounded bg-card-lighter container flex size-fit w-lg shadow-xl">
       <div class="flex flex-col gap-10 h-full w-full">
         <div class="text-center flex flex-col gap-1 justify-center">
-          <h1 class="text-2xl font-medium">
-            Welcome back!
-          </h1>
-          <h2 class="text-muted-foreground">
-            We're so excited to see you again!
-          </h2>
+          <h1 class="text-2xl font-medium">Welcome back!</h1>
+          <h2 class="text-muted-foreground">We're so excited to see you again!</h2>
         </div>
         <div class="px-12 flex flex-col gap-4 items-center justify-center">
           <FormPrimitive
@@ -75,30 +83,19 @@ watch(() => r$.$value.homeserver, () => {
             :ui="{ container: 'text-base w-full' }"
             :error="(homeserverError ? upperFirst(homeserverError.message) : undefined) ?? r$.homeserver.$errors"
           >
-            <UAutocompleteRoot
-              v-model:model-value="r$.$value.homeserver"
-              class="group"
-              reset-search-term-on-blur
-            >
+            <UAutocompleteRoot v-model:model-value="r$.$value.homeserver" class="group" reset-search-term-on-blur>
               <UAutocompleteAnchor class="border-muted bg-card h-10 group-data-[error]:border-danger">
-                <UAutocompleteInput
-                  :show-icon="false"
-                  data-testid="homeserver-input"
-                  class="shrink"
-                />
+                <UAutocompleteInput :show-icon="false" data-testid="homeserver-input" class="shrink" />
                 <UAutocompleteTrigger>
                   <Icon name="tabler:chevron-down" class="text-muted-foreground size-3.25!" />
                 </UAutocompleteTrigger>
               </UAutocompleteAnchor>
+
               <UAutocompleteContent hide-when-empty>
                 <UAutocompleteViewport>
                   <UAutocompleteEmpty />
                   <UAutocompleteGroup>
-                    <UAutocompleteItem
-                      v-for="server in homeservers"
-                      :key="server"
-                      :value="server"
-                    >
+                    <UAutocompleteItem v-for="server in homeservers" :key="server" :value="server">
                       {{ server }}
                     </UAutocompleteItem>
                   </UAutocompleteGroup>

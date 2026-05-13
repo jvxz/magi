@@ -7,13 +7,18 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<AutocompleteInputProps & {
-  class?: HTMLAttributes['class']
-  showIcon?: boolean
-}>(), {
-  class: '',
-  showIcon: true,
-})
+const props = withDefaults(
+  defineProps<
+    AutocompleteInputProps & {
+      class?: HTMLAttributes['class']
+      showIcon?: boolean
+    }
+  >(),
+  {
+    class: '',
+    showIcon: true,
+  },
+)
 
 const emits = defineEmits<AutocompleteInputEmits>()
 
@@ -27,17 +32,10 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     data-slot="autocomplete-input-wrapper"
     :class="cn(staticBase(), interactiveBase({ size: 'default' }), 'flex items-center gap-2 px-0 w-full', props.class)"
   >
-    <Icon
-      v-if="props.showIcon"
-      name="tabler:search"
-      class="opacity-50 shrink-0 size-4"
-    />
+    <Icon v-if="props.showIcon" name="tabler:search" class="opacity-50 shrink-0 size-4" />
     <AutocompleteInput
       data-slot="autocomplete-input"
-      :class="cn(
-        'flex-1 outline-hidden ',
-        props.class,
-      )"
+      :class="cn('flex-1 outline-hidden ', props.class)"
       v-bind="{ ...$attrs, ...forwarded }"
     >
       <slot />

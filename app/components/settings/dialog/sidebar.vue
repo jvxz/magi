@@ -20,17 +20,20 @@ function categorySearchText<K extends SettingsCategory>(categoryKey: K): string 
   return [cat.key, cat.title, ...fromItems].join(' ')
 }
 
-const filteredCategories = computed(() => objectValues(SETTINGS_CATEGORY_METADATA).filter(cat => contains(categorySearchText(cat.key), searchQuery.value.trim())))
+const filteredCategories = computed(() =>
+  objectValues(SETTINGS_CATEGORY_METADATA).filter(cat =>
+    contains(categorySearchText(cat.key), searchQuery.value.trim()),
+  ),
+)
 </script>
 
 <template>
   <div class="p-4 rounded-l-lg bg-background flex shrink-0 flex-col gap-4 w-64">
-    <UButton variant="ghost" class="group text-foreground font-normal shrink-0 gap-3.5 h-14 w-full items-center justify-center">
-      <MatrixAvatar
-        :user="self?.userId"
-        :size="48"
-        class="shrink-0"
-      />
+    <UButton
+      variant="ghost"
+      class="group text-foreground font-normal shrink-0 gap-3.5 h-14 w-full items-center justify-center"
+    >
+      <MatrixAvatar :user="self?.userId" :size="48" class="shrink-0" />
       <div class="flex flex-col h-full w-full justify-evenly *:w-fit">
         <span class="font-medium">{{ self?.displayName }}</span>
         <span class="text-muted-foreground group-hover:text-foreground">
@@ -67,7 +70,9 @@ const filteredCategories = computed(() => objectValues(SETTINGS_CATEGORY_METADAT
         </UButton>
       </TabsTrigger>
 
-      <div class="rounded bg-card-lighter pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1" />
+      <div
+        class="rounded bg-card-lighter pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1"
+      />
     </TabsList>
   </div>
 </template>

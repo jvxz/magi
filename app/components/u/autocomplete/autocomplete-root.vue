@@ -9,12 +9,7 @@ const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <AutocompleteRoot
-    v-slot="slotProps"
-    data-slot="autocomplete"
-    v-bind="forwarded"
-    class="relative"
-  >
+  <AutocompleteRoot v-slot="slotProps" data-slot="autocomplete" v-bind="forwarded" class="relative">
     <slot v-bind="slotProps" />
   </AutocompleteRoot>
 </template>

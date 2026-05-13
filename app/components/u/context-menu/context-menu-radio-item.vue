@@ -13,13 +13,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
-  <ContextMenuRadioItem
-    v-bind="forwarded"
-    :class="cn(
-      popoverItemBase(),
-      props.class,
-    )"
-  >
+  <ContextMenuRadioItem v-bind="forwarded" :class="cn(popoverItemBase(), props.class)">
     <span class="flex size-3.5 pointer-events-none items-center left-2 justify-center absolute">
       <ContextMenuItemIndicator>
         <Icon name="tabler:circle-dot" class="!size-2" />

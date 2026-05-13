@@ -12,10 +12,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
-  <DropdownMenuSubContent
-    v-bind="forwarded"
-    :class="cn(popoverContentBase(), props.class)"
-  >
+  <DropdownMenuSubContent v-bind="forwarded" :class="cn(popoverContentBase(), props.class)">
     <slot />
   </DropdownMenuSubContent>
 </template>

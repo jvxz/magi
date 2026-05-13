@@ -7,16 +7,11 @@ const props = defineProps<{
 
 const { client } = useMatrixClient()
 
-const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 96, useAuthentication: true,
-})
+const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 96, useAuthentication: true })
 </script>
 
 <template>
-  <LayoutAppAsideButton
-    class="p-0 size-11 overflow-hidden"
-    :tooltip="room.name"
-    as-child
-  >
+  <LayoutAppAsideButton class="p-0 size-11 overflow-hidden" :tooltip="room.name" as-child>
     <NuxtLink
       :to="{
         name: 'space',
@@ -25,11 +20,7 @@ const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 
         },
       }"
     >
-      <Img
-        :src="avatar"
-        :alt="room.name"
-        class="size-full"
-      />
+      <Img :src="avatar" :alt="room.name" class="size-full" />
     </NuxtLink>
   </LayoutAppAsideButton>
 </template>

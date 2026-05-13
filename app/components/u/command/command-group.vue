@@ -4,23 +4,24 @@ import type { HTMLAttributes } from 'vue'
 import { computed, onMounted, onUnmounted, useId } from 'vue'
 import { provideCommandGroupContext, useCommand } from '.'
 
-const props = defineProps<ListboxGroupProps & {
-  class?: HTMLAttributes['class']
-  heading?: string
-  icon?: string
-}>()
+const props = defineProps<
+  ListboxGroupProps & {
+    class?: HTMLAttributes['class']
+    heading?: string
+    icon?: string
+  }
+>()
 
 const delegatedProps = reactiveOmit(props, 'class')
 
 const { allGroups, filterState } = useCommand()
 const id = useId()
 
-const isRender = computed(() => !filterState.search ? true : filterState.filtered.groups.has(id))
+const isRender = computed(() => (!filterState.search ? true : filterState.filtered.groups.has(id)))
 
 provideCommandGroupContext({ id })
 onMounted(() => {
-  if (!allGroups.value.has(id))
-    allGroups.value.set(id, new Set())
+  if (!allGroups.value.has(id)) allGroups.value.set(id, new Set())
 })
 onUnmounted(() => {
   allGroups.value.delete(id)
@@ -31,13 +32,18 @@ onUnmounted(() => {
   <ListboxGroup
     v-bind="delegatedProps"
     :id="id"
-    :class="cn(
-      'mb-1 overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-0 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-items]]:space-y-1',
-      props.class,
-    )"
+    :class="
+      cn(
+        'mb-1 overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-0 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-items]]:space-y-1',
+        props.class,
+      )
+    "
     :hidden="isRender ? undefined : true"
   >
-    <ListboxGroupLabel v-if="heading" class="text-xs text-muted-foreground font-medium my-0.5 px-2 py-1.5 flex gap-1 items-center">
+    <ListboxGroupLabel
+      v-if="heading"
+      class="text-xs text-muted-foreground font-medium my-0.5 px-2 py-1.5 flex gap-1 items-center"
+    >
       <Icon v-if="icon" :name="icon" />
       {{ heading }}
     </ListboxGroupLabel>

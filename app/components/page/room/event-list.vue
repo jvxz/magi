@@ -33,8 +33,7 @@ async function handleRoomUpdate() {
   const expectedRoomId = props.room.roomId
   await nextTick()
 
-  if (props.room.roomId !== expectedRoomId)
-    return
+  if (props.room.roomId !== expectedRoomId) return
 
   scrollToBottom()
   await handleOnMounted()
@@ -51,11 +50,7 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
     class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
     data-testid="scroll-container"
   >
-    <div
-      ref="wrapper"
-      class="w-full"
-      data-testid="scroll-container-wrapper"
-    >
+    <div ref="wrapper" class="w-full" data-testid="scroll-container-wrapper">
       <div data-ignore class="h-4.25" />
 
       <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
@@ -66,11 +61,7 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
         :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
         :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
       >
-        <PageRoomEventGeneric
-          :event
-          :grouped="groupedEvents.grouped[idx] !== false"
-          :room
-        />
+        <PageRoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
       </div>
       <div data-ignore class="h-12" />
     </div>

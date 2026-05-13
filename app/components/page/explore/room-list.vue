@@ -15,11 +15,7 @@ const isEmpty = computed(() => props.error || !props.currentPage || !props.curre
     }"
   >
     <template v-if="!error && currentPage?.chunk.length">
-      <PageExploreRoom
-        v-for="room in currentPage.chunk"
-        :key="room.room_id"
-        :room="room"
-      />
+      <PageExploreRoom v-for="room in currentPage.chunk" :key="room.room_id" :room="room" />
     </template>
     <template v-else-if="isEmpty">
       <PageExploreRoom

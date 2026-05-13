@@ -11,7 +11,9 @@ const room = computed(() => manualRoom.value ?? currentRoom.value)
 const userId = computed(() => user.value?.userId)
 
 const roomMember = useRoomMember(room, userId)
-const displayName = computed(() => roomMember.value ? resolveUserName(roomMember.value) : getDisplayNameFallback(user.value?.userId))
+const displayName = computed(() =>
+  roomMember.value ? resolveUserName(roomMember.value) : getDisplayNameFallback(user.value?.userId),
+)
 const avatarUrl = computed(() => resolveAvatarUrl(roomMember.value?.getMxcAvatarUrl(), { size: 'small' }))
 const parsedUserId = computed(() => parseUserId(roomMember.value?.userId))
 
@@ -33,7 +35,9 @@ const { copy } = useClipboard()
       :reference="referenceElement ?? undefined"
       :class="cn('z-1', $attrs.class)"
     >
-      <UCard class="p-0 border-none bg-card-light gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3">
+      <UCard
+        class="p-0 border-none bg-card-light gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3"
+      >
         <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
           <div class="rounded-t flex h-full justify-end relative">
             <img
@@ -50,11 +54,7 @@ const { copy } = useClipboard()
         </div>
 
         <div class="px-4 pb-4 pt-14 border border-border rounded flex flex-1 flex-col gap-2">
-          <MatrixAvatar
-            :user="user"
-            class="bg-card-light size-20 ring-6 ring-card-light z-1"
-            image-size="small"
-          />
+          <MatrixAvatar :user="user" class="bg-card-light size-20 ring-6 ring-card-light z-1" image-size="small" />
 
           <div class="flex flex-col">
             <p class="text-lg font-medium">
@@ -68,7 +68,9 @@ const { copy } = useClipboard()
 
               <UDropdownMenuRoot>
                 <UDropdownMenuTrigger as-child>
-                  <UButton class="text-xs text-muted-foreground font-normal p-0 rounded-none border-none bg-transparent h-fit hover:text-muted-foreground active:border-none hover:border-none active:bg-transparent hover:bg-transparent hover:underline">
+                  <UButton
+                    class="text-xs text-muted-foreground font-normal p-0 rounded-none border-none bg-transparent h-fit hover:text-muted-foreground active:border-none hover:border-none active:bg-transparent hover:bg-transparent hover:underline"
+                  >
                     {{ `:${parsedUserId.homeserver}` }}
                   </UButton>
                 </UDropdownMenuTrigger>
@@ -84,9 +86,7 @@ const { copy } = useClipboard()
                       Explore rooms
                     </NuxtLink>
                   </UDropdownMenuItem>
-                  <UDropdownMenuItem @click="copy(parsedUserId.homeserver)">
-                    Copy URL
-                  </UDropdownMenuItem>
+                  <UDropdownMenuItem @click="copy(parsedUserId.homeserver)"> Copy URL </UDropdownMenuItem>
                 </UDropdownMenuContent>
               </UDropdownMenuRoot>
             </div>
@@ -94,17 +94,16 @@ const { copy } = useClipboard()
 
           <UProfilePopoverMutualRooms v-if="!isSelf" />
 
-          <div v-if="isDefined(membership) && membership === KnownMembership.Join" class="flex flex-wrap gap-1 *:text-xs *:font-normal *:rounded-full *:max-w-28 *:block *:truncate">
+          <div
+            v-if="isDefined(membership) && membership === KnownMembership.Join"
+            class="flex flex-wrap gap-1 *:text-xs *:font-normal *:rounded-full *:max-w-28 *:block *:truncate"
+          >
             <UBadge class="" variant="outline">
               {{ powerLevelName }}
             </UBadge>
           </div>
 
-          <UInput
-            v-if="!isSelf"
-            :placeholder="`Message ${displayName}`"
-            :classes="{ input: 'text-xs' }"
-          />
+          <UInput v-if="!isSelf" :placeholder="`Message ${displayName}`" :classes="{ input: 'text-xs' }" />
         </div>
       </UCard>
     </PopoverContent>

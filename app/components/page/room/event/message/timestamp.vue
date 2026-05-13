@@ -6,7 +6,9 @@ const props = defineProps<PrimitiveProps & { datetime: number }>()
 
 const isOld = computed(() => {
   const yesterday = Temporal.Now.plainDateISO().subtract({ days: 1 })
-  const eventDate = Temporal.Instant.fromEpochMilliseconds(props.datetime).toZonedDateTimeISO(Temporal.Now.timeZoneId()).toPlainDate()
+  const eventDate = Temporal.Instant.fromEpochMilliseconds(props.datetime)
+    .toZonedDateTimeISO(Temporal.Now.timeZoneId())
+    .toPlainDate()
 
   return Temporal.PlainDate.compare(eventDate, yesterday) <= 0
 })
@@ -33,15 +35,7 @@ const nuxtTimeProps = computed<NuxtTimeProps>(() => {
         <NuxtTime v-bind="nuxtTimeProps" />
       </UTooltipTrigger>
       <UTooltipContent>
-        <NuxtTime
-          :datetime
-          weekday="long"
-          month="long"
-          day="numeric"
-          year="numeric"
-          hour="numeric"
-          minute="numeric"
-        />
+        <NuxtTime :datetime weekday="long" month="long" day="numeric" year="numeric" hour="numeric" minute="numeric" />
       </UTooltipContent>
     </UTooltipRoot>
   </Primitive>

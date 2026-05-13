@@ -3,10 +3,12 @@ import type { SettingsFormPrimitiveProps } from './types'
 
 type ValueType = T extends string[] ? T[number] : string
 
-defineProps<SettingsFormPrimitiveProps & {
-  options: T
-  defaultOption?: ValueType
-}>()
+defineProps<
+  SettingsFormPrimitiveProps & {
+    options: T
+    defaultOption?: ValueType
+  }
+>()
 
 const modelValue = defineModel<ValueType>()
 </script>
@@ -20,11 +22,7 @@ const modelValue = defineModel<ValueType>()
         </USelectValue>
       </USelectTrigger>
       <USelectContent>
-        <USelectItem
-          v-for="option in options"
-          :key="option"
-          :value="option"
-        >
+        <USelectItem v-for="option in options" :key="option" :value="option">
           <USelectItemText>
             {{ option }}
           </USelectItemText>

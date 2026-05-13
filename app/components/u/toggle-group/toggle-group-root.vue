@@ -7,14 +7,19 @@ import { provide } from 'vue'
 
 type ToggleGroupVariants = VariantProps<typeof toggleVariants>
 
-const props = withDefaults(defineProps<ToggleGroupRootProps & {
-  class?: HTMLAttributes['class']
-  variant?: ToggleGroupVariants['variant']
-  size?: ToggleGroupVariants['size']
-  spacing?: number
-}>(), {
-  spacing: 0,
-})
+const props = withDefaults(
+  defineProps<
+    ToggleGroupRootProps & {
+      class?: HTMLAttributes['class']
+      variant?: ToggleGroupVariants['variant']
+      size?: ToggleGroupVariants['size']
+      spacing?: number
+    }
+  >(),
+  {
+    spacing: 0,
+  },
+)
 
 const emits = defineEmits<ToggleGroupRootEmits>()
 

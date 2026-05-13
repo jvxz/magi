@@ -12,8 +12,7 @@ const props = defineProps<{
 }>()
 
 const openModel = defineModel('open', { default: false })
-if (props.defaultOpen)
-  openModel.value = props.defaultOpen
+if (props.defaultOpen) openModel.value = props.defaultOpen
 
 const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
 </script>
@@ -21,7 +20,15 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
 <template>
   <CollapsibleRoot v-model:open="openModel" :default-open>
     <CollapsibleTrigger as-child>
-      <UButton variant="ghost" :class="cn('group py-2 flex-row gap-4 h-12 w-full justify-start data-[state=open]:(bg-muted/75 hover:bg-muted/75) text-foreground', $attrs.class)">
+      <UButton
+        variant="ghost"
+        :class="
+          cn(
+            'group py-2 flex-row gap-4 h-12 w-full justify-start data-[state=open]:(bg-muted/75 hover:bg-muted/75) text-foreground',
+            $attrs.class,
+          )
+        "
+      >
         <Icon name="tabler:chevron-down" class="shrink-0 size-4 group-data-[state=open]:rotate-180" />
 
         <MatrixAvatar
@@ -35,24 +42,20 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
           <p class="text-clip">
             {{ title }}
           </p>
-          <div v-if="isDefined(roomCount) || isDefined(memberCount) || description" class="text-xs text-muted-foreground font-normal flex gap-1 w-full items-center">
-            <span v-if="isDefined(roomCount)" class="shrink-0 text-clip">
-              {{ roomCount }} rooms
-            </span>
+          <div
+            v-if="isDefined(roomCount) || isDefined(memberCount) || description"
+            class="text-xs text-muted-foreground font-normal flex gap-1 w-full items-center"
+          >
+            <span v-if="isDefined(roomCount)" class="shrink-0 text-clip"> {{ roomCount }} rooms </span>
 
             <template v-if="isDefined(memberCount)">
               <UInlineSeparator />
-              <span class="shrink-0 text-clip">
-                {{ memberCount }} members
-              </span>
+              <span class="shrink-0 text-clip"> {{ memberCount }} members </span>
             </template>
 
             <template v-if="description">
               <UInlineSeparator />
-              <span
-
-                class="truncate"
-              >
+              <span class="truncate">
                 {{ description }}
               </span>
             </template>

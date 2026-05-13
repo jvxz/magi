@@ -44,10 +44,7 @@ function copyValue(value: string) {
         :transition="transition"
         class="h-5 absolute"
       >
-        <Icon
-          name="tabler:check"
-          class="!size-4"
-        />
+        <Icon name="tabler:check" class="!size-4" />
       </motion.div>
       <motion.div
         v-else
