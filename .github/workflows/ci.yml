@@ -42,6 +42,9 @@ jobs:
       - name: lint
         run: pnpm lint
 
+      - name: format check
+        run: pnpm fmt:check
+
       - name: test
         run: pnpm test
         timeout-minutes: 10
