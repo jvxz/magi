@@ -10,6 +10,14 @@ export default defineConfig({
     es2022: true,
     node: true,
   },
+  overrides: [
+    {
+      files: ['app/sw.ts'],
+      rules: {
+        'no-restricted-globals': ['error', { message: 'Use `globalThis` instead.', name: 'global' }],
+      },
+    },
+  ],
   plugins: ['typescript', 'unicorn', 'oxc', 'import', 'vue'],
   rules: {
     'accessor-pairs': [
