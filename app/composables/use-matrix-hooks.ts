@@ -15,16 +15,20 @@ export const roomMemberTypingHook = createEventHook<Parameters<EmitterListener<R
 export const useMatrixHooks = createSharedComposable(() => {
   const { client } = useMatrixClient()
 
-  watch(client, (current, prev) => {
-    bindListener(ClientEvent.Sync, syncHook.trigger, { current, prev })
-    bindListener(ClientEvent.Event, eventHook.trigger, { current, prev })
-    bindListener(ClientEvent.Room, roomEvent.trigger, { current, prev })
-    bindListener(ClientEvent.DeleteRoom, roomEvent.trigger, { current, prev })
-    bindListener(RoomStateEvent.Update, roomStateEvent.trigger, { current, prev })
-    bindListener(RoomMemberEvent.Typing, roomMemberTypingHook.trigger, { current, prev })
-    bindListener(RoomMemberEvent.Membership, roomMembershipEvent.trigger, { current, prev })
-    bindListener(MatrixEventEvent.Decrypted, decryptedHook.trigger, { current, prev })
-  }, { immediate: true })
+  watch(
+    client,
+    (current, prev) => {
+      bindListener(ClientEvent.Sync, syncHook.trigger, { current, prev })
+      bindListener(ClientEvent.Event, eventHook.trigger, { current, prev })
+      bindListener(ClientEvent.Room, roomEvent.trigger, { current, prev })
+      bindListener(ClientEvent.DeleteRoom, roomEvent.trigger, { current, prev })
+      bindListener(RoomStateEvent.Update, roomStateEvent.trigger, { current, prev })
+      bindListener(RoomMemberEvent.Typing, roomMemberTypingHook.trigger, { current, prev })
+      bindListener(RoomMemberEvent.Membership, roomMembershipEvent.trigger, { current, prev })
+      bindListener(MatrixEventEvent.Decrypted, decryptedHook.trigger, { current, prev })
+    },
+    { immediate: true },
+  )
 
   return {
     onDecrypted: decryptedHook.on,
@@ -36,9 +40,12 @@ export const useMatrixHooks = createSharedComposable(() => {
   }
 })
 
-function bindListener<T extends ValidEvents>(event: T, listener: EmitterListener<T>, clients: { current: MatrixClient, prev: MatrixClient | undefined }) {
+function bindListener<T extends ValidEvents>(
+  event: T,
+  listener: EmitterListener<T>,
+  clients: { current: MatrixClient; prev: MatrixClient | undefined },
+) {
   clients.current.on<T>(event, listener)
 
-  if (clients.prev)
-    clients.prev.off<T>(event, listener)
+  if (clients.prev) clients.prev.off<T>(event, listener)
 }

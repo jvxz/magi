@@ -10,10 +10,12 @@ export interface AuthedEventHandlerContext {
   }
 }
 
-type AuthedEventHandler<T extends EventHandlerRequest, D extends EventHandlerResponse> = (event: H3Event<T> & AuthedEventHandlerContext) => Promise<D>
+type AuthedEventHandler<T extends EventHandlerRequest, D extends EventHandlerResponse> = (
+  event: H3Event<T> & AuthedEventHandlerContext,
+) => Promise<D>
 
 export function defineAuthedEventHandler<T extends EventHandlerRequest, D>(handler: AuthedEventHandler<T, D>) {
-  return defineEventHandler(async (event) => {
+  return defineEventHandler(async event => {
     if (!event.context.authData) {
       throw createError({
         message: 'Unauthorized',

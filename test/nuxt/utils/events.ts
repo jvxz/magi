@@ -9,16 +9,18 @@ import { objectKeys } from '#shared/utils/object'
 faker.seed(0)
 
 export function generateMembershipEvents(count: number) {
-  return Array.from({ length: count }, () => mkMatrixEvent({
-    content: {
-      membership: KnownMembership[sample(objectKeys(KnownMembership))],
-    },
-    eventId: generateFakeEventId(),
-    roomId: generateFakeRoomId(),
-    sender: generateFakeUser(),
-    stateKey: generateFakeUser(),
-    type: EventType.RoomMember,
-  }))
+  return Array.from({ length: count }, () =>
+    mkMatrixEvent({
+      content: {
+        membership: KnownMembership[sample(objectKeys(KnownMembership))],
+      },
+      eventId: generateFakeEventId(),
+      roomId: generateFakeRoomId(),
+      sender: generateFakeUser(),
+      stateKey: generateFakeUser(),
+      type: EventType.RoomMember,
+    }),
+  )
 }
 
 export function generateFakeRoomId() {
@@ -56,13 +58,12 @@ export function mkMatrixEvent(opts: {
     type: opts.type,
     unsigned: opts.unsigned,
   }
-  if (opts.stateKey !== undefined)
-    event.state_key = opts.stateKey
+  if (opts.stateKey !== undefined) event.state_key = opts.stateKey
 
   const mxEvent = new MatrixEvent(event)
   mxEvent.sender = {
-    getAvatarUrl: () => { },
-    getMxcAvatarUrl: () => { },
+    getAvatarUrl: () => {},
+    getMxcAvatarUrl: () => {},
     membership: 'join',
     name: opts.sender,
     rawDisplayName: opts.sender,

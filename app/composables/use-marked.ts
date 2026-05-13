@@ -13,8 +13,7 @@ export function useMarked(input: MaybeRefOrGetter<string | undefined>) {
   const inputRef = toRef(input)
 
   return computed(() => {
-    if (!inputRef.value)
-      return
+    if (!inputRef.value) return
 
     return DOMPurify.sanitize(md.parse(inputRef.value) as string)
   })

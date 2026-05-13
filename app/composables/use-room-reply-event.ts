@@ -7,8 +7,7 @@ export function useRoomReplyEvent(event: MatrixEvent, room: Room) {
     enabled: () => !!event.replyEventId,
     queryFn: async () => {
       const replyEventId = event.replyEventId
-      if (!replyEventId)
-        return undefined
+      if (!replyEventId) return undefined
 
       const replyEvent = await getRoomEventById(room, client.value, replyEventId)
       await replyEvent.getDecryptionPromise()

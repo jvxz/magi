@@ -5,11 +5,10 @@ export function onRoomChange(cb: (value: Room | undefined, prev: Room | undefine
   const router = useRouter()
 
   const cleanup = router.afterEach((to, from) => {
-    if (to.path === from.path)
-      return
+    if (to.path === from.path) return
 
-    const value = 'roomId' in to.params ? client.value.getRoom(to.params.roomId) ?? undefined : undefined
-    const prev = 'roomId' in from.params ? client.value.getRoom(from.params.roomId) ?? undefined : undefined
+    const value = 'roomId' in to.params ? (client.value.getRoom(to.params.roomId) ?? undefined) : undefined
+    const prev = 'roomId' in from.params ? (client.value.getRoom(from.params.roomId) ?? undefined) : undefined
     cb(value, prev)
   })
 

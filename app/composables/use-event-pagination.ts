@@ -48,69 +48,75 @@ export function useEventPagination(opts: Opts) {
 
   const backwardSentinelId = shallowRef<string>()
   const forwardSentinelId = shallowRef<string>()
-  const { element: backwardSentinelEl } = useQuerySelector(() => createItemQuerySelector('id', backwardSentinelId.value), { observeScope: true, scope: itemsEl })
-  const { element: forwardSentinelEl } = useQuerySelector(() => createItemQuerySelector('id', forwardSentinelId.value), { observeScope: true, scope: itemsEl })
+  const { element: backwardSentinelEl } = useQuerySelector(
+    () => createItemQuerySelector('id', backwardSentinelId.value),
+    { observeScope: true, scope: itemsEl },
+  )
+  const { element: forwardSentinelEl } = useQuerySelector(
+    () => createItemQuerySelector('id', forwardSentinelId.value),
+    { observeScope: true, scope: itemsEl },
+  )
 
-  const { resume: startIntersectionObserver } = useIntersectionObserver([backwardSentinelEl, forwardSentinelEl,
-  ], async (entries) => {
-    for (const entry of entries) {
-      const el = entry.target
-      if (!(el instanceof HTMLElement))
-        continue
+  const { resume: startIntersectionObserver } = useIntersectionObserver(
+    [backwardSentinelEl, forwardSentinelEl],
+    async entries => {
+      for (const entry of entries) {
+        const el = entry.target
+        if (!(el instanceof HTMLElement)) continue
 
-      const { id } = getItemNodeData(el)
+        const { id } = getItemNodeData(el)
 
-      if (entry.isIntersecting && id === backwardSentinelId.value)
-        await paginate(Direction.Backward)
+        if (entry.isIntersecting && id === backwardSentinelId.value) await paginate(Direction.Backward)
 
-      if (entry.isIntersecting && id === forwardSentinelId.value)
-        await paginate(Direction.Forward)
-    }
-  }, { immediate: false })
+        if (entry.isIntersecting && id === forwardSentinelId.value) await paginate(Direction.Forward)
+      }
+    },
+    { immediate: false },
+  )
 
-  watch(events, async (newEvents, prevEvents) => {
-    if (isPaginating.value)
-      return
+  watch(
+    events,
+    async (newEvents, prevEvents) => {
+      if (isPaginating.value) return
 
-    const prevLastId = prevEvents?.at(-1)?.getId()
-    if (prevLastId && !newEvents.some(e => e.getId() === prevLastId))
-      return
+      const prevLastId = prevEvents?.at(-1)?.getId()
+      if (prevLastId && !newEvents.some(e => e.getId() === prevLastId)) return
 
-    const container = unrefElement(scrollEl)
-    if (!container)
-      return
+      const container = unrefElement(scrollEl)
+      if (!container) return
 
-    const prevEventsLastId = prevEvents.at(-1)?.getId()
-    const prevForwardSentinelId = forwardSentinelId.value
-    const paginatedLastId = eventsPaginated.value.at(-1)?.getId()
-    const isAtForwardEnd = paginatedLastId === prevEventsLastId
+      const prevEventsLastId = prevEvents.at(-1)?.getId()
+      const prevForwardSentinelId = forwardSentinelId.value
+      const paginatedLastId = eventsPaginated.value.at(-1)?.getId()
+      const isAtForwardEnd = paginatedLastId === prevEventsLastId
 
-    if (isAtForwardEnd) {
-      if (prevEventsLastId && prevEventsLastId === prevForwardSentinelId) {
-        const newLastEvent = newEvents.at(-1)
+      if (isAtForwardEnd) {
+        if (prevEventsLastId && prevEventsLastId === prevForwardSentinelId) {
+          const newLastEvent = newEvents.at(-1)
 
-        if (newLastEvent && newLastEvent.getId() !== forwardSentinelId.value) {
-          const sentinels = await getNextPageSentinels(Direction.Forward)
+          if (newLastEvent && newLastEvent.getId() !== forwardSentinelId.value) {
+            const sentinels = await getNextPageSentinels(Direction.Forward)
 
-          if (sentinels) {
-            backwardSentinelId.value = sentinels.backward?.getId()
-            forwardSentinelId.value = sentinels.forward?.getId()
+            if (sentinels) {
+              backwardSentinelId.value = sentinels.backward?.getId()
+              forwardSentinelId.value = sentinels.forward?.getId()
+            }
           }
         }
       }
-    }
 
-    if (isPinned.value) {
-      await nextTick()
-      scrollToBottom(container)
-    }
-  }, { flush: 'post' })
+      if (isPinned.value) {
+        await nextTick()
+        scrollToBottom(container)
+      }
+    },
+    { flush: 'post' },
+  )
 
   // for isPinned
   useEventListener(scrollEl, 'scroll', ({ target }) => {
     const el = target as HTMLElement
-    if (!el)
-      return
+    if (!el) return
 
     isPinned.value = !canPaginateForward.value && isPinnedToBottom(el)
   })
@@ -120,8 +126,7 @@ export function useEventPagination(opts: Opts) {
 
   function saveScrollState() {
     const container = unrefElement(scrollEl)
-    if (!container)
-      return
+    if (!container) return
 
     const roomId = opts.room.value.roomId
 
@@ -147,20 +152,17 @@ export function useEventPagination(opts: Opts) {
 
     let nextDir: Direction | null = null
     try {
-      if (dir === Direction.Backward && !canPaginateBackward.value)
-        return
-      if (dir === Direction.Forward && !canPaginateForward.value)
-        return
+      if (dir === Direction.Backward && !canPaginateBackward.value) return
+
+      if (dir === Direction.Forward && !canPaginateForward.value) return
 
       const container = unrefElement(scrollEl)
-      if (!container)
-        return
+      if (!container) return
 
       const sentinels = await getNextPageSentinels(dir)
-      if (opts.room.value.roomId !== startedForRoomId)
-        return
-      if (!sentinels)
-        return
+      if (opts.room.value.roomId !== startedForRoomId) return
+
+      if (!sentinels) return
 
       backwardSentinelId.value = sentinels.backward?.getId()
       forwardSentinelId.value = sentinels.forward?.getId()
@@ -168,28 +170,24 @@ export function useEventPagination(opts: Opts) {
       await setRange({ dir })
       await nextTick()
 
-      if (opts.room.value.roomId !== startedForRoomId)
-        return
+      if (opts.room.value.roomId !== startedForRoomId) return
 
       const containerAfter = unrefElement(scrollEl)
       if (containerAfter) {
         const backwardEl = backwardSentinelEl.value
         const forwardEl = forwardSentinelEl.value
 
-        const backwardIntersecting = dir !== Direction.Backward && backwardEl && isIntersecting(containerAfter, backwardEl)
+        const backwardIntersecting =
+          dir !== Direction.Backward && backwardEl && isIntersecting(containerAfter, backwardEl)
         const forwardIntersecting = dir !== Direction.Forward && forwardEl && isIntersecting(containerAfter, forwardEl)
 
-        if (backwardIntersecting)
-          nextDir = Direction.Backward
-        else if (forwardIntersecting)
-          nextDir = Direction.Forward
+        if (backwardIntersecting) nextDir = Direction.Backward
+        else if (forwardIntersecting) nextDir = Direction.Forward
       }
-    }
-    finally {
+    } finally {
       isPaginating.value = false
       paginateMutex.release()
-      if (nextDir !== null && opts.room.value.roomId === startedForRoomId)
-        await paginate(nextDir)
+      if (nextDir !== null && opts.room.value.roomId === startedForRoomId) await paginate(nextDir)
     }
   }
 
@@ -202,17 +200,16 @@ export function useEventPagination(opts: Opts) {
     const cachedScrollState = pageScrollStateCache.get(opts.room.value.roomId)
     const container = unrefElement(scrollEl)
 
-    if (!anchor || !container)
-      return
+    if (!anchor || !container) return
 
     let backwardId = cachedScrollState?.backwardSentinelId ?? getItemNodeData(anchor.element).id
     const forwardId = cachedScrollState?.forwardSentinelId ?? eventsPaginated.value.at(-1)?.getId()
 
     if (
-      forwardId
-      && !cachedScrollState?.backwardSentinelId
-      && backwardId === forwardId
-      && eventsPaginated.value.length > 1
+      forwardId &&
+      !cachedScrollState?.backwardSentinelId &&
+      backwardId === forwardId &&
+      eventsPaginated.value.length > 1
     )
       backwardId = eventsPaginated.value[0]?.getId() ?? backwardId
 
@@ -226,9 +223,10 @@ export function useEventPagination(opts: Opts) {
     })
 
     const itemsRoot = unrefElement(itemsEl)
-    const backwardProbeEl = getItemNodeData(anchor.element).id === backwardId
-      ? anchor.element
-      : itemsRoot?.querySelector<HTMLElement>(createItemQuerySelector('id', backwardId)) ?? anchor.element
+    const backwardProbeEl =
+      getItemNodeData(anchor.element).id === backwardId
+        ? anchor.element
+        : (itemsRoot?.querySelector<HTMLElement>(createItemQuerySelector('id', backwardId)) ?? anchor.element)
 
     if (isIntersecting(container, backwardProbeEl) && !isFullyLoaded.value) {
       const beforeScrollHeight = container.scrollHeight
@@ -242,11 +240,8 @@ export function useEventPagination(opts: Opts) {
         const addedHeight = container.scrollHeight - beforeScrollHeight
         const restoreScrollTop = cachedScrollState.scrollTop + addedHeight
         container.scrollTop = restoreScrollTop
-      }
-      else
-        scrollToBottom(container)
-    }
-    else if (cachedScrollState) {
+      } else scrollToBottom(container)
+    } else if (cachedScrollState) {
       await nextTick()
       container.scrollTop = cachedScrollState.scrollTop
     }
@@ -259,16 +254,14 @@ export function useEventPagination(opts: Opts) {
 
   async function getNextPageSentinels(dir: Direction) {
     const visibleAnchor = getAnchor(dir)
-    if (!visibleAnchor)
-      return
+    if (!visibleAnchor) return
 
     const { id: visibleAnchorId } = getItemNodeData(visibleAnchor.element)
 
     await scrollEvents(dir)
 
     const index = getItemRealIndex(visibleAnchorId)
-    if (index === undefined)
-      return
+    if (index === undefined) return
 
     const { end, start } = getPaddedRange(dir, index)
     const { allCached, cached } = resolveCachedItems(events.value.slice(start, end).map(e => e.getId()!))
@@ -277,8 +270,7 @@ export function useEventPagination(opts: Opts) {
     // mount elements to read height
     if (!allCached) {
       const probeIndices = getSentinelIndices()
-      if (probeIndices.backward === undefined)
-        return
+      if (probeIndices.backward === undefined) return
 
       const probeStart = dir === Direction.Backward ? Math.max(0, index - 80) : probeIndices.backward
       const probeEnd = dir === Direction.Backward ? probeIndices.forward : Math.min(events.value.length - 1, index + 80)
@@ -292,30 +284,27 @@ export function useEventPagination(opts: Opts) {
       await nextTick()
 
       const itemsContainer = unrefElement(itemsEl)
-      if (!itemsContainer)
-        return
+      if (!itemsContainer) return
 
       const sliceIndices = getSentinelIndices(false)
 
       const arr = Array.from(itemsContainer.children) as HTMLElement[]
 
-      nodes = dir === Direction.Backward
-        ? arr.slice(Math.max(0, sliceIndices.backward! - 80), sliceIndices.backward!)
-        : arr.slice(sliceIndices.forward! + 1, Math.min(arr.length, sliceIndices.forward! + 81))
-    }
-    else
-      nodes = cached
+      nodes =
+        dir === Direction.Backward
+          ? arr.slice(Math.max(0, sliceIndices.backward! - 80), sliceIndices.backward!)
+          : arr.slice(sliceIndices.forward! + 1, Math.min(arr.length, sliceIndices.forward! + 81))
+    } else nodes = cached
 
-    const heightNodes = dir === Direction.Backward ? nodes : [...nodes].reverse()
+    const heightNodes = dir === Direction.Backward ? nodes : nodes.toReversed()
 
     const { scannedNodes } = getTotalNodeHeights(
       heightNodes,
       visibleAnchor.element.clientHeight,
       curr => curr <= maxPageHeight.value,
-      (el) => {
+      el => {
         // if cached, don't re-cache
-        if (!(el instanceof HTMLElement) || !el.dataset.itemId || !el.dataset.index)
-          return
+        if (!(el instanceof HTMLElement) || !el.dataset.itemId || !el.dataset.index) return
 
         const { id, index } = getItemNodeData(el)
 
@@ -334,16 +323,13 @@ export function useEventPagination(opts: Opts) {
     if (!dirAnchor) {
       if (dir === Direction.Forward) {
         const lastEvent = events.value.at(-1)
-        if (!lastEvent)
-          return
+        if (!lastEvent) return
 
         const oppositeAnchor = getAnchor(Direction.Backward, maxPageHeight.value * 0.5)
-        if (!oppositeAnchor)
-          return
+        if (!oppositeAnchor) return
 
         const oppositeAnchorIdx = getItemRealIndex(getItemNodeData(oppositeAnchor.element).id)
-        if (oppositeAnchorIdx === undefined)
-          return
+        if (oppositeAnchorIdx === undefined) return
 
         return {
           backward: events.value[oppositeAnchorIdx],
@@ -352,8 +338,7 @@ export function useEventPagination(opts: Opts) {
       }
 
       if (dir === Direction.Backward) {
-        if (index <= 0)
-          return
+        if (index <= 0) return
 
         const oppositeAnchor = getAnchor(Direction.Forward, maxPageHeight.value * 0.5)
         let oppositeAnchorIdx = oppositeAnchor
@@ -365,12 +350,10 @@ export function useEventPagination(opts: Opts) {
 
         if (oppositeAnchorIdx === undefined) {
           const lastPaginatedId = eventsPaginated.value.at(-1)?.getId()
-          if (lastPaginatedId)
-            oppositeAnchorIdx = getItemRealIndex(lastPaginatedId)
+          if (lastPaginatedId) oppositeAnchorIdx = getItemRealIndex(lastPaginatedId)
         }
 
-        if (oppositeAnchorIdx === undefined)
-          oppositeAnchorIdx = index
+        if (oppositeAnchorIdx === undefined) oppositeAnchorIdx = index
 
         return {
           backward: events.value[index - 1],
@@ -383,25 +366,23 @@ export function useEventPagination(opts: Opts) {
 
     const { id: dirAnchorId } = getItemNodeData(dirAnchor)
     const dirAnchorIdx = getItemRealIndex(dirAnchorId)
-    if (dirAnchorIdx === undefined)
-      return
+    if (dirAnchorIdx === undefined) return
 
-    const oppositeAnchor = getAnchor(dir === Direction.Backward ? Direction.Forward : Direction.Backward, maxPageHeight.value * 0.5)
-    let oppositeAnchorIdx = oppositeAnchor
-      ? getItemRealIndex(getItemNodeData(oppositeAnchor.element).id)
-      : undefined
+    const oppositeAnchor = getAnchor(
+      dir === Direction.Backward ? Direction.Forward : Direction.Backward,
+      maxPageHeight.value * 0.5,
+    )
+    let oppositeAnchorIdx = oppositeAnchor ? getItemRealIndex(getItemNodeData(oppositeAnchor.element).id) : undefined
 
     if (oppositeAnchorIdx === undefined && forwardSentinelId.value)
       oppositeAnchorIdx = getItemRealIndex(forwardSentinelId.value)
 
     if (oppositeAnchorIdx === undefined) {
       const lastPaginatedId = eventsPaginated.value.at(-1)?.getId()
-      if (lastPaginatedId)
-        oppositeAnchorIdx = getItemRealIndex(lastPaginatedId)
+      if (lastPaginatedId) oppositeAnchorIdx = getItemRealIndex(lastPaginatedId)
     }
 
-    if (oppositeAnchorIdx === undefined)
-      oppositeAnchorIdx = dirAnchorIdx
+    if (oppositeAnchorIdx === undefined) oppositeAnchorIdx = dirAnchorIdx
 
     if (dir === Direction.Forward) {
       return {
@@ -416,35 +397,26 @@ export function useEventPagination(opts: Opts) {
     }
   }
 
-  async function setRange(params?: {
-    start?: number
-    end?: number
-    dir?: Direction
-  }) {
+  async function setRange(params?: { start?: number; end?: number; dir?: Direction }) {
     const container = unrefElement(scrollEl)
-    if (!container)
-      return
+    if (!container) return
 
     if (params?.dir) {
       const beforeBackwardEl = unrefElement(backwardSentinelEl.value)
 
       set()
 
-      if (beforeBackwardEl)
-        await retainScrollTop(container, itemsEl, beforeBackwardEl)
-    }
-    else
-      set()
+      if (beforeBackwardEl) await retainScrollTop(container, itemsEl, beforeBackwardEl)
+    } else set()
 
     function set() {
       const indices = getSentinelIndices()
-      if (indices.backward === undefined || indices.forward === undefined)
-        return
+      if (indices.backward === undefined || indices.forward === undefined) return
+
       const startIdx = Math.max(0, params?.start ?? indices.backward)
       const endIdx = Math.min(events.value.length - 1, params?.end ?? indices.forward) + 1
 
-      if (startIdx !== undefined && endIdx !== undefined && startIdx > endIdx)
-        return
+      if (startIdx !== undefined && endIdx !== undefined && startIdx > endIdx) return
 
       const paginated = events.value.slice(startIdx, endIdx)
 
@@ -456,8 +428,7 @@ export function useEventPagination(opts: Opts) {
   async function scrollEvents(dir: Direction) {
     const eventData = getEventById(events.value, backwardSentinelId.value)
 
-    if (dir === Direction.Backward && (!eventData || !events.value[eventData.index - 1]))
-      await scrollEventsAsync(dir)
+    if (dir === Direction.Backward && (!eventData || !events.value[eventData.index - 1])) await scrollEventsAsync(dir)
   }
 
   function getPaddedRange(dir: Direction, anchorIndex: number) {
@@ -469,16 +440,14 @@ export function useEventPagination(opts: Opts) {
 
   function getAnchor(dir: Direction, padHeight?: number) {
     const el = unrefElement(itemsEl)
-    if (!el)
-      return
+    if (!el) return
 
     const intersecting = getIntersectingNodes(el, padHeight, {
       containerClientHeight: scrollEl.value?.clientHeight,
       containerScrollTop: scrollEl.value?.scrollTop,
     })
 
-    if (!intersecting?.length)
-      return
+    if (!intersecting?.length) return
 
     let anchor: HTMLElement | undefined
 
@@ -487,10 +456,9 @@ export function useEventPagination(opts: Opts) {
         const bi = Number.parseInt(best.dataset.index ?? '', 10)
         const ci = Number.parseInt(child.dataset.index ?? '', 10)
 
-        if (Number.isNaN(ci))
-          return best
-        if (Number.isNaN(bi))
-          return child
+        if (Number.isNaN(ci)) return best
+
+        if (Number.isNaN(bi)) return child
 
         return ci < bi ? child : best
       })
@@ -498,23 +466,16 @@ export function useEventPagination(opts: Opts) {
       const paginatedLast = eventsPaginated.value.at(-1)?.getId()
       const paginatedFirst = eventsPaginated.value[0]?.getId()
 
-      if (
-        paginatedLast
-        && paginatedFirst
-        && paginatedFirst !== paginatedLast
-      ) {
+      if (paginatedLast && paginatedFirst && paginatedFirst !== paginatedLast) {
         const anchorId = getItemNodeData(anchor).id
         if (anchorId === paginatedLast) {
           const preferred = el.querySelector<HTMLElement>(createItemQuerySelector('id', paginatedFirst))
-          if (preferred && !preferred.hasAttribute('data-ignore'))
-            anchor = preferred
+          if (preferred && !preferred.hasAttribute('data-ignore')) anchor = preferred
         }
       }
-    }
-    else anchor = intersecting.at(-1)
+    } else anchor = intersecting.at(-1)
 
-    if (!anchor)
-      return
+    if (!anchor) return
 
     return {
       ...getItemNodeData(anchor),
@@ -530,14 +491,11 @@ export function useEventPagination(opts: Opts) {
 
     for (let i = 0; i < list.length; i++) {
       const item = list[i]
-      if (!item)
-        continue
+      if (!item) continue
 
-      if (item.getId() === backwardSentinelId.value)
-        backwardIdx = i
+      if (item.getId() === backwardSentinelId.value) backwardIdx = i
 
-      if (item.getId() === forwardSentinelId.value)
-        forwardIdx = i
+      if (item.getId() === forwardSentinelId.value) forwardIdx = i
 
       if (backwardIdx !== undefined && forwardIdx !== undefined) {
         return {
@@ -556,11 +514,9 @@ export function useEventPagination(opts: Opts) {
   function getItemRealIndex(itemId: string) {
     for (let i = 0; i < events.value.length; i++) {
       const event = events.value[i]
-      if (!event)
-        continue
+      if (!event) continue
 
-      if (event.getId() === itemId)
-        return i
+      if (event.getId() === itemId) return i
     }
   }
 
@@ -598,8 +554,7 @@ function getItemNodeData(node: HTMLElement | CachedItemNode): ItemNodeData {
 
 function getItemNodeById(itemsEl: MaybeElementRef, id: string) {
   const el = unrefElement(itemsEl)
-  if (!el)
-    return
+  if (!el) return
 
   return el.querySelector<HTMLElement>(createItemQuerySelector('id', id))
 }
@@ -607,8 +562,7 @@ function getItemNodeById(itemsEl: MaybeElementRef, id: string) {
 function getEventById(events: MatrixEvent[], id: string | undefined) {
   for (let i = 0; i < events.length; i++) {
     const event = events[i]
-    if (!event)
-      continue
+    if (!event) continue
 
     if (event.getId() === id) {
       return {
@@ -650,8 +604,7 @@ async function retainScrollTop(scrollEl: HTMLElement, itemsEl: MaybeElementRef, 
 
   const afterBackwardEl = getItemNodeById(itemsEl, backwardId)
 
-  if (!afterBackwardEl)
-    return
+  if (!afterBackwardEl) return
 
   const afterHeight = afterBackwardEl.getBoundingClientRect().height
   const afterOffsetTop = afterBackwardEl.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top
@@ -663,11 +616,9 @@ async function retainScrollTop(scrollEl: HTMLElement, itemsEl: MaybeElementRef, 
 }
 
 function createItemQuerySelector(type: 'id' | 'index', input: string | undefined) {
-  if (!input)
-    return ''
+  if (!input) return ''
 
-  if (type === 'id')
-    return `[data-item-id="${CSS.escape(input)}"]`
+  if (type === 'id') return `[data-item-id="${CSS.escape(input)}"]`
 
   return `[data-index="${CSS.escape(input)}"]`
 }

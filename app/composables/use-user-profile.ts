@@ -27,19 +27,18 @@ function acquire(key: string) {
       })
 
       if (!user.value) {
-        client.value.getProfileInfo(userId)
-          .then((result) => {
-            if (result)
-              profile.value = result
+        client.value
+          .getProfileInfo(userId)
+          .then(result => {
+            if (result) profile.value = result
           })
-          .catch(() => { })
+          .catch(() => {})
       }
 
-      onEvent((event) => {
-        if (event.getType() !== 'm.room.member')
-          return
-        if (event.getStateKey() !== userId)
-          return
+      onEvent(event => {
+        if (event.getType() !== 'm.room.member') return
+
+        if (event.getStateKey() !== userId) return
 
         const content = event.getContent()
         profile.value = {
@@ -62,8 +61,7 @@ function acquire(key: string) {
 
 function release(key: string) {
   const entry = cache.get(key)
-  if (!entry)
-    return
+  if (!entry) return
 
   entry.subs--
 
@@ -76,22 +74,25 @@ function release(key: string) {
 export function useUserProfile(user: MaybeRefOrGetter<MaybeUserOrId | undefined>) {
   const userRef = computed(() => {
     const u = toValue(user)
-    if (u)
-      return resolveUserId(u)
+    if (u) return resolveUserId(u)
   })
   const current = shallowRef<Entry | undefined>(undefined)
 
-  watch(userRef, (key, _, onCleanup) => {
-    if (!key) {
-      current.value = undefined
-      return
-    }
+  watch(
+    userRef,
+    (key, _, onCleanup) => {
+      if (!key) {
+        current.value = undefined
+        return
+      }
 
-    const entry = acquire(key)
-    current.value = entry
+      const entry = acquire(key)
+      current.value = entry
 
-    onCleanup(() => release(key))
-  }, { immediate: true })
+      onCleanup(() => release(key))
+    },
+    { immediate: true },
+  )
 
   return computed(() => current.value?.ref.value)
 }

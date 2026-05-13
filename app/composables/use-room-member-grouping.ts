@@ -5,7 +5,10 @@ import QuickLRU from 'quick-lru'
 const POWER_LEVEL_ORDER = ['admin', 'moderator', 'member'] satisfies PowerLevelName[]
 
 type Member = Pick<RoomMember, 'powerLevel' | 'rawDisplayName' | 'membership' | 'name' | 'userId'> & { type: 'member' }
-interface MemberHeader { type: 'header', title: PowerLevelName }
+interface MemberHeader {
+  type: 'header'
+  title: PowerLevelName
+}
 interface MemberCachePayload {
   members: Prettify<Member | MemberHeader>[]
   groupTotals: Record<PowerLevelName, number>
@@ -16,27 +19,33 @@ export type GroupedMemberListItem = Prettify<Member | MemberHeader>
 
 const roomMemberGroupCache = new QuickLRU<Room['roomId'], MemberCachePayload>({ maxSize: 12 })
 
-export function useRoomMemberGrouping(members: MaybeRefOrGetter<RoomMember[] | undefined>, maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>, force?: MaybeRefOrGetter<boolean>) {
+export function useRoomMemberGrouping(
+  members: MaybeRefOrGetter<RoomMember[] | undefined>,
+  maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>,
+  force?: MaybeRefOrGetter<boolean>,
+) {
   const membersRef = toRef(members)
   const roomIdRef = toRef(maybeRoomOrId)
   const forceRef = toRef(force)
 
   const membersGrouped = shallowRef<MemberCachePayload>()
-  const roomId = computed(() => roomIdRef.value ? resolveRoomId(roomIdRef.value) : undefined)
+  const roomId = computed(() => (roomIdRef.value ? resolveRoomId(roomIdRef.value) : undefined))
 
-  watch(membersRef, (members) => {
-    if (!members?.length || !roomId.value)
-      return
+  watch(
+    membersRef,
+    members => {
+      if (!members?.length || !roomId.value) return
 
-    const cached = roomMemberGroupCache.get(roomId.value)
-    if (cached && !forceRef.value && cached.memberCount === members.length)
-      return membersGrouped.value = cached
+      const cached = roomMemberGroupCache.get(roomId.value)
+      if (cached && !forceRef.value && cached.memberCount === members.length) return (membersGrouped.value = cached)
 
-    const payload = { ...createMembersList(members), memberCount: members.length }
-    roomMemberGroupCache.set(roomId.value, payload)
+      const payload = { ...createMembersList(members), memberCount: members.length }
+      roomMemberGroupCache.set(roomId.value, payload)
 
-    membersGrouped.value = payload
-  }, { immediate: true })
+      membersGrouped.value = payload
+    },
+    { immediate: true },
+  )
 
   return membersGrouped
 }
@@ -64,16 +73,14 @@ function createMembersList(members: RoomMember[]) {
   }
   for (const groupName of POWER_LEVEL_ORDER) {
     const group = membersGrouped[groupName]
-    if (!group?.length)
-      continue
+    if (!group?.length) continue
 
     groupTotals[groupName] = group.length
 
     membersWithHeaders.push({ title: groupName, type: 'header' })
     for (let i = 0; i < group.length; i++) {
       const member = group[i]
-      if (!member)
-        continue
+      if (!member) continue
 
       membersWithHeaders.push({ type: 'member', ...member })
     }

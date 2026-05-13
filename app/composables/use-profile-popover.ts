@@ -9,29 +9,30 @@ export const useProfilePopover = createSharedComposable(() => {
   const manualRoom = shallowRef<Room>()
 
   let currentRoot: MaybeElement
-  whenever(() => !open.value, () => {
-    currentRoot?.removeAttribute('data-popover-open')
-    currentRoot = undefined
-    referenceElement.value = undefined
-    contentProps.value = undefined
-    userIdRef.value = undefined
-    manualRoom.value = undefined
-  })
+  whenever(
+    () => !open.value,
+    () => {
+      currentRoot?.removeAttribute('data-popover-open')
+      currentRoot = undefined
+      referenceElement.value = undefined
+      contentProps.value = undefined
+      userIdRef.value = undefined
+      manualRoom.value = undefined
+    },
+  )
 
   function openProfilePopover(
     trigger: HTMLElement,
     userId: string,
     nextContentProps?: PopoverContentProps,
-    options: { freezeReference?: boolean, manualRoom?: Room | undefined } = {},
+    options: { freezeReference?: boolean; manualRoom?: Room | undefined } = {},
   ) {
     const eventRoot = trigger.closest('[data-event-id]') as HTMLElement | null
     const root = eventRoot ?? trigger
 
-    if (currentRoot && currentRoot !== root)
-      currentRoot.removeAttribute('data-popover-open')
+    if (currentRoot && currentRoot !== root) currentRoot.removeAttribute('data-popover-open')
 
-    if (options.manualRoom)
-      manualRoom.value = options.manualRoom
+    if (options.manualRoom) manualRoom.value = options.manualRoom
 
     root.setAttribute('data-popover-open', '')
     currentRoot = root

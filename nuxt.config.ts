@@ -47,26 +47,20 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    'pages:extend': (pages) => {
+    'pages:extend': pages => {
       function requireAuth(pages: NuxtPage[]) {
         for (const page of pages) {
           if (page?.path.startsWith('/app')) {
             page.meta ||= {}
             page.meta.requiresAuth = true
 
-            if (!page.meta.middleware)
-              page.meta.middleware = ['auth']
-
+            if (!page.meta.middleware) page.meta.middleware = ['auth']
             else {
-              if (Array.isArray(page.meta.middleware))
-                page.meta.middleware = uniq([...page.meta.middleware, 'auth'])
-
-              else
-                page.meta.middleware = uniq([page.meta.middleware, 'auth'])
+              if (Array.isArray(page.meta.middleware)) page.meta.middleware = uniq([...page.meta.middleware, 'auth'])
+              else page.meta.middleware = uniq([page.meta.middleware, 'auth'])
             }
           }
-          if (page.children)
-            requireAuth(page.children)
+          if (page.children) requireAuth(page.children)
         }
       }
       requireAuth(pages)
@@ -81,13 +75,7 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    dirs: [
-      '~/utils/**/*.ts',
-      '~/config/**/*.ts',
-      '~/composables/**/*.ts',
-      '~/constants/**/*.ts',
-      './shared/**/*.ts',
-    ],
+    dirs: ['~/utils/**/*.ts', '~/config/**/*.ts', '~/composables/**/*.ts', '~/constants/**/*.ts', './shared/**/*.ts'],
     presets: [
       { ignore: ['isEqual'], package: 'es-toolkit' },
       { package: 'ufo' },
@@ -129,10 +117,7 @@ export default defineNuxtConfig({
     },
 
     imports: {
-      dirs: [
-        './server/schema/*',
-        './server/utils/*',
-      ],
+      dirs: ['./server/schema/*', './server/utils/*'],
       presets: [
         {
           from: 'valibot',
@@ -176,14 +161,7 @@ export default defineNuxtConfig({
         'img-src': false,
         'script-src': import.meta.dev
           ? false
-          : [
-              '\'self\'',
-              'https:',
-              '\'unsafe-inline\'',
-              '\'strict-dynamic\'',
-              '\'nonce-{{nonce}}\'',
-              '\'wasm-unsafe-eval\'',
-            ],
+          : ["'self'", 'https:', "'unsafe-inline'", "'strict-dynamic'", "'nonce-{{nonce}}'", "'wasm-unsafe-eval'"],
       },
     },
     rateLimiter: false,

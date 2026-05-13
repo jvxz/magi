@@ -4,4 +4,4 @@ declare module 'matrix-js-sdk' {
   }
 }
 
-export { }
+export {}

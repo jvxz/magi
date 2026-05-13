@@ -22,18 +22,19 @@ cleanupOutdatedCaches()
 self.skipWaiting()
 clientsClaim()
 
-let activeSession: {
-  baseUrl?: string
-  accessToken?: string
-} | undefined
+let activeSession:
+  | {
+      baseUrl?: string
+      accessToken?: string
+    }
+  | undefined
 
 const matrixMediaStrategy = new CacheFirst({
   cacheName: 'media',
   plugins: [
     {
       requestWillFetch: async ({ request }) => {
-        if (!activeSession || !activeSession.accessToken)
-          return request
+        if (!activeSession || !activeSession.accessToken) return request
 
         const headers = new Headers(request.headers)
         headers.set('Authorization', `Bearer ${activeSession.accessToken}`)
@@ -52,10 +53,9 @@ const matrixMediaStrategy = new CacheFirst({
   ],
 })
 
-self.addEventListener('message', async (e) => {
+self.addEventListener('message', async e => {
   const res = v.safeParse(SwMessageSchema, e.data)
-  if (!res.success)
-    return console.warn('Unknown message sent to service worker: ', e.data)
+  if (!res.success) return console.warn('Unknown message sent to service worker: ', e.data)
 
   const { payload, type } = res.output
 
@@ -72,12 +72,9 @@ self.addEventListener('message', async (e) => {
         case 'evict': {
           const cache = await caches.open(payload.cacheName)
 
-          if (payload.urls === 'all')
-            await caches.delete(payload.cacheName)
-
+          if (payload.urls === 'all') await caches.delete(payload.cacheName)
           else {
-            for (const url of payload.urls)
-              await cache.delete(url)
+            for (const url of payload.urls) await cache.delete(url)
           }
         }
       }
@@ -90,16 +87,12 @@ function isMediaRequest(req: Request) {
   try {
     const { hostname: reqHostname, pathname } = new URL(req.url)
     const { hostname: baseHostname } = new URL(activeSession?.baseUrl ?? '')
-    return MEDIA_PATHS.some(path => pathname.startsWith(path))
-      && reqHostname === baseHostname
-      && req.method === 'GET'
-  }
-  catch {
+    return MEDIA_PATHS.some(path => pathname.startsWith(path)) && reqHostname === baseHostname && req.method === 'GET'
+  } catch {
     return false
   }
 }
 
-self.addEventListener('fetch', (e) => {
-  if (isMediaRequest(e.request))
-    return e.respondWith(matrixMediaStrategy.handle(e))
+self.addEventListener('fetch', e => {
+  if (isMediaRequest(e.request)) return e.respondWith(matrixMediaStrategy.handle(e))
 })

@@ -4,8 +4,8 @@
 export function useAlive() {
   const isAlive = shallowRef(true)
 
-  onActivated(() => isAlive.value = true)
-  onDeactivated(() => isAlive.value = false)
+  onActivated(() => (isAlive.value = true))
+  onDeactivated(() => (isAlive.value = false))
 
   return isAlive
 }

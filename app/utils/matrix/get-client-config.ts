@@ -6,8 +6,7 @@ export async function getClientConfig(homeserver: string) {
   if (res['m.homeserver']?.error)
     throw new Error(parseMatrixError(res['m.homeserver']?.error, { fallbackMessage: 'Invalid homeserver' }))
 
-  if (res['m.homeserver']?.base_url)
-    return res
+  if (res['m.homeserver']?.base_url) return res
 
   throw new Error('Unexpected error')
 }

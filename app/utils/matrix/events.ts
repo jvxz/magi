@@ -9,8 +9,7 @@ export function filterMatrixEvents(events: MatrixEvent[], predicate: Predicate) 
   const filtered: MatrixEvent[] = []
 
   for (const event of events) {
-    if (typeof predicate === 'function' ? predicate(event) : event.getType() === predicate)
-      filtered.push(event)
+    if (typeof predicate === 'function' ? predicate(event) : event.getType() === predicate) filtered.push(event)
   }
 
   return filtered
@@ -26,33 +25,39 @@ export function checkReplyEvent(event: MatrixEvent) {
 }
 
 export function getEventContent(event: MatrixEvent | undefined): IContent {
-  if (!event)
-    return { body: 'Could not load event content' }
+  if (!event) return { body: 'Could not load event content' }
 
   const content = event.isEncrypted() ? event.getClearContent() : event.getContent()
 
-  if (event.isEncrypted() && content?.msgtype === 'm.bad.encrypted')
-    return { body: 'Unable to decrypt message' }
+  if (event.isEncrypted() && content?.msgtype === 'm.bad.encrypted') return { body: 'Unable to decrypt message' }
 
-  if (!content)
-    return { body: 'Could not load event content' }
+  if (!content) return { body: 'Could not load event content' }
 
   return content
 }
 
 export function canDecryptEvent(event: MatrixEvent | Partial<IEvent> | undefined) {
-  if (!event)
-    return false
+  if (!event) return false
 
-  if (event instanceof MatrixEvent)
-    return event.shouldAttemptDecryption()
+  if (event instanceof MatrixEvent) return event.shouldAttemptDecryption()
 
   const matrixEvent = new MatrixEvent(event)
 
   return matrixEvent.shouldAttemptDecryption()
 }
 
-type MembershipEventContent = Prettify<MembershipEventBan | MembershipEventInvite | MembershipEventKnock | MembershipEventDisplayName | MembershipEventUnban | MembershipEventKick | MembershipEventUnknown | MembershipEventAvatar | MembershipEventLeave | MembershipEventJoin>
+type MembershipEventContent = Prettify<
+  | MembershipEventBan
+  | MembershipEventInvite
+  | MembershipEventKnock
+  | MembershipEventDisplayName
+  | MembershipEventUnban
+  | MembershipEventKick
+  | MembershipEventUnknown
+  | MembershipEventAvatar
+  | MembershipEventLeave
+  | MembershipEventJoin
+>
 
 interface MembershipEventBan {
   type: 'ban'
@@ -86,33 +91,37 @@ interface MembershipEventKick {
 
 interface MembershipEventDisplayName {
   type: 'displayName'
-  data: {
-    type: 'changed'
-    to: string
-    from: string | undefined
-    id: string
-  } | {
-    type: 'removed'
-    from: string
-    id: string
-    name: string
-  }
+  data:
+    | {
+        type: 'changed'
+        to: string
+        from: string | undefined
+        id: string
+      }
+    | {
+        type: 'removed'
+        from: string
+        id: string
+        name: string
+      }
 }
 
 interface MembershipEventAvatar {
   type: 'avatar'
-  data: {
-    type: 'changed'
-    to: string
-    from: string | undefined
-    id: string
-    name: string
-  } | {
-    type: 'removed'
-    from: string
-    id: string
-    name: string
-  }
+  data:
+    | {
+        type: 'changed'
+        to: string
+        from: string | undefined
+        id: string
+        name: string
+      }
+    | {
+        type: 'removed'
+        from: string
+        id: string
+        name: string
+      }
 }
 
 interface MembershipEventLeave {
@@ -323,8 +332,8 @@ export function parseMembershipEvent(event: MatrixEvent): MembershipEventContent
 const REPLY_BODY_REG = /^> <.+?> .+\n(>.*\n)*\n/m
 export function trimReplyFromBody(body: string): string {
   const match = body.match(REPLY_BODY_REG)
-  if (!match)
-    return body
+  if (!match) return body
+
   return body.slice(match[0].length)
 }
 

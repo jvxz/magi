@@ -13,25 +13,25 @@ Magi is a **Matrix.org client** built with **Nuxt 4**. Priorities: **security, E
 
 Use **pnpm** (see [`package.json`](package.json)).
 
-| Script | Purpose |
-|--------|---------|
-| `pnpm dev` | Nuxt dev with PWA plugin enabled (`VITE_PLUGIN_PWA=true`) |
-| `pnpm dev:no-pwa` | Nuxt dev without PWA |
-| `pnpm build` | Production Nuxt build |
-| `pnpm build:test` | Build with `NITRO_PRESET=node-server` and `NODE_ENV=test` (used before e2e) |
-| `pnpm generate` | Static generation (`nuxt generate`) |
-| `pnpm preview` | `pnpm build` then `nuxt preview` |
-| `pnpm lint` | ESLint (`AGENTS.md` ignored via `--ignore-pattern`) |
-| `pnpm postinstall` | `nuxt prepare` |
-| `pnpm test` | Vitest (all projects in [`vitest.config.ts`](vitest.config.ts)) |
-| `pnpm test:unit` | Vitest — `unit` project (`test/unit/*.{test,spec}.ts`) |
-| `pnpm test:nuxt` | Vitest — `nuxt` project (`test/nuxt/**/*.{test,spec}.ts`) |
-| `pnpm test:watch` | Vitest watch mode |
-| `pnpm test:coverage` | Vitest with coverage |
-| `pnpm test:typecheck` | `vue-tsc -b --noEmit` |
-| `pnpm test:e2e` | `pnpm build:test` then Playwright (`test/e2e`) |
-| `pnpm test:e2e:ui` | Same as e2e with Playwright UI |
-| `pnpm test:e2e:prebuilt` | Playwright only (expects app already built for test) |
+| Script                    | Purpose                                                                                                                          |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                | Nuxt dev with PWA plugin enabled (`VITE_PLUGIN_PWA=true`)                                                                        |
+| `pnpm dev:no-pwa`         | Nuxt dev without PWA                                                                                                             |
+| `pnpm build`              | Production Nuxt build                                                                                                            |
+| `pnpm build:test`         | Build with `NITRO_PRESET=node-server` and `NODE_ENV=test` (used before e2e)                                                      |
+| `pnpm generate`           | Static generation (`nuxt generate`)                                                                                              |
+| `pnpm preview`            | `pnpm build` then `nuxt preview`                                                                                                 |
+| `pnpm lint`               | ESLint (`AGENTS.md` ignored via `--ignore-pattern`)                                                                              |
+| `pnpm postinstall`        | `nuxt prepare`                                                                                                                   |
+| `pnpm test`               | Vitest (all projects in [`vitest.config.ts`](vitest.config.ts))                                                                  |
+| `pnpm test:unit`          | Vitest — `unit` project (`test/unit/*.{test,spec}.ts`)                                                                           |
+| `pnpm test:nuxt`          | Vitest — `nuxt` project (`test/nuxt/**/*.{test,spec}.ts`)                                                                        |
+| `pnpm test:watch`         | Vitest watch mode                                                                                                                |
+| `pnpm test:coverage`      | Vitest with coverage                                                                                                             |
+| `pnpm test:typecheck`     | `vue-tsc -b --noEmit`                                                                                                            |
+| `pnpm test:e2e`           | `pnpm build:test` then Playwright (`test/e2e`)                                                                                   |
+| `pnpm test:e2e:ui`        | Same as e2e with Playwright UI                                                                                                   |
+| `pnpm test:e2e:prebuilt`  | Playwright only (expects app already built for test)                                                                             |
 | `pnpm test:e2e:webserver` | `NODE_ENV=test` Nuxt preview on port **5678** (used by Playwright `webServer` in [`playwright.config.ts`](playwright.config.ts)) |
 
 **Do not** start the dev server (`pnpm dev`, etc.) unless the user explicitly asks.
@@ -42,24 +42,24 @@ CI (`.github/workflows/ci.yml`) runs: `pnpm nuxt prepare`, `pnpm test:typecheck`
 
 ## Tech stack (high level)
 
-| Layer | Notes |
-|-------|-------|
-| Framework | Nuxt `^4.4.x` ([`package.json`](package.json)) |
-| CSS | UnoCSS — `presetWind4`, `unocss-preset-animations`, custom anchor-positioning preset ([`uno.config.ts`](uno.config.ts)) |
-| UI | `reka-ui` via `reka-ui/nuxt` |
-| Variants / classes | `class-variance-authority`; `cn()` in [`app/utils/cn.ts`](app/utils/cn.ts) (`clsx` + `tailwind-merge`) |
-| Matrix | `matrix-js-sdk` (client-side only); `@matrix-org/matrix-sdk-crypto-wasm` for E2EE |
-| Client state | `useMatrixClient()` — `createGlobalState` + `shallowRef<MatrixClient>` ([`app/composables/use-matrix-client.ts`](app/composables/use-matrix-client.ts)) |
-| Session | `unstorage` + IndexedDB via [`app/utils/idb.ts`](app/utils/idb.ts) (`idb-keyval`) |
-| Vue utilities | `@vueuse/nuxt` (auto-imported) |
-| Forms | `@regle/nuxt` |
-| Validation | `zod` — app import preset `z.*` in [`nuxt.config.ts`](nuxt.config.ts); Nitro imports `z` from `zod` |
-| Server / Nitro | `h3` helpers auto-imported; Zod helpers in `server/utils/` (e.g. [`server/utils/validate-body-zod.ts`](server/utils/validate-body-zod.ts), [`server/utils/validate-query-zod.ts`](server/utils/validate-query-zod.ts)) |
-| Data (client) | `@peterbud/nuxt-query` — auto-imports `useMutation`, `useQueryClient`; TanStack-style queries; `useQuery` wrapper with extra `watch` sources in [`app/composables/use-query.ts`](app/composables/use-query.ts); default `staleTime: 1h`, `refetchOnWindowFocus: true` |
-| Images / fonts / icons | `@nuxt/image` + [`app/components/img.vue`](app/components/img.vue); `@nuxt/fonts` (local **Miranda Sans** → [`public/font/Miranda-Sans.woff2`](public/font/Miranda-Sans.woff2)); `@nuxt/icon` + `@iconify-json/tabler` (`icon.provider: 'server'`) |
-| SEO / PWA | `@nuxtjs/seo`, `@vite-pwa/nuxt` ([`app/config/pwa.ts`](app/config/pwa.ts), [`app/sw.ts`](app/sw.ts)); PWA in dev only when `VITE_PLUGIN_PWA=true` |
-| Security | `nuxt-security` — CSP headers (prod `script-src` set in config); `rateLimiter` and `sri` are **off** in current [`nuxt.config.ts`](nuxt.config.ts) |
-| Misc | `@nuxt/hints`, `quick-lru` for small LRU caches |
+| Layer                  | Notes                                                                                                                                                                                                                                                                 |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework              | Nuxt `^4.4.x` ([`package.json`](package.json))                                                                                                                                                                                                                        |
+| CSS                    | UnoCSS — `presetWind4`, `unocss-preset-animations`, custom anchor-positioning preset ([`uno.config.ts`](uno.config.ts))                                                                                                                                               |
+| UI                     | `reka-ui` via `reka-ui/nuxt`                                                                                                                                                                                                                                          |
+| Variants / classes     | `class-variance-authority`; `cn()` in [`app/utils/cn.ts`](app/utils/cn.ts) (`clsx` + `tailwind-merge`)                                                                                                                                                                |
+| Matrix                 | `matrix-js-sdk` (client-side only); `@matrix-org/matrix-sdk-crypto-wasm` for E2EE                                                                                                                                                                                     |
+| Client state           | `useMatrixClient()` — `createGlobalState` + `shallowRef<MatrixClient>` ([`app/composables/use-matrix-client.ts`](app/composables/use-matrix-client.ts))                                                                                                               |
+| Session                | `unstorage` + IndexedDB via [`app/utils/idb.ts`](app/utils/idb.ts) (`idb-keyval`)                                                                                                                                                                                     |
+| Vue utilities          | `@vueuse/nuxt` (auto-imported)                                                                                                                                                                                                                                        |
+| Forms                  | `@regle/nuxt`                                                                                                                                                                                                                                                         |
+| Validation             | `zod` — app import preset `z.*` in [`nuxt.config.ts`](nuxt.config.ts); Nitro imports `z` from `zod`                                                                                                                                                                   |
+| Server / Nitro         | `h3` helpers auto-imported; Zod helpers in `server/utils/` (e.g. [`server/utils/validate-body-zod.ts`](server/utils/validate-body-zod.ts), [`server/utils/validate-query-zod.ts`](server/utils/validate-query-zod.ts))                                                |
+| Data (client)          | `@peterbud/nuxt-query` — auto-imports `useMutation`, `useQueryClient`; TanStack-style queries; `useQuery` wrapper with extra `watch` sources in [`app/composables/use-query.ts`](app/composables/use-query.ts); default `staleTime: 1h`, `refetchOnWindowFocus: true` |
+| Images / fonts / icons | `@nuxt/image` + [`app/components/img.vue`](app/components/img.vue); `@nuxt/fonts` (local **Miranda Sans** → [`public/font/Miranda-Sans.woff2`](public/font/Miranda-Sans.woff2)); `@nuxt/icon` + `@iconify-json/tabler` (`icon.provider: 'server'`)                    |
+| SEO / PWA              | `@nuxtjs/seo`, `@vite-pwa/nuxt` ([`app/config/pwa.ts`](app/config/pwa.ts), [`app/sw.ts`](app/sw.ts)); PWA in dev only when `VITE_PLUGIN_PWA=true`                                                                                                                     |
+| Security               | `nuxt-security` — CSP headers (prod `script-src` set in config); `rateLimiter` and `sri` are **off** in current [`nuxt.config.ts`](nuxt.config.ts)                                                                                                                    |
+| Misc                   | `@nuxt/hints`, `quick-lru` for small LRU caches                                                                                                                                                                                                                       |
 
 ---
 

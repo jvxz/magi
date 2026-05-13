@@ -5,7 +5,11 @@ export function useSelf() {
   const { client } = useMatrixClient()
   const status = useMatrixStatus()
 
-  const { data: self, isLoading: selfPending, refetch: forceRefreshSelf } = useQuery({
+  const {
+    data: self,
+    isLoading: selfPending,
+    refetch: forceRefreshSelf,
+  } = useQuery({
     queryFn: async () => {
       const id = client.value.getSafeUserId()
       const user = client.value.getUser(id)

@@ -10,13 +10,12 @@ export const interactiveBase = tv({
     },
     variant: {
       danger:
-      'hover:bg-danger/90 bg-danger/90 text-danger-foreground hover:bg-danger active:bg-danger/87.5 border-danger',
-      default:
-      'bg-primary/85 border border-primary active:bg-primary/80 text-primary-foreground',
+        'hover:bg-danger/90 bg-danger/90 text-danger-foreground hover:bg-danger active:bg-danger/87.5 border-danger',
+      default: 'bg-primary/85 border border-primary active:bg-primary/80 text-primary-foreground',
       ghost: 'hover:bg-muted/50 hover:text-foreground active:bg-muted/75 text-muted-foreground active:text-foreground',
       link: 'text-foreground px-2.5 -mx-2.5 underline-offset-4 hover:underline',
       outline:
-      'border-border/90 hover:bg-muted/90 active:bg-muted/75 hover:border-border active:border-border border bg-transparent',
+        'border-border/90 hover:bg-muted/90 active:bg-muted/75 hover:border-border active:border-border border bg-transparent',
       soft: 'border-border/90 text-muted-foreground hover:text-foreground hover:bg-muted/75 active:bg-muted/90 hover:border-border active:border-border border bg-input',
     },
   },
@@ -26,10 +25,8 @@ export const staticBase = tv({
   base: 'rounded p-6 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   variants: {
     variant: {
-      danger:
-      'bg-card-light border-danger border [&>svg]:text-current',
-      default:
-      'bg-card-light border border-border text-card-foreground',
+      danger: 'bg-card-light border-danger border [&>svg]:text-current',
+      default: 'bg-card-light border border-border text-card-foreground',
     },
   },
 })
@@ -56,5 +53,5 @@ export const popoverItemBase = tv({
   },
 })
 
-export const overlayStyles
-  = 'duration-75 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-overlay'
+export const overlayStyles =
+  'duration-75 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-overlay'

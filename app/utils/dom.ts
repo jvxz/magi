@@ -9,8 +9,7 @@ export type ElementOrDimensions = HTMLElement & {
 export const rAF = () => new Promise(r => requestAnimationFrame(r))
 
 export function scrollToBottom(el: MaybeElement) {
-  if (!el)
-    return
+  if (!el) return
 
   el.scrollTo({
     behavior: 'instant',
@@ -18,15 +17,22 @@ export function scrollToBottom(el: MaybeElement) {
   })
 }
 
-export function getIntersectingNodes(el: MaybeElement, padHeight?: number, overrides?: {
-  containerScrollTop?: number
-  containerClientHeight?: number
-}) {
-  if (!el)
-    return
+export function getIntersectingNodes(
+  el: MaybeElement,
+  padHeight?: number,
+  overrides?: {
+    containerScrollTop?: number
+    containerClientHeight?: number
+  },
+) {
+  if (!el) return
 
   const containerCanScroll = canElementScroll(el)
-  if (!containerCanScroll && overrides?.containerScrollTop === undefined && overrides?.containerClientHeight === undefined)
+  if (
+    !containerCanScroll &&
+    overrides?.containerScrollTop === undefined &&
+    overrides?.containerClientHeight === undefined
+  )
     return Array.from(el.children).filter(c => !c.hasAttribute('data-ignore')) as HTMLElement[]
 
   const containerScrollTop = overrides?.containerScrollTop ?? el.scrollTop
@@ -36,8 +42,7 @@ export function getIntersectingNodes(el: MaybeElement, padHeight?: number, overr
   const intersecting: HTMLElement[] = []
   for (let i = 0; i < children.length; i++) {
     const child = children[i] as HTMLElement | undefined
-    if (!child || child.hasAttribute('data-ignore'))
-      continue
+    if (!child || child.hasAttribute('data-ignore')) continue
 
     if (isIntersecting({ clientHeight: containerClientHeight, scrollTop: containerScrollTop }, child, padHeight))
       intersecting.push(child)
@@ -47,15 +52,18 @@ export function getIntersectingNodes(el: MaybeElement, padHeight?: number, overr
 }
 
 export function canElementScroll(el: MaybeElement) {
-  if (!el)
-    return false
+  if (!el) return false
 
   return el.scrollHeight > el.offsetHeight
 }
 
 export const getScrollBottom = (el: HTMLElement) => el.clientHeight + el.scrollTop
 
-export function isIntersecting(vpEl: Pick<ElementOrDimensions, 'clientHeight' | 'scrollTop'>, childEl: HTMLElement, padHeight?: number) {
+export function isIntersecting(
+  vpEl: Pick<ElementOrDimensions, 'clientHeight' | 'scrollTop'>,
+  childEl: HTMLElement,
+  padHeight?: number,
+) {
   const top = childEl.offsetTop
   const bottom = top + Math.max(childEl.offsetHeight, childEl.offsetHeight + (padHeight ?? 0))
 
@@ -84,11 +92,9 @@ export function getTotalNodeHeights<T extends ChildNode | HTMLElement | Dimensio
     }
 
     const node = nodes[i]
-    if (!node || !('clientHeight' in node))
-      continue
+    if (!node || !('clientHeight' in node)) continue
 
-    if (node instanceof HTMLElement && node.hasAttribute('data-ignore'))
-      continue
+    if (node instanceof HTMLElement && node.hasAttribute('data-ignore')) continue
 
     onCalc?.(node)
 
@@ -107,12 +113,10 @@ export function getTotalNodeHeights<T extends ChildNode | HTMLElement | Dimensio
 export function isFocusedElementEditable() {
   const { activeElement, body } = document
 
-  if (!activeElement)
-    return false
+  if (!activeElement) return false
 
   // If not element has focus, we assume it is not editable, too.
-  if (activeElement === body)
-    return false
+  if (activeElement === body) return false
 
   // Assume <input> and <textarea> elements are editable.
   switch (activeElement.tagName) {

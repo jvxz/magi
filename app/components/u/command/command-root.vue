@@ -40,7 +40,7 @@ function filterItems() {
     const score = contains(value, filterState.search)
     filterState.filtered.items.set(id, score ? 1 : 0)
     if (score)
-      itemCount++
+      {itemCount++}
   }
 
   for (const [groupId, group] of allGroups.value) {

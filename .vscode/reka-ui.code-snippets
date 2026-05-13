@@ -24,8 +24,8 @@
       "      ${4:Content for section 2}",
       "    </AccordionContent>",
       "  </AccordionItem>",
-      "</AccordionRoot>"
-    ]
+      "</AccordionRoot>",
+    ],
   },
 
   // ============================================================================
@@ -56,8 +56,8 @@
       "      </div>",
       "    </AlertDialogContent>",
       "  </AlertDialogPortal>",
-      "</AlertDialogRoot>"
-    ]
+      "</AlertDialogRoot>",
+    ],
   },
 
   // ============================================================================
@@ -69,8 +69,8 @@
     "body": [
       "<AspectRatio :ratio=\"${1:16} / ${2:9}\">",
       "  ${3:<img src=\"image.jpg\" alt=\"Image\" />}",
-      "</AspectRatio>"
-    ]
+      "</AspectRatio>",
+    ],
   },
 
   // ============================================================================
@@ -83,8 +83,8 @@
       "<AvatarRoot>",
       "  <AvatarImage :src=\"${1:userImage}\" :alt=\"${2:'User avatar'}\" />",
       "  <AvatarFallback>${3:JD}</AvatarFallback>",
-      "</AvatarRoot>"
-    ]
+      "</AvatarRoot>",
+    ],
   },
 
   // ============================================================================
@@ -99,8 +99,8 @@
       "    <CheckIcon v-if=\"$1\" />",
       "  </CheckboxIndicator>",
       "</CheckboxRoot>",
-      "<label>${2:Accept terms}</label>"
-    ]
+      "<label>${2:Accept terms}</label>",
+    ],
   },
 
   "Reka UI - Checkbox Group": {
@@ -114,8 +114,8 @@
       "    </CheckboxIndicator>",
       "    <label>{{ item.label }}</label>",
       "  </CheckboxRoot>",
-      "</CheckboxGroupRoot>"
-    ]
+      "</CheckboxGroupRoot>",
+    ],
   },
 
   // ============================================================================
@@ -132,8 +132,8 @@
       "  <CollapsibleContent>",
       "    ${4:Collapsible content goes here}",
       "  </CollapsibleContent>",
-      "</CollapsibleRoot>"
-    ]
+      "</CollapsibleRoot>",
+    ],
   },
 
   // ============================================================================
@@ -165,8 +165,8 @@
       "      </ComboboxViewport>",
       "    </ComboboxContent>",
       "  </ComboboxPortal>",
-      "</ComboboxRoot>"
-    ]
+      "</ComboboxRoot>",
+    ],
   },
 
   // ============================================================================
@@ -203,8 +203,8 @@
       "      </ContextMenuSub>",
       "    </ContextMenuContent>",
       "  </ContextMenuPortal>",
-      "</ContextMenuRoot>"
-    ]
+      "</ContextMenuRoot>",
+    ],
   },
 
   // ============================================================================
@@ -233,8 +233,8 @@
       "      </DialogClose>",
       "    </DialogContent>",
       "  </DialogPortal>",
-      "</DialogRoot>"
-    ]
+      "</DialogRoot>",
+    ],
   },
 
   // ============================================================================
@@ -265,8 +265,8 @@
       "      </DropdownMenuGroup>",
       "    </DropdownMenuContent>",
       "  </DropdownMenuPortal>",
-      "</DropdownMenuRoot>"
-    ]
+      "</DropdownMenuRoot>",
+    ],
   },
 
   "Reka UI - Dropdown Menu with Checkbox": {
@@ -293,8 +293,8 @@
       "      </DropdownMenuCheckboxItem>",
       "    </DropdownMenuContent>",
       "  </DropdownMenuPortal>",
-      "</DropdownMenuRoot>"
-    ]
+      "</DropdownMenuRoot>",
+    ],
   },
 
   "Reka UI - Dropdown Menu with Radio": {
@@ -323,8 +323,8 @@
       "      </DropdownMenuRadioGroup>",
       "    </DropdownMenuContent>",
       "  </DropdownMenuPortal>",
-      "</DropdownMenuRoot>"
-    ]
+      "</DropdownMenuRoot>",
+    ],
   },
 
   // ============================================================================
@@ -344,8 +344,8 @@
       "      <HoverCardArrow />",
       "    </HoverCardContent>",
       "  </HoverCardPortal>",
-      "</HoverCardRoot>"
-    ]
+      "</HoverCardRoot>",
+    ],
   },
 
   // ============================================================================
@@ -354,9 +354,7 @@
   "Reka UI - Label": {
     "prefix": ["reka-label", "rui-label"],
     "description": "Accessible label component",
-    "body": [
-      "<Label for=\"${1:input-id}\">${2:Label text}</Label>"
-    ]
+    "body": ["<Label for=\"${1:input-id}\">${2:Label text}</Label>"],
   },
 
   // ============================================================================
@@ -381,7 +379,7 @@
       "        </MenubarItem>",
       "        <MenubarSeparator />",
       "        <MenubarSub>",
-          "          <MenubarSubTrigger>Recent</MenubarSubTrigger>",
+      "          <MenubarSubTrigger>Recent</MenubarSubTrigger>",
       "          <MenubarSubContent>",
       "            <MenubarItem v-for=\"file in ${4:recentFiles}\" :key=\"file\" @select=\"() => openFile(file)\">",
       "              {{ file }}",
@@ -401,8 +399,8 @@
       "      </MenubarContent>",
       "    </MenubarPortal>",
       "  </MenubarMenu>",
-      "</MenubarRoot>"
-    ]
+      "</MenubarRoot>",
+    ],
   },
 
   // ============================================================================
@@ -426,8 +424,8 @@
       "    </NavigationMenuItem>",
       "  </NavigationMenuList>",
       "  <NavigationMenuViewport />",
-      "</NavigationMenuRoot>"
-    ]
+      "</NavigationMenuRoot>",
+    ],
   },
 
   // ============================================================================
@@ -445,8 +443,8 @@
       "  <NumberFieldIncrement>",
       "    <PlusIcon />",
       "  </NumberFieldIncrement>",
-      "</NumberFieldRoot>"
-    ]
+      "</NumberFieldRoot>",
+    ],
   },
 
   // ============================================================================
@@ -466,8 +464,8 @@
       "    <PaginationNext />",
       "    <PaginationLast />",
       "  </PaginationList>",
-      "</PaginationRoot>"
-    ]
+      "</PaginationRoot>",
+    ],
   },
 
   // ============================================================================
@@ -479,8 +477,8 @@
     "body": [
       "<PinInputRoot v-model=\"${1:pin}\" :length=\"${2:4}\" otp>",
       "  <PinInputInput v-for=\"(id, index) in $1\" :key=\"id\" :index=\"index\" />",
-      "</PinInputRoot>"
-    ]
+      "</PinInputRoot>",
+    ],
   },
 
   // ============================================================================
@@ -505,8 +503,8 @@
       "      <PopoverArrow />",
       "    </PopoverContent>",
       "  </PopoverPortal>",
-      "</PopoverRoot>"
-    ]
+      "</PopoverRoot>",
+    ],
   },
 
   // ============================================================================
@@ -518,8 +516,8 @@
     "body": [
       "<ProgressRoot v-model=\"${1:progress}\" :max=\"${2:100}\">",
       "  <ProgressIndicator :style=\"{ width: $1 + '%' }\" />",
-      "</ProgressRoot>"
-    ]
+      "</ProgressRoot>",
+    ],
   },
 
   // ============================================================================
@@ -534,8 +532,8 @@
       "    <RadioGroupIndicator />",
       "    <label>{{ option.label }}</label>",
       "  </RadioGroupItem>",
-      "</RadioGroupRoot>"
-    ]
+      "</RadioGroupRoot>",
+    ],
   },
 
   // ============================================================================
@@ -556,8 +554,8 @@
       "    <ScrollAreaThumb />",
       "  </ScrollAreaScrollbar>",
       "  <ScrollAreaCorner />",
-      "</ScrollAreaRoot>"
-    ]
+      "</ScrollAreaRoot>",
+    ],
   },
 
   // ============================================================================
@@ -598,8 +596,8 @@
       "      </SelectScrollDownButton>",
       "    </SelectContent>",
       "  </SelectPortal>",
-      "</SelectRoot>"
-    ]
+      "</SelectRoot>",
+    ],
   },
 
   // ============================================================================
@@ -610,8 +608,8 @@
     "description": "Visual divider between elements",
     "body": [
       "<Separator orientation=\"${1|horizontal,vertical|}\" decorative />",
-      "<Separator orientation=\"horizontal\" />"
-    ]
+      "<Separator orientation=\"horizontal\" />",
+    ],
   },
 
   // ============================================================================
@@ -626,8 +624,8 @@
       "    <SliderRange />",
       "  </SliderTrack>",
       "  <SliderThumb />",
-      "</SliderRoot>"
-    ]
+      "</SliderRoot>",
+    ],
   },
 
   "Reka UI - Range Slider": {
@@ -639,8 +637,8 @@
       "    <SliderRange />",
       "  </SliderTrack>",
       "  <SliderThumb v-for=\"(_, index) in $1\" :key=\"index\" />",
-      "</SliderRoot>"
-    ]
+      "</SliderRoot>",
+    ],
   },
 
   // ============================================================================
@@ -658,8 +656,8 @@
       "  <SplitterPanel :min-size=\"${5:20}\">",
       "    ${6:Panel 2 content}",
       "  </SplitterPanel>",
-      "</SplitterGroup>"
-    ]
+      "</SplitterGroup>",
+    ],
   },
 
   // ============================================================================
@@ -680,8 +678,8 @@
       "    </StepperTrigger>",
       "    <StepperSeparator />",
       "  </StepperItem>",
-      "</StepperRoot>"
-    ]
+      "</StepperRoot>",
+    ],
   },
 
   // ============================================================================
@@ -694,8 +692,8 @@
       "<SwitchRoot v-model=\"${1:checked}\" class=\"${2:switch-root}\">",
       "  <SwitchThumb class=\"${3:switch-thumb}\" />",
       "</SwitchRoot>",
-      "<label>${4:Enable feature}</label>"
-    ]
+      "<label>${4:Enable feature}</label>",
+    ],
   },
 
   // ============================================================================
@@ -721,8 +719,8 @@
       "  <TabsContent value=\"$7\" class=\"$10\">",
       "    ${12:Content for tab 2}",
       "  </TabsContent>",
-      "</TabsRoot>"
-    ]
+      "</TabsRoot>",
+    ],
   },
 
   "Reka UI - Tabs with Indicator": {
@@ -739,8 +737,8 @@
       "  </TabsList>",
       "  <TabsContent value=\"$3\">${7:Content 1}</TabsContent>",
       "  <TabsContent value=\"$5\">${8:Content 2}</TabsContent>",
-      "</TabsRoot>"
-    ]
+      "</TabsRoot>",
+    ],
   },
 
   // ============================================================================
@@ -758,8 +756,8 @@
       "    </TagsInputItemDelete>",
       "  </TagsInputItem>",
       "  <TagsInputInput placeholder=\"${2:Add tag...}\" />",
-      "</TagsInputRoot>"
-    ]
+      "</TagsInputRoot>",
+    ],
   },
 
   // ============================================================================
@@ -772,8 +770,8 @@
       "<ToastProvider :duration=\"${1:5000}\">",
       "  <ToastViewport class=\"${2:toast-viewport}\" />",
       "  ${3:<!-- Your app content -->}",
-      "</ToastProvider>"
-    ]
+      "</ToastProvider>",
+    ],
   },
 
   "Reka UI - Toast": {
@@ -791,8 +789,8 @@
       "  <ToastClose aria-label=\"Close\">",
       "    <Cross2Icon />",
       "  </ToastClose>",
-      "</ToastRoot>"
-    ]
+      "</ToastRoot>",
+    ],
   },
 
   // ============================================================================
@@ -804,8 +802,8 @@
     "body": [
       "<Toggle v-model:pressed=\"${1:pressed}\" aria-label=\"${2:Toggle feature}\">",
       "  ${3:<Icon />}",
-      "</Toggle>"
-    ]
+      "</Toggle>",
+    ],
   },
 
   // ============================================================================
@@ -819,8 +817,8 @@
       "  <ToggleGroupItem v-for=\"item in ${3:items}\" :key=\"item.value\" :value=\"item.value\">",
       "    {{ item.label }}",
       "  </ToggleGroupItem>",
-      "</ToggleGroupRoot>"
-    ]
+      "</ToggleGroupRoot>",
+    ],
   },
 
   // ============================================================================
@@ -841,8 +839,8 @@
       "  </ToolbarToggleGroup>",
       "  <ToolbarSeparator />",
       "  <ToolbarButton @click=\"${4:handleAction}\">${5:Action}</ToolbarButton>",
-      "</ToolbarRoot>"
-    ]
+      "</ToolbarRoot>",
+    ],
   },
 
   // ============================================================================
@@ -864,8 +862,8 @@
       "      </TooltipContent>",
       "    </TooltipPortal>",
       "  </TooltipRoot>",
-      "</TooltipProvider>"
-    ]
+      "</TooltipProvider>",
+    ],
   },
 
   // ============================================================================
@@ -879,8 +877,8 @@
       "  <TreeItem v-for=\"item in flattenedItems\" :key=\"item.id\" v-bind=\"item\">",
       "    {{ item.label }}",
       "  </TreeItem>",
-      "</TreeRoot>"
-    ]
+      "</TreeRoot>",
+    ],
   },
 
   // ============================================================================
@@ -900,8 +898,8 @@
       "    <EditableSubmitTrigger>Save</EditableSubmitTrigger>",
       "    <EditableCancelTrigger>Cancel</EditableCancelTrigger>",
       "  </div>",
-      "</EditableRoot>"
-    ]
+      "</EditableRoot>",
+    ],
   },
 
   // ============================================================================
@@ -910,11 +908,7 @@
   "Reka UI - Date Field": {
     "prefix": ["reka-date-field", "rui-date-field"],
     "description": "Date input field with segments",
-    "body": [
-      "<DateFieldRoot v-model=\"${1:date}\">",
-      "  <DateFieldInput />",
-      "</DateFieldRoot>"
-    ]
+    "body": ["<DateFieldRoot v-model=\"${1:date}\">", "  <DateFieldInput />", "</DateFieldRoot>"],
   },
 
   "Reka UI - Date Picker": {
@@ -931,8 +925,8 @@
       "  <DatePickerContent>",
       "    <DatePickerCalendar />",
       "  </DatePickerContent>",
-      "</DatePickerRoot>"
-    ]
+      "</DatePickerRoot>",
+    ],
   },
 
   "Reka UI - Calendar": {
@@ -965,8 +959,8 @@
       "      </CalendarGridRow>",
       "    </CalendarGridBody>",
       "  </CalendarGrid>",
-      "</CalendarRoot>"
-    ]
+      "</CalendarRoot>",
+    ],
   },
 
   "Reka UI - Range Calendar": {
@@ -995,8 +989,8 @@
       "      </RangeCalendarGridRow>",
       "    </RangeCalendarGridBody>",
       "  </RangeCalendarGrid>",
-      "</RangeCalendarRoot>"
-    ]
+      "</RangeCalendarRoot>",
+    ],
   },
 
   // ============================================================================
@@ -1019,8 +1013,8 @@
       "    <ColorFieldInput />",
       "  </ColorFieldRoot>",
       "  <ColorSwatch :color=\"$1\" />",
-      "</ColorPickerRoot>"
-    ]
+      "</ColorPickerRoot>",
+    ],
   },
 
   "Reka UI - Color Swatch Picker": {
@@ -1032,8 +1026,8 @@
       "    <ColorSwatchPickerItemIndicator />",
       "    <ColorSwatchPickerItemSwatch />",
       "  </ColorSwatchPickerItem>",
-      "</ColorSwatchPickerRoot>"
-    ]
+      "</ColorSwatchPickerRoot>",
+    ],
   },
 
   // ============================================================================
@@ -1050,8 +1044,8 @@
       "      <StarFilledIcon v-else />",
       "    </RatingItemIndicator>",
       "  </RatingItem>",
-      "</RatingRoot>"
-    ]
+      "</RatingRoot>",
+    ],
   },
 
   // ============================================================================
@@ -1068,8 +1062,8 @@
       "      {{ item.label }}",
       "    </ListboxItem>",
       "  </ListboxContent>",
-      "</ListboxRoot>"
-    ]
+      "</ListboxRoot>",
+    ],
   },
 
   // ============================================================================
@@ -1078,11 +1072,7 @@
   "Reka UI - Config Provider": {
     "prefix": ["reka-config", "rui-config"],
     "description": "Global configuration for Reka UI",
-    "body": [
-      "<ConfigProvider :scroll-body=\"${1:false}\">",
-      "  ${2:<!-- Your app content -->}",
-      "</ConfigProvider>"
-    ]
+    "body": ["<ConfigProvider :scroll-body=\"${1:false}\">", "  ${2:<!-- Your app content -->}", "</ConfigProvider>"],
   },
 
   // ============================================================================
@@ -1091,21 +1081,13 @@
   "Reka UI - Primitive": {
     "prefix": ["reka-primitive", "rui-primitive"],
     "description": "Primitive element with asChild support",
-    "body": [
-      "<Primitive :as=\"${1|'div','button','a','span'|}\" as-child>",
-      "  ${2:<element />}",
-      "</Primitive>"
-    ]
+    "body": ["<Primitive :as=\"${1|'div','button','a','span'|}\" as-child>", "  ${2:<element />}", "</Primitive>"],
   },
 
   "Reka UI - Slot": {
     "prefix": ["reka-slot", "rui-slot"],
     "description": "Slot component for composition",
-    "body": [
-      "<Slot>",
-      "  ${1:<!-- Content merges with child element -->}",
-      "</Slot>"
-    ]
+    "body": ["<Slot>", "  ${1:<!-- Content merges with child element -->}", "</Slot>"],
   },
 
   // ============================================================================
@@ -1114,11 +1096,7 @@
   "Reka UI - Visually Hidden": {
     "prefix": ["reka-visually-hidden", "rui-visually-hidden"],
     "description": "Hidden content for screen readers",
-    "body": [
-      "<VisuallyHidden>",
-      "  ${1:Hidden label for accessibility}",
-      "</VisuallyHidden>"
-    ]
+    "body": ["<VisuallyHidden>", "  ${1:Hidden label for accessibility}", "</VisuallyHidden>"],
   },
 
   "Reka UI - Focus Scope": {
@@ -1127,18 +1105,14 @@
     "body": [
       "<FocusScope :trapped=\"${1:true}\" @mount-auto-focus=\"${2:handleMount}\" @unmount-auto-focus=\"${3:handleUnmount}\">",
       "  ${4:<!-- Focus trapped content -->}",
-      "</FocusScope>"
-    ]
+      "</FocusScope>",
+    ],
   },
 
   "Reka UI - Presence": {
     "prefix": ["reka-presence", "rui-presence"],
     "description": "Animate element presence (mount/unmount)",
-    "body": [
-      "<Presence :present=\"${1:isVisible}\">",
-      "  ${2:<!-- Content animates in/out -->}",
-      "</Presence>"
-    ]
+    "body": ["<Presence :present=\"${1:isVisible}\">", "  ${2:<!-- Content animates in/out -->}", "</Presence>"],
   },
 
   "Reka UI - Roving Focus": {
@@ -1149,8 +1123,8 @@
       "  <RovingFocusItem v-for=\"item in ${2:items}\" :key=\"item\" as-child focusable>",
       "    <button>{{ item }}</button>",
       "  </RovingFocusItem>",
-      "</RovingFocusGroup>"
-    ]
+      "</RovingFocusGroup>",
+    ],
   },
 
   // ============================================================================
@@ -1159,9 +1133,7 @@
   "Reka UI - Import": {
     "prefix": ["reka-import", "rui-import"],
     "description": "Import Reka UI components",
-    "body": [
-      "import { ${1:ComponentName} } from 'reka-ui'"
-    ]
+    "body": ["import { ${1:ComponentName} } from 'reka-ui'"],
   },
 
   "Reka UI - Import Multiple": {
@@ -1172,7 +1144,7 @@
       "  ${1:RootComponent},",
       "  ${2:ChildComponent},",
       "  ${3:AnotherComponent}",
-      "} from 'reka-ui'"
-    ]
-  }
+      "} from 'reka-ui'",
+    ],
+  },
 }

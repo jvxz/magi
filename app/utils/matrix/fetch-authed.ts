@@ -8,9 +8,21 @@ interface Options {
   prefix?: string
 }
 
-export async function fetchAuthed(raw: string, client: MatrixClient, opts?: Options & { rawResponseBody: true }): Promise<Blob>
-export async function fetchAuthed(raw: string, client: MatrixClient, opts?: Options & { rawResponseBody: false }): Promise<unknown>
-export async function fetchAuthed(raw: string, client: MatrixClient, opts?: Options & { rawResponseBody?: undefined }): Promise<unknown>
+export async function fetchAuthed(
+  raw: string,
+  client: MatrixClient,
+  opts?: Options & { rawResponseBody: true },
+): Promise<Blob>
+export async function fetchAuthed(
+  raw: string,
+  client: MatrixClient,
+  opts?: Options & { rawResponseBody: false },
+): Promise<unknown>
+export async function fetchAuthed(
+  raw: string,
+  client: MatrixClient,
+  opts?: Options & { rawResponseBody?: undefined },
+): Promise<unknown>
 export async function fetchAuthed(raw: string, client: MatrixClient, opts?: Options) {
   const url = new URL(raw)
 
@@ -27,8 +39,7 @@ export async function fetchAuthed(raw: string, client: MatrixClient, opts?: Opti
     { prefix: opts?.prefix ?? '', rawResponseBody: opts?.rawResponseBody ?? false },
   )
 
-  if (opts?.rawResponseBody)
-    return res as Blob
+  if (opts?.rawResponseBody) return res as Blob
 
   return res as unknown
 }

@@ -26,31 +26,26 @@ export interface RoomsWithBatchToken {
 }
 
 export function getRoom(client: MatrixClient, roomId: Room['roomId'], allowedIds?: MaybeReadonlySet<Room['roomId']>) {
-  if (!allowedIds)
-    return client.getRoom(roomId)
+  if (!allowedIds) return client.getRoom(roomId)
 
-  if (allowedIds.has(roomId))
-    return client.getRoom(roomId)
+  if (allowedIds.has(roomId)) return client.getRoom(roomId)
 
   return undefined
 }
 
 export function getDirectRooms(client: MatrixClient) {
   const data = client.getAccountData(EventType.Direct) as MDirect | undefined
-  if (!data)
-    return []
+  if (!data) return []
 
   const { event } = data
 
   const directRooms: Room[] = []
   for (const [, roomIds] of objectEntries(event.content)) {
     const roomId = roomIds[0]
-    if (!roomIds.length || !roomId)
-      continue
+    if (!roomIds.length || !roomId) continue
 
     const room = client.getRoom(roomId)
-    if (!room)
-      continue
+    if (!room) continue
 
     directRooms.push(room)
   }
@@ -62,26 +57,35 @@ export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] 
   return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType) ?? []
 }
 
-export function getRoomAvatarUrl({ client, room, size = 32, useAuthentication = false }: GetAvatarUrlOpts): string | undefined {
+export function getRoomAvatarUrl({
+  client,
+  room,
+  size = 32,
+  useAuthentication = false,
+}: GetAvatarUrlOpts): string | undefined {
   const mxcUrl = room.getMxcAvatarUrl()
   return mxcUrl
-    ? mxcToHttps(mxcUrl, {
-      allowDirectLinks: false,
-      allowRedirects: true,
-      baseUrl: client.getHomeserverUrl(),
-      height: size,
-      resizeMethod: 'crop',
-      useAuthentication,
-      width: size,
-    }) ?? undefined
+    ? (mxcToHttps(mxcUrl, {
+        allowDirectLinks: false,
+        allowRedirects: true,
+        baseUrl: client.getHomeserverUrl(),
+        height: size,
+        resizeMethod: 'crop',
+        useAuthentication,
+        width: size,
+      }) ?? undefined)
     : undefined
 }
 
-export function getDirectRoomAvatarUrl({ client, room, size = 32, useAuthentication = false }: GetAvatarUrlOpts): string | undefined {
+export function getDirectRoomAvatarUrl({
+  client,
+  room,
+  size = 32,
+  useAuthentication = false,
+}: GetAvatarUrlOpts): string | undefined {
   const mxcUrl = room.getAvatarFallbackMember()?.getMxcAvatarUrl()
 
-  if (!mxcUrl)
-    return getRoomAvatarUrl({ client, room, size, useAuthentication })
+  if (!mxcUrl) return getRoomAvatarUrl({ client, room, size, useAuthentication })
 
   return mxcToHttps(mxcUrl, {
     allowDirectLinks: false,
@@ -94,7 +98,11 @@ export function getDirectRoomAvatarUrl({ client, room, size = 32, useAuthenticat
   })
 }
 
-export async function getSpaceRooms(client: MatrixClient, space: Room, nextBatchToken?: string): Promise<RoomsWithBatchToken> {
+export async function getSpaceRooms(
+  client: MatrixClient,
+  space: Room,
+  nextBatchToken?: string,
+): Promise<RoomsWithBatchToken> {
   if (!space.isSpaceRoom()) {
     return {
       nextBatchToken: undefined,
@@ -130,14 +138,12 @@ export async function getSpaceRooms(client: MatrixClient, space: Room, nextBatch
 
 export function getJoinedRooms(client: MatrixClient, space: Room | undefined) {
   const events = space?.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(EventType.SpaceChild)
-  if (!events)
-    return []
+  if (!events) return []
 
   const joined: Room[] = []
   for (const event of events) {
     const roomData = client.getRoom(event.getStateKey())
-    if (!roomData || roomData.getMyMembership() !== KnownMembership.Join)
-      continue
+    if (!roomData || roomData.getMyMembership() !== KnownMembership.Join) continue
 
     joined.push(roomData)
   }
@@ -146,20 +152,16 @@ export function getJoinedRooms(client: MatrixClient, space: Room | undefined) {
 }
 
 export function getMember(client: MatrixClient, userId: string | undefined, roomId: string | undefined) {
-  if (!roomId || !userId)
-    return
+  if (!roomId || !userId) return
 
   const room = client.getRoom(roomId)
-  if (!room)
-    return
+  if (!room) return
 
   const member = room.getMember(userId)
-  if (!member)
-    return
+  if (!member) return
 
   const displayName = getRoomMemberDisplayName(room, userId)
-  if (!displayName)
-    return
+  if (!displayName) return
 
   const avatarUrl = mxcToHttps(member.getMxcAvatarUrl() ?? undefined, {
     allowRedirects: true,
@@ -178,8 +180,7 @@ export function getMember(client: MatrixClient, userId: string | undefined, room
 }
 
 export function getRoomMemberDisplayName(room: Room, userId: string | undefined) {
-  if (!userId)
-    return undefined
+  if (!userId) return undefined
 
   const member = room.getMember(userId)
 
@@ -190,8 +191,7 @@ export function getRoomMemberDisplayName(room: Room, userId: string | undefined)
 
 export async function getRoomEventById(room: Room, client: MatrixClient, eventId: string) {
   const cachedEvent = room.findEventById(eventId)
-  if (cachedEvent)
-    return cachedEvent
+  if (cachedEvent) return cachedEvent
 
   const eventData = await client.fetchRoomEvent(room.roomId, eventId)
   const mapper = client.getEventMapper()
@@ -202,29 +202,25 @@ export async function getRoomEventById(room: Room, client: MatrixClient, eventId
 }
 
 export function getPowerLevelName(powerLevel: number | undefined, ownerIsAdmin = false): PowerLevelName {
-  if (isNil(powerLevel))
-    return 'unknown'
+  if (isNil(powerLevel)) return 'unknown'
 
-  if (powerLevel < 50)
-    return 'member'
-  if (powerLevel < 100)
-    return 'moderator'
-  if (powerLevel !== Infinity)
-    return 'admin'
+  if (powerLevel < 50) return 'member'
+
+  if (powerLevel < 100) return 'moderator'
+
+  if (powerLevel !== Infinity) return 'admin'
+
   return ownerIsAdmin ? 'admin' : 'owner'
 }
 
 export async function getMutualRooms(client: MatrixClient, otherUser: MaybeUserOrId | undefined, throwOnError = false) {
   try {
-    if (!otherUser)
-      return
+    if (!otherUser) return
 
     const otherUserId = resolveUserId(otherUser)
     return client._unstable_getSharedRooms(otherUserId)
-  }
-  catch {
-    if (throwOnError)
-      throw new $Error('Failed to get mutual rooms')
+  } catch {
+    if (throwOnError) throw new $Error('Failed to get mutual rooms')
   }
 }
 
@@ -234,26 +230,21 @@ export function isSpaceChild(event: MatrixEvent) {
 }
 
 export function getRoomTopic(room: Room | undefined) {
-  if (!room)
-    return
+  if (!room) return
 
   const events = getStateEvents(room, EventType.RoomTopic)
-  if (events[0])
-    return events[0].getContent<{ topic?: string }>().topic
+  if (events[0]) return events[0].getContent<{ topic?: string }>().topic
 }
 
 export function getRoomCreationTs(room: Room | undefined) {
-  if (!room)
-    return
+  if (!room) return
 
   const events = getStateEvents(room, EventType.RoomCreate)
-  if (events[0])
-    return events[0].getTs()
+  if (events[0]) return events[0].getTs()
 }
 
 export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
-  if (maybeRoomOrId instanceof Room)
-    return maybeRoomOrId.roomId
+  if (maybeRoomOrId instanceof Room) return maybeRoomOrId.roomId
 
   return maybeRoomOrId
 }
@@ -261,8 +252,7 @@ export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
 const ROOM_ID_RE = /^!(?<localpart>[^:]+):(?<server_name>.+)$/
 export function parseRoomId(roomId: string) {
   const match = roomId.match(ROOM_ID_RE)
-  if (!match)
-    return undefined
+  if (!match) return undefined
 
   return {
     localpart: match.groups?.localpart,

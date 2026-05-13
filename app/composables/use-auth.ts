@@ -1,7 +1,10 @@
 import type { ICreateClientOpts, LoginRequest as MatrixLoginRequest } from 'matrix-js-sdk'
 import { createClient } from 'matrix-js-sdk'
 
-export type AuthPayload = Pick<ICreateClientOpts, 'baseUrl' | 'deviceId' | 'refreshToken' | 'userId' | 'accessToken'> & { expiresAt?: number }
+export type AuthPayload = Pick<
+  ICreateClientOpts,
+  'baseUrl' | 'deviceId' | 'refreshToken' | 'userId' | 'accessToken'
+> & { expiresAt?: number }
 
 interface PasswordLoginRequest extends MatrixLoginRequest {
   type: 'm.login.password'
@@ -50,8 +53,7 @@ export function useAuth() {
       status.value.isAuthed = true
 
       return authedClient
-    }
-    catch (error) {
+    } catch (error) {
       sendSessionToSw()
       throw new Error(parseMatrixError(error, { fallbackMessage: 'An unexpected error occurred' }))
     }

@@ -6,23 +6,19 @@ export function useRooms(_type: MaybeRefOrGetter<'direct' | 'space' | 'all' | 'n
   const type = () => toValue(_type)
 
   const get = () => {
-    if (type() === 'all')
-      return client.value.getRooms()
+    if (type() === 'all') return client.value.getRooms()
 
     const allRooms = client.value.getRooms()
     const directRooms = getDirectRooms(client.value)
-    if (!directRooms)
-      return
+    if (!directRooms) return
 
-    return allRooms.filter((room) => {
+    return allRooms.filter(room => {
       const isDirect = directRooms.includes(room)
       const isSpace = room.isSpaceRoom()
 
-      if (type() === 'space')
-        return isSpace && !isDirect
+      if (type() === 'space') return isSpace && !isDirect
 
-      if (type() === 'direct')
-        return !isSpace && isDirect
+      if (type() === 'direct') return !isSpace && isDirect
 
       return !isSpace && isDirect
     })
@@ -30,7 +26,7 @@ export function useRooms(_type: MaybeRefOrGetter<'direct' | 'space' | 'all' | 'n
 
   const rooms = shallowRef<Room[] | undefined>(get())
 
-  onSync(() => rooms.value = get())
+  onSync(() => (rooms.value = get()))
 
   return rooms
 }
