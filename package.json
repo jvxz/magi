@@ -16,6 +16,7 @@
     "fmt": "oxfmt .",
     "fmt:check": "oxfmt --check .",
     "lint": "pnpm oxlint && eslint --ignore-pattern AGENTS.md",
+    "lint:fix": "pnpm oxlint --fix && eslint --ignore-pattern AGENTS.md --fix",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:nuxt": "vitest --project nuxt",
