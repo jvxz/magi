@@ -115,7 +115,6 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'nuxt-vitalizer',
     '@regle/nuxt',
-    '@nuxt/hints',
     '@vite-pwa/nuxt',
     '@nuxt/test-utils/module',
     '@peterbud/nuxt-query',
