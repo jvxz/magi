@@ -8,3 +8,7 @@ shamefullyHoist: true
 shellEmulator: true
 
 trustPolicy: no-downgrade
+# workbox-build (@vite-pwa/nuxt) - trust compares publish-time evidence across semver lines (known false positives)
+trustPolicyExclude:
+  - rollup@2.80.0
+  - semver@6.3.1
