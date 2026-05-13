@@ -10,9 +10,9 @@ export const interactiveBase = tv({
     },
     variant: {
       danger:
-      'hover:bg-danger/90 bg-danger/90 text-danger-foreground hover:bg-danger active:bg-danger/87.5 glow-red-500 border-danger',
+      'hover:bg-danger/90 bg-danger/90 text-danger-foreground hover:bg-danger active:bg-danger/87.5 border-danger',
       default:
-      'bg-primary/85 border border-primary active:bg-primary/80 text-primary-foreground glow-primary',
+      'bg-primary/85 border border-primary active:bg-primary/80 text-primary-foreground',
       ghost: 'hover:bg-muted/50 hover:text-foreground active:bg-muted/75 text-muted-foreground active:text-foreground',
       link: 'text-foreground px-2.5 -mx-2.5 underline-offset-4 hover:underline',
       outline:
@@ -35,7 +35,7 @@ export const staticBase = tv({
 })
 
 export const popoverContentBase = tv({
-  base: 'duration-75 data-[state=open]:animate-in shadow-lg data-[state=open]:fade-in-0 data-[state=closed]:animate-out zoom-in-95 z-50 min-w-52 overflow-hidden p-1',
+  base: 'shadow-lg z-50 min-w-52 overflow-hidden p-1',
   defaultVariants: {
     variant: 'default',
   },
@@ -43,12 +43,17 @@ export const popoverContentBase = tv({
 })
 
 export const popoverItemBase = tv({
-  base: 'focus:bg-muted focus:text-accent-foreground text-foreground font-normal duration-0 [&_svg:not([class*=\'size-\'])]:size-12 data-[variant=danger]:text-danger-foreground data-[variant=danger]:focus:bg-danger/10 data-[variant=danger]:focus:text-danger-foreground data-[variant=danger]:*:[svg]:!text-danger-foreground dark:data-[variant=danger]:focus:bg-danger/40 relative flex cursor-default items-center p-1 px-2 text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  base: 'duration-0 relative flex cursor-default items-center p-1 px-2 text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   defaultVariants: {
     size: 'default',
     variant: 'ghost',
   },
   extend: interactiveBase,
+  variants: {
+    variant: {
+      ghost: 'text-foreground',
+    },
+  },
 })
 
 export const overlayStyles
