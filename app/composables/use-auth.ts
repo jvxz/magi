@@ -23,44 +23,53 @@ interface TokenLoginRequest extends MatrixLoginRequest {
 export type LoginRequest = Prettify<PasswordLoginRequest | TokenLoginRequest>
 
 export function useAuth() {
-  const { initAuthedClient } = useMatrixClient()
+  const { client, initAuthedClient } = useMatrixClient()
   const status = useMatrixStatus()
 
-  async function login(req: LoginRequest) {
-    try {
-      const homeserver = await resolveBaseUrl(withHttps(req.baseUrl))
+  const login = useMutation({
+    mutationFn: async (req: LoginRequest) => {
+      try {
+        const homeserver = await resolveBaseUrl(withHttps(req.baseUrl))
 
-      const tempClient = createClient({
-        baseUrl: homeserver,
-      })
+        const tempClient = createClient({
+          baseUrl: homeserver,
+        })
 
-      const loginRes = await tempClient.loginRequest({
-        ...req,
-        refresh_token: true,
-      })
+        const loginRes = await tempClient.loginRequest({
+          ...req,
+          refresh_token: true,
+        })
 
-      const authPayload: AuthPayload = {
-        accessToken: loginRes.access_token,
-        baseUrl: homeserver,
-        deviceId: loginRes.device_id,
-        expiresAt: loginRes.expires_in_ms ? Date.now() + loginRes.expires_in_ms : undefined,
-        refreshToken: loginRes.refresh_token,
-        userId: loginRes.user_id,
+        const authPayload: AuthPayload = {
+          accessToken: loginRes.access_token,
+          baseUrl: homeserver,
+          deviceId: loginRes.device_id,
+          expiresAt: loginRes.expires_in_ms ? Date.now() + loginRes.expires_in_ms : undefined,
+          refreshToken: loginRes.refresh_token,
+          userId: loginRes.user_id,
+        }
+        await idb.setItem<AuthPayload>('auth', authPayload)
+
+        const authedClient = await initAuthedClient(false)
+        status.value.isAuthed = true
+
+        return authedClient
+      } catch (error) {
+        sendSessionToSw()
+        throw new Error(parseMatrixError(error, { fallbackMessage: 'An unexpected error occurred' }))
       }
-      await idb.setItem<AuthPayload>('auth', authPayload)
+    },
+    mutationKey: ['clientLogin'],
+  })
 
-      const authedClient = await initAuthedClient(false)
-      status.value.isAuthed = true
-
-      return authedClient
-    } catch (error) {
-      sendSessionToSw()
-      throw new Error(parseMatrixError(error, { fallbackMessage: 'An unexpected error occurred' }))
-    }
-  }
+  const logout = useMutation({
+    mutationFn: async () => logoutClient(client.value),
+    mutationKey: ['clientLogout'],
+  })
 
   return {
     login,
+    logout,
   }
 }
 

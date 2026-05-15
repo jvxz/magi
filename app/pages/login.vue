@@ -38,25 +38,20 @@ const {
 })
 
 const { login } = useAuth()
-const {
-  error: loginError,
-  isPending: loginPending,
-  mutate: handleLogin,
-} = useMutation({
-  mutationFn: async () => {
-    await login({
-      baseUrl: r$.$value.homeserver,
-      identifier: {
-        type: 'm.id.user',
-        user: r$.$value.username,
-      },
-      password: r$.$value.password,
-      type: 'm.login.password',
-    })
 
-    return navigateTo('/app')
-  },
-})
+async function handleLogin() {
+  await login.mutateAsync({
+    baseUrl: r$.$value.homeserver,
+    identifier: {
+      type: 'm.id.user',
+      user: r$.$value.username,
+    },
+    password: r$.$value.password,
+    type: 'm.login.password',
+  })
+
+  return navigateTo('/app')
+}
 
 watch(
   () => r$.$value.homeserver,
@@ -104,11 +99,11 @@ watch(
             </UAutocompleteRoot>
           </FormPrimitive>
           <div class="flex gap-2 h-0.5lh w-full items-center justify-center">
-            <USeparator v-if="!loginError" />
+            <USeparator v-if="!login.error.value" />
             <template v-else>
               <USeparator class="bg-danger shrink" />
               <p class="text-sm text-danger text-center shrink-0 h-1lh -translate-y-0.5">
-                {{ loginError && loginError.message }}
+                {{ login.error.value && login.error.value?.message }}
               </p>
               <USeparator class="bg-danger shrink" />
             </template>
@@ -135,7 +130,7 @@ watch(
               @keydown.enter="handleLogin"
             />
             <UButton
-              :is-loading="loginPending"
+              :is-loading="login.isPending"
               :disabled="!isHomeserverValid || r$.$invalid"
               class="w-full"
               variant="default"

@@ -74,5 +74,9 @@ const filteredCategories = computed(() =>
         class="rounded bg-card-lighter pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1"
       />
     </TabsList>
+
+    <div class="flex-1"></div>
+
+    <SettingsDialogSidebarLogout />
   </div>
 </template>
