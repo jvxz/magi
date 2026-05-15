@@ -9,7 +9,6 @@ export async function createAuthedClient(auth: AuthPayload) {
   const idbStore = new IndexedDBStore({
     dbName: auth.userId,
     indexedDB,
-    localStorage,
   })
 
   const cryptoDbName = getCryptoDbName(auth.userId)
