@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { Slot } from 'reka-ui'
+import type { PrimitiveProps } from 'reka-ui'
 
-export interface ButtonProps {
-  asChild?: boolean
+export interface ButtonProps extends PrimitiveProps {
   disabled?: MaybeRefOrGetter<boolean>
   size?: ButtonVariants['size']
   variant?: ButtonVariants['variant']
@@ -10,36 +9,25 @@ export interface ButtonProps {
   isLoading?: MaybeRefOrGetter<boolean>
 }
 
-const props = defineProps<ButtonProps>()
-
-const loading = computed(() => toValue(props.isLoading))
+withDefaults(defineProps<ButtonProps>(), { as: 'button' })
 </script>
 
 <template>
-  <Slot
-    v-if="asChild"
-    :disabled="toValue(disabled) || loading"
+  <Primitive
+    v-bind="$props"
+    :disabled="disabled || isLoading"
     :data-variant="variant"
     :class="
       cn(
         buttonVariants({ variant, size }),
-        props.class,
-        loading && 'pointer-events-none',
+        $props.class,
         toValue(disabled) && 'pointer-events-none',
+        isLoading && 'grid *:col-start-1 *:row-start-1 *:not-first:opacity-0',
       )
     "
-    :aria-busy="loading || undefined"
+    :aria-busy="isLoading || undefined"
   >
+    <LazyUSpinner v-if="isLoading" :invert="true" class="mx-auto shrink-0 size-1/2" />
     <slot />
-  </Slot>
-  <button
-    v-else
-    :disabled="toValue(disabled) || loading"
-    :data-variant="variant"
-    :class="cn(buttonVariants({ variant, size }), props.class, toValue(disabled) && 'pointer-events-none')"
-    :aria-busy="loading || undefined"
-  >
-    <LazyUSpinner v-if="loading" :invert="true" class="shrink-0 size-4.5" />
-    <span v-else class="contents"><slot /></span>
-  </button>
+  </Primitive>
 </template>
