@@ -87,6 +87,7 @@ export default defineConfig({
       'card-foreground': 'var(--card-foreground)',
       'card-light': 'var(--card-light)',
       'card-lighter': 'var(--card-lighter)',
+      'card-lightest': 'var(--card-lightest)',
       danger: 'var(--danger)',
       'danger-foreground': 'var(--danger-foreground)',
       foreground: 'var(--foreground)',

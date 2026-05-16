@@ -38,6 +38,7 @@
   --background: oklch(18.31% 0.004 285.99);
   --foreground: oklch(95.27% 0.0027 286.35);
 
+  --card-lightest: oklch(0.2672 0.0075 285.83);
   --card-lighter: oklch(24.52% 0.0075 285.83);
   --card-light: oklch(0.219 0.006 285.911);
   --card: oklch(20.59% 0.0059 285.87);
@@ -102,27 +103,6 @@ body {
 
 body[style*='padding-right'] {
   padding-right: 0 !important;
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 100ms ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-
-.zoom-enter-active,
-.zoom-leave-active {
-  transition: all 100ms ease;
-}
-
-.zoom-enter-from,
-.zoom-leave-to {
-  opacity: 0;
-  scale: 96.5%;
 }
 
 @keyframes skeleton {
