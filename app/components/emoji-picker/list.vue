@@ -124,6 +124,12 @@ function move(key: string) {
 
   switch (key) {
     case 'ArrowUp':
+      if (rowIdx === 0) {
+        isInputFocused.value = true
+        // oxlint-disable-next-line no-useless-return
+        return
+      }
+
       for (let i = rowIdx - 1; i >= 0; i--) {
         const r = rows[i]
         if (!r) continue
@@ -173,6 +179,8 @@ onKeyDown(
 
       return
     }
+
+    if (isInputFocused.value) return
 
     e.preventDefault()
 
