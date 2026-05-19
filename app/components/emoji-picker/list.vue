@@ -72,11 +72,11 @@ const virtualItems = computed(() => virtualizer.value.getVirtualItems())
 const totalSize = computed(() => virtualizer.value.getTotalSize())
 
 const flatEmojis = computed(() => {
-  const emojis: FlatEmoji[] = []
+  const emojis: CompactEmoji[] = []
   for (const item of flatList.value) {
     if (item.type === 'cells') {
-      for (const emoji of item.emojis) {
-        emojis.push({ ...emoji })
+      for (const _ of item.emojis) {
+        emojis.push(...item.emojis)
       }
     }
   }
