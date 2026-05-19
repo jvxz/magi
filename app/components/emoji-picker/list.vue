@@ -75,9 +75,7 @@ const flatEmojis = computed(() => {
   const emojis: CompactEmoji[] = []
   for (const item of flatList.value) {
     if (item.type === 'cells') {
-      for (const _ of item.emojis) {
-        emojis.push(...item.emojis)
-      }
+      emojis.push(...item.emojis)
     }
   }
 
