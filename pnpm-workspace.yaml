@@ -1,5 +1,5 @@
 allowBuilds:
-  "@parcel/watcher": true
+  '@parcel/watcher': true
   esbuild: true
   sharp: true
   unrs-resolver: true
@@ -15,7 +15,7 @@ trustPolicyExclude:
   - semver@6.3.1
   - chokidar@4.0.3
 overrides:
-  "@nuxt/schema": 4.4.6
+  '@nuxt/schema': 4.4.6
+  h3: 1.15.11
   vite-plugin-pwa: 1.2.0
   workbox-build: 7.4.0
-  h3: 1.15.11
