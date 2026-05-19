@@ -100,19 +100,6 @@ watch(activeEmojiIdx, idx => {
 })
 
 const emojiFlatIdxMap = computed(() => new Map(flatEmojis.value.map((e, i) => [e.hexcode, i])))
-const currentCellRow = computed(() => {
-  const activeEmoji = flatEmojis.value[activeEmojiIdx.value]
-  if (activeEmoji) {
-    for (let i = 0; i < flatList.value.length; i++) {
-      const row = flatList.value[i]
-      if (row?.type === 'cells') {
-        for (const emoji of row.emojis) {
-          if (emoji.hexcode === activeEmoji.hexcode) return row
-        }
-      }
-    }
-  }
-})
 
 function move(key: string) {
   const idx = activeEmojiIdx.value
@@ -177,7 +164,6 @@ onInputMove(({ dir }) => {
   }
 })
 
-const firstCellRow = computed(() => flatList.value.find(item => item.type === 'cells'))
 onKeyDown(
   ({ key }) => ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'Enter'].includes(key),
   e => {
@@ -191,9 +177,6 @@ onKeyDown(
 
       return
     }
-
-    if (key === 'ArrowUp' && currentCellRow.value?.key === firstCellRow.value?.key && !isInputFocused.value)
-      if (isInputFocused.value) return
 
     e.preventDefault()
 
