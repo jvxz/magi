@@ -4,7 +4,7 @@ import { getEmojiKey, injectEmojiPickerContext } from './root.vue'
 
 defineProps<{ disabled?: boolean }>()
 
-const { activeEmoji, isInputFocused, onGridMove, onPick, searchQuery, triggerInputMove } = injectEmojiPickerContext()
+const { activeEmoji, isInputFocused, onPick, searchQuery, triggerInputMove } = injectEmojiPickerContext()
 const modelValue = defineModel<string | number>('modelValue', {
   get: () => searchQuery.value,
   set: v => (searchQuery.value = String(v)),
@@ -17,10 +17,6 @@ const { focused: isInputFocusedLocal } = useFocus(
   { initialValue: true },
 )
 syncRef(isInputFocusedLocal, isInputFocused)
-
-onGridMove(({ cellIdx, dir }) => {
-  if (cellIdx === 0 && dir === 'up') isInputFocusedLocal.value = true
-})
 
 onStartTyping(() => (isInputFocusedLocal.value = true))
 

@@ -20,7 +20,6 @@ export const [injectEmojiPickerContext, provideEmojiPickerContext] = createConte
   searchQuery: Ref<string>
   isInputFocused: Ref<boolean>
   onInputMove: EventHookOn<InputMoveEvent>
-  onGridMove: EventHookOn<GridMoveEvent>
   triggerInputMove: EventHookTrigger<InputMoveEvent>
   triggerGridMove: EventHookTrigger<GridMoveEvent>
   onPick?: (emoji: CompactEmoji) => void
@@ -46,7 +45,6 @@ const props = withDefaults(defineProps<EmojiPickerRootProps>(), {
 const emits = defineEmits<EmojiPickerRootEmits>()
 
 const inputMoveHook = createEventHook<InputMoveEvent>()
-const gridMoveHook = createEventHook<GridMoveEvent>()
 
 const activeEmoji = shallowRef<CompactEmoji>()
 const searchQuery = shallowRef('')
@@ -60,11 +58,9 @@ const onPick = (emoji: CompactEmoji) => {
 provideEmojiPickerContext({
   activeEmoji,
   isInputFocused,
-  onGridMove: gridMoveHook.on,
   onInputMove: inputMoveHook.on,
   onPick,
   searchQuery,
-  triggerGridMove: gridMoveHook.trigger,
   triggerInputMove: inputMoveHook.trigger,
 })
 
