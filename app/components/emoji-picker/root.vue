@@ -21,7 +21,6 @@ export const [injectEmojiPickerContext, provideEmojiPickerContext] = createConte
   isInputFocused: Ref<boolean>
   onInputMove: EventHookOn<InputMoveEvent>
   triggerInputMove: EventHookTrigger<InputMoveEvent>
-  triggerGridMove: EventHookTrigger<GridMoveEvent>
   onPick?: (emoji: CompactEmoji) => void
 }>('UEmojiPickerRoot')
 
