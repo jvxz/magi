@@ -12,6 +12,7 @@ const forwarded = useForwardPropsEmits(props, emits)
 
 <template>
   <PopoverContent v-bind="forwarded" as-child>
+    <!-- as-child merges emits from EmojiPickerRoot -->
     <EmojiPickerRoot
       :class="
         cn(
