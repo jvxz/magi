@@ -47,7 +47,7 @@ export const useEmojiData = createGlobalState(() => {
     if (!emojiData.value) return {}
 
     // resolve unknown groups to 'Symbols' category (group 8)
-    return groupBy(emojiData.value?.emojis, e => (e.group ?? 8).toString())
+    return groupBy(emojiData.value.emojis, e => (e.group ?? 8).toString())
   })
 
   return {
