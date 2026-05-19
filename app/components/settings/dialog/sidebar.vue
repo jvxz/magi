@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { UInputTemplateRef } from '~/components/u/input.vue'
+import type { UInputRef } from '~/components/u/input.vue'
 import { useFilter } from 'reka-ui'
 
 const { self } = useSelf()
 const { searchQuery, tab } = useSettingsDialog()
 
-const inputRef = useTemplateRef<UInputTemplateRef>('input')
-onStartTyping(() => inputRef.value?.inputRef?.focus())
+const inputRef = useTemplateRef<UInputRef>('input')
+onStartTyping(() => inputRef.value?.$el?.focus())
 
 const { contains } = useFilter({ sensitivity: 'base' })
 

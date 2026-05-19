@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UInputTemplateRef } from '~/components/u/input.vue'
+import type { UInputRef } from '~/components/u/input.vue'
 import { required } from '@regle/rules'
 
 const props = defineProps<{
@@ -31,9 +31,10 @@ function handleSubmit() {
   emit('serverSubmit', r$.homeserver.$value)
 }
 
-const inputRef = useTemplateRef<UInputTemplateRef>('input')
+const inputRef = useTemplateRef<UInputRef>('input')
 onStartTyping(() => {
-  if (inputRef.value) inputRef.value.inputRef?.focus()
+  // if (inputRef.value) inputRef.value.inputRef?.focus()
+  if (inputRef.value) inputRef.value?.$el?.focus()
 })
 </script>
 

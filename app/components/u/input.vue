@@ -2,9 +2,10 @@
 import type { PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
 import { useVModel } from '@vueuse/core'
+import { useForwardExpose } from 'reka-ui'
 
-export interface UInputTemplateRef {
-  inputRef: HTMLInputElement | undefined
+export interface UInputRef extends ComponentPublicInstance {
+  $el: HTMLInputElement | undefined
 }
 </script>
 
@@ -33,10 +34,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
 const iconClass = 'text-muted-foreground h-[1em] absolute top-1/2 -translate-y-1/2'
 
-const inputRef = useTemplateRef('inputRef')
-defineExpose({
-  inputRef,
-})
+const { forwardRef } = useForwardExpose()
 </script>
 
 <template>
@@ -50,7 +48,7 @@ defineExpose({
 
     <input
       v-bind="$attrs"
-      ref="inputRef"
+      :ref="forwardRef"
       v-model="modelValue"
       :class="
         cn(
