@@ -181,7 +181,7 @@ onKeyDown(
     e.preventDefault()
 
     if (wasInInput) wasInInput = false
-    else if (!wasInInput) move(key)
+    else move(key)
   },
 )
 
