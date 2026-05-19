@@ -4,11 +4,16 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
   vue-demi: true
+# protection is handled by trustPolicy
+minimumReleaseAge: 0
 shamefullyHoist: true
 shellEmulator: true
 
 trustPolicy: no-downgrade
-# workbox-build (@vite-pwa/nuxt) - trust compares publish-time evidence across semver lines (known false positives)
 trustPolicyExclude:
   - rollup@2.80.0
   - semver@6.3.1
+  - chokidar@4.0.3
+overrides:
+  vite-plugin-pwa: 1.2.0
+  workbox-build: 7.4.0
