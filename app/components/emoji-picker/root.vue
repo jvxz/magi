@@ -10,11 +10,6 @@ export interface InputMoveEvent {
   dir: Dir
 }
 
-export interface GridMoveEvent {
-  dir: Dir
-  cellIdx: number
-}
-
 export const [injectEmojiPickerContext, provideEmojiPickerContext] = createContext<{
   activeEmoji: Ref<CompactEmoji | undefined>
   searchQuery: Ref<string>
