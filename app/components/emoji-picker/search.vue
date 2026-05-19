@@ -3,7 +3,8 @@ import { getEmojiKey, injectEmojiPickerContext } from './root.vue'
 
 defineProps<{ disabled?: boolean }>()
 
-const { activeEmoji, isInputFocused, onPick, scopeId, searchQuery, triggerInputMove } = injectEmojiPickerContext()
+const { activeEmoji, gridId, isInputFocused, onPick, scopeId, searchQuery, triggerInputMove } =
+  injectEmojiPickerContext()
 const modelValue = defineModel<string | number>('modelValue', {
   get: () => searchQuery.value,
   set: v => (searchQuery.value = String(v)),
@@ -39,6 +40,11 @@ function onKeydown(e: KeyboardEvent) {
     ref="inputEl"
     v-model="modelValue"
     :disabled="$props.disabled"
+    role="combobox"
+    :aria-controls="gridId"
+    aria-expanded="true"
+    aria-autocomplete="list"
+    aria-label="Search emoji"
     :aria-activedescendant="activeEmoji ? getEmojiKey(scopeId, activeEmoji) : undefined"
     data-slot="emoji-picker-search"
     :class="$attrs.class"

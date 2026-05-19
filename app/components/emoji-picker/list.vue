@@ -9,7 +9,7 @@ const HEADER_SIZE = 24
 const ROW_SIZE = 32
 
 const { categories, groupedEmojis, isLoading } = useEmojiData()
-const { activeEmoji, isInputFocused, onInputMove, onPick, scopeId, searchQuery } = injectEmojiPickerContext()
+const { activeEmoji, gridId, isInputFocused, onInputMove, onPick, scopeId, searchQuery } = injectEmojiPickerContext()
 
 const scrollEl = useTemplateRef('scrollEl')
 
@@ -226,6 +226,16 @@ function handleSelect(manualEmoji?: CompactEmoji) {
   const emoji = manualEmoji ?? activeEmoji.value
   if (emoji) onPick?.(emoji)
 }
+
+const { polite } = useAnnouncer()
+watchDebounced(
+  () => [searchQuery.value, flatEmojis.value.length],
+  ([query, count]) => {
+    if (!query) return
+    polite(count === 0 ? 'No results' : `${count} ${count === 1 ? 'result' : 'results'}`)
+  },
+  { debounce: 300 },
+)
 </script>
 
 <template>
@@ -236,12 +246,20 @@ function handleSelect(manualEmoji?: CompactEmoji) {
     }"
   >
     <div ref="scrollEl" class="overscroll-none size-full overflow-y-auto scrollbar-gutter-stable">
-      <div v-if="!isLoading" class="w-full relative" :style="{ height: `${totalSize}px` }">
+      <div
+        v-if="!isLoading"
+        :id="gridId"
+        role="grid"
+        aria-label="Emoji"
+        class="w-full relative"
+        :style="{ height: `${totalSize}px` }"
+      >
         <div
           v-for="v in virtualItems"
           :key="flatList[v.index]!.key"
           :ref="el => el && virtualizer.measureElement(el as HTMLElement)"
           :data-index="v.index"
+          role="presentation"
           :style="
             isActiveSticky(v.index)
               ? {
@@ -271,7 +289,7 @@ function handleSelect(manualEmoji?: CompactEmoji) {
             </p>
           </div>
 
-          <div v-else class="grid grid-cols-9">
+          <div v-else role="row" class="grid grid-cols-9">
             <button
               v-for="emoji in (flatList[v.index] as FlatItemCells).emojis"
               :id="getEmojiKey(scopeId, emoji)"
@@ -291,12 +309,12 @@ function handleSelect(manualEmoji?: CompactEmoji) {
         </div>
       </div>
       <template v-else>
-        <div>
+        <div :id="gridId" role="grid" aria-label="Emoji" aria-busy="true">
           <div class="ps-1 bg-card-light h-6 top-0 sticky z-2">
             <USkeleton class="text-xs text-muted-foreground font-medium h-1lh w-1/3" />
           </div>
 
-          <div class="grid grid-cols-9">
+          <div role="presentation" class="grid grid-cols-9">
             <USkeleton
               v-for="i in 63"
               :key="i"
