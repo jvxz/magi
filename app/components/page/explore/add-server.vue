@@ -33,7 +33,6 @@ function handleSubmit() {
 
 const inputRef = useTemplateRef<UInputRef>('input')
 onStartTyping(() => {
-  // if (inputRef.value) inputRef.value.inputRef?.focus()
   if (inputRef.value) inputRef.value?.$el?.focus()
 })
 </script>
