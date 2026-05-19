@@ -9,7 +9,7 @@ const HEADER_SIZE = 24
 const ROW_SIZE = 32
 
 const { categories, groupedEmojis, isLoading } = useEmojiData()
-const { activeEmoji, isInputFocused, onInputMove, onPick, searchQuery } = injectEmojiPickerContext()
+const { activeEmoji, isInputFocused, onInputMove, onPick, scopeId, searchQuery } = injectEmojiPickerContext()
 
 const scrollEl = useTemplateRef('scrollEl')
 
@@ -91,7 +91,7 @@ watch(activeEmojiIdx, idx => {
   activeEmoji.value = flatEmojis.value[idx]
   if (!activeEmoji.value) return
 
-  const id = getEmojiKey(activeEmoji.value)
+  const id = getEmojiKey(scopeId, activeEmoji.value)
 
   nextTick(() => {
     const emojiEl = document.getElementById(id)
@@ -270,7 +270,7 @@ function handleSelect(manualEmoji?: CompactEmoji) {
           <div v-else class="grid grid-cols-9">
             <button
               v-for="emoji in (flatList[v.index] as FlatItemCells).emojis"
-              :id="getEmojiKey(emoji)"
+              :id="getEmojiKey(scopeId, emoji)"
               :key="emoji.hexcode"
               :title="emoji.label"
               role="gridcell"

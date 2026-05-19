@@ -19,6 +19,7 @@ export const [injectEmojiPickerContext, provideEmojiPickerContext] = createConte
   activeEmoji: Ref<CompactEmoji | undefined>
   searchQuery: Ref<string>
   isInputFocused: Ref<boolean>
+  scopeId: string
   onInputMove: EventHookOn<InputMoveEvent>
   triggerInputMove: EventHookTrigger<InputMoveEvent>
   onPick?: (emoji: CompactEmoji) => void
@@ -32,8 +33,8 @@ export interface EmojiPickerRootEmits {
   pick: [emoji: CompactEmoji]
 }
 
-export function getEmojiKey(emoji: CompactEmoji) {
-  return `r-${emoji.hexcode}`
+export function getEmojiKey(scopeId: string, emoji: CompactEmoji) {
+  return `${scopeId}-${emoji.hexcode}`
 }
 </script>
 
@@ -47,6 +48,7 @@ const inputMoveHook = createEventHook<InputMoveEvent>()
 
 const activeEmoji = shallowRef<CompactEmoji>()
 const searchQuery = shallowRef('')
+const scopeId = useId()
 
 const isInputFocused = shallowRef(false)
 
@@ -59,6 +61,7 @@ provideEmojiPickerContext({
   isInputFocused,
   onInputMove: inputMoveHook.on,
   onPick,
+  scopeId,
   searchQuery,
   triggerInputMove: inputMoveHook.trigger,
 })

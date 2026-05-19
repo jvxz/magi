@@ -4,7 +4,7 @@ import { getEmojiKey, injectEmojiPickerContext } from './root.vue'
 
 defineProps<{ disabled?: boolean }>()
 
-const { activeEmoji, isInputFocused, onPick, searchQuery, triggerInputMove } = injectEmojiPickerContext()
+const { activeEmoji, isInputFocused, onPick, scopeId, searchQuery, triggerInputMove } = injectEmojiPickerContext()
 const modelValue = defineModel<string | number>('modelValue', {
   get: () => searchQuery.value,
   set: v => (searchQuery.value = String(v)),
@@ -40,7 +40,7 @@ function onKeydown(e: KeyboardEvent) {
     ref="inputEl"
     v-model="modelValue"
     :disabled="$props.disabled"
-    :aria-activedescendant="activeEmoji ? getEmojiKey(activeEmoji) : undefined"
+    :aria-activedescendant="activeEmoji ? getEmojiKey(scopeId, activeEmoji) : undefined"
     data-slot="emoji-picker-search"
     :class="$attrs.class"
     @keydown="onKeydown"
