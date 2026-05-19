@@ -13,17 +13,18 @@ const { activeEmoji, isInputFocused, onInputMove, onPick, searchQuery } = inject
 
 const scrollEl = useTemplateRef('scrollEl')
 
-type FlatItem =
-  | {
-      type: 'header'
-      label: string
-      key: string
-    }
-  | {
-      emojis: CompactEmoji[]
-      key: string
-      type: 'cells'
-    }
+interface FlatItemHeader {
+  type: 'header'
+  label: string
+  key: string
+}
+
+interface FlatItemCells {
+  emojis: CompactEmoji[]
+  key: string
+  type: 'cells'
+}
+type FlatItem = FlatItemHeader | FlatItemCells
 
 const flatList = computed(() => {
   const flat: FlatItem[] = []
@@ -174,6 +175,7 @@ onInputMove(({ dir }) => {
   }
 })
 
+const firstCellRow = computed(() => flatList.value.find(item => item.type === 'cells'))
 onKeyDown(
   ({ key }) => ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'Enter'].includes(key),
   e => {
@@ -187,9 +189,9 @@ onKeyDown(
 
       return
     }
-    if (key === 'ArrowUp' && currentCellRow.value?.key === 'r-0-0' && !isInputFocused.value) isInputFocused.value = true
 
-    if (isInputFocused.value) return
+    if (key === 'ArrowUp' && currentCellRow.value?.key === firstCellRow.value?.key && !isInputFocused.value)
+      if (isInputFocused.value) return
 
     e.preventDefault()
 
@@ -270,13 +272,19 @@ function handleSelect(manualEmoji?: CompactEmoji) {
                 }
           "
         >
-          <div v-if="flatList[v.index]!.type === 'header'" class="bg-card-light flex h-6 items-center" :style="{ zIndex: v.index }">
-            <p class="text-xs text-muted-foreground font-medium ps-1.5">{{ upperFirst((flatList[v.index] as Extract<FlatItem, {type: 'header'}>).label) }}</p>
+          <div
+            v-if="flatList[v.index]!.type === 'header'"
+            class="bg-card-light flex h-6 items-center"
+            :style="{ zIndex: v.index }"
+          >
+            <p class="text-xs text-muted-foreground font-medium ps-1.5">
+              {{ upperFirst((flatList[v.index] as FlatItemHeader).label) }}
+            </p>
           </div>
 
           <div v-else class="grid grid-cols-9">
             <button
-              v-for="emoji in (flatList[v.index] as Extract<FlatItem, { type: 'cells' }>).emojis"
+              v-for="emoji in (flatList[v.index] as FlatItemCells).emojis"
               :id="getEmojiKey(emoji)"
               :key="emoji.hexcode"
               :title="emoji.label"
@@ -291,7 +299,6 @@ function handleSelect(manualEmoji?: CompactEmoji) {
               {{ emoji.unicode }}
             </button>
           </div>
-
         </div>
       </div>
       <template v-else>
