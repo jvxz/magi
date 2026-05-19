@@ -12,7 +12,7 @@ type SupportedLocale = keyof typeof LOCALE_LOADER_MAP
 export const useEmojiData = createGlobalState(() => {
   // TODO: implement locale switching and loading
   const locale = shallowRef<SupportedLocale>('en')
-  const targetLocale = computed(() => (locale.value in LOCALE_LOADER_MAP ? (locale.value as SupportedLocale) : 'en'))
+  const targetLocale = computed(() => (locale.value in LOCALE_LOADER_MAP ? locale.value : 'en'))
 
   const isLoading = ref(false)
 
