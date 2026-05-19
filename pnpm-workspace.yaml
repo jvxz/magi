@@ -15,5 +15,6 @@ trustPolicyExclude:
   - semver@6.3.1
   - chokidar@4.0.3
 overrides:
+  '@nuxt/schema': 4.4.6
   vite-plugin-pwa: 1.2.0
   workbox-build: 7.4.0
