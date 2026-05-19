@@ -126,6 +126,8 @@ function move(key: string) {
     }
   }
 
+  if (!rows.length) return
+
   let rowIdx = 0
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i]
