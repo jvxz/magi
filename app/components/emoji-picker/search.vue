@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { UInputTemplateRef } from '../u/input.vue'
-import { injectEmojiPickerContext } from './root.vue'
+import { getEmojiKey, injectEmojiPickerContext } from './root.vue'
 
 defineProps<{ disabled?: boolean }>()
 
