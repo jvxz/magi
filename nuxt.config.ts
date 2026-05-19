@@ -196,7 +196,6 @@ export default defineNuxtConfig({
       include: [
         'matrix-js-sdk',
         'tailwind-merge',
-        'class-variance-authority',
         '@tanstack/vue-query',
         '@regle/rules',
         '@regle/core',
