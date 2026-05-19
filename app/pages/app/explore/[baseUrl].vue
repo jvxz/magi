@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UInputTemplateRef } from '~/components/u/input.vue'
+import type { UInputRef } from '~/components/u/input.vue'
 
 definePageMeta({
   layout: 'app',
@@ -45,8 +45,8 @@ function handleServerRemove(server?: string) {
   servers.value = servers.value.filter(s => s !== target)
 }
 
-const inputRef = useTemplateRef<UInputTemplateRef>('inputRef')
-onStartTyping(() => inputRef.value?.inputRef?.focus())
+const inputRef = useTemplateRef<UInputRef>('inputRef')
+onStartTyping(() => inputRef.value?.$el?.focus())
 
 onKeyStrokeSafe(
   e => {
