@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { UInputRef } from '../u/input.vue'
 import { getEmojiKey, injectEmojiPickerContext } from './root.vue'
 
 defineProps<{ disabled?: boolean }>()
@@ -11,9 +10,9 @@ const modelValue = defineModel<string | number>('modelValue', {
   validator: v => typeof v === 'string' || typeof v === 'number',
 })
 
-const inputEl = useTemplateRef<UInputRef>('inputEl')
+const inputEl = useTemplateRef('inputEl')
 const { focused: isInputFocusedLocal } = useFocus(
-  computed(() => inputEl.value?.$el),
+  computed(() => inputEl.value),
   { initialValue: true },
 )
 syncRef(isInputFocusedLocal, isInputFocused)
