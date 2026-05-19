@@ -5,6 +5,7 @@
       <NuxtPage />
     </NuxtLayout>
   </UTooltipProvider>
+  <NuxtAnnouncer />
   <DevOnly>
     <DebugDetails />
   </DevOnly>
