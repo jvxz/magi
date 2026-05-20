@@ -1,15 +1,21 @@
 <script lang="ts" setup>
-import type { PopoverRootEmits, PopoverRootProps } from 'reka-ui'
+import type { PopoverContentProps } from 'reka-ui'
+import type { EmojiPickerRootEmits } from '~/components/emoji-picker/root.vue'
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<PopoverRootProps>()
-const emits = defineEmits<PopoverRootEmits>()
+const props = defineProps<Omit<PopoverContentProps, 'as' | 'asChild'>>()
+const emits = defineEmits<EmojiPickerRootEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <PopoverRoot v-bind="forwarded">
+  <EmojiPickerRoot
+    v-bind="forwarded"
+    :class="
+      cn(popoverContentBase(), 'p-0 gap-[calc(var(--emoji-picker-padding)*1.25)] flex-col flex h-96 w-84', $attrs.class)
+    "
+  >
     <slot />
-  </PopoverRoot>
+  </EmojiPickerRoot>
 </template>
