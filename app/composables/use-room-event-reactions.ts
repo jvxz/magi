@@ -97,8 +97,8 @@ export const useRoomEventReactions = createProvidableComposable(
       getReactors,
       isReactingTo,
       isUserReactingTo,
-      reactTo,
       reactions,
+      reactTo,
     }
   },
 )
