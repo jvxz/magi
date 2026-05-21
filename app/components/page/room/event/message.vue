@@ -63,7 +63,7 @@ const contentProps: PopoverContentProps = {
     :event-type="props.event.getType()"
     :grouped
     side="right"
-    class="py-0.5 w-full"
+    class="w-full py-0.5"
   >
     <PageRoomEventMessageRoot class="gap-px">
       <div v-if="isReplyEvent" class="text-sm flex gap-1.5 items-center relative">
