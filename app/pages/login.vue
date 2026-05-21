@@ -130,7 +130,7 @@ watch(
               @keydown.enter="handleLogin"
             />
             <UButton
-              :is-loading="login.isPending"
+              :is-loading="login.isPending.value"
               :disabled="!isHomeserverValid || r$.$invalid"
               class="w-full"
               variant="default"
