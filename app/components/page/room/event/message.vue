@@ -24,6 +24,16 @@ const replyEventProfile = useUserProfile(() => replyEvent.value?.getSender())
 
 const isDecrypting = computed(() => props.event.isBeingDecrypted())
 
+const isJumboEmoji = computed(() => {
+  const body = eventBody.value?.trim()
+  if (!body) return false
+
+  if (body.replace(EMOJI_RE, '').trim() !== '') return false
+
+  const count = body.match(EMOJI_RE)?.length ?? 0
+  return count > 0 && count <= 27
+})
+
 const shouldRender = computed(() => {
   const { event } = props
   const content = event.getContent()
@@ -108,7 +118,10 @@ const contentProps: PopoverContentProps = {
             inline
             :content="eventBody"
             class="whitespace-pre-wrap"
-            :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body }"
+            :class="{
+              'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body,
+              'text-4xl': isJumboEmoji,
+            }"
           />
           <p v-else class="italic">Decrypting message...</p>
         </PageRoomEventMessageContent>
