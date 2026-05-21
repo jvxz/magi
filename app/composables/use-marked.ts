@@ -9,10 +9,7 @@ const md = marked.use({
   },
 })
 
-export function useMarked(
-  input: MaybeRefOrGetter<string | undefined>,
-  options?: { inline?: boolean },
-) {
+export function useMarked(input: MaybeRefOrGetter<string | undefined>, options?: { inline?: boolean }) {
   const inputRef = toRef(input)
 
   return computed(() => {
