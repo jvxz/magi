@@ -75,7 +75,7 @@ const contentProps: PopoverContentProps = {
                 replyEvent?.isDecryptionFailure() || !replyEventBody || isReplyEventRedacted,
             }"
           >
-            {{ replyEventBody }}
+            <Twemojify :text="replyEventBody ?? ''" />
           </p>
         </template>
         <template v-else>
@@ -105,7 +105,9 @@ const contentProps: PopoverContentProps = {
 
           <RenderMd
             v-if="!isDecrypting"
+            inline
             :content="eventBody"
+            class="whitespace-pre-wrap"
             :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body }"
           />
           <p v-else class="italic">Decrypting message...</p>
