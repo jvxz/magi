@@ -1,17 +1,20 @@
+import { toRef } from '@vueuse/core'
+
 export const [provideIntersectionObserver, injectIntersectionObserver] = createInjectionState(
-  (scrollEl: Ref<HTMLElement | null>) => {
+  (scrollEl: MaybeRefOrGetter<HTMLElement | null>) => {
+    const scrollElRef = toRef(scrollEl)
     const callbacks = new Map<Element, (entry: IntersectionObserverEntry) => void>()
     const pending = new Map<Element, (entry: IntersectionObserverEntry) => void>()
     let observer: IntersectionObserver | undefined
 
     watchEffect(onCleanup => {
-      if (!scrollEl.value) return
+      if (!scrollElRef.value) return
 
       observer = new IntersectionObserver(
         entries => {
           for (const entry of entries) callbacks.get(entry.target)?.(entry)
         },
-        { root: scrollEl.value, rootMargin: '200px' },
+        { root: scrollElRef.value, rootMargin: '200px' },
       )
 
       for (const [el, cb] of pending) {
