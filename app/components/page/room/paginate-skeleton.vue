@@ -13,7 +13,7 @@ const rows = Array.from({ length: 7 }, () => ({
 <template>
   <div class="pb-4.25" data-ignore>
     <div v-for="(row, idx) in rows" :key="idx" class="pb-4.25">
-      <PageRoomEvent event-id="" event-type="" class="hover:bg-transparent">
+      <PageRoomEvent event-type="" room="" class="hover:bg-transparent">
         <PageRoomEventMessageRoot>
           <PageRoomEventMessageAvatar :user="undefined" ghost />
           <PageRoomEventMessageContent class="flex flex-col gap-1.5 translate-y-1">
