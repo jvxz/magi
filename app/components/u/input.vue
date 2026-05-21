@@ -1,28 +1,28 @@
 <script lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
+import type { HTMLAttributes } from 'vue'
 import { useVModel } from '@vueuse/core'
 import { useForwardExpose } from 'reka-ui'
 
 export interface UInputRef extends ComponentPublicInstance {
   $el: HTMLInputElement | undefined
 }
-</script>
 
-<script lang="ts" setup>
-type Props = PrimitiveProps & {
+export type UInputProps = PrimitiveProps & {
   defaultValue?: string | number
   modelValue?: string | number
   class?: HTMLAttributes['class']
   classes?: DefineClasses<'root' | 'input' | 'leadingIcon' | 'trailingIcon'>
   leadingIcon?: string
+  disabled?: boolean
   trailingIcon?: string
-} & Omit<
-    InputHTMLAttributes,
-    'name' | 'type' | 'placeholder' | 'required' | 'autocomplete' | 'autofocus' | 'disabled' | 'class'
-  >
+}
+</script>
 
-const props = defineProps<Props>()
+<script lang="ts" setup>
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps<UInputProps>()
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: string | number): void
 }>()
@@ -50,16 +50,7 @@ const { forwardRef } = useForwardExpose()
       v-bind="$attrs"
       :ref="forwardRef"
       v-model="modelValue"
-      :class="
-        cn(
-          staticBase({ variant: 'default' }),
-          interactiveBase({ size: 'default' }),
-          'flex w-full min-w-0 cursor-text truncate py-1 selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:text-foreground placeholder:text-muted-foreground focus-visible:ring-3 text-sm',
-          props.leadingIcon && 'ps-7',
-          props.trailingIcon && 'pe-7',
-          $props.classes?.input,
-        )
-      "
+      :class="cn(inputStyles(), props.leadingIcon && 'ps-7', props.trailingIcon && 'pe-7', $props.classes?.input)"
     />
 
     <Icon
