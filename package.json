@@ -52,6 +52,7 @@
     "motion-v": "^2.2.1",
     "nuxt": "4.4.6",
     "nuxt-security": "2.6.0",
+    "nuxt-twemoji": "4.0.2",
     "nuxt-vitalizer": "2.0.0",
     "quick-lru": "^7.3.0",
     "reka-ui": "^2.9.7",
