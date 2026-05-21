@@ -23,6 +23,7 @@ withDefaults(
     <UContextMenuTrigger
       v-bind="$props"
       data-testid="event-root"
+      data-event
       :data-event-id="eventId"
       :data-event-type="eventType"
       :class="
