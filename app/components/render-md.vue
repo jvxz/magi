@@ -14,10 +14,10 @@ const md = useMarked(() => props.content, { inline: props.inline })
 </template>
 
 <style>
-img.twemoji-parse {
+[data-event] img.twemoji-parse {
   height: 1em;
   width: 1em;
-  margin: 0 0.05em 0 0.1em;
+  margin: 0 0.15em 0 0;
   vertical-align: -0.1em;
   display: inline;
 }

@@ -42,6 +42,7 @@ function onEmojiPick(emoji: CompactEmoji) {
       v-bind="$props"
       data-testid="event-root"
       :data-event-id="event?.getId()"
+      data-event
       :data-event-type="eventType"
       :class="
         cn(
