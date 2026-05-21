@@ -47,13 +47,15 @@ const contentProps: PopoverContentProps = {
 <template>
   <PageRoomEvent
     v-if="shouldRender"
+    :room="props.room"
+    :event="props.event"
     :event-id="props.event.getId()"
     :event-type="props.event.getType()"
     :grouped
     side="right"
-    class="py-0.5 w-full"
+    class="w-full py-0.5"
   >
-    <PageRoomEventMessageRoot class="flex-col gap-px">
+    <PageRoomEventMessageRoot class="gap-px">
       <div v-if="isReplyEvent" class="text-sm flex gap-1.5 items-center relative">
         <Icon name="custom:reply" class="text-muted-foreground shrink-0 h-6 w-12 translate-x-2.5 translate-y-1" />
 
@@ -90,30 +92,30 @@ const contentProps: PopoverContentProps = {
           </UProfilePopoverTrigger>
         </PageRoomEventMessageMemberContextMenu>
 
-        <PageRoomEventMessageContent>
-          <template v-if="!grouped && isDefined(event.getTs())" #header>
-            <PageRoomEventMessageMemberContextMenu as-child>
-              <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
-                <UButton variant="link">
-                  {{ eventProfile?.displayname }}
-                </UButton>
-              </UProfilePopoverTrigger>
-            </PageRoomEventMessageMemberContextMenu>
+        <div class="">
+          <PageRoomEventMessageContent>
+            <template v-if="!grouped && isDefined(event.getTs())" #header>
+              <PageRoomEventMessageMemberContextMenu as-child>
+                <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
+                  <UButton variant="link">
+                    {{ eventProfile?.displayname }}
+                  </UButton>
+                </UProfilePopoverTrigger>
+              </PageRoomEventMessageMemberContextMenu>
 
-            <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
-          </template>
+              <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
+            </template>
 
-          <RenderMd
-            v-if="!isDecrypting"
-            :content="eventBody"
-            :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body }"
-          />
-          <p v-else class="italic">Decrypting message...</p>
-        </PageRoomEventMessageContent>
+            <RenderMd
+              v-if="!isDecrypting"
+              :content="eventBody"
+              :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body }"
+            />
+            <p v-else class="italic">Decrypting message...</p>
+          </PageRoomEventMessageContent>
 
-        <UContextMenuContent>
-          <UContextMenuItem> Edit </UContextMenuItem>
-        </UContextMenuContent>
+          <PageRoomEventMessageReactions :room :event />
+        </div>
       </div>
     </PageRoomEventMessageRoot>
   </PageRoomEvent>

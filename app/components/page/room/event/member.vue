@@ -120,7 +120,8 @@ const body = computed(() => {
 
 <template>
   <PageRoomEvent
-    :event-id="props.event.getId()"
+    :room="props.event.getRoomId()"
+    :event="props.event"
     :event-type="props.event.getType()"
     data-event-type="member"
     class="flex gap-2 items-center"
