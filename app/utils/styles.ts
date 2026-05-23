@@ -32,7 +32,7 @@ export const staticBase = tv({
 })
 
 export const popoverContentBase = tv({
-  base: 'shadow-lg z-50 min-w-52 overflow-hidden p-1',
+  base: 'shadow-lg z-50 w-52 overflow-hidden p-1',
   defaultVariants: {
     variant: 'default',
   },
