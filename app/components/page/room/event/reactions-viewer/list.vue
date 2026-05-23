@@ -18,7 +18,7 @@ const reactors = computed(() => getReactors(props.reaction))
         alignOffset: 0,
       }"
     >
-      <UButton variant="ghost" class="py-2 gap-2 h-auto w-full items-center justify-start text-foreground">
+      <UButton variant="ghost" class="text-foreground py-2 gap-2 h-auto w-full items-center justify-start">
         <UseRoomMember v-slot="{ roomMember }" :room :user="reactor">
           <MatrixAvatar :user="roomMember" class="size-6" />
           <p>{{ resolveUserName(roomMember) }}</p>
