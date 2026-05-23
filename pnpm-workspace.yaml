@@ -19,3 +19,5 @@ overrides:
   h3: 1.15.11
   vite-plugin-pwa: 1.2.0
   workbox-build: 7.4.0
+patchedDependencies:
+  nuxt-twemoji: patches/nuxt-twemoji.patch
