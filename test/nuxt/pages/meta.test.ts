@@ -11,9 +11,8 @@ describe('page meta', () => {
     '/login': undefined,
   }
 
-  it.each(objectKeys(routes))('ensures authed routes have the correct meta flag', async r => {
-    await navigateTo(r)
-    const route = useRoute()
+  it.each(objectKeys(routes))('ensures authed routes have the correct meta flag', r => {
+    const route = useRouter().resolve(r)
 
     expect(route.meta.requiresAuth).toBe(routes[r])
   })
