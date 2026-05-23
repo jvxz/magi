@@ -20,8 +20,10 @@ const props = withDefaults(
   },
 )
 
+const { openReactionViewer } = useRoomEventReactionsViewer()
+
 const mounted = ref(true)
-const { reactTo } = useRoomEventReactions.provide(
+const { reactions, reactTo } = useRoomEventReactions.provide(
   () => props.room,
   () => props.event,
 )
@@ -55,7 +57,7 @@ function onEmojiPick(emoji: CompactEmoji) {
       <slot />
     </UContextMenuTrigger>
 
-    <UContextMenuContent v-if="event">
+    <UContextMenuContent v-if="event" :collision-padding="12">
       <div class="flex items-center justify-around">
         <ContextMenuItem as-child>
           <UButton v-for="i in 4" :key="i" size="icon" variant="ghost" class="grow h-full aspect-square cursor-default">
@@ -68,10 +70,14 @@ function onEmojiPick(emoji: CompactEmoji) {
 
         <UEmojiPickerRoot :as="ContextMenuSubContent" @pick="onEmojiPick">
           <UEmojiPickerSearch />
-          <ContextMenuItem as-child><UEmojiPickerList /></ContextMenuItem>
+          <ContextMenuItem as-child>
+            <UEmojiPickerList />
+          </ContextMenuItem>
         </UEmojiPickerRoot>
       </UContextMenuSub>
-      <UContextMenuItem> View reactions </UContextMenuItem>
+      <UContextMenuItem :disabled="!reactions || !reactions.size" @select="openReactionViewer(room, event)">
+        View reactions
+      </UContextMenuItem>
     </UContextMenuContent>
   </UContextMenu>
 </template>
