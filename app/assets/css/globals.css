@@ -60,7 +60,7 @@
 }
 
 @utility scrollbar-fancy {
-  scrollbar-color: var(--border) var(--background);
+  scrollbar-color: var(--border) transparent;
 }
 
 @utility scrollbar-gutter-stable {
@@ -84,7 +84,7 @@
 }
 
 html {
-  scrollbar-color: var(--muted-foreground) var(--card);
+  scrollbar-color: var(--muted-foreground) transparent;
 }
 
 ::selection {
