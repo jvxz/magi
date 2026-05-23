@@ -119,7 +119,10 @@ const contentProps: PopoverContentProps = {
             <RenderMd
               v-if="!isDecrypting"
               :content="eventBody"
-              :class="{ 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body }"
+              :class="{
+                'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body,
+                'text-4xl': isJumboEmoji,
+              }"
             />
             <p v-else class="italic">Decrypting message...</p>
           </PageRoomEventMessageContent>
