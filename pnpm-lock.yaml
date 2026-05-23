@@ -6,9 +6,12 @@ settings:
 
 overrides:
   '@nuxt/schema': 4.4.6
+  h3: 1.15.11
   vite-plugin-pwa: 1.2.0
   workbox-build: 7.4.0
-  h3: 1.15.11
+
+patchedDependencies:
+  nuxt-twemoji: bb8ff9c0836c925de842503329d9056095329b3995b4695ff598957f9b8da28f
 
 importers:
 
@@ -82,7 +85,7 @@ importers:
         version: 2.6.0(magicast@0.5.3)(rollup@4.60.4)
       nuxt-twemoji:
         specifier: 4.0.2
-        version: 4.0.2(magicast@0.5.3)
+        version: 4.0.2(patch_hash=bb8ff9c0836c925de842503329d9056095329b3995b4695ff598957f9b8da28f)(magicast@0.5.3)
       nuxt-vitalizer:
         specifier: 2.0.0
         version: 2.0.0(magicast@0.5.3)
@@ -17789,7 +17792,7 @@ snapshots:
       - vue
       - zod
 
-  nuxt-twemoji@4.0.2(magicast@0.5.3):
+  nuxt-twemoji@4.0.2(patch_hash=bb8ff9c0836c925de842503329d9056095329b3995b4695ff598957f9b8da28f)(magicast@0.5.3):
     dependencies:
       '@nuxt/kit': 4.4.6(magicast@0.5.3)
       '@twemoji/api': 17.0.2
