@@ -32,7 +32,7 @@ export const staticBase = tv({
 })
 
 export const popoverContentBase = tv({
-  base: 'shadow-lg z-50 w-52 overflow-hidden p-1',
+  base: 'shadow-lg z-popover w-52 overflow-hidden p-1',
   defaultVariants: {
     variant: 'default',
   },
@@ -54,7 +54,7 @@ export const popoverItemBase = tv({
 })
 
 export const overlayStyles =
-  'duration-75 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-overlay'
+  'duration-75 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-overlay bg-overlay'
 
 export const inputStyles = tv({
   base: [

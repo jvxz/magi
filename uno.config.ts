@@ -74,6 +74,13 @@ export default defineConfig({
       'resize-handle':
         'bg-muted-foreground opacity-75 h-full w-1.5 pointer-events-none transition-all duration-75 delay-150 ease-in-out inset-0 absolute z-10 z-100 group-data-[state=inactive]:opacity-0 group-data-[state=inactive]:w-0.5 -translate-x-1/2 group-data-[state=inactive]:delay-0',
     },
+    {
+      'z-dialog': 'z-50',
+      'z-menu': 'z-70',
+      'z-overlay': 'z-50',
+      'z-popover': 'z-60',
+      'z-tooltip': 'z-80',
+    },
   ],
   theme: {
     colors: {
