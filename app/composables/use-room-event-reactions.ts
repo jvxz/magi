@@ -94,11 +94,13 @@ export const useRoomEventReactions = createProvidableComposable(
 
     return {
       error: react.error,
+      event,
       getReactors,
       isReactingTo,
       isUserReactingTo,
-      reactions,
       reactTo,
+      reactions,
+      room,
     }
   },
 )
