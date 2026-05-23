@@ -31,6 +31,7 @@ const { copy } = useClipboard()
     <PopoverContent
       v-bind="contentProps"
       as-child
+      data-slot="profile-popover"
       disable-outside-pointer-events
       :reference="referenceElement ?? undefined"
       :class="cn('z-1', $attrs.class)"
@@ -40,10 +41,9 @@ const { copy } = useClipboard()
       >
         <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
           <div class="rounded-t flex h-full justify-end relative">
-            <img
+            <MatrixAvatar
               v-if="avatarUrl"
-              :src="avatarUrl"
-              :alt="`${displayName}'s avatar (banner)'`"
+              :user
               class="rounded-t size-full scale-150 absolute object-cover blur-xl -z-1"
             />
 
@@ -54,7 +54,7 @@ const { copy } = useClipboard()
         </div>
 
         <div class="px-4 pb-4 pt-14 border border-border rounded flex flex-1 flex-col gap-2">
-          <MatrixAvatar :user="user" class="bg-card-light size-20 ring-6 ring-card-light z-1" image-size="small" />
+          <MatrixAvatar :user class="bg-card-light size-20 ring-6 ring-card-light z-1" image-size="small" />
 
           <div class="flex flex-col">
             <p class="text-lg font-medium">
