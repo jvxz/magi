@@ -11,6 +11,8 @@ const { reactions } = useRoomEventReactions.inject()
 
 <template>
   <div v-if="reactions" class="flex flex-row gap-1">
-    <PageRoomEventMessageReactionsItem v-for="reaction in reactions.keys()" :key="reaction" :reaction />
+    <UTooltipProvider :delay-duration="700">
+      <PageRoomEventMessageReactionsItem v-for="reaction in reactions.keys()" :key="reaction" :reaction />
+    </UTooltipProvider>
   </div>
 </template>

@@ -1,59 +1,82 @@
 <script lang="ts" setup>
+import { UToggle } from '#components'
+
 const props = defineProps<{
   reaction: string
 }>()
 
-const { error, getReactors, isReactingTo, reactTo } = useRoomEventReactions.inject()
+const { error, event, getReactors, isReactingTo, reactTo, room } = useRoomEventReactions.inject()
+const { openReactionViewer } = useRoomEventReactionsViewer()
+
+const tooltipOpen = shallowRef(false)
 
 const selfReactionEvent = computed(() => isReactingTo(props.reaction))
-const realCount = computed(() => getReactors(props.reaction)?.size ?? 0)
+const reactors = computed(() => getReactors(props.reaction))
+const realCount = computed(() => reactors.value?.size ?? 0)
 
 const localIsReacting = shallowRef(!!selfReactionEvent.value)
 const localCount = ref(realCount.value)
-const prevLocalCount = refDefault(usePrevious(localCount), 0)
 
-watch(localIsReacting, is => {
+const { ignoreUpdates } = watchIgnorable(localIsReacting, is => {
   localCount.value += is ? 1 : -1
   reactTo(props.reaction, is)
 })
 
-syncRef(realCount, localCount)
+watch(selfReactionEvent, event => {
+  ignoreUpdates(() => {
+    localIsReacting.value = !!event
+  })
+})
+
+syncRef(realCount, localCount, { direction: 'ltr' })
 
 watch(error, () => (localCount.value = realCount.value))
+
+const reactorsString = computed(() => {
+  const r = room.value
+  if (!r || !reactors.value) return ''
+
+  if (3 % reactors.value.size === 3) {
+    const diff = reactors.value.size - 3
+
+    const firstThree = [...reactors.value].slice(0, 3)
+
+    return `${firstThree.map(reactor => getRoomMemberDisplayName(r, reactor)).join(', ')}, and ${diff} ${handlePlural(diff, 'others', 'other')}`
+  }
+
+  return Array.from(reactors.value, reactor => getRoomMemberDisplayName(r, reactor)).join(', ')
+})
+
+function handleReactionViewer() {
+  openReactionViewer(room.value, event.value)
+  tooltipOpen.value = false
+}
 </script>
 
 <template>
   <div v-if="localCount" class="py-1">
-    <UTooltipProvider :delay-duration="700">
-      <UTooltipRoot>
-        <UTooltipTrigger as-child>
-          <UToggle
-            :key="reaction"
-            v-model:model-value="localIsReacting"
-            size="sm"
-            class="text-sm text-foreground p-1 px-2 border-px rounded flex gap-2 min-w-12 select-none items-center overflow-clip aria-[pressed=false]:(border-transparent bg-card-lightest) aria-[pressed=true]:(border-primary bg-primary/50 hover:bg-primary/50)"
-            :data-count="realCount"
-            @mouseover="getReactors(reaction)"
-          >
-            <span class="truncate">{{ reaction }}</span>
+    <UTooltipRoot v-model:open="tooltipOpen">
+      <UTooltipTrigger as-child>
+        <UReactionItem
+          :key="reaction"
+          v-model:model-value="localIsReacting"
+          :as="UToggle"
+          :count="localCount"
+          :reaction
+          size="sm"
+          class="text-sm text-foreground p-1 px-2 border-px rounded flex gap-2 min-w-12 select-none items-center overflow-clip aria-[pressed=false]:(border-transparent bg-card-lightest) aria-[pressed=true]:(border-primary bg-primary/50 hover:bg-primary/50)"
+          :data-count="realCount"
+          @mouseover="getReactors(reaction)"
+        />
+      </UTooltipTrigger>
 
-            <div class="h-1lh relative">
-              <span class="font-semibold opacity-0 select-none tabular-nums" aria-hidden="true">{{ localCount }}</span>
+      <UTooltipContent class="font-normal py-3 bg-card-lightest flex gap-2 max-w-64 min-w-48 items-center">
+        <Twemojify :text="reaction" class="text-10 shrink-0" />
 
-              <Transition :name="prevLocalCount > localCount ? 'flip-up' : 'flip-down'">
-                <span
-                  :key="localCount"
-                  class="font-semibold flex items-center inset-0 justify-center absolute tabular-nums"
-                >
-                  {{ localCount }}
-                </span>
-              </Transition>
-            </div>
-          </UToggle>
-        </UTooltipTrigger>
-
-        <UTooltipContent>test</UTooltipContent>
-      </UTooltipRoot>
-    </UTooltipProvider>
+        <p role="button" class="font-normal cursor-pointer hover:underline" @click="handleReactionViewer">
+          reacted by {{ reactorsString }}
+        </p>
+      </UTooltipContent>
+    </UTooltipRoot>
   </div>
 </template>
