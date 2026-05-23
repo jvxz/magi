@@ -65,7 +65,7 @@ const contentProps: PopoverContentProps = {
     side="right"
     class="py-0.5 w-full"
   >
-    <PageRoomEventMessageRoot class="gap-px">
+    <PageRoomEventMessageRoot class="flex flex-col gap-px">
       <div v-if="isReplyEvent" class="text-sm flex gap-1.5 items-center relative">
         <Icon name="custom:reply" class="text-muted-foreground shrink-0 h-6 w-12 translate-x-2.5 translate-y-1" />
 
@@ -102,7 +102,7 @@ const contentProps: PopoverContentProps = {
           </UProfilePopoverTrigger>
         </PageRoomEventMessageMemberContextMenu>
 
-        <div class="">
+        <div>
           <PageRoomEventMessageContent>
             <template v-if="!grouped && isDefined(event.getTs())" #header>
               <PageRoomEventMessageMemberContextMenu as-child>
@@ -118,7 +118,9 @@ const contentProps: PopoverContentProps = {
 
             <RenderMd
               v-if="!isDecrypting"
+              inline
               :content="eventBody"
+              class="whitespace-pre-wrap"
               :class="{
                 'italic text-muted-foreground': event?.isDecryptionFailure() || !eventContent?.body,
                 'text-4xl': isJumboEmoji,
