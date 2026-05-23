@@ -11,9 +11,6 @@ overrides:
   vite-plugin-pwa: 1.2.0
   workbox-build: 7.4.0
 
-patchedDependencies:
-  nuxt-twemoji: bb8ff9c0836c925de842503329d9056095329b3995b4695ff598957f9b8da28f
-
 importers:
 
   .:
@@ -85,8 +82,8 @@ importers:
         specifier: 2.6.0
         version: 2.6.0(magicast@0.5.3)(rollup@4.60.4)
       nuxt-twemoji:
-        specifier: 4.0.2
-        version: 4.0.2(patch_hash=bb8ff9c0836c925de842503329d9056095329b3995b4695ff598957f9b8da28f)(magicast@0.5.3)
+        specifier: 4.0.3
+        version: 4.0.3(magicast@0.5.3)
       nuxt-vitalizer:
         specifier: 2.0.0
         version: 2.0.0(magicast@0.5.3)
@@ -7499,8 +7496,8 @@ packages:
   nuxt-site-config@4.0.8:
     resolution: {integrity: sha512-H7wHoOJ5Z6ZnTqD5vUugaKkWZbejZ9kGmzpr2dheOaC6RdT8JafCfMrmJG7W+cyJiJJ3YmzL+bzPBW2bW6MExA==}
 
-  nuxt-twemoji@4.0.2:
-    resolution: {integrity: sha512-q29CbU45n6QeHj3gD7bWOCW1oxs63fed63z+XHHhDm7tVeUiraf7kj0pR0nfwOLmVw2kqzHHrDkmFGpdt0FZ3Q==}
+  nuxt-twemoji@4.0.3:
+    resolution: {integrity: sha512-hfD7gzfk3suF1Vp6by5wpJOQTLB0GX1XJmkQ9LxEW/G/CiypLPeLDoUH40SlDhJ4xSoHH3VQrgUxSGIGv6cjsA==}
 
   nuxt-vitalizer@2.0.0:
     resolution: {integrity: sha512-X2mabvcXMfKmWc46p8WmCbTlr8+wDniPHunQIRSGWmH0goqw6YTAe0+ttxRNISGxcobXDqqip7qPCE6+T60t1g==}
@@ -17569,7 +17566,7 @@ snapshots:
       - vue
       - zod
 
-  nuxt-twemoji@4.0.2(patch_hash=bb8ff9c0836c925de842503329d9056095329b3995b4695ff598957f9b8da28f)(magicast@0.5.3):
+  nuxt-twemoji@4.0.3(magicast@0.5.3):
     dependencies:
       '@nuxt/kit': 4.4.6(magicast@0.5.3)
       '@twemoji/api': 17.0.2
