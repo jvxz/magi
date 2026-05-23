@@ -303,7 +303,7 @@ watchDebounced(
               @click="handleSelect(emoji)"
               @mouseover="activeEmojiIdx = getEmojiFlatIdx(emoji)"
             >
-              {{ emoji.unicode }}
+              <Twemoji :emoji="emoji.unicode" />
             </button>
           </div>
         </div>
