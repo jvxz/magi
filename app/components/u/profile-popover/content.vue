@@ -34,7 +34,7 @@ const { copy } = useClipboard()
       data-slot="profile-popover"
       disable-outside-pointer-events
       :reference="referenceElement ?? undefined"
-      :class="cn('z-1', $attrs.class)"
+      :class="cn('z-popover', $attrs.class)"
     >
       <UCard
         class="p-0 border-none bg-card-light gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3"
