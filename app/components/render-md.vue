@@ -8,7 +8,9 @@ const md = useMarked(() => props.content, { inline: props.inline })
 </script>
 
 <template>
-  <div v-bind="$attrs" v-html="md" />
+  <TwemojiParse>
+    <div v-bind="$attrs" v-html="md" />
+  </TwemojiParse>
 </template>
 
 <style>
