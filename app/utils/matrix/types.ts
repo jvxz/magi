@@ -15,6 +15,8 @@ export type EmitterListener<T extends EventEmitterEvents | EmittedEvents> = List
   T
 >
 
+export type Reaction = string
+
 export interface RoomMemberTypingEventContent {
   user_ids: string[]
 }
