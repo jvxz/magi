@@ -67,10 +67,8 @@ const firstFourRecentReactions = computed(() => sortedRecentReactions.value.slic
     <UContextMenuContent v-if="event" :collision-padding="12">
       <template v-if="REACTABLE_EVENT_TYPES.includes(event.getType())">
         <div class="flex items-center justify-around">
-          <ContextMenuItem as-child>
+          <ContextMenuItem v-for="(reaction, i) in firstFourRecentReactions" :key="i" as-child>
             <UButton
-              v-for="(reaction, i) in firstFourRecentReactions"
-              :key="i"
               size="icon"
               variant="ghost"
               class="grow h-full aspect-square cursor-default"
