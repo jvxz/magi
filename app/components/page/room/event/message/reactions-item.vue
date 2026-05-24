@@ -36,7 +36,7 @@ const reactorsString = computed(() => {
   const r = room.value
   if (!r || !reactors.value) return ''
 
-  if (3 % reactors.value.size === 3) {
+  if (reactors.value.size > 3) {
     const diff = reactors.value.size - 3
 
     const firstThree = [...reactors.value].slice(0, 3)
