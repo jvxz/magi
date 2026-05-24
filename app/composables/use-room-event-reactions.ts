@@ -6,6 +6,7 @@ export const useRoomEventReactions = createProvidableComposable(
   (roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>, eventOrId: MaybeRefOrGetter<MatrixEvent | undefined>) => {
     const room = useRoom(roomOrId)
     const event = useRoomLiveEvent(roomOrId, eventOrId)
+    const { bumpRecentReaction } = useRecentReactions()
 
     const reactions = computed(() => {
       if (!room.value || !event.value) return
@@ -46,6 +47,7 @@ export const useRoomEventReactions = createProvidableComposable(
               }
             }
 
+            bumpRecentReaction(key)
             await react.mutateAsync({ event: event.value, reaction: key, redact: false })
           } else {
             const reactionEvent = isReactingTo(key)
@@ -98,8 +100,8 @@ export const useRoomEventReactions = createProvidableComposable(
       getReactors,
       isReactingTo,
       isUserReactingTo,
-      reactions,
       reactTo,
+      reactions,
       room,
     }
   },
