@@ -33,9 +33,16 @@ function onEmojiPick(emoji: CompactEmoji) {
     reactTo(emoji.unicode, true)
   }
 
+  closeMenu()
+}
+
+function closeMenu() {
   mounted.value = false
   nextTick(() => (mounted.value = true))
 }
+
+const { sortedRecentReactions } = useRecentReactions()
+const firstFourRecentReactions = computed(() => sortedRecentReactions.value.slice(0, 4))
 </script>
 
 <template>
@@ -58,26 +65,40 @@ function onEmojiPick(emoji: CompactEmoji) {
     </UContextMenuTrigger>
 
     <UContextMenuContent v-if="event" :collision-padding="12">
-      <div class="flex items-center justify-around">
-        <ContextMenuItem as-child>
-          <UButton v-for="i in 4" :key="i" size="icon" variant="ghost" class="grow h-full aspect-square cursor-default">
-            🥺
-          </UButton>
-        </ContextMenuItem>
-      </div>
-      <UContextMenuSub>
-        <UContextMenuSubTrigger> Add reaction </UContextMenuSubTrigger>
-
-        <UEmojiPickerRoot :as="ContextMenuSubContent" @pick="onEmojiPick">
-          <UEmojiPickerSearch />
+      <template v-if="REACTABLE_EVENT_TYPES.includes(event.getType())">
+        <div class="flex items-center justify-around">
           <ContextMenuItem as-child>
-            <UEmojiPickerList />
+            <UButton
+              v-for="(reaction, i) in firstFourRecentReactions"
+              :key="i"
+              size="icon"
+              variant="ghost"
+              class="grow h-full aspect-square cursor-default"
+              @click="
+                () => {
+                  reactTo(reaction.key)
+                  closeMenu()
+                }
+              "
+            >
+              <Twemojify class="text-6" :text="reaction.key" />
+            </UButton>
           </ContextMenuItem>
-        </UEmojiPickerRoot>
-      </UContextMenuSub>
-      <UContextMenuItem :disabled="!reactions || !reactions.size" @select="openReactionViewer(room, event)">
-        View reactions
-      </UContextMenuItem>
+        </div>
+        <UContextMenuSub>
+          <UContextMenuSubTrigger> Add reaction </UContextMenuSubTrigger>
+
+          <UEmojiPickerRoot :as="ContextMenuSubContent" @pick="onEmojiPick">
+            <UEmojiPickerSearch />
+            <ContextMenuItem as-child>
+              <UEmojiPickerList />
+            </ContextMenuItem>
+          </UEmojiPickerRoot>
+        </UContextMenuSub>
+        <UContextMenuItem :disabled="!reactions || !reactions.size" @select="openReactionViewer(room, event)">
+          View reactions
+        </UContextMenuItem>
+      </template>
     </UContextMenuContent>
   </UContextMenu>
 </template>
