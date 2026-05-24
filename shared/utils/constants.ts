@@ -1,6 +1,5 @@
 import type { AvatarImageSize } from '../../app/utils/matrix/types'
 import { EventType } from 'matrix-js-sdk'
-import { M_POLL_START } from 'matrix-js-sdk/lib/@types/polls'
 
 export const appMeta = {
   description: 'A familiar Matrix client for humans',
@@ -16,8 +15,8 @@ export const REACTABLE_EVENT_TYPES: (EventType | 'm.poll.start' | 'org.matrix.ms
   EventType.RoomMessage,
   EventType.RoomMessageEncrypted,
   EventType.Sticker,
-  M_POLL_START.name,
-  M_POLL_START.altName,
+  'm.poll.start',
+  'org.matrix.msc3381.poll.start',
 ]
 
 export const AVATAR_IMAGE_SIZE_VALUES = {
