@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { parseMembershipEvent } from '../../../app/utils/matrix/events'
-import { generateMembershipEvents } from '../utils/events'
+import { generateMembershipEvents } from '../utils/matrix/events'
 
 const events = generateMembershipEvents(128)
 
