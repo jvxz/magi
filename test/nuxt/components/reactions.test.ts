@@ -7,9 +7,9 @@ import Reactions from '../fixtures/reactions.vue'
 import { DEFAULT_MOCK_NAMES, generateFakeHomeserver } from '../utils/matrix/credentials.ts'
 
 const { useMatrixClient, useMatrixHooks, useSelf } = vi.hoisted(() => ({
-  useMatrixClient: vi.fn(),
-  useMatrixHooks: vi.fn(),
-  useSelf: vi.fn(),
+  useMatrixClient: vi.fn(() => ({ client: shallowRef({}) })),
+  useMatrixHooks: vi.fn(() => ({ onEvent: () => {}, onRoom: () => {}, onSync: () => {} })),
+  useSelf: vi.fn(() => ({ self: shallowRef() })),
 }))
 
 mockNuxtImport('useMatrixClient', () => useMatrixClient)
@@ -22,8 +22,12 @@ const createWrapper = () => {
   })
 }
 
+let currentMockRoom: MockRoom | undefined
+
 const setupState = (skipDefaults: boolean = false) => {
   const mockRoom = createMockRoom({ id: 'reactionsViewer' })
+  currentMockRoom = mockRoom
+
   const viewer = useRoomEventReactionsViewer()
 
   if (!skipDefaults) {
@@ -59,6 +63,7 @@ describe('reactions', () => {
     useMatrixClient.mockReturnValue({
       client: shallowRef({
         getHomeserverUrl: () => generateFakeHomeserver(),
+        getRoom: (id: string) => (currentMockRoom?.room.roomId === id ? currentMockRoom.room : undefined),
         getSafeUserId: () => DEFAULT_MOCK_NAMES[0]!,
         getUser: (id: string) => new User(id),
         getUserId: () => DEFAULT_MOCK_NAMES[0]!,
@@ -76,6 +81,8 @@ describe('reactions', () => {
     setupState()
     const Wrapper = createWrapper()
     await mountSuspended(Wrapper)
+
+    // console.log('document.body: ', document.body.outerHTML)
 
     DEFAULT_RECENT_REACTIONS.forEach(v => {
       const reactionItem = new DOMWrapper(document.querySelector(createReactionItemSelector(v)))
@@ -116,7 +123,10 @@ describe('reactions', () => {
     const reaction = DEFAULT_RECENT_REACTIONS[0]!
 
     const component = await mountSuspended(Reactions)
+
     const mockRoom = createMockRoom({ id: 'reactions' })
+    currentMockRoom = mockRoom
+
     const msgEvent = mockRoom.pushMessage()
     mockRoom.pushReaction(msgEvent, reaction)
 
@@ -131,7 +141,10 @@ describe('reactions', () => {
 
   it('successfully reacts to message', async () => {
     const reaction = DEFAULT_RECENT_REACTIONS[0]!
+
     const mockRoom = createMockRoom({ id: 'reactions' })
+    currentMockRoom = mockRoom
+
     const msgEvent = mockRoom.pushMessage()
 
     useMatrixClient.mockReturnValue({
@@ -160,7 +173,7 @@ describe('reactions', () => {
 
     setup.reactTo(reaction)
 
-    const { sendEvent } = useMatrixClient().client.value
+    const { sendEvent } = useMatrixClient().client.value as { sendEvent: () => void }
 
     await vi.waitFor(() => expect(sendEvent).toHaveBeenCalledTimes(1))
 
