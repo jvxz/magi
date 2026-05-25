@@ -47,8 +47,8 @@ export const useRoomEventReactions = createProvidableComposable(
               }
             }
 
-            bumpRecentReaction(key)
             await react.mutateAsync({ event: event.value, reaction: key, redact: false })
+            bumpRecentReaction(key)
           } else {
             const reactionEvent = isReactingTo(key)
             if (!reactionEvent) return
