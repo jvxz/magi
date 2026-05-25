@@ -60,7 +60,11 @@ const isPaginating = shallowRef(false)
       </template>
       <template v-else>
         <UAsideListTab
-          v-for="room in [createMockRoom({ id: '250', seedMessages: 250 }).room, createMockRoom({ id: '500', seedMessages: 500 }).room, createMockRoom({ id: '750', seedMessages: 750 }).room]"
+          v-for="room in [
+            createMockRoom({ id: '250', seedMessages: 250 }).room,
+            createMockRoom({ id: '500', seedMessages: 500 }).room,
+            createMockRoom({ id: '750', seedMessages: 750 }).room,
+          ]"
           :key="room.name"
           :data-testid="`mock-room-${room.roomId}`"
           :to="{
