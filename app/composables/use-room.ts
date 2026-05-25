@@ -28,6 +28,9 @@ function acquire(roomId: string) {
       const { onRoom } = useMatrixHooks()
 
       const getRoom = () => {
+        const real = client.value.getRoom?.(key)
+        if (real) return real
+
         if (!isTestMode()) return client.value.getRoom(key)
 
         const mockEventCount = DIGIT_RE.test(key) ? Number(key) : 500

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import type { PopoverContentProps } from 'reka-ui'
-import type { EmojiPickerRootEmits } from '~/components/emoji-picker/root.vue'
+import type { EmojiPickerRootEmits, EmojiPickerRootProps } from '~/components/emoji-picker/root.vue'
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<Omit<PopoverContentProps, 'as' | 'asChild'>>()
+const props = defineProps<EmojiPickerRootProps>()
 const emits = defineEmits<EmojiPickerRootEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)

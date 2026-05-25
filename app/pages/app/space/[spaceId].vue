@@ -98,6 +98,7 @@ const isPaginating = shallowRef(false)
     </div>
 
     <PageRoomMembersList />
+    <PageRoomEventReactionsViewer />
   </div>
 
   <NuxtPage :is-paginating />

@@ -1,7 +1,6 @@
-import type { EventType, IContent, IEvent } from 'matrix-js-sdk'
+import type { IContent, IEvent, Room } from 'matrix-js-sdk'
 import type { RoomMemberEventContent } from 'matrix-js-sdk/lib/types'
-
-import { KnownMembership, MatrixEvent } from 'matrix-js-sdk'
+import { EventType, KnownMembership, MatrixEvent, RelationType } from 'matrix-js-sdk'
 
 type Predicate = EventType | string | ((event: MatrixEvent) => boolean)
 
@@ -34,6 +33,77 @@ export function getEventContent(event: MatrixEvent | undefined): IContent {
   if (!content) return { body: 'Could not load event content' }
 
   return content
+}
+
+export function getEventChildren(room: Room, event: MaybeEventOrId) {
+  if (!room) return
+
+  const eventId = resolveEventId(event)
+  if (!eventId) return
+
+  return room.relations.getAllChildEventsForEvent(eventId)
+}
+
+export function getEventRelations(room: Room, event: MaybeEventOrId, relationType: RelationType, eventType: EventType) {
+  const eventId = resolveEventId(event)
+  if (!eventId) return
+
+  const tl = room.getUnfilteredTimelineSet()
+
+  return tl.relations.getChildEventsForEvent(eventId, relationType, eventType)
+}
+
+export type EventReactions = Map<string, Set<MatrixEvent>>
+export function getEventReactions(room: Room, event: MaybeEventOrId): EventReactions | undefined {
+  const reactions = getEventRelations(room, event, RelationType.Annotation, EventType.Reaction)
+  const annotations = reactions?.getSortedAnnotationsByKey()
+  if (!annotations) return
+
+  const filteredAnnotations: EventReactions = new Map()
+  for (const [reaction, events] of annotations) {
+    if (!events.size || typeof reaction !== 'string') continue
+
+    const dedupedMemberEvents = new Map<string, MatrixEvent>() // userId → most recent event
+    for (const event of events) {
+      if (event.isRedacted()) continue
+
+      const sender = event.getSender()
+      if (!sender) continue
+
+      const storedEvent = dedupedMemberEvents.get(sender)
+      const storedTs = storedEvent?.getTs()
+      if (isUndefined(storedTs)) dedupedMemberEvents.set(sender, event)
+      else {
+        if (event.getTs() > storedTs) dedupedMemberEvents.set(sender, event)
+      }
+    }
+
+    if (dedupedMemberEvents.size) filteredAnnotations.set(reaction, new Set(dedupedMemberEvents.values()))
+  }
+
+  return filteredAnnotations
+}
+
+export function isUserReacting(
+  room: Room,
+  event: MatrixEvent,
+  user: MaybeUserOrId,
+  targetReaction: string,
+): MatrixEvent | undefined {
+  const userId = resolveUserId(user)
+
+  const reactions = getEventReactions(room, event)
+  if (!reactions) return
+
+  const annotation = reactions.get(targetReaction)
+  if (!annotation) return
+
+  let userReactionEvent: MatrixEvent | undefined
+  annotation.forEach(event => {
+    if (event.getSender() === userId) userReactionEvent = event
+  })
+
+  return userReactionEvent
 }
 
 export function canDecryptEvent(event: MatrixEvent | Partial<IEvent> | undefined) {
@@ -340,4 +410,8 @@ export function trimReplyFromBody(body: string): string {
 const REPLY_PREVIEW_BODY_REG = /^(?:```[^\r\n]*\r?\n)?([^\r\n]+)/
 export function formatReplyPreviewBody(body: string | undefined) {
   return body?.match(REPLY_PREVIEW_BODY_REG)?.[1] ?? body
+}
+
+export function resolveEventId(eventOrId: MaybeEventOrId) {
+  return eventOrId instanceof MatrixEvent ? eventOrId.getId() : eventOrId
 }

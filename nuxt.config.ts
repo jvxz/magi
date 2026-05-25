@@ -19,7 +19,7 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-07-15',
 
-  css: ['~/assets/css/globals.css'],
+  css: ['~/assets/css/globals.css', '~/assets/css/transitions.css'],
 
   devtools: { enabled: true },
 
