@@ -31,7 +31,7 @@ function acquire(roomId: string) {
         if (!isTestMode()) return client.value.getRoom(key)
 
         const mockEventCount = DIGIT_RE.test(key) ? Number(key) : 500
-        return createMockRoom(mockEventCount, key)
+        return createMockRoom({ id: key, seedMessages: mockEventCount }).room
       }
       const rawRoom = getRoom()
       // markRaw is needed because the room mutates itself under the hood, breaking vue's proxy system
