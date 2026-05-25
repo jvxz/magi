@@ -1,12 +1,9 @@
 import type { IContent, IEvent, IUnsigned } from 'matrix-js-sdk'
 import type { RoomMember } from 'matrix-js-sdk/lib/models/room-member'
-import { faker } from '@faker-js/faker'
 import { sample } from 'es-toolkit'
 import { EventType, KnownMembership, MatrixEvent } from 'matrix-js-sdk'
-import { withoutProtocol } from 'ufo'
 import { objectKeys } from '#shared/utils/object'
-
-faker.seed(0)
+import { generateFakeEventId, generateFakeRoomId, generateFakeUserId } from './credentials'
 
 export function generateMembershipEvents(count: number) {
   return Array.from({ length: count }, () =>
@@ -16,27 +13,11 @@ export function generateMembershipEvents(count: number) {
       },
       eventId: generateFakeEventId(),
       roomId: generateFakeRoomId(),
-      sender: generateFakeUser(),
-      stateKey: generateFakeUser(),
+      sender: generateFakeUserId(),
+      stateKey: generateFakeUserId(),
       type: EventType.RoomMember,
     }),
   )
-}
-
-function generateFakeRoomId() {
-  return `!${faker.word.sample()}.${generateFakeHomeserver()}`
-}
-
-function generateFakeUser() {
-  return `@${faker.internet.username()}:${generateFakeHomeserver()}`
-}
-
-function generateFakeHomeserver() {
-  return withoutProtocol(faker.internet.url({ appendSlash: false }))
-}
-
-function generateFakeEventId() {
-  return `$${faker.number.float()}-${faker.number.float()}`
 }
 
 function mkMatrixEvent(opts: {
