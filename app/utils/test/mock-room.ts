@@ -1,4 +1,3 @@
-import type { User } from 'matrix-js-sdk'
 import { MatrixEvent, Room, RoomMember } from 'matrix-js-sdk'
 
 const DEFAULT_SENDER = '@test:localhost'
@@ -9,7 +8,6 @@ export interface MockRoom {
   pushMessage: (opts?: PushMessageOptions) => MatrixEvent
   pushReaction: (target: MatrixEvent, key: string, opts?: PushReactionOptions) => MatrixEvent
   redact: (event: MatrixEvent) => void
-  createUser: (userId: string) => User
 }
 
 interface PushMessageOptions {
