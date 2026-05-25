@@ -124,7 +124,10 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
     ;(event as unknown as { isRedacted: () => boolean }).isRedacted = () => true
   }
 
-  for (let i = 0; i < seedMessages; i++) pushMessage()
+  for (let i = 0; i < seedMessages; i++) {
+    const eventId = i === 0 ? 'oldest-event' : i === seedMessages - 1 ? 'newest-event' : undefined
+    pushMessage({ eventId })
+  }
 
   return { pushMessage, pushReaction, redact, room }
 }
