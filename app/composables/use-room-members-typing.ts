@@ -10,7 +10,7 @@ export const useRoomMembersTyping = createProvidableComposable(
     useRoomHooks(room, {
       onRoomMemberTyping: event => {
         typingMembers.value = new Set(
-          event.getContent<{ user_ids: string[] }>().user_ids.filter(u => u !== self.value?.userId),
+          (event.getContent<{ user_ids?: string[] }>().user_ids ?? []).filter(u => u !== self.value?.userId),
         )
       },
     })
