@@ -32,7 +32,7 @@ const typingMembersDiff = computed(() => Math.max(0, typingMembers.value.size - 
         </p>
       </div>
 
-      <p>{{ handlePlural(!!typingMembersDiff ? typingMembersDiff : typingMembers, 'are', 'is') }} typing</p>
+      <p>{{ handlePlural(typingMembers, 'are', 'is') }} typing</p>
     </template>
   </div>
 </template>
