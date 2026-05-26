@@ -8,6 +8,7 @@ export interface MockRoom {
   pushMessage: (opts?: PushMessageOptions) => MatrixEvent
   pushReaction: (target: MatrixEvent, key: string, opts?: PushReactionOptions) => MatrixEvent
   redact: (event: MatrixEvent) => void
+  setMemberTyping: (userId: string, typing: boolean) => RoomMember
 }
 
 interface PushMessageOptions {
@@ -33,6 +34,7 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
 
   const events: MatrixEvent[] = []
   const annotationsByTarget = new Map<string, Map<string, Set<MatrixEvent>>>()
+  const members = new Map<string, RoomMember>()
 
   let nextTs = DEFAULT_START_TS
 
@@ -58,7 +60,8 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
       getEvents: () => events,
       getPaginationToken: () => 'token',
     }),
-    getMember: (userId: string) => new RoomMember(id, userId),
+    getMember: (userId: string) => members.get(userId) ?? new RoomMember(id, userId),
+    getMembers: () => [...members.values()],
     getUnfilteredTimelineSet: () => timelineSet,
     loadMembersIfNeeded: async () => {},
     membersLoaded: () => true,
@@ -120,6 +123,16 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
     return event
   }
 
+  const setMemberTyping: MockRoom['setMemberTyping'] = (userId, typing) => {
+    let member = members.get(userId)
+    if (!member) {
+      member = new RoomMember(id, userId)
+      members.set(userId, member)
+    }
+    ;(member as unknown as { typing: boolean }).typing = typing
+    return member
+  }
+
   const redact: MockRoom['redact'] = event => {
     ;(event as unknown as { isRedacted: () => boolean }).isRedacted = () => true
   }
@@ -129,7 +142,7 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
     pushMessage({ eventId })
   }
 
-  return { pushMessage, pushReaction, redact, room }
+  return { pushMessage, pushReaction, redact, room, setMemberTyping }
 }
 
 interface StubEventInput {
