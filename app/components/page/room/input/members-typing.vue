@@ -1,33 +1,33 @@
 <script lang="ts" setup>
 const currentRoom = useCurrentRoom()
 
-const { typingMembers, areMembersTyping } = useRoomMembersTyping.inject()
+const { areMembersTyping, typingMembers } = useRoomMembersTyping.inject()
 
 const first3TypingMembers = computed(() => typingMembers.value.values().take(3))
 const typingMembersDiff = computed(() => Math.max(0, typingMembers.value.size - 3))
 </script>
 
 <template>
-  <div class="h-fit px-4 py-1 text-xs flex items-center gap-1">
+  <div class="text-xs px-4 py-1 flex gap-1 h-fit items-center">
     <template v-if="areMembersTyping">
-      <div class="flex items-center gap-0.5 pr-4">
-        <div class="size-2 bg-muted-foreground rounded-full dot-pulse-animation" v-for="i in 3" :key="i" />
+      <div class="pr-4 flex gap-0.5 items-center">
+        <div v-for="i in 3" :key="i" class="dot-pulse-animation rounded-full bg-muted-foreground size-2" />
       </div>
 
       <div class="natural-list inline">
         <UseRoomMember
           v-for="member in first3TypingMembers"
-          :user="member"
-          :room="currentRoom"
           v-slot="{ roomMember }"
           :key="member"
+          :user="member"
+          :room="currentRoom"
         >
           <p class="font-medium inline">
             {{ resolveUserName(roomMember) }}
           </p>
         </UseRoomMember>
 
-        <p class="inline" v-if="typingMembersDiff">
+        <p v-if="typingMembersDiff" class="inline">
           {{ typingMembersDiff }} {{ handlePlural(typingMembersDiff, 'others', 'other') }}
         </p>
       </div>
