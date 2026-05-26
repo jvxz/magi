@@ -5,8 +5,7 @@ const placeholder = computed(() => (currentRoom.value ? `Message in ${currentRoo
 
 const msg = shallowRef('')
 
-const { typingMembers } = useRoomMembersTyping.provide(currentRoom)
-const areMembersTyping = computed(() => typingMembers.value.size > 0)
+const { areMembersTyping } = useRoomMembersTyping.provide(currentRoom)
 </script>
 
 <template>
