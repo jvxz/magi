@@ -7,17 +7,17 @@ export const useRoomMembersTyping = createProvidableComposable(
     const areMembersTyping = computed(() => typingMembers.value.size > 0)
 
     const { self } = useSelf()
+    const setTypingMembers = (members: string[]) => {
+      typingMembers.value = new Set(members.filter(u => u !== self.value?.userId))
+    }
+
     useRoomHooks(room, {
-      onRoomMemberTyping: event => {
-        typingMembers.value = new Set(
-          (event.getContent<{ user_ids?: string[] }>().user_ids ?? []).filter(u => u !== self.value?.userId),
-        )
-      },
+      onRoomMemberTyping: event => setTypingMembers(event.getContent<{ user_ids?: string[] }>().user_ids ?? []),
     })
 
     whenever(
       () => room.value,
-      room => (typingMembers.value = getRoomMembersTyping(room)),
+      room => setTypingMembers([...getRoomMembersTyping(room)]),
       { immediate: true, once: true },
     )
 
