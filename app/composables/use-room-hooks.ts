@@ -15,8 +15,6 @@ export function useRoomHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefin
         const cb = params[key]
         if (!cb) return
 
-        if (key !== 'onTimeline') return
-
         const hook = hooks[key] as (callback: typeof cb) => { off: () => void }
 
         const { off } = hook(cb)
