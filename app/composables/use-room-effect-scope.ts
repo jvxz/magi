@@ -81,31 +81,35 @@ function acquire(roomId: string) {
       const timelineResetHook = createEventHook<Parameters<RoomHooks['onTimelineReset']>>()
 
       const update = debounce(() => triggerRef(room), 50)
-      watch(room, room => {
-        if (!room) return
+      watch(
+        room,
+        room => {
+          if (!room) return
 
-        room.on(RoomEvent.MyMembership, update)
-        room.on(RoomStateEvent.Events, update)
-        room.on(RoomEvent.AccountData, accountDataHook.trigger)
-        room.on(RoomEvent.CurrentStateUpdated, currentStateUpdatedHook.trigger)
-        room.on(RoomStateEvent.Members, memberUpdateHook.trigger)
-        room.on(RoomEvent.Summary, summaryHook.trigger)
-        room.on(RoomEvent.Timeline, timelineHook.trigger)
-        room.on(RoomEvent.TimelineRefresh, timelineRefreshHook.trigger)
-        room.on(RoomEvent.TimelineReset, timelineResetHook.trigger)
+          room.on(RoomEvent.MyMembership, update)
+          room.on(RoomStateEvent.Events, update)
+          room.on(RoomEvent.AccountData, accountDataHook.trigger)
+          room.on(RoomEvent.CurrentStateUpdated, currentStateUpdatedHook.trigger)
+          room.on(RoomStateEvent.Members, memberUpdateHook.trigger)
+          room.on(RoomEvent.Summary, summaryHook.trigger)
+          room.on(RoomEvent.Timeline, timelineHook.trigger)
+          room.on(RoomEvent.TimelineRefresh, timelineRefreshHook.trigger)
+          room.on(RoomEvent.TimelineReset, timelineResetHook.trigger)
 
-        onWatcherCleanup(() => {
-          room.off(RoomEvent.MyMembership, update)
-          room.off(RoomStateEvent.Events, update)
-          room.off(RoomEvent.AccountData, accountDataHook.trigger)
-          room.off(RoomEvent.CurrentStateUpdated, currentStateUpdatedHook.trigger)
-          room.off(RoomStateEvent.Members, memberUpdateHook.trigger)
-          room.off(RoomEvent.Summary, summaryHook.trigger)
-          room.off(RoomEvent.Timeline, timelineHook.trigger)
-          room.off(RoomEvent.TimelineRefresh, timelineRefreshHook.trigger)
-          room.off(RoomEvent.TimelineReset, timelineResetHook.trigger)
-        })
-      }, { immediate: true })
+          onWatcherCleanup(() => {
+            room.off(RoomEvent.MyMembership, update)
+            room.off(RoomStateEvent.Events, update)
+            room.off(RoomEvent.AccountData, accountDataHook.trigger)
+            room.off(RoomEvent.CurrentStateUpdated, currentStateUpdatedHook.trigger)
+            room.off(RoomStateEvent.Members, memberUpdateHook.trigger)
+            room.off(RoomEvent.Summary, summaryHook.trigger)
+            room.off(RoomEvent.Timeline, timelineHook.trigger)
+            room.off(RoomEvent.TimelineRefresh, timelineRefreshHook.trigger)
+            room.off(RoomEvent.TimelineReset, timelineResetHook.trigger)
+          })
+        },
+        { immediate: true },
+      )
 
       const { off: offTyping } = roomMemberTypingHook.on((event, member) => {
         if (member.roomId !== roomId) return
