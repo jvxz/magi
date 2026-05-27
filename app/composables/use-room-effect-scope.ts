@@ -105,7 +105,7 @@ function acquire(roomId: string) {
           room.off(RoomEvent.TimelineRefresh, timelineRefreshHook.trigger)
           room.off(RoomEvent.TimelineReset, timelineResetHook.trigger)
         })
-      })
+      }, { immediate: true })
 
       const { off: offTyping } = roomMemberTypingHook.on((event, member) => {
         if (member.roomId !== roomId) return
