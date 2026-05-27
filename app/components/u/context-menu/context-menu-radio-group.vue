@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ContextMenuRadioGroupEmits, ContextMenuRadioGroupProps } from 'reka-ui'
+
 import { useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<ContextMenuRadioGroupProps>()

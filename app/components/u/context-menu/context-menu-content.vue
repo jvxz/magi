@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ContextMenuContentEmits, ContextMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+
 import { useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<ContextMenuContentProps & { class?: HTMLAttributes['class'] }>()

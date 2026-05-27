@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { UInputRef } from '~/components/u/input.vue'
 import { required } from '@regle/rules'
+
+import type { UInputRef } from '~/components/u/input.vue'
 
 const props = defineProps<{
   servers: string[]

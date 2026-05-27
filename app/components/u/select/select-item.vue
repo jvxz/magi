@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SelectItemProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+
 import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<SelectItemProps & { class?: HTMLAttributes['class'] }>()

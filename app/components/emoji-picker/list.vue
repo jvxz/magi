@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { CompactEmoji } from 'emojibase'
+
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/vue-virtual'
 import { useFilter } from 'reka-ui'
+
 import { getEmojiKey, injectEmojiPickerContext } from './root.vue'
 
 const COLS = 9

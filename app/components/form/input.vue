@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { InputTypeHTMLAttribute } from 'vue'
+
 import type { FormPrimitiveProps } from './primitive.vue'
 
 export type FormInputProps = FormPrimitiveProps & {

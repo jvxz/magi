@@ -1,4 +1,5 @@
 import type { MatrixEvent } from 'matrix-js-sdk'
+
 import { map } from 'es-toolkit/set'
 
 export const useRoomEventReactions = createProvidableComposable(

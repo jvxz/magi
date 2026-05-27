@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DropdownMenuTriggerProps } from 'reka-ui'
+
 import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<DropdownMenuTriggerProps>()

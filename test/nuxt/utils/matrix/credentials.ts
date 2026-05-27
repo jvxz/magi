@@ -1,4 +1,5 @@
 import type { Faker } from '@faker-js/faker'
+
 import { faker } from '@faker-js/faker'
 
 export const DEFAULT_MOCK_NAMES = Array.from({ length: 50 }, (_, i) => {

@@ -1,4 +1,5 @@
 import type { MatrixClient } from 'matrix-js-sdk'
+
 import { ClientEvent, createClient, SyncState } from 'matrix-js-sdk'
 
 export const useMatrixClient = createGlobalState(() => {

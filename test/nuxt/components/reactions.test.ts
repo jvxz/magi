@@ -1,8 +1,9 @@
+import { PageRoomEventReactionsViewer, UProfilePopoverRoot } from '#components'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { DOMWrapper } from '@vue/test-utils'
 import { User } from 'matrix-js-sdk'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { PageRoomEventReactionsViewer, UProfilePopoverRoot } from '#components'
+
 import Reactions from '../fixtures/reactions.vue'
 import { DEFAULT_MOCK_NAMES, generateFakeHomeserver } from '../utils/matrix/credentials.ts'
 

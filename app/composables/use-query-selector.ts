@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
+
 import { useMutationObserver } from '@vueuse/core'
 import { shallowRef, toRef, toValue, watch } from 'vue'
 

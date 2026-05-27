@@ -1,4 +1,5 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
+
 import { Direction } from 'matrix-js-sdk'
 
 export const BATCH_SIZE = 80

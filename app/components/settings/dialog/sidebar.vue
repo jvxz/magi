@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { UInputRef } from '~/components/u/input.vue'
 import { useFilter } from 'reka-ui'
+
+import type { UInputRef } from '~/components/u/input.vue'
 
 const { self } = useSelf()
 const { searchQuery, tab } = useSettingsDialog()

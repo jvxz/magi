@@ -1,5 +1,6 @@
 import type { MatrixEvent } from 'matrix-js-sdk'
 import type { EffectScope, ShallowRef } from 'vue'
+
 import { EventType, MatrixEventEvent, RelationsEvent, RelationType } from 'matrix-js-sdk'
 
 type Key = `${string}:${string}`

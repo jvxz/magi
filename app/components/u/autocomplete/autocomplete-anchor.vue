@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ComboboxAnchorProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+
 import { AutocompleteAnchor, useForwardProps } from 'reka-ui'
 
 const props = defineProps<ComboboxAnchorProps & { class?: HTMLAttributes['class'] }>()

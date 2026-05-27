@@ -1,5 +1,6 @@
 import type { IContent, IEvent, Room } from 'matrix-js-sdk'
 import type { RoomMemberEventContent } from 'matrix-js-sdk/lib/types'
+
 import { EventType, KnownMembership, MatrixEvent, RelationType } from 'matrix-js-sdk'
 
 type Predicate = EventType | string | ((event: MatrixEvent) => boolean)

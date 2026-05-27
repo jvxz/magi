@@ -1,5 +1,6 @@
 import type { MatrixEvent, RoomMember, RoomState } from 'matrix-js-sdk'
 import type { EffectScope, ShallowRef } from 'vue'
+
 import { toRef } from '@vueuse/core'
 
 type Value = RoomMember | undefined

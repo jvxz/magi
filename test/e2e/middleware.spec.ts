@@ -1,4 +1,5 @@
 import { expect, test } from '@nuxt/test-utils/playwright'
+
 import { mockLogin } from './utils'
 
 test.describe('Middleware', () => {

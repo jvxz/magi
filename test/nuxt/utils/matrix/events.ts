@@ -1,8 +1,10 @@
 import type { IContent, IEvent, IUnsigned } from 'matrix-js-sdk'
 import type { RoomMember } from 'matrix-js-sdk/lib/models/room-member'
+
+import { objectKeys } from '#shared/utils/object'
 import { sample } from 'es-toolkit'
 import { EventType, KnownMembership, MatrixEvent } from 'matrix-js-sdk'
-import { objectKeys } from '#shared/utils/object'
+
 import { generateFakeEventId, generateFakeRoomId, generateFakeUserId } from './credentials'
 
 export function generateMembershipEvents(count: number) {

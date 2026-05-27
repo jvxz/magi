@@ -2,6 +2,7 @@
 import type { ToggleGroupRootEmits, ToggleGroupRootProps } from 'reka-ui'
 import type { VariantProps } from 'tailwind-variants'
 import type { HTMLAttributes } from 'vue'
+
 import { ToggleGroupRoot, useForwardPropsEmits } from 'reka-ui'
 import { provide } from 'vue'
 

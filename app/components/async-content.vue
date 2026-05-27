@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T">
 import type { PrimitiveProps } from 'reka-ui'
+
 import { Primitive, VisuallyHidden } from 'reka-ui'
 
 const { data, loadingLabel, ...primitiveProps } = defineProps<

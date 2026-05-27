@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { SelectTriggerProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import type { ButtonProps } from '../button.vue'
+
 import { useForwardProps } from 'reka-ui'
+
+import type { ButtonProps } from '../button.vue'
 
 const props = withDefaults(
   defineProps<

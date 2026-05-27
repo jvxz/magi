@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { EmojiPickerRootEmits, EmojiPickerRootProps } from '~/components/emoji-picker/root.vue'
 import { useForwardPropsEmits } from 'reka-ui'
+
+import type { EmojiPickerRootEmits, EmojiPickerRootProps } from '~/components/emoji-picker/root.vue'
 
 const props = defineProps<EmojiPickerRootProps>()
 const emits = defineEmits<EmojiPickerRootEmits>()

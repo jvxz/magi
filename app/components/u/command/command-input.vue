@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { ListboxFilterProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+
 import { useForwardProps } from 'reka-ui'
+
 import { useCommand } from '.'
 
 defineOptions({

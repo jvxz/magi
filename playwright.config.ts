@@ -1,4 +1,5 @@
 import type { ConfigOptions } from '@nuxt/test-utils/playwright'
+
 import { defineConfig, devices } from '@playwright/test'
 
 const baseURL = 'http://localhost:5678'

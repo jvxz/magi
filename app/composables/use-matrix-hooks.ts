@@ -1,4 +1,5 @@
 import type { ClientEventHandlerMap, EmittedEvents, Listener, MatrixClient } from 'matrix-js-sdk'
+
 import { ClientEvent, MatrixEventEvent, RoomMemberEvent, RoomStateEvent } from 'matrix-js-sdk'
 
 type ValidEvents = EmittedEvents | RoomMemberEvent

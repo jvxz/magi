@@ -1,4 +1,5 @@
 import type { User } from 'matrix-js-sdk'
+
 import { toRef } from '@vueuse/core'
 
 export function useUser<Assert = false>(

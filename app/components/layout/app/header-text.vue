@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { MotionProps } from 'motion-v'
+
 import { SyncState } from 'matrix-js-sdk'
 import { AnimatePresence, motion } from 'motion-v'
 

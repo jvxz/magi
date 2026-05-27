@@ -1,7 +1,9 @@
 import type { MatrixEvent, RoomMember } from 'matrix-js-sdk'
+
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { User } from 'matrix-js-sdk'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import { DEFAULT_MOCK_NAMES, generateFakeHomeserver } from '../utils/matrix/credentials'
 
 const CURRENT_USER = DEFAULT_MOCK_NAMES[0]!

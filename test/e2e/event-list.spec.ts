@@ -1,7 +1,9 @@
 import type { Page } from '@playwright/test'
+
 import { expect, test } from '@nuxt/test-utils/playwright'
 import { assert } from 'es-toolkit'
 import { randomInt } from 'es-toolkit/math'
+
 import { setFlag } from './utils'
 
 type Direction = 'backwards' | 'forwards'

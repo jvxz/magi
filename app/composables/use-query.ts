@@ -11,6 +11,7 @@ import type {
   UseQueryReturnType,
 } from '@tanstack/vue-query'
 import type { MultiWatchSources } from 'vue'
+
 import { useQuery as _useQuery } from '@tanstack/vue-query'
 
 interface CustomOptions {

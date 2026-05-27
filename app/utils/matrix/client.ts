@@ -1,4 +1,5 @@
 import type { MatrixClient, TokenRefreshFunction } from 'matrix-js-sdk'
+
 import { createClient, IndexedDBCryptoStore, IndexedDBStore, MatrixError, TokenRefreshLogoutError } from 'matrix-js-sdk'
 
 const getCryptoDbName = (userId: string) => `${userId}-crypto`

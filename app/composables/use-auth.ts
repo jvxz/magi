@@ -1,4 +1,5 @@
 import type { ICreateClientOpts, LoginRequest as MatrixLoginRequest } from 'matrix-js-sdk'
+
 import { createClient } from 'matrix-js-sdk'
 
 export type AuthPayload = Pick<

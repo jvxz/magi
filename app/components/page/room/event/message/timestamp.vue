@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { PrimitiveProps } from 'reka-ui'
 import type { NuxtTimeProps } from '#app'
+import type { PrimitiveProps } from 'reka-ui'
 
 const props = defineProps<PrimitiveProps & { datetime: number }>()
 

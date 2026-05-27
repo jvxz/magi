@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Transition } from 'motion-v'
+
 import { motion } from 'motion-v'
 
 const props = defineProps<{

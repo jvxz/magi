@@ -1,5 +1,6 @@
-import type { AvatarImageSize } from '../../app/utils/matrix/types'
 import { EventType } from 'matrix-js-sdk'
+
+import type { AvatarImageSize } from '../../app/utils/matrix/types'
 
 export const appMeta = {
   description: 'A familiar Matrix client for humans',

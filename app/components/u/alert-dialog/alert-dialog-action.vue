@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { AlertDialogActionProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+
 import type { ButtonProps } from '../button.vue'
 
 const props = defineProps<AlertDialogActionProps & ButtonProps & { class?: HTMLAttributes['class'] }>()

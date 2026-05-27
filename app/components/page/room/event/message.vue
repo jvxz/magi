@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 import type { PopoverContentProps } from 'reka-ui'
+
 import { MsgType } from 'matrix-js-sdk'
 
 const props = defineProps<{

@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { Room, User } from 'matrix-js-sdk'
-import type { MatrixAvatarProps } from '~/components/matrix/avatar.vue'
+
 import { MatrixAvatar } from '#components'
+
+import type { MatrixAvatarProps } from '~/components/matrix/avatar.vue'
 
 defineProps<MatrixAvatarProps & { ghost?: boolean; room?: Room; user?: User }>()
 </script>

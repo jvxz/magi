@@ -1,7 +1,9 @@
 // https://github.com/antfu/vitesse-nuxt/blob/main/app/config/pwa.ts
 
 import type { ModuleOptions } from '@vite-pwa/nuxt'
+
 import process from 'node:process'
+
 import { appMeta } from '../../shared/utils/constants'
 
 const scope = '/'

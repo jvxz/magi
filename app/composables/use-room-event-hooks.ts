@@ -1,4 +1,5 @@
 import type { Listener, MatrixEvent, MatrixEventEmittedEvents, MatrixEventHandlerMap } from 'matrix-js-sdk'
+
 import { toRef } from '@vueuse/core'
 import { MatrixEventEvent } from 'matrix-js-sdk'
 

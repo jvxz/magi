@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { AlertDialogContentEmits, AlertDialogContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+
 import { useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<AlertDialogContentProps & { class?: HTMLAttributes['class'] }>()

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AutocompleteRootEmits, AutocompleteRootProps } from 'reka-ui'
+
 import { AutocompleteRoot, useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<AutocompleteRootProps>()

@@ -1,4 +1,5 @@
 import type { ClientConfig } from 'matrix-js-sdk'
+
 import { AutoDiscovery } from 'matrix-js-sdk'
 
 export async function validateHomeserver(homeserver: string, throwError?: true): Promise<ClientConfig>

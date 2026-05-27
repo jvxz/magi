@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HoverCardRootEmits, HoverCardRootProps } from 'reka-ui'
+
 import { useForwardPropsEmits } from 'reka-ui'
 
 const props = withDefaults(defineProps<HoverCardRootProps>(), {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ComboboxContentEmits, ComboboxContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+
 import { AutocompleteContent, AutocompletePortal, useForwardPropsEmits } from 'reka-ui'
 
 defineOptions({

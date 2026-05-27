@@ -1,4 +1,5 @@
 import type { Room, RoomMember } from 'matrix-js-sdk'
+
 import { toRef } from '@vueuse/core'
 import QuickLRU from 'quick-lru'
 

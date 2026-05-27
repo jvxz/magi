@@ -3,6 +3,7 @@ import type { CompactEmoji } from 'emojibase'
 import type { EventType, MatrixEvent } from 'matrix-js-sdk'
 import type { PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+
 import { ContextMenuSubContent } from '#components'
 
 const props = withDefaults(

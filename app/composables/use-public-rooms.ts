@@ -1,4 +1,5 @@
 import type { MatrixClient } from 'matrix-js-sdk'
+
 import { useInfiniteQuery } from '@tanstack/vue-query'
 import { toRef } from '@vueuse/core'
 

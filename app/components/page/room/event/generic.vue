@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
+
 import { EventType } from 'matrix-js-sdk'
 
 const props = defineProps<{

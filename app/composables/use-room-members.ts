@@ -1,4 +1,5 @@
 import type { RoomMember } from 'matrix-js-sdk'
+
 import { EventType } from 'matrix-js-sdk'
 
 export function useRoomMembers(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {

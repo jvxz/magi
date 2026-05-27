@@ -1,5 +1,6 @@
 import type { MatrixClient } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
+
 import { useQueries } from '@tanstack/vue-query'
 import { toRef } from '@vueuse/core'
 import { EventType, RoomType } from 'matrix-js-sdk'
