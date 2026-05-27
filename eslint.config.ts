@@ -1,5 +1,6 @@
 import { antfu } from '@antfu/eslint-config'
 import oxlint from 'eslint-plugin-oxlint'
+
 import withNuxt from './.nuxt/eslint.config.mjs'
 
 export default withNuxt(
@@ -10,6 +11,7 @@ export default withNuxt(
     rules: {
       'node/prefer-global/buffer': 'off',
       'node/prefer-global/process': 'off',
+      'perfectionist/sort-imports': 'off',
       'perfectionist/sort-objects': 'warn',
       'vue/html-closing-bracket-newline': 'off',
       'vue/html-indent': 'off',
