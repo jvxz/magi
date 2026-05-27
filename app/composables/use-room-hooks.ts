@@ -1,29 +1,18 @@
-import type {
-  EventTimelineSet,
-  IRoomSummary,
-  Listener,
-  MatrixEvent,
-  Room,
-  RoomEmittedEvents,
-  RoomEventHandlerMap,
-  RoomMember,
-  RoomState,
-} from 'matrix-js-sdk'
+import type { Listener, MatrixEvent, Room, RoomEmittedEvents, RoomEventHandlerMap, RoomMember } from 'matrix-js-sdk'
 import { toRef } from '@vueuse/core'
 import { RoomEvent, RoomStateEvent } from 'matrix-js-sdk'
 
 type EmitterListener<T extends RoomEmittedEvents> = Listener<RoomEmittedEvents, RoomEventHandlerMap, T>
 
 type Params = Partial<{
-  onTimeline: (event: MatrixEvent) => void
-  onTimelineRefresh: (room: Room, eventTimelineSet: EventTimelineSet) => void
-  onTimelineReset: (room: Room | undefined, eventTimelineSet: EventTimelineSet, resetAllTimelines: boolean) => void
-  onCurrentStateUpdated: (room: Room, previousRoomState: RoomState, roomState: RoomState) => void
-  onAccountData: (event: MatrixEvent, room: Room, prevEvent?: MatrixEvent | undefined) => void
-  onMemberUpdate: (event: MatrixEvent, state: RoomState, member: RoomMember) => void
+  onTimeline: EmitterListener<RoomEvent.Timeline>
+  onTimelineRefresh: EmitterListener<RoomEvent.TimelineRefresh>
+  onTimelineReset: EmitterListener<RoomEvent.TimelineReset>
+  onCurrentStateUpdated: EmitterListener<RoomEvent.CurrentStateUpdated>
+  onAccountData: EmitterListener<RoomEvent.AccountData>
+  onMemberUpdate: EmitterListener<RoomStateEvent.Members>
   onRoomMemberTyping: (event: MatrixEvent, member: RoomMember) => void
-  onMembers: (event: MatrixEvent, state: RoomState, member: RoomMember) => void
-  onSummary: (summary: IRoomSummary) => void
+  onSummary: EmitterListener<RoomEvent.Summary>
 }>
 
 export function useRoomHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>, params?: Params) {
@@ -44,7 +33,6 @@ export function useRoomHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefin
       bindListener(RoomEvent.CurrentStateUpdated, params?.onCurrentStateUpdated, disposers, room)
       bindListener(RoomStateEvent.Members, params?.onMemberUpdate, disposers, room)
       bindListener(RoomEvent.AccountData, params?.onAccountData, disposers, room)
-      bindListener(RoomStateEvent.Members, params?.onMembers, disposers, room)
       bindListener(RoomEvent.Summary, params?.onSummary, disposers, room)
     },
     { immediate: true },

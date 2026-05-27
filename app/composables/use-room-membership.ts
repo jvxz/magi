@@ -9,7 +9,7 @@ export function useRoomMembership(
   const membership = shallowRef<KnownMembership | undefined>(getMembership())
 
   useRoomHooks(maybeRoomOrId, {
-    onMembers: (_event, _state, member) => {
+    onMemberUpdate: (_event, _state, member) => {
       if (member.userId === user.value?.userId) membership.value = member.membership as KnownMembership
     },
   })
