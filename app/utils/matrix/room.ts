@@ -1,6 +1,6 @@
 import type { MatrixClient, MatrixEvent } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
-import type { MaybeUserOrId } from './types'
+import type { MaybeRoomOrId, MaybeUserOrId } from './types'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 import { $Error } from '#shared/utils/$error'
 import { objectEntries } from '#shared/utils/object'
@@ -241,6 +241,14 @@ export function getRoomCreationTs(room: Room | undefined) {
 
   const events = getStateEvents(room, EventType.RoomCreate)
   if (events[0]) return events[0].getTs()
+}
+
+export function getRoomMembersTyping(room: Room) {
+  const typingMembers = new Set<string>()
+  for (const member of room.getMembers()) {
+    if (member.typing) typingMembers.add(member.userId)
+  }
+  return typingMembers
 }
 
 export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
