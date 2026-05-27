@@ -211,5 +211,8 @@ export default defineNuxtConfig({
         'tailwind-variants',
       ],
     },
+    worker: {
+      format: 'es',
+    },
   },
 })
