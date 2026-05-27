@@ -1,5 +1,7 @@
 import type { NuxtPage } from 'nuxt/schema'
+
 import { uniq } from 'es-toolkit/array'
+
 import { pwa } from './app/config/pwa'
 import { appMeta } from './shared/utils/constants'
 
@@ -145,6 +147,11 @@ export default defineNuxtConfig({
   pwa,
 
   routeRules: {
+    '/_nuxt/**': {
+      headers: {
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+      },
+    },
     '/app/**': { ssr: false },
     '/login': { ssr: false },
     '/playground': { appLayout: false },
