@@ -88,7 +88,7 @@ describe('typing indicator', () => {
   })
 
   it('displays typing members from the initial room load', async () => {
-    const realMembersTyping = DEFAULT_MOCK_NAMES.slice(0, 1)
+    const realMembersTyping = DEFAULT_MOCK_NAMES.slice(1, 2)
     realMembersTyping.forEach(m => currentMockRoom.setMemberTyping(m, true))
 
     currentMockRoom.setMemberTyping(DEFAULT_MOCK_NAMES[2]!, false)
