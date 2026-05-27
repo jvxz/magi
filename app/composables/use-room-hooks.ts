@@ -50,10 +50,14 @@ export function useRoomHooks(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefin
     { immediate: true },
   )
 
-  params?.onRoomMemberTyping &&
-    roomMemberTypingHook.on((event, member) => {
-      params?.onRoomMemberTyping?.(event, member)
+  if (params?.onRoomMemberTyping) {
+    const handler = params.onRoomMemberTyping
+    const { off } = roomMemberTypingHook.on((event, member) => {
+      if (member.roomId !== room.value?.roomId) return
+      handler(event, member)
     })
+    onScopeDispose(off)
+  }
 
   onScopeDispose(cleanup)
 }
