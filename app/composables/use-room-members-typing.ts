@@ -15,10 +15,12 @@ export const useRoomMembersTyping = createProvidableComposable(
       onRoomMemberTyping: event => setTypingMembers(event.getContent<{ user_ids?: string[] }>().user_ids ?? []),
     })
 
-    whenever(
-      () => room.value,
-      room => setTypingMembers([...getRoomMembersTyping(room)]),
-      { immediate: true, once: true },
+    watch(
+      room,
+      room => {
+        if (room) setTypingMembers([...getRoomMembersTyping(room)])
+      },
+      { immediate: true },
     )
 
     return {
