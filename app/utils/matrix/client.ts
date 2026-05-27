@@ -9,6 +9,7 @@ export async function createAuthedClient(auth: AuthPayload) {
   const idbStore = new IndexedDBStore({
     dbName: auth.userId,
     indexedDB,
+    workerFactory: () => new Worker(new URL('./idb-worker.ts', import.meta.url), { type: 'module' }),
   })
 
   const cryptoDbName = getCryptoDbName(auth.userId)
