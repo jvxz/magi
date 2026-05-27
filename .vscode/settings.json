@@ -8,7 +8,6 @@
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never",
     "source.fixAll.oxc": "explicit",
     "source.format.oxc": "explicit"
@@ -21,8 +20,6 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "javascript.format.semicolons": "remove",
-  "typescript.format.semicolons": "remove",
   "eslint.validate": ["javascript", "typescript", "vue", "json", "jsonc", "yaml", "css"],
   "iconify.inplace": false
 }
