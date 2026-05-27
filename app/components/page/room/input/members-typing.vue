@@ -3,7 +3,7 @@ const currentRoom = useCurrentRoom()
 
 const { areMembersTyping, typingMembers } = useRoomMembersTyping.inject()
 
-const first3TypingMembers = computed(() => typingMembers.value.values().take(3))
+const first3TypingMembers = computed(() => [...typingMembers.value].slice(0, 3))
 const typingMembersDiff = computed(() => Math.max(0, typingMembers.value.size - 3))
 </script>
 
