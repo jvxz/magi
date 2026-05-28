@@ -31,7 +31,10 @@ const roomOrUserUrl = computed(() => {
 const resolvedAvatar = useResolveAvatarUrl(roomOrUserUrl, { size: props.imageSize })
 
 const isError = ref(false)
-watch(() => props.src ?? resolvedAvatar.value, () => isError.value = false)
+watch(
+  () => props.src ?? resolvedAvatar.value,
+  () => (isError.value = false),
+)
 
 const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'imageSize', 'placeholderKey')
 
