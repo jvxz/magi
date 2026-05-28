@@ -58,5 +58,10 @@ const placeholderName = computed(() => {
     :do-placeholder="false"
     @error="isError = true"
   />
-  <AvatarPlaceholder v-else :name="placeholderName" :class="cn('rounded-full bg-primary size-full', props.class)" />
+  <AvatarPlaceholder
+    v-else
+    :name="placeholderName"
+    :square
+    :class="cn(!square && 'rounded-full', 'bg-primary size-full', props.class)"
+  />
 </template>
