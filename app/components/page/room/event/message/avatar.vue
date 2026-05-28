@@ -5,7 +5,7 @@ import { MatrixAvatar } from '#components'
 
 import type { MatrixAvatarProps } from '~/components/matrix/avatar.vue'
 
-defineProps<MatrixAvatarProps & { ghost?: boolean; room?: Room; user?: User; placeholderKey?: string }>()
+defineProps<MatrixAvatarProps & { ghost?: boolean; room?: Room; user?: User }>()
 </script>
 
 <template>
