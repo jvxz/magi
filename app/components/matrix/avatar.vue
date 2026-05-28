@@ -32,7 +32,7 @@ const resolvedAvatar = useResolveAvatarUrl(roomOrUserUrl, { size: props.imageSiz
 
 const isError = ref(false)
 
-const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'imageSize')
+const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'imageSize', 'placeholderKey')
 
 const placeholderName = computed(() => {
   if (props.src) return props.src
