@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { HierarchyRoom } from 'matrix-js-sdk'
-import type { PrimitiveProps } from 'reka-ui'
+import type { HierarchyRoom } from 'matrix-js-sdk';
+import type { PrimitiveProps } from 'reka-ui';
 
 const props = defineProps<
   PrimitiveProps & {
@@ -23,7 +23,7 @@ const src = useResolveAvatarUrl(() => props.room.avatar_url ?? undefined)
       )
     "
   >
-    <MatrixAvatar :src class="rounded-sm shrink-0 w-fit aspect-square" />
+    <MatrixAvatar :placeholder-key="room.name ?? room.room_id" :src class="rounded-sm shrink-0 w-fit aspect-square" />
 
     <div class="flex flex-col w-full justify-around tabular-nums">
       <div class="flex gap-2 max-h-1em items-center">
