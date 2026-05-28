@@ -1,9 +1,10 @@
 <script lang="ts">
-import type { ImgProps } from '~/components/img.vue'
+import type { ImgProps } from '~/components/img.vue';
 
 export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   square?: boolean
   imageSize?: AvatarImageSize
+  placeholderKey?: string
 } & (
     | { room: MaybeRoomOrId | undefined | null; user?: never; src?: never }
     | { user: MaybeUserOrId | undefined | null; room?: never; src?: never }
@@ -32,6 +33,13 @@ const resolvedAvatar = useResolveAvatarUrl(roomOrUserUrl, { size: props.imageSiz
 const isError = ref(false)
 
 const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'imageSize')
+
+const placeholderName = computed(() => {
+  if (props.src) return props.src
+  if (room.value) return room.value.roomId
+  if (props.user) return resolveUserId(props.user)
+  return props.placeholderKey ?? 'UNKNOWN'
+})
 </script>
 
 <template>
@@ -46,5 +54,5 @@ const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'ima
     :do-placeholder="false"
     @error="isError = true"
   />
-  <div v-else :class="cn('rounded-full bg-primary size-full', props.class)" />
+  <AvatarPlaceholder v-else :name="placeholderName" :class="cn('rounded-full bg-primary size-full', props.class)" />
 </template>
