@@ -31,6 +31,7 @@ const roomOrUserUrl = computed(() => {
 const resolvedAvatar = useResolveAvatarUrl(roomOrUserUrl, { size: props.imageSize })
 
 const isError = ref(false)
+watch(() => props.src ?? resolvedAvatar.value, () => isError.value = false)
 
 const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'imageSize', 'placeholderKey')
 
@@ -44,7 +45,7 @@ const placeholderName = computed(() => {
 
 <template>
   <Img
-    v-if="props.src || resolvedAvatar"
+    v-if="(props.src || resolvedAvatar) && !isError"
     v-bind="delegatedProps"
     :key="props.src ?? resolvedAvatar"
     data-slot="avatar"
