@@ -39,10 +39,11 @@ watch(
 const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'imageSize', 'placeholderKey')
 
 const placeholderName = computed(() => {
-  if (props.src) return props.src
+  if (props.placeholderKey) return props.placeholderKey
   if (room.value) return room.value.roomId
   if (props.user) return resolveUserId(props.user)
-  return props.placeholderKey ?? 'UNKNOWN'
+  if (props.src) return props.src
+  return 'UNKNOWN'
 })
 </script>
 
