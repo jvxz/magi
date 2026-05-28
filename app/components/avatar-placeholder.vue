@@ -72,7 +72,7 @@ function generateColors(name: string, colors: string[]) {
       />
       <path
         :filter="`url(#filter_${maskId})`"
-        style="mix-blend-mode: overlay"
+        :style="{ fill: properties[2].color, 'mix-blend-mode': 'overlay' }"
         d="M22.216 24L0 46.75l14.108 38.129L78 86l-3.081-59.276-22.378 4.005 12.972 20.186-23.35 27.395L22.215 24z"
         :transform="`translate(${properties[2].translateX} ${properties[2].translateY}) rotate(${properties[2].rotate} ${SIZE / 2} ${SIZE / 2}) scale(${properties[2].scale})`"
       />
