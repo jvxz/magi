@@ -12,7 +12,11 @@ export interface AvatarPlaceholderProps {
 
 <script lang="ts" setup>
 const props = withDefaults(defineProps<AvatarPlaceholderProps>(), {
-  colors: () => ['#5865F2', '#919AFF', '#C1C6FF'],
+  colors: () => [
+    'var(--primary)',
+    'oklch(from var(--primary) calc(l + 0.12) c h)',
+    'oklch(from var(--primary) calc(l + 0.24) c h)',
+  ],
   square: true,
 })
 
@@ -63,14 +67,13 @@ function generateColors(name: string, colors: string[]) {
       <path
         :filter="`url(#filter_${maskId})`"
         d="M32.414 59.35L50.376 70.5H72.5v-71H33.728L26.5 13.381l19.057 27.08L32.414 59.35z"
-        :fill="properties[1].color"
-        :transform="`translate(${properties[1].translateX} ${properties[1].translateY}) rotate(${properties[1].rotate} ${SIZE / 2} ${SIZE / 2}) scale(${properties[2].scale})`"
+        :style="{ fill: properties[1].color }"
+        :transform="`translate(${properties[1].translateX} ${properties[1].translateY}) rotate(${properties[1].rotate} ${SIZE / 2} ${SIZE / 2}) scale(${properties[1].scale})`"
       />
       <path
         :filter="`url(#filter_${maskId})`"
         style="mix-blend-mode: overlay"
         d="M22.216 24L0 46.75l14.108 38.129L78 86l-3.081-59.276-22.378 4.005 12.972 20.186-23.35 27.395L22.215 24z"
-        :fill="properties[2].color"
         :transform="`translate(${properties[2].translateX} ${properties[2].translateY}) rotate(${properties[2].rotate} ${SIZE / 2} ${SIZE / 2}) scale(${properties[2].scale})`"
       />
     </g>
