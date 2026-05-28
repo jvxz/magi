@@ -35,7 +35,9 @@ onMounted(() => {
       class="text-foreground font-normal gap-2 h-10 w-full justify-start data-[popover-open]:bg-muted/75"
       variant="ghost"
     >
-      <MatrixAvatar :user="userId" class="shrink-0 size-6" />
+      <div class="shrink-0 size-6 [&>svg]:!size-full">
+        <MatrixAvatar :user="userId" class="size-full" />
+      </div>
 
       <p class="shrink-0 truncate">
         {{ profile?.displayname }}
