@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { ImgProps } from '~/components/img.vue';
+import type { ImgProps } from '~/components/img.vue'
 
 export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   square?: boolean
