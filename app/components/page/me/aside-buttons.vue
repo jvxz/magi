@@ -39,7 +39,7 @@ const toggle = computed({
     </UToggleGroupItem>
   </DefineToggle>
 
-  <UToggleGroupRoot v-model:model-value="toggle" variant="accent" class="p-2 flex flex-col gap-2 w-full">
+  <UToggleGroupRoot v-model:model-value="toggle" class="p-2 flex flex-col gap-2 w-full">
     <Toggle label="Recent rooms" icon="tabler:door" value="index" />
 
     <div class="w-full space-y-2">
