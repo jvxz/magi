@@ -3,6 +3,7 @@ import type { NuxtPage } from 'nuxt/schema'
 import { uniq } from 'es-toolkit/array'
 
 import { pwa } from './app/config/pwa'
+import { DEFAULT_COLOR_MODE } from './shared/constants/color-mode'
 import { appMeta } from './shared/utils/constants'
 
 export default defineNuxtConfig({
@@ -11,11 +12,13 @@ export default defineNuxtConfig({
       htmlAttrs: {
         style: 'background-color: var(--color-background);',
       },
-      titleTemplate: '%siteName',
+      titleTemplate: 'Magi',
     },
   },
 
   colorMode: {
+    fallback: DEFAULT_COLOR_MODE,
+    preference: DEFAULT_COLOR_MODE,
     storage: 'cookie',
   },
 
@@ -77,7 +80,7 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    dirs: ['~/utils/**/*.ts', '~/config/**/*.ts', '~/composables/**/*.ts', '~/constants/**/*.ts', './shared/**/*.ts'],
+    dirs: ['~/utils/**/*.ts', '~/config/**/*.ts', '~/composables/**/*.ts', '~/constants/**/*.ts', '~~/shared/**/*.ts'],
     presets: [
       { ignore: ['isEqual'], package: 'es-toolkit' },
       { package: 'ufo' },
