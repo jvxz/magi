@@ -64,7 +64,7 @@ watch(
 
 <template>
   <div class="flex h-screen items-center justify-center">
-    <UCard class="py-12 px-0 container flex size-fit w-lg shadow-xl">
+    <UCard class="px-0 py-12 container flex size-fit w-lg shadow-xl">
       <div class="flex flex-col gap-10 h-full w-full">
         <div class="text-center flex flex-col gap-1 justify-center">
           <h1 class="text-2xl font-medium">Welcome back!</h1>
