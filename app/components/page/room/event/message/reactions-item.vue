@@ -64,13 +64,13 @@ function handleReactionViewer() {
           :count="localCount"
           :reaction
           size="sm"
-          class="text-sm text-foreground p-1 px-2 border-px rounded flex gap-2 min-w-12 select-none items-center overflow-clip aria-[pressed=false]:(border-transparent bg-card-lightest) aria-[pressed=true]:(border-primary bg-primary/50 hover:bg-primary/50)"
+          class="text-sm text-foreground p-1 px-2 border-px rounded flex gap-2 min-w-12 select-none items-center overflow-clip aria-[pressed=false]:(border-transparent bg-secondary) aria-[pressed=true]:(border-primary bg-primary/50 hover:bg-primary/50)"
           :data-count="realCount"
           @mouseover="getReactors(reaction)"
         />
       </UTooltipTrigger>
 
-      <UTooltipContent class="font-normal py-3 bg-card-lightest flex gap-2 max-w-64 min-w-48 items-center">
+      <UTooltipContent class="font-normal py-3 bg-popover flex gap-2 max-w-64 min-w-48 items-center">
         <Twemojify :text="reaction" class="text-10 shrink-0" />
 
         <p role="button" class="font-normal cursor-pointer hover:underline" @click="handleReactionViewer">

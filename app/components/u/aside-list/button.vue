@@ -5,11 +5,7 @@ defineProps<ButtonProps>()
 </script>
 
 <template>
-  <UButton
-    v-bind="$props"
-    variant="ghost"
-    :class="cn('text-sm font-normal h-9 w-full justify-start w-full', $props.class)"
-  >
+  <UButton v-bind="$props" variant="ghost" :class="cn('text-sm h-9 w-full justify-start w-full', $props.class)">
     <slot />
   </UButton>
 </template>

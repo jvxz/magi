@@ -9,7 +9,11 @@ const { data: mutualRooms, error: mutualRoomsError, isPending: isPendingMutualRo
   >
     <div class="grid h-1lh w-max">
       <div class="flex shrink-0 col-start-1 row-start-1 items-center">
-        <div v-for="i in 3" :key="i" class="border-2 border-card-light rounded-full bg-muted size-4 not-first:-ml-2" />
+        <div
+          v-for="i in 3"
+          :key="i"
+          class="border-2 border-popover rounded-full bg-secondary-raised size-4 not-first:-ml-2"
+        />
       </div>
     </div>
 

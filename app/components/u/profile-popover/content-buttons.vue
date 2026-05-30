@@ -15,21 +15,16 @@ function handleCopyUserId() {
 
 <template>
   <div class="p-2 space-x-1">
-    <UButton
-      v-if="userId !== self?.userId"
-      size="icon"
-      variant="ghost"
-      class="rounded-full bg-muted/50 active:bg-muted/50"
-    >
+    <UButton v-if="userId !== self?.userId" size="icon" variant="soft" class="border-none rounded-full">
       <Icon name="tabler:message" />
     </UButton>
     <UDropdownMenuRoot>
       <UDropdownMenuTrigger as-child>
-        <UButton size="icon" variant="ghost" class="rounded-full bg-muted/50 active:bg-muted/50">
+        <UButton size="icon" variant="soft" class="border-none rounded-full">
           <Icon name="tabler:dots" />
         </UButton>
       </UDropdownMenuTrigger>
-      <UDropdownMenuContent>
+      <UDropdownMenuContent class="bg-popover">
         <UDropdownMenuItem :disabled="!isSupported || !props.userId" @click="handleCopyUserId">
           <Icon name="tabler:tag" /> Copy ID
         </UDropdownMenuItem>

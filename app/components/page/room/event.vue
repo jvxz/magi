@@ -56,7 +56,7 @@ const firstFourRecentReactions = computed(() => sortedRecentReactions.value.slic
       :data-event-type="eventType"
       :class="
         cn(
-          'px-6 data-[grouped=false]:mt-4.5 group hover:bg-card-lighter data-[popover-open]:bg-card-lighter shrink-0 data-[grouped=true]:min-h-0',
+          'px-6 data-[grouped=false]:mt-4.5 group hover:bg-hover data-[popover-open]:bg-hover shrink-0 data-[grouped=true]:min-h-0',
           $props.class,
         )
       "

@@ -37,7 +37,7 @@ const { copy } = useClipboard()
       :class="cn('z-popover', $attrs.class)"
     >
       <UCard
-        class="p-0 border-none bg-card-light gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3"
+        class="p-0 border-none bg-popover gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3"
       >
         <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
           <div class="rounded-t flex h-full justify-end relative">
@@ -54,7 +54,7 @@ const { copy } = useClipboard()
         </div>
 
         <div class="px-4 pb-4 pt-14 border border-border rounded flex flex-1 flex-col gap-2">
-          <MatrixAvatar :user class="bg-card-light size-20 ring-6 ring-card-light z-1" image-size="small" />
+          <MatrixAvatar :user class="bg-popover size-20 ring-6 ring-popover z-1" image-size="small" />
 
           <div class="flex flex-col">
             <p class="text-lg font-medium">
@@ -69,7 +69,8 @@ const { copy } = useClipboard()
               <UDropdownMenuRoot>
                 <UDropdownMenuTrigger as-child>
                   <UButton
-                    class="text-xs text-muted-foreground font-normal p-0 rounded-none border-none bg-transparent h-fit hover:text-muted-foreground active:border-none hover:border-none active:bg-transparent hover:bg-transparent hover:underline"
+                    variant="link"
+                    class="text-xs font-normal text-muted-foreground no-underline data-[state=open]:underline hover:underline"
                   >
                     {{ `:${parsedUserId.homeserver}` }}
                   </UButton>
@@ -103,7 +104,11 @@ const { copy } = useClipboard()
             </UBadge>
           </div>
 
-          <UInput v-if="!isSelf" :placeholder="`Message ${displayName}`" :classes="{ input: 'text-xs' }" />
+          <UInput
+            v-if="!isSelf"
+            :placeholder="`Message ${displayName}`"
+            :classes="{ input: 'text-xs bg-transparent' }"
+          />
         </div>
       </UCard>
     </PopoverContent>

@@ -24,7 +24,7 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
         variant="ghost"
         :class="
           cn(
-            'group py-2 flex-row gap-4 h-12 w-full justify-start data-[state=open]:(bg-muted/75 hover:bg-muted/75) text-foreground',
+            'group py-2 flex-row gap-4 h-12 w-full justify-start data-[state=open]:(bg-selected hover:bg-selected) text-foreground',
             $attrs.class,
           )
         "

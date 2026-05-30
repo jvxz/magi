@@ -283,7 +283,7 @@ watchDebounced(
         >
           <div
             v-if="flatList[v.index]!.type === 'header'"
-            class="bg-card-light flex h-6 items-center"
+            class="bg-popover flex h-6 items-center"
             :style="{ zIndex: v.index }"
           >
             <p class="text-xs text-muted-foreground font-medium ps-1.5">
@@ -312,7 +312,7 @@ watchDebounced(
       </div>
       <template v-else>
         <div :id="gridId" role="grid" aria-label="Emoji" aria-busy="true">
-          <div class="ps-1 bg-card-light h-6 top-0 sticky z-2">
+          <div class="ps-1 bg-popover h-6 top-0 sticky z-2">
             <USkeleton class="text-xs text-muted-foreground font-medium h-1lh w-1/3" />
           </div>
 

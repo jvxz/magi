@@ -4,7 +4,7 @@
 
     <div class="flex flex-col h-screen relative">
       <LayoutAppHeader />
-      <main class="bg-card flex-1 h-fit z-1">
+      <main class="bg-surface flex-1 h-fit z-1">
         <ClientOnly>
           <SplitterGroup auto-save-id="aside-extra-splitter-group" direction="horizontal" class="h-full">
             <SplitterPanel

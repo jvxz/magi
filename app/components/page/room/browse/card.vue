@@ -18,7 +18,7 @@ const src = useResolveAvatarUrl(() => props.room.avatar_url ?? undefined)
     :as-child="asChild"
     :class="
       cn(
-        'w-full relative hover:(border-foreground/50 bg-card-lighter) h-18 p-3.5 border flex-row gap-3.5 ',
+        'w-full relative hover:(border-foreground/50 bg-hover) h-18 p-3.5 border flex-row gap-3.5 ',
         $attrs.class,
       )
     "
