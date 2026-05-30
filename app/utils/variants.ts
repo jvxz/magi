@@ -69,7 +69,7 @@ export const alertVariants = tv({
 export type AlertVariants = VariantProps<typeof alertVariants>
 
 export const toggleVariants = tv({
-  base: 'p-0',
+  base: 'p-0 data-[state=off]:(hover:text-foreground hover:bg-hover) data-[state=on]:(bg-selected hover:bg-selected text-foreground)',
   defaultVariants: {
     size: 'default',
     variant: 'ghost',
@@ -77,18 +77,9 @@ export const toggleVariants = tv({
   extend: interactiveBase,
   variants: {
     variant: {
-      accent: interactiveBase({
-        class:
-          'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground',
-        variant: 'ghost',
-      }),
-      ghost: interactiveBase({
-        class:
-          'data-[state=off]:hover:not-active:bg-muted/50 data-[state=off]:hover:not-active:text-foreground data-[state=off]:active:bg-muted/75 data-[state=on]:(bg-muted hover:bg-muted) data-[state=on]:text-foreground',
-        variant: 'ghost',
-      }),
+      ghost: interactiveBase({ variant: 'ghost' }),
       outline: interactiveBase({
-        class: 'data-[state=on]:bg-muted data-[state=on]:border-primary/30 m-0',
+        class: 'data-[state=on]:(border-border-strong) active:(border-border-strong)',
         variant: 'outline',
       }),
     },
