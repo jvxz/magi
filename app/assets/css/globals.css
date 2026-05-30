@@ -7,57 +7,8 @@
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --chroma: 273.85;
-
-  --primary: oklch(57.74% 0.2091 var(--chroma));
-  --accent: var(--primary);
-  --ring: var(--primary);
-
-  --background: oklch(0.985 0.001 var(--chroma));
-  --foreground: oklch(0.3 0 0);
-  --card: oklch(1 0 0);
-  --card-lighter: oklch(0.98 0.001 var(--chroma));
-  --card-foreground: oklch(0.205 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.37 0 0);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.205 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.93 0 0);
-  --muted-foreground: oklch(from var(--foreground) calc(l * 1.25) c h);
-  --accent-foreground: oklch(0.205 0 0);
-  --danger: oklch(59.59% 0.1925 23.28);
-  --danger-foreground: oklch(0.985 0 0);
-  --border: oklch(0.86 0 0);
-  --input: oklch(from var(--background) calc(l * 0.99) c h);
-
-  --overlay: oklch(0% 0 0 / 0.725);
-}
-
-.dark {
-  --background: oklch(18.31% 0.004 285.99);
-  --foreground: oklch(95.27% 0.0027 286.35);
-
-  --card-lightest: oklch(0.2672 0.0075 285.83);
-  --card-lighter: oklch(24.52% 0.0075 285.83);
-  --card-light: oklch(0.219 0.006 285.911);
-  --card: oklch(20.59% 0.0059 285.87);
-  --card-dark: oklch(0.184 0.006 285.787);
-  --card-darker: oklch(0.165 0.004 285.935);
-
-  --card-foreground: oklch(0.97 0 0);
-  --popover: oklch(0.2 0 0);
-  --popover-foreground: oklch(0.74 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.32 0 0);
-  --secondary-foreground: oklch(0.97 0 0);
-  --muted: oklch(from var(--background) calc(l * 1.55) c h);
-  --muted-foreground: oklch(74.55% 0.0086 278.59);
-  --accent-foreground: oklch(0.97 0 0);
-  --danger: oklch(59.59% 0.1925 23.28);
-  --danger-foreground: oklch(0.985 0 0);
-  --border: oklch(0.3 0.008 285.972);
-  --input: oklch(from var(--background) calc(l * 1.35) c h);
+  --shift-hover: -0.018;
+  --shift-press: -0.03;
 }
 
 @utility scrollbar-fancy {
@@ -89,7 +40,7 @@ html {
 }
 
 ::selection {
-  @apply bg-primary/75;
+  @apply bg-primary/50;
 }
 
 body {

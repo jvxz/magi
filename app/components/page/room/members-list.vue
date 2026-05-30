@@ -35,7 +35,7 @@ watch(
     </VList>
 
     <div v-else class="p-2 h-full relative">
-      <!-- <div class="size-full inset-0 absolute z-1 from-transparent to-card to-80% bg-gradient-to-b" /> -->
+      <!-- <div class="size-full inset-0 absolute z-1 from-transparent to-surface to-80% bg-gradient-to-b" /> -->
 
       <!-- <div class="h-10" /> -->
       <USkeleton v-for="item in 8" :key="item" class="mb-3 h-10 w-full" />

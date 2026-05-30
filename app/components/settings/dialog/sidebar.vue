@@ -64,7 +64,7 @@ const filteredCategories = computed(() =>
       >
         <UButton
           variant="ghost"
-          class="justify-start data-[active]:text-foreground active:bg-card-lighter/50 data-[active]:bg-card-lighter/50 hover:bg-card-lighter/50 data-[active]:anchor-name-item"
+          class="justify-start data-[active]:text-foreground active:bg-selected data-[active]:bg-selected hover:bg-hover data-[active]:anchor-name-item"
         >
           <Icon :name="entry.icon" class="size-4" />
           {{ upperFirst(entry.title) }}
@@ -72,7 +72,7 @@ const filteredCategories = computed(() =>
       </TabsTrigger>
 
       <div
-        class="rounded bg-card-lighter pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1"
+        class="rounded bg-selected pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1"
       />
     </TabsList>
 

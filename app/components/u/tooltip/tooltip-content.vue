@@ -27,13 +27,13 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       :class="
         cn(
           staticBase({ variant: 'default' }),
-          'will-change-transform will-change-opacity z-50 p-0 bg-card-lighter px-3 py-1.5 text-sm text-balance font-medium',
+          'will-change-transform will-change-opacity z-50 p-0 bg-surface-raised px-3 py-1.5 text-sm text-balance font-medium',
           props.class,
         )
       "
     >
       <slot />
-      <TooltipArrow rounded class="translate-y-px scale-140 fill-card-lighter stroke-border" />
+      <TooltipArrow rounded class="translate-y-px scale-140 fill-surface-raised stroke-border" />
     </TooltipContent>
   </TooltipPortal>
 </template>

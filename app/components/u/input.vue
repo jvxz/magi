@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
+import type { HTMLAttributes, InputTypeHTMLAttribute } from 'vue'
 
 import { useVModel } from '@vueuse/core'
 import { useForwardExpose } from 'reka-ui'
@@ -17,6 +17,7 @@ export type UInputProps = PrimitiveProps & {
   leadingIcon?: string
   disabled?: boolean
   trailingIcon?: string
+  type?: InputTypeHTMLAttribute
 }
 </script>
 
@@ -51,6 +52,7 @@ const { forwardRef } = useForwardExpose()
       v-bind="$attrs"
       :ref="forwardRef"
       v-model="modelValue"
+      :type="$props.type"
       :class="cn(inputStyles(), props.leadingIcon && 'ps-7', props.trailingIcon && 'pe-7', $props.classes?.input)"
     />
 

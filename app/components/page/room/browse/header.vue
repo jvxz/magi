@@ -71,7 +71,10 @@ const founder = useRoomFounder(() => props.space)
           sideOffset: 12,
         }"
       >
-        <UButton variant="link" class="font-normal flex gap-2 items-center h-1em!">
+        <UButton
+          variant="link"
+          class="font-normal no-underline flex gap-2 items-center data-[state=open]:underline hover:underline h-1em!"
+        >
           <MatrixAvatar :user="founder" class="size-4" />
           <span>{{ resolveUserName(founder) }}</span>
         </UButton>

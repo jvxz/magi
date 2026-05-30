@@ -79,7 +79,7 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
 }
 
 .scroll-container::-webkit-scrollbar-track {
-  background-color: var(--card);
+  background-color: var(--surface);
 
   /* align to bottom of container  */
   margin-bottom: 3rem;

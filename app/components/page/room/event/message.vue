@@ -108,7 +108,7 @@ const contentProps: PopoverContentProps = {
             <template v-if="!grouped && isDefined(event.getTs())" #header>
               <PageRoomEventMessageMemberContextMenu as-child>
                 <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
-                  <UButton variant="link">
+                  <UButton variant="link" class="data-[state=open]:no-underline data-[popover-open]:underline!">
                     {{ eventProfile?.displayname }}
                   </UButton>
                 </UProfilePopoverTrigger>

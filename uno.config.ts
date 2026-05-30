@@ -64,6 +64,15 @@ export default defineConfig({
         'transition-timing-function': 'cubic-bezier(0.33, 1, 0.68, 1)',
       },
     ],
+    [
+      /^(bg|text|border)-(.+)-(hover|press)$/,
+      ([, prop, name, state], { theme }) => {
+        const color = (theme.colors as Record<string, string>)[name]
+        if (typeof color !== 'string') return
+        const cssProp = prop === 'bg' ? 'background-color' : prop === 'text' ? 'color' : 'border-color'
+        return { [cssProp]: `oklch(from ${color} calc(l + var(--shift-${state})) c h)` }
+      },
+    ],
   ],
   safelist: ['group'],
   shortcuts: [
@@ -88,16 +97,11 @@ export default defineConfig({
       'accent-foreground': 'var(--accent-foreground)',
       background: 'var(--background)',
       border: 'var(--border)',
-      card: 'var(--card)',
-      'card-dark': 'var(--card-dark)',
-      'card-darker': 'var(--card-darker)',
-      'card-foreground': 'var(--card-foreground)',
-      'card-light': 'var(--card-light)',
-      'card-lighter': 'var(--card-lighter)',
-      'card-lightest': 'var(--card-lightest)',
+      'border-strong': 'var(--border-strong)',
       danger: 'var(--danger)',
       'danger-foreground': 'var(--danger-foreground)',
       foreground: 'var(--foreground)',
+      hover: 'var(--hover)',
       input: 'var(--input)',
       muted: 'var(--muted)',
       'muted-foreground': 'var(--muted-foreground)',
@@ -109,6 +113,11 @@ export default defineConfig({
       ring: 'var(--ring)',
       secondary: 'var(--secondary)',
       'secondary-foreground': 'var(--secondary-foreground)',
+      'secondary-raised': 'var(--secondary-raised)',
+      selected: 'var(--selected)',
+      surface: 'var(--surface)',
+      'surface-foreground': 'var(--surface-foreground)',
+      'surface-raised': 'var(--surface-raised)',
     },
     duration: {
       DEFAULT: '92.5ms',
@@ -116,14 +125,24 @@ export default defineConfig({
     },
     font: {
       mono: 'Paper Mono',
+      // sans: 'Momo Trust Sans',
       // sans: 'Inter',
+      // sans: 'Zalando Sans',
+      // sans: 'Miranda Sans',
     },
     fontWeight: {
-      // medium: '550',
+      // medium: '500',
       // normal: '425',
     },
     radius: {
       DEFAULT: 'var(--radius)',
+    },
+    shadow: {
+      DEFAULT: [`0 1px 3px 0 #00000035`, `0 1px 2px -1px #00000035`],
+      lg: [`0 10px 15px -3px #00000035`, `0 4px 6px -4px #00000035`],
+      md: [`0 4px 6px -1px #00000035`, `0 2px 4px -2px #00000035`],
+      sm: [`0 1px 3px 0 #00000035`, `0 1px 2px -1px #00000035`],
+      xl: [`0 20px 25px -5px #00000035`, `0 8px 10px -6px #00000035`],
     },
     spacing: {
       'app-header-height': '2rem',

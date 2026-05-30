@@ -64,7 +64,7 @@ watch(
 
 <template>
   <div class="flex h-screen items-center justify-center">
-    <div class="py-12 rounded bg-card-lighter container flex size-fit w-lg shadow-xl">
+    <UCard class="px-0 py-12 container flex size-fit w-lg shadow-xl">
       <div class="flex flex-col gap-10 h-full w-full">
         <div class="text-center flex flex-col gap-1 justify-center">
           <h1 class="text-2xl font-medium">Welcome back!</h1>
@@ -79,9 +79,12 @@ watch(
             :error="(homeserverError ? upperFirst(homeserverError.message) : undefined) ?? r$.homeserver.$errors"
           >
             <UAutocompleteRoot v-model:model-value="r$.$value.homeserver" class="group" reset-search-term-on-blur>
-              <UAutocompleteAnchor class="border-muted bg-card h-10 group-data-[error]:border-danger">
+              <UAutocompleteAnchor
+                class="has-focus-visible:border-border-strong"
+                :class="cn(inputStyles(), 'bg-surface group-data-[error]:border-danger')"
+              >
                 <UAutocompleteInput :show-icon="false" data-testid="homeserver-input" class="shrink" />
-                <UAutocompleteTrigger>
+                <UAutocompleteTrigger class="-mr-1.5">
                   <Icon name="tabler:chevron-down" class="text-muted-foreground size-3.25!" />
                 </UAutocompleteTrigger>
               </UAutocompleteAnchor>
@@ -142,6 +145,6 @@ watch(
           </form>
         </div>
       </div>
-    </div>
+    </UCard>
   </div>
 </template>
