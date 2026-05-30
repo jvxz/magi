@@ -18,7 +18,7 @@ const forwarded = useForwardProps(delegatedProps)
     data-slot="autocomplete-trigger"
     :data-size="size"
     v-bind="forwarded"
-    :class="cn(interactiveBase({ size: 'icon', variant: 'ghost' }), 'mr-2 size-6', props.class)"
+    :class="cn(interactiveBase({ size: 'icon', variant: 'ghost' }), 'size-6', props.class)"
   >
     <slot>
       <Icon name="tabler:chevron-down" class="text-muted-foreground translate-y-0.5 size-3!" />
