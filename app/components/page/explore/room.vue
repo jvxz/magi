@@ -35,9 +35,7 @@ const src = computed(() =>
       <div v-else class="bg-muted size-full"></div>
     </div>
 
-    <div
-      class="mt-2/5 p-4 pt-1/8 border border-t-0 rounded-b-lg bg-surface flex flex-col gap-2 relative z-10 isolate"
-    >
+    <div class="mt-2/5 p-4 pt-1/8 border border-t-0 rounded-b-lg bg-surface flex flex-col gap-2 relative z-10 isolate">
       <AvatarRoot
         class="border-5 border-surface rounded-2xl bg-surface flex size-16 items-center inset-0 left-4 justify-center absolute z-10 overflow-hidden -top-1/8"
       >

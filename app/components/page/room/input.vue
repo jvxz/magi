@@ -12,9 +12,7 @@ const { areMembersTyping } = useRoomMembersTyping.provide(currentRoom)
   <div class="mb-3 px-3 rounded flex shrink-0 flex-col w-full bottom-0 absolute isolate">
     <PageRoomInputMembersTyping />
 
-    <div
-      class="px-3.5 border rounded bg-input flex gap-3.5 size-full h-user-card-height items-center *:shrink-0"
-    >
+    <div class="px-3.5 border rounded bg-input flex gap-3.5 size-full h-user-card-height items-center *:shrink-0">
       <UButton variant="ghost" size="icon">
         <Icon name="tabler:plus" class="size-5" />
       </UButton>

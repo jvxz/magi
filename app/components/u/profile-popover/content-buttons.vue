@@ -15,12 +15,12 @@ function handleCopyUserId() {
 
 <template>
   <div class="p-2 space-x-1">
-    <UButton v-if="userId !== self?.userId" size="icon" variant="soft" class="border-none rounded-full">
+    <UButton v-if="userId !== self?.userId" size="icon" variant="soft" class="rounded-full border-none">
       <Icon name="tabler:message" />
     </UButton>
     <UDropdownMenuRoot>
       <UDropdownMenuTrigger as-child>
-        <UButton size="icon" variant="soft" class="border-none rounded-full">
+        <UButton size="icon" variant="soft" class="rounded-full border-none">
           <Icon name="tabler:dots" />
         </UButton>
       </UDropdownMenuTrigger>

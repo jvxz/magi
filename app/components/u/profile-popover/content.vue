@@ -70,7 +70,7 @@ const { copy } = useClipboard()
                 <UDropdownMenuTrigger as-child>
                   <UButton
                     variant="link"
-                    class="text-xs font-normal text-muted-foreground no-underline data-[state=open]:underline hover:underline"
+                    class="text-xs text-muted-foreground font-normal no-underline data-[state=open]:underline hover:underline"
                   >
                     {{ `:${parsedUserId.homeserver}` }}
                   </UButton>
