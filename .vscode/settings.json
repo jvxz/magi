@@ -7,16 +7,20 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
+  "[css]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[tailwindcss]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
   "editor.codeActionsOnSave": {
     "source.organizeImports": "never",
     "source.fixAll.oxc": "explicit",
     "source.format.oxc": "explicit"
   },
   "eslint.enable": true,
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
-  "tailwindCSS.files.exclude": ["**/*.{js,ts,vue}"],
   "editor.quickSuggestions": {
     "strings": true
   },
