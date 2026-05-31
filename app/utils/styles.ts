@@ -1,6 +1,6 @@
 // @unocss-include
 export const interactiveBase = tv({
-  base: 'font-medium cursor-pointer shadow-none focus-visible:border-primary/50 select-none focus-visible:ring-ring/40 focus-visible:ring-[3px] aria-invalid:border-danger shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none transition-transform duration-75',
+  base: 'font-medium cursor-pointer shadow-none select-none focus-visible:ring-ring/40 focus-visible:ring-[3px] aria-invalid:border-danger shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none transition-transform duration-75',
   variants: {
     size: {
       default: 'h-8 px-2.5 py-0.75 text-sm',
