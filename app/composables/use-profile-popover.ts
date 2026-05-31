@@ -12,9 +12,12 @@ export const useProfilePopover = createSharedComposable(() => {
   whenever(
     () => !open.value,
     () => {
-      currentRoot?.removeAttribute('data-popover-open')
+      setPopoverOpenAttribute(currentRoot, 'remove')
       currentRoot = undefined
+
+      setPopoverOpenAttribute(referenceElement.value, 'remove')
       referenceElement.value = undefined
+
       contentProps.value = undefined
       userIdRef.value = undefined
       manualRoom.value = undefined
@@ -30,11 +33,13 @@ export const useProfilePopover = createSharedComposable(() => {
     const eventRoot = trigger.closest('[data-event-id]') as HTMLElement | null
     const root = eventRoot ?? trigger
 
-    if (currentRoot && currentRoot !== root) currentRoot.removeAttribute('data-popover-open')
+    if (currentRoot && currentRoot !== root) setPopoverOpenAttribute(currentRoot, 'remove')
 
     if (options.manualRoom) manualRoom.value = options.manualRoom
 
-    root.setAttribute('data-popover-open', '')
+    setPopoverOpenAttribute(trigger, 'add')
+    setPopoverOpenAttribute(root, 'add')
+
     currentRoot = root
 
     referenceElement.value = options.freezeReference ? createFrozenReference(trigger) : trigger
@@ -63,4 +68,13 @@ function createFrozenReference(trigger: HTMLElement): VirtualElement {
     contextElement: trigger,
     getBoundingClientRect: () => rect,
   }
+}
+
+const POPOVER_OPEN_ATTRIBUTE_NAME = 'data-popover-open'
+function setPopoverOpenAttribute(el: MaybeElement | VirtualElement, action: 'remove' | 'add') {
+  if (!(el instanceof HTMLElement)) return
+
+  if (action === 'add') {
+    el.setAttribute(POPOVER_OPEN_ATTRIBUTE_NAME, '')
+  } else el.removeAttribute(POPOVER_OPEN_ATTRIBUTE_NAME)
 }
