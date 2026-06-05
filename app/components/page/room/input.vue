@@ -153,9 +153,9 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
     <div v-if="open" :class="cn(popoverContentBase(), 'w-full border-border-strong h-full bg-secondary mb-3.5')">
       <VList
         v-if="filteredItems.length"
-        :data="filteredItems"
         ref="vlist"
         v-slot="{ item, index }"
+        :data="filteredItems"
         :style="{
           minHeight: `${listHeight}px`,
         }"
@@ -164,9 +164,9 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
           :key="item.id"
           variant="ghost"
           :data-highlighted="highlightedIdx === index"
+          class="gap-2 w-full justify-start data-[highlighted=false]:(text-muted-foreground bg-transparent hover:text-muted-foreground hover:bg-transparent) data-[highlighted=true]:(text-foreground bg-secondary-raised hover:bg-secondary-raised)"
           @mouseenter="highlightedIdx = index"
           @mousedown.prevent="selectItem(item)"
-          class="w-full justify-start gap-2 data-[highlighted=true]:(bg-secondary-raised hover:bg-secondary-raised text-foreground) data-[highlighted=false]:(bg-transparent text-muted-foreground hover:text-muted-foreground hover:bg-transparent)"
         >
           <MatrixAvatar v-if="item.user" class="h-4 w-fit" :user="item.user" />
           <MatrixAvatar v-else class="h-4 w-fit" :room="item.room" />
@@ -176,13 +176,13 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
         </UButton>
       </VList>
 
-      <UButton v-else variant="ghost" disabled class="w-full justify-start gap-2 opacity-100!">
+      <UButton v-else variant="ghost" disabled class="gap-2 w-full justify-start opacity-100!">
         <span class="text-muted-foreground font-normal">No results</span>
       </UButton>
     </div>
 
     <div
-      class="px-3.5 border has-focus-visible:border-border-strong rounded bg-input flex gap-3.5 size-full h-user-card-height items-center *:shrink-0"
+      class="px-3.5 border rounded bg-input flex gap-3.5 size-full h-user-card-height items-center has-focus-visible:border-border-strong *:shrink-0"
     >
       <UButton variant="ghost" size="icon">
         <Icon name="tabler:plus" class="size-5" />
