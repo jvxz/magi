@@ -8,6 +8,7 @@ import { Extension } from '@tiptap/core'
 import { Emoji } from '@tiptap/extension-emoji'
 import { Mention } from '@tiptap/extension-mention'
 import { Placeholder } from '@tiptap/extension-placeholder'
+import { MsgType } from 'matrix-js-sdk'
 import { useFilter } from 'reka-ui'
 import CodeBlockShiki from 'tiptap-extension-code-block-shiki'
 import { VList } from 'virtua/vue'
@@ -17,7 +18,7 @@ const currentSpace = useCurrentSpace()
 
 const content = shallowRef('')
 
-const { areMembersTyping } = useRoomMembersTyping.provide(currentRoom)
+const { areMembersTyping, onType } = useRoomMembersTyping.provide(currentRoom)
 
 const { contains } = useFilter({ sensitivity: 'base' })
 
@@ -42,6 +43,8 @@ const filteredItems = shallowRef<SuggestionItem[]>([])
 let command: ((props: MentionNodeAttrs) => void) | undefined
 
 const listHeight = computed(() => Math.min(filteredItems.value.length, 7) * 32)
+
+const { message } = useRoomActions(currentRoom)
 
 function selectItem(item: SuggestionItem) {
   command?.({ id: item.id, label: item.label })
@@ -110,6 +113,23 @@ const editor = useEditor({
     Extension.create({
       addKeyboardShortcuts() {
         return {
+          Enter: ({ editor }) => {
+            const formattedContent = content.value.trim()
+            if (!formattedContent) return true
+
+            message.mutate({
+              content: {
+                body: formattedContent,
+                msgtype: MsgType.Text,
+              },
+            })
+
+            onType(true)
+
+            editor.commands.clearContent()
+
+            return true
+          },
           Escape: () => {
             this.editor.commands.blur()
             return true
@@ -118,6 +138,11 @@ const editor = useEditor({
       },
     }),
   ],
+  onUpdate: ({ editor }) => {
+    content.value = editor.getText()
+    if (content.value.trim()) onType()
+    else onType(true)
+  },
 })
 
 function handleKeyDown(event: KeyboardEvent) {
