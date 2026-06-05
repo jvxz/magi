@@ -7,7 +7,7 @@ export const BATCH_SIZE = 80
 type Hooks = Prettify<
   Pick<
     Required<NonNullable<Parameters<typeof useRoomHooks>[1]>>,
-    'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset'
+    'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset' | 'onLocalEchoUpdated'
   >
 >
 
@@ -76,6 +76,12 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
   })
 
   useRoomHooks(() => room.value.roomId, {
+    onLocalEchoUpdated: (...params) => {
+      if (!isScrolling.value) {
+        sync()
+        hooks?.onLocalEchoUpdated?.(...params)
+      }
+    },
     onTimeline: (...params) => {
       if (!isScrolling.value) {
         sync()
