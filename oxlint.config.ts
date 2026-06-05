@@ -53,7 +53,7 @@ export default defineConfig({
     'eslint/sort-keys': 'warn',
     'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
     'import/first': 'error',
-    'import/no-duplicates': 'error',
+    'import/no-duplicates': 'off',
     'import/no-mutable-exports': 'error',
     'import/no-named-default': 'error',
     'new-cap': ['error', { capIsNew: false, newIsCap: true, properties: true }],

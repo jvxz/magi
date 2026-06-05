@@ -16,6 +16,9 @@ export default defineConfig({
       'unknown',
     ],
   },
+  sortPackageJson: {
+    sortScripts: true,
+  },
   tabWidth: 2,
   trailingComma: 'all',
   useTabs: false,
