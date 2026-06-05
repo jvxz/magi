@@ -128,3 +128,12 @@ export function isFocusedElementEditable() {
   // Check if any other focused element id editable.
   return activeElement.hasAttribute('contenteditable')
 }
+
+export function createFrozenReference(trigger: HTMLElement): VirtualElement {
+  const rect = trigger.getBoundingClientRect()
+
+  return {
+    contextElement: trigger,
+    getBoundingClientRect: () => rect,
+  }
+}
