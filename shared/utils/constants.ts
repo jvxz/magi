@@ -25,3 +25,5 @@ export const AVATAR_IMAGE_SIZE_VALUES = {
   medium: 256,
   small: 64,
 } satisfies Record<AvatarImageSize, number>
+
+export const TYPING_TIMEOUT_MS = 4000
