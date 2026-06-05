@@ -39,10 +39,6 @@ html {
   scrollbar-color: var(--muted-foreground) transparent;
 }
 
-::selection {
-  @apply bg-primary/50;
-}
-
 body {
   @apply bg-background text-foreground font-sans text-pretty min-h-screen underline-offset-2 font-normal tracking-normal select-none;
   font-synthesis: none;
