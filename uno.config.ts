@@ -125,10 +125,7 @@ export default defineConfig({
     },
     font: {
       mono: 'Paper Mono',
-      // sans: 'Momo Trust Sans',
-      // sans: 'Inter',
-      // sans: 'Zalando Sans',
-      // sans: 'Miranda Sans',
+      sans: 'Pretendard',
     },
     fontWeight: {
       // medium: '500',
