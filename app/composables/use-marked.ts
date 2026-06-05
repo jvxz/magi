@@ -1,8 +1,7 @@
 import { toRef } from '@vueuse/core'
 import DOMPurify from 'dompurify'
-import { marked } from 'marked'
 
-const md = marked.use({
+const md = MARKED_INSTANCE.use({
   async: false,
   renderer: {
     strong: t => `<strong class="font-medium">${t.text}</strong>`,
