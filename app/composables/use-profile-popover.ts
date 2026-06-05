@@ -61,15 +61,6 @@ export const useProfilePopover = createSharedComposable(() => {
   }
 })
 
-function createFrozenReference(trigger: HTMLElement): VirtualElement {
-  const rect = trigger.getBoundingClientRect()
-
-  return {
-    contextElement: trigger,
-    getBoundingClientRect: () => rect,
-  }
-}
-
 const POPOVER_OPEN_ATTRIBUTE_NAME = 'data-popover-open'
 function setPopoverOpenAttribute(el: MaybeElement | VirtualElement, action: 'remove' | 'add') {
   if (!(el instanceof HTMLElement)) return
