@@ -108,7 +108,7 @@ const editor = useEditor({
     }),
     InlineMarks,
     Placeholder.configure({
-      placeholder: `Message ${currentRoom.value?.name}`,
+      placeholder: () => `Message ${currentRoom.value?.name}`,
     }),
     Extension.create({
       addKeyboardShortcuts() {
@@ -164,6 +164,10 @@ function handleKeyDown(event: KeyboardEvent) {
   }
   return false
 }
+
+watch(currentRoom, () => {
+  editor.value?.view.dispatch(editor.value.view.state.tr)
+})
 
 onStartTyping(e => editor.value?.chain().focus('end').insertContent(e.key).run())
 
