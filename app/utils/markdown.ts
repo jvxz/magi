@@ -64,7 +64,6 @@ const CLASSES = {
   codespan: 'md-codespan',
   del: 'md-strikethrough',
   em: 'md-em',
-  heading: 'test',
   strong: 'md-strong',
   underline: 'md-underline',
 }
