@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Magi — AI agent context
 
-Magi is a **Matrix.org client** built with **Nuxt 4**. Priorities: **security, E2EE, performance, and UX**.
+Magi is a **Matrix.org client** built with **Nuxt 4**. Priorities: **security, E2EE, performance, UX, and spec compliance**.
 
 ---
 
@@ -175,6 +175,18 @@ await client.value.someMethod()
 **Routing** — [`nuxt.config.ts`](nuxt.config.ts) `routeRules`: `/app/**` and `/login` use `appMiddleware: 'auth'`, `ssr: false`; `/playground` uses `appLayout: false`. [`app/middleware/auth.ts`](app/middleware/auth.ts) is **client-only** and uses `useMatrixStatus().isAuthed` (not server-side session).
 
 **E2EE** — initialize crypto before `startClient()` when adding encrypted-room flows. Never log or expose tokens, device keys, or key backup material.
+
+---
+
+## Spec compliance
+
+Magi must be fully compliant with the Matrix protocol specification. This is non-negotiable:
+
+- **Follow the Matrix spec** — refer to [spec.matrix.org](https://spec.matrix.org) for room state, events, sync behavior, error codes, and API contracts. When in doubt, the spec is the source of truth.
+- **Interoperability first** — the client must work correctly with any Matrix homeserver and other Matrix clients. Avoid proprietary extensions or homeserver-specific workarounds unless unavoidable, and document them prominently.
+- **Edge cases matter** — spec compliance includes handling edge cases (missing fields, unexpected event structures, race conditions in sync) correctly, not just the happy path.
+- **Validate server responses** — parse and validate Matrix API responses against the spec. Report / handle deviations gracefully rather than crashing or silently ignoring malformed data.
+- **Test against reference implementations** — verify behavior against known-good servers (synapse, conduit) and other clients; file bugs if behavior differs.
 
 ---
 
