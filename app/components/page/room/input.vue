@@ -199,8 +199,7 @@ const editor = useEditor({
 
             const formattedBody = nodeToFormattedBody(editor.state.doc)
             const sanitizedFormattedBody = sanitizeFormattedBody(formattedBody)
-            console.log('sanitizedFormattedBody: ', sanitizedFormattedBody)
-            // sendTextMessage(formattedContent, sanitizedFormattedBody, mentionedUserIds)
+            sendTextMessage(formattedContent, sanitizedFormattedBody, mentionedUserIds)
 
             onType(true)
 
