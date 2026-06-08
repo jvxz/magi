@@ -7,9 +7,9 @@ defineProps<NodeViewProps>()
 </script>
 
 <template>
-  <NodeViewWrapper as="span" class="inline-flex align-text-bottom relative">
-    <span class="select-auto text-transparent leading-none">{{ node.attrs.unicode }}</span>
-    <span class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+  <NodeViewWrapper as="span" class="align-text-bottom inline-flex relative">
+    <span class="text-transparent leading-none select-auto">{{ node.attrs.unicode }}</span>
+    <span class="flex pointer-events-none items-center inset-0 justify-center absolute" aria-hidden="true">
       <Suspense v-if="node.attrs.hexcode">
         <Twemoji data-slot="twemoji" :emoji="node.attrs.hexcode" />
         <template #fallback />

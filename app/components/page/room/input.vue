@@ -237,7 +237,7 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
 
 <template>
   <div
-    class="mb-3 px-3 rounded flex shrink-0 flex-col w-full bottom-0 absolute isolate cursor-text"
+    class="mb-3 px-3 rounded flex shrink-0 flex-col w-full cursor-text bottom-0 absolute isolate"
     @mousedown="
       e => {
         const { target } = e
@@ -282,14 +282,14 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
     </div>
 
     <div
-      class="px-3.5 border rounded bg-input py-0 flex gap-3.5 size-full min-h-user-card-height has-focus-visible:border-border-strong *:shrink-0"
+      class="px-3.5 py-0 border rounded bg-input flex gap-3.5 size-full min-h-user-card-height has-focus-visible:border-border-strong *:shrink-0"
     >
       <UButton variant="ghost" size="icon" class="mt-[calc((var(--spacing-user-card-height)-2rem)/2)]">
         <Icon name="tabler:plus" class="size-5" />
       </UButton>
 
       <div
-        class="flex-1 overflow-scroll max-h-128 overflow-x-hidden scrollbar-gutter-stable py-[calc((var(--spacing-user-card-height)-1.5rem)/2)]"
+        class="py-[calc((var(--spacing-user-card-height)-1.5rem)/2)] flex-1 max-h-128 overflow-scroll overflow-x-hidden scrollbar-gutter-stable"
       >
         <TiptapEditorContent role="presentation" :editor />
       </div>
@@ -307,7 +307,7 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
     <div
       v-if="!open"
       aria-hidden="true"
-      class="h-12 w-full pointer-events-none transition-all ease absolute from-surface from-black- to-transparent from-75% bg-linear-to-t -mx-3 -z-2"
+      class="from-black- h-12 w-full pointer-events-none transition-all ease absolute from-surface to-transparent from-75% bg-linear-to-t -mx-3 -z-2"
       :class="areMembersTyping ? '-top-1' : 'bottom-0'"
     />
   </div>
