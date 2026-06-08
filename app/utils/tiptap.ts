@@ -20,7 +20,8 @@ export function nodeToFormattedBody(node: Node) {
 
 function mentionToHtml(node: Node) {
   const attrs = node.attrs as MentionNodeAttrs
-  return `<a href="https://matrix.to/#/${encodeURIComponent(String(attrs.id))}">@${attrs.label}</a>`
+  const prefix = String(attrs.id).startsWith('!') ? '#' : '@'
+  return `<a href="https://matrix.to/#/${encodeURIComponent(String(attrs.id))}">${prefix}${attrs.label}</a>`
 }
 
 function emojiToHtml(node: Node) {

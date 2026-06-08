@@ -194,7 +194,10 @@ const editor = useEditor({
 
             const mentionedUserIds = new Set<string>()
             editor.state.doc.descendants(node => {
-              if (node.type.name === 'mention') mentionedUserIds.add(node.attrs.id as string)
+              if (node.type.name === 'mention') {
+                const id = node.attrs.id as string
+                if (id.startsWith('@')) mentionedUserIds.add(id)
+              }
             })
 
             const formattedBody = nodeToFormattedBody(editor.state.doc)
