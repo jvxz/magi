@@ -310,7 +310,7 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
     <div
       v-if="!open"
       aria-hidden="true"
-      class="from-black- h-12 w-full pointer-events-none transition-all ease absolute from-surface to-transparent from-75% bg-linear-to-t -mx-3 -z-2"
+      class="h-12 w-full pointer-events-none transition-all ease absolute from-surface to-transparent from-75% bg-linear-to-t -mx-3 -z-2"
       :class="areMembersTyping ? '-top-1' : 'bottom-0'"
     />
   </div>
