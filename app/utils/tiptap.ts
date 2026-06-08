@@ -4,7 +4,6 @@ import type { Node } from '@tiptap/pm/model'
 export function nodeToFormattedBody(node: Node) {
   if (node.isText) return MARKED_INSTANCE.parseInline(node.text ?? '') as string
 
-  console.log('node.type.name: ', node.type.name)
   switch (node.type.name) {
     case 'hardBreak':
       return '<br/>'
