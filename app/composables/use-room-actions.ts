@@ -63,12 +63,9 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
   })
 
   const message = useMutation({
-    mutationFn: async (params: { content: RoomMessageEventContent }) => {
+    mutationFn: async (eventContent: RoomMessageEventContent) => {
       if (!room.value) return
-
-      const res = await client.value.sendMessage(room.value.roomId, params.content)
-
-      return res
+      return await client.value.sendMessage(room.value.roomId, eventContent)
     },
     mutationKey: [room.value?.roomId],
   })
