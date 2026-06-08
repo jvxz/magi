@@ -1,14 +1,14 @@
 <script lang="ts" setup>
+import type { Editor } from '@tiptap/core'
 import type { MentionNodeAttrs } from '@tiptap/extension-mention'
-import type { SuggestionOptions } from '@tiptap/suggestion'
+import type { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion'
+import type { CompactEmoji } from 'emojibase'
 import type { RoomMember, User } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 
 import { Extension } from '@tiptap/core'
-import { Emoji } from '@tiptap/extension-emoji'
 import { Mention } from '@tiptap/extension-mention'
 import { Placeholder } from '@tiptap/extension-placeholder'
-import { MsgType } from 'matrix-js-sdk'
 import { useFilter } from 'reka-ui'
 import CodeBlockShiki from 'tiptap-extension-code-block-shiki'
 import { VList } from 'virtua/vue'
@@ -26,14 +26,23 @@ const { members } = useRoomMembers(currentRoom)
 const { rooms } = useSpaceHierarchy(() => currentSpace.value?.roomId)
 const roomsArray = computed(() => (rooms.value ? rooms.value.values().toArray() : []))
 
-type SuggestionItem = { id: string; label: string } & (
+const { emojiData } = useEmojiData()
+
+type SuggestionItem = { id: string; label: string; commandProps: Record<string, any> } & (
   | {
       user: RoomMember | User
       room?: never
+      emoji?: never
     }
   | {
       user?: never
+      emoji?: never
       room: IHierarchyRoom
+    }
+  | {
+      user?: never
+      emoji: CompactEmoji
+      room?: never
     }
 )
 
@@ -44,29 +53,56 @@ let command: ((props: MentionNodeAttrs) => void) | undefined
 
 const listHeight = computed(() => Math.min(filteredItems.value.length, 7) * 32)
 
-const { message } = useRoomActions(currentRoom)
+// const { message } = useRoomActions(currentRoom)
+const { sendTextMessage } = useRoomMessaging(currentRoom)
 
 function selectItem(item: SuggestionItem) {
-  command?.({ id: item.id, label: item.label })
+  command?.(item.commandProps as MentionNodeAttrs)
 }
 
 function createSuggestion(
   char: string,
-  getItems: (query: string) => SuggestionItem[],
+  getItems: (props: { query: string; editor: Editor }) => SuggestionItem[],
+  opts?: {
+    onUpdate?: (props: SuggestionProps<any, MentionNodeAttrs>) => void
+    shouldOpen?: (props: SuggestionProps<any, MentionNodeAttrs>) => boolean
+    command: SuggestionOptions['command']
+  },
 ): Omit<SuggestionOptions<any, MentionNodeAttrs>, 'editor'> {
   return {
     char,
-    items: ({ query }) => getItems(query),
+    ...(opts?.command && { command: opts.command }),
+    items: getItems,
     render: () => ({
       onExit: () => (open.value = false),
-      onKeyDown: ({ event }) => handleKeyDown(event),
-      onStart: ({ command: commandLocal, items }) => {
+      onKeyDown: ({ event }) => {
+        const items = filteredItems.value
+        if (!items.length) return false
+        switch (event.key) {
+          case 'ArrowUp':
+            highlightedIdx.value = clamp(highlightedIdx.value - 1, 0, items.length - 1)
+            return true
+          case 'ArrowDown':
+            highlightedIdx.value = clamp(highlightedIdx.value + 1, 0, items.length - 1)
+            return true
+          case 'Enter':
+            selectItem(items[highlightedIdx.value]!)
+            return true
+          case 'Escape':
+            open.value = false
+            return true
+        }
+        return false
+      },
+      onStart: ({ command: commandLocal, items, ...rest }) => {
         command = commandLocal
         filteredItems.value = items
         highlightedIdx.value = 0
-        open.value = true
+        open.value = opts?.shouldOpen ? opts.shouldOpen({ ...rest, command: commandLocal, items }) : true
       },
-      onUpdate: ({ command: commandLocal, items }) => {
+      onUpdate: ({ command: commandLocal, items, ...rest }) => {
+        open.value = opts?.shouldOpen ? opts.shouldOpen({ ...rest, command: commandLocal, items }) : true
+        opts?.onUpdate?.({ ...rest, command: commandLocal, items })
         command = commandLocal
         filteredItems.value = items
         highlightedIdx.value = 0
@@ -91,18 +127,55 @@ const editor = useEditor({
     CodeBlockShiki.configure({
       defaultTheme: 'github-dark-default',
     }),
-    Emoji,
+    EmojiNode.configure({
+      suggestion: createSuggestion(
+        ':',
+        ({ query }) =>
+          (emojiData.value?.emojis ?? [])
+            .filter(e => [e.label, e.hexcode].some(v => contains(v, query)))
+            .slice(0, 50)
+            .map(e => ({
+              commandProps: { hexcode: e.hexcode, label: e.label, unicode: e.unicode },
+              emoji: e,
+              id: e.hexcode,
+              label: e.unicode,
+            })),
+        {
+          command: ({ editor, props, range }) => {
+            editor
+              .chain()
+              .focus()
+              .insertContentAt(range, [
+                { attrs: props, type: 'emoji' },
+                { text: ' ', type: 'text' },
+              ])
+              .run()
+          },
+          shouldOpen: ({ query }) => A_TO_Z_RE.test(query),
+        },
+      ),
+    }),
     Mention.configure({
       suggestions: [
-        createSuggestion('#', query =>
+        createSuggestion('#', ({ query }) =>
           roomsArray.value
             .filter(r => r.name && contains(r.name, query))
-            .map(r => ({ id: r.room_id, label: r.name ?? r.room_id, room: r })),
+            .map(r => ({
+              commandProps: { id: r.room_id, label: r.name ?? r.room_id, room: r },
+              id: r.room_id,
+              label: r.name ?? r.room_id,
+              room: r,
+            })),
         ),
-        createSuggestion('@', query =>
+        createSuggestion('@', ({ query }) =>
           (members.value ?? [])
-            .filter(u => contains([resolveUserName(u), u.userId].join(' '), query))
-            .map(u => ({ id: u.userId, label: resolveUserName(u), user: u })),
+            .filter(u => [resolveUserName(u), u.userId].some(v => contains(v, query)))
+            .map(u => ({
+              commandProps: { id: u.userId, label: resolveUserName(u), user: u },
+              id: u.userId,
+              label: resolveUserName(u),
+              user: u,
+            })),
         ),
       ],
     }),
@@ -114,15 +187,20 @@ const editor = useEditor({
       addKeyboardShortcuts() {
         return {
           Enter: ({ editor }) => {
+            if (open.value) return false
+
             const formattedContent = content.value.trim()
             if (!formattedContent) return true
 
-            message.mutate({
-              content: {
-                body: formattedContent,
-                msgtype: MsgType.Text,
-              },
+            const mentionedUserIds = new Set<string>()
+            editor.state.doc.descendants(node => {
+              if (node.type.name === 'mention') mentionedUserIds.add(node.attrs.id as string)
             })
+
+            const formattedBody = nodeToFormattedBody(editor.state.doc)
+            const sanitizedFormattedBody = sanitizeFormattedBody(formattedBody)
+            console.log('sanitizedFormattedBody: ', sanitizedFormattedBody)
+            // sendTextMessage(formattedContent, sanitizedFormattedBody, mentionedUserIds)
 
             onType(true)
 
@@ -140,30 +218,13 @@ const editor = useEditor({
   ],
   onUpdate: ({ editor }) => {
     content.value = editor.getText()
-    if (content.value.trim()) onType()
-    else onType(true)
+    if (content.value.trim()) {
+      onType()
+    } else {
+      onType(true)
+    }
   },
 })
-
-function handleKeyDown(event: KeyboardEvent) {
-  const items = filteredItems.value
-  if (!items.length) return false
-  switch (event.key) {
-    case 'ArrowUp':
-      highlightedIdx.value = clamp(highlightedIdx.value - 1, 0, items.length - 1)
-      return true
-    case 'ArrowDown':
-      highlightedIdx.value = clamp(highlightedIdx.value + 1, 0, items.length - 1)
-      return true
-    case 'Enter':
-      selectItem(items[highlightedIdx.value]!)
-      return true
-    case 'Escape':
-      open.value = false
-      return true
-  }
-  return false
-}
 
 watch(currentRoom, () => {
   editor.value?.view.dispatch(editor.value.view.state.tr)
@@ -176,7 +237,17 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
 </script>
 
 <template>
-  <div class="mb-3 px-3 rounded flex shrink-0 flex-col w-full bottom-0 absolute isolate">
+  <div
+    class="mb-3 px-3 rounded flex shrink-0 flex-col w-full bottom-0 absolute isolate cursor-text"
+    @mousedown="
+      e => {
+        const { target } = e
+        if ((target as Element | undefined)?.closest('button, .ProseMirror')) return
+        e.preventDefault()
+        editor?.commands.focus('end')
+      }
+    "
+  >
     <PageRoomInputMembersTyping v-if="!open" />
 
     <div v-if="open" :class="cn(popoverContentBase(), 'w-full border-border-strong h-full bg-secondary mb-3.5')">
@@ -198,10 +269,11 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
           @mousedown.prevent="selectItem(item)"
         >
           <MatrixAvatar v-if="item.user" class="h-4 w-fit" :user="item.user" />
-          <MatrixAvatar v-else class="h-4 w-fit" :room="item.room" />
+          <MatrixAvatar v-else-if="item.room" class="h-4 w-fit" :room="item.room" />
+          <Twemoji v-else :emoji="item.emoji.hexcode" />
 
           <span class="text-foreground">{{ item.label }}</span>
-          <span class="text-xs font-normal">{{ item.id }}</span>
+          <span v-if="!item.emoji" class="text-xs font-normal">{{ item.id }}</span>
         </UButton>
       </VList>
 
@@ -211,15 +283,24 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
     </div>
 
     <div
-      class="px-3.5 border rounded bg-input flex gap-3.5 size-full h-user-card-height items-center has-focus-visible:border-border-strong *:shrink-0"
+      class="px-3.5 border rounded bg-input py-0 flex gap-3.5 size-full min-h-user-card-height has-focus-visible:border-border-strong *:shrink-0"
     >
-      <UButton variant="ghost" size="icon">
+      <UButton variant="ghost" size="icon" class="mt-[calc((var(--spacing-user-card-height)-2rem)/2)]">
         <Icon name="tabler:plus" class="size-5" />
       </UButton>
 
-      <TiptapEditorContent class="flex-1" role="presentation" :editor />
+      <div
+        class="flex-1 overflow-scroll max-h-128 overflow-x-hidden scrollbar-gutter-stable py-[calc((var(--spacing-user-card-height)-1.5rem)/2)]"
+      >
+        <TiptapEditorContent role="presentation" :editor />
+      </div>
 
-      <UButton variant="ghost" size="icon" :disabled="!content">
+      <UButton
+        variant="ghost"
+        size="icon"
+        :disabled="!content"
+        class="mt-[calc((var(--spacing-user-card-height)-2rem)/2)]"
+      >
         <Icon name="tabler:send" class="size-5" />
       </UButton>
     </div>
@@ -227,15 +308,15 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
     <div
       v-if="!open"
       aria-hidden="true"
-      class="h-full w-full pointer-events-none transition-all ease absolute from-surface to-transparent from-75% bg-linear-to-t -mx-3 -z-2"
-      :class="areMembersTyping ? '-top-2' : 'top-2'"
+      class="h-12 w-full pointer-events-none transition-all ease absolute from-surface from-black- to-transparent from-75% bg-linear-to-t -mx-3 -z-2"
+      :class="areMembersTyping ? '-top-1' : 'bottom-0'"
     />
   </div>
 </template>
 
 <style>
 .ProseMirror {
-  @apply outline-0 h-user-card-height flex flex-col justify-center;
+  @apply outline-0 flex flex-col justify-center;
 }
 
 .tiptap {
