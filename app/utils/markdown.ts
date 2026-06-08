@@ -1,9 +1,14 @@
+import type { NodeViewRenderer } from '@tiptap/core'
+import type { EmojiItem } from '@tiptap/extension-emoji'
 import type { Node } from '@tiptap/pm/model'
 import type { TokenizerAndRendererExtension } from 'marked'
 import type { Token } from 'marked'
 
-import { Extension } from '@tiptap/core'
+import { TiptapNodeEmoji } from '#components'
+import { Extension, InputRule, PasteRule } from '@tiptap/core'
+import { Emoji } from '@tiptap/extension-emoji'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
+import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import { Marked } from 'marked'
 import { Decoration, DecorationSet } from 'prosemirror-view'
 
@@ -29,7 +34,57 @@ const underlineExt: TokenizerAndRendererExtension = {
   },
 }
 
-export const MARKED_INSTANCE = new Marked({ extensions: [underlineExt] })
+export const MARKED_INSTANCE = new Marked({ async: false, extensions: [underlineExt] })
+
+const SHORTCODE_INPUT_RE = /:([\w+-]+):$/
+const SHORTCODE_PASTE_RE = /(^|\s):([\w+-]+):/g
+
+function findEmojiByShortcode(shortcode: string, emojis: EmojiItem[]) {
+  return emojis.find(e => e.name === shortcode || e.shortcodes?.includes(shortcode))
+}
+
+export const EmojiNode = Emoji.extend({
+  addAttributes: () => ({
+    hexcode: { default: null },
+    label: { default: null },
+    unicode: { default: null },
+  }),
+  addInputRules() {
+    return [
+      new InputRule({
+        find: SHORTCODE_INPUT_RE,
+        handler: ({ chain, match, range }) => {
+          const item = findEmojiByShortcode(match[1]!, this.options.emojis)
+          if (!item?.emoji) return
+          chain()
+            .insertContentAt(range, { attrs: { label: item.name, unicode: item.emoji }, type: this.name })
+            .run()
+        },
+      }),
+    ]
+  },
+  addNodeView: (): NodeViewRenderer => VueNodeViewRenderer(TiptapNodeEmoji),
+  addPasteRules() {
+    return [
+      new PasteRule({
+        find: SHORTCODE_PASTE_RE,
+        handler: ({ chain, match, range }) => {
+          const item = findEmojiByShortcode(match[2]!, this.options.emojis)
+          if (!item?.emoji) return
+          const from = range.from + (match[1]?.length ?? 0)
+          chain()
+            .insertContentAt(
+              { from, to: range.to },
+              { attrs: { label: item.name, unicode: item.emoji }, type: this.name },
+              { updateSelection: false },
+            )
+            .run()
+        },
+      }),
+    ]
+  },
+  renderText: ({ node }) => node.attrs.unicode ?? '',
+})
 
 const InlineMarksKey = new PluginKey('inline-marks')
 export const InlineMarks = Extension.create({
