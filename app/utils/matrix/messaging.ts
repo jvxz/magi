@@ -17,10 +17,19 @@ const sanitizeAttribute: UponSanitizeAttributeHook = (node, data) => {
     return
   }
 
-  if (attrName === 'class' && tag === 'code' && !attrValue.startsWith('language-')) data.keepAttr = false
-  else if ((attrName === 'data-mx-color' || attrName === 'data-mx-bg-color') && !DATA_MX_COLOR_RE.test(attrValue))
+  if (attrName === 'class' && tag === 'code') {
+    const classes = attrValue.split(WHITESPACE_RE)
+    const filteredClasses = classes.filter(c => c.startsWith('language-'))
+
+    if (!filteredClasses.length) data.keepAttr = false
+
+    data.attrValue = filteredClasses.join(' ')
+  } else if ((attrName === 'data-mx-color' || attrName === 'data-mx-bg-color') && !DATA_MX_COLOR_RE.test(attrValue))
     data.keepAttr = false
-  else if (attrName === 'src' && tag === 'img' && !attrValue.startsWith('mxc://')) data.keepAttr = false
+  else if (attrName === 'src' && tag === 'img') {
+    if (attrValue.startsWith('mxc://')) data.forceKeepAttr = true
+    else data.keepAttr = false
+  }
 }
 
 export function sanitizeFormattedBody(formattedBody: string) {
