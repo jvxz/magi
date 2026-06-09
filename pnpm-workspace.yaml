@@ -45,12 +45,12 @@ trustPolicyExclude:
   - '@tiptap/vue-3@2.27.2'
 overrides:
   '@nuxt/schema': 4.4.6
-  '@tiptap/core': 3.24.0
-  '@tiptap/pm': 3.24.0
-  '@tiptap/starter-kit': 3.24.0
-  '@tiptap/suggestion': 3.24.0
-  '@tiptap/vue-3': 3.24.0
+  '@tiptap/core': 3.26.0
+  '@tiptap/pm': 3.26.0
+  '@tiptap/starter-kit': 3.26.0
+  '@tiptap/suggestion': 3.26.0
+  '@tiptap/vue-3': 3.26.0
   h3: 1.15.11
   tinyexec: 1.2.4
   vite-plugin-pwa: 1.3.0
-  workbox-build: 7.4.0
+  workbox-build: 7.4.1
