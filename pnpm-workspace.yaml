@@ -44,7 +44,7 @@ trustPolicyExclude:
   - '@tiptap/suggestion@2.27.2'
   - '@tiptap/vue-3@2.27.2'
 overrides:
-  '@nuxt/schema': 4.4.6
+  '@nuxt/schema': 4.4.8
   '@tiptap/core': 3.24.0
   '@tiptap/pm': 3.24.0
   '@tiptap/starter-kit': 3.24.0
