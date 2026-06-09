@@ -52,6 +52,7 @@ export const useEmojiData = createGlobalState(() => {
 
   return {
     categories,
+    emojiData,
     groupedEmojis,
     isLoading,
   }

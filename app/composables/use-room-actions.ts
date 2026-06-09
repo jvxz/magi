@@ -1,4 +1,5 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
+import type { RoomMessageEventContent } from 'matrix-js-sdk/lib/types'
 
 import { EventStatus, EventType, RelationType, RoomEvent } from 'matrix-js-sdk'
 
@@ -61,8 +62,31 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
     mutationKey: ['react', () => room.value?.roomId],
   })
 
+  const message = useMutation({
+    mutationFn: async (eventContent: RoomMessageEventContent) => {
+      if (!room.value) return
+      return await client.value.sendMessage(room.value.roomId, eventContent)
+    },
+    mutationKey: [room.value?.roomId],
+  })
+
+  const typing = useMutation({
+    mutationFn: async (params: { isTyping: boolean }) => {
+      if (!room.value) return false
+
+      try {
+        await client.value.sendTyping(room.value.roomId, params.isTyping, TYPING_TIMEOUT_MS)
+        return true
+      } catch {
+        return false
+      }
+    },
+  })
+
   return {
+    message,
     react,
+    typing,
   }
 }
 

@@ -1,4 +1,5 @@
-import type { MatrixEvent, Room } from 'matrix-js-sdk'
+import type { MatrixEvent } from 'matrix-js-sdk'
+import type { Room } from 'matrix-js-sdk'
 
 import { Direction } from 'matrix-js-sdk'
 import QuickLRU from 'quick-lru'
@@ -87,23 +88,16 @@ export function useEventPagination(opts: Opts) {
       if (!container) return
 
       const prevEventsLastId = prevEvents.at(-1)?.getId()
-      const prevForwardSentinelId = forwardSentinelId.value
       const paginatedLastId = eventsPaginated.value.at(-1)?.getId()
       const isAtForwardEnd = paginatedLastId === prevEventsLastId
 
       if (isAtForwardEnd) {
-        if (prevEventsLastId && prevEventsLastId === prevForwardSentinelId) {
-          const newLastEvent = newEvents.at(-1)
+        const firstId = eventsPaginated.value[0]?.getId()
+        const startIdx = firstId ? events.value.findIndex(e => e.getId() === firstId) : 0
 
-          if (newLastEvent && newLastEvent.getId() !== forwardSentinelId.value) {
-            const sentinels = await getNextPageSentinels(Direction.Forward)
-
-            if (sentinels) {
-              backwardSentinelId.value = sentinels.backward?.getId()
-              forwardSentinelId.value = sentinels.forward?.getId()
-            }
-          }
-        }
+        eventsPaginated.value = events.value.slice(Math.max(0, startIdx))
+        forwardSentinelId.value = newEvents.at(-1)?.getId()
+        triggerRef(eventsPaginated)
       }
 
       if (isPinned.value) {
@@ -120,6 +114,22 @@ export function useEventPagination(opts: Opts) {
     if (!el) return
 
     isPinned.value = !canPaginateForward.value && isPinnedToBottom(el)
+  })
+
+  useRoomHooks(opts.room, {
+    onLocalEchoUpdated: (event, _room, oldEventId) => {
+      const newId = event.getId()
+      if (!oldEventId || !newId || oldEventId === newId) return
+
+      if (backwardSentinelId.value === oldEventId) backwardSentinelId.value = newId
+      if (forwardSentinelId.value === oldEventId) forwardSentinelId.value = newId
+
+      const cached = itemNodeHeightCache.get(oldEventId)
+      if (cached) {
+        itemNodeHeightCache.delete(oldEventId)
+        itemNodeHeightCache.set(newId, { ...cached, dataset: { ...cached.dataset, itemId: newId } })
+      }
+    },
   })
 
   onBeforeRouteUpdate(saveScrollState)
@@ -416,10 +426,12 @@ export function useEventPagination(opts: Opts) {
 
       const startIdx = Math.max(0, params?.start ?? indices.backward)
       const endIdx = Math.min(events.value.length - 1, params?.end ?? indices.forward) + 1
+      // console.log('endIdx: ', endIdx)
 
       if (startIdx !== undefined && endIdx !== undefined && startIdx > endIdx) return
 
       const paginated = events.value.slice(startIdx, endIdx)
+      // console.log('paginated: ', paginated)
 
       eventsPaginated.value = paginated
       triggerRef(eventsPaginated)
