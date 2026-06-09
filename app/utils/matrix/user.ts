@@ -1,7 +1,8 @@
 import type { RoomMember, User } from 'matrix-js-sdk'
 
-import { AVATAR_IMAGE_SIZE_VALUES } from '#shared/utils/constants'
 import { assert, merge } from 'es-toolkit'
+
+import { AVATAR_IMAGE_SIZE_VALUES } from '#shared/utils/constants'
 
 import type { MxcToHttpsOptions } from './mxc-to-https'
 import type { AvatarImageSize, MaybeUserOrId } from './types'

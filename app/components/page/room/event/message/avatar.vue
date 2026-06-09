@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { MatrixAvatar } from '#components'
-
 import type { MatrixAvatarProps } from '~/components/matrix/avatar.vue'
+
+import { MatrixAvatar } from '#components'
 
 defineProps<MatrixAvatarProps & { ghost?: boolean }>()
 </script>

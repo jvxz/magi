@@ -4,13 +4,14 @@ import type { Node } from '@tiptap/pm/model'
 import type { TokenizerAndRendererExtension } from 'marked'
 import type { Token } from 'marked'
 
-import { TiptapNodeEmoji } from '#components'
 import { Extension, InputRule, PasteRule } from '@tiptap/core'
 import { Emoji } from '@tiptap/extension-emoji'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import { Marked } from 'marked'
 import { Decoration, DecorationSet } from 'prosemirror-view'
+
+import { TiptapNodeEmoji } from '#components'
 
 const UNDERLINE_EXT_RE = /^__(?=\S)([\s\S]*?\S)__/
 const underlineExt: TokenizerAndRendererExtension = {
