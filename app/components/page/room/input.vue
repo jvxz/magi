@@ -189,8 +189,8 @@ const editor = useEditor({
           Enter: ({ editor }) => {
             if (open.value) return false
 
-            const formattedContent = content.value.trim()
-            if (!formattedContent) return true
+            const plainBody = nodeToPlainBody(editor.state.doc).trim()
+            if (!plainBody) return true
 
             const mentionedUserIds = new Set<string>()
             editor.state.doc.descendants(node => {
@@ -202,7 +202,7 @@ const editor = useEditor({
 
             const formattedBody = nodeToFormattedBody(editor.state.doc)
             const sanitizedFormattedBody = sanitizeFormattedBody(formattedBody)
-            sendTextMessage(formattedContent, sanitizedFormattedBody, mentionedUserIds)
+            sendTextMessage(plainBody, sanitizedFormattedBody, mentionedUserIds)
 
             onType(true)
 
