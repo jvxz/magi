@@ -1,6 +1,8 @@
 import type { MentionNodeAttrs } from '@tiptap/extension-mention'
 import type { Node } from '@tiptap/pm/model'
 
+import { escape } from 'es-toolkit'
+
 export function nodeToFormattedBody(node: Node) {
   if (node.isText) return MARKED_INSTANCE.parseInline(node.text ?? '') as string
 
@@ -13,9 +15,17 @@ export function nodeToFormattedBody(node: Node) {
       return emojiToHtml(node)
     case 'blockquote':
       return blockquoteToHtml(node)
+    case 'codeBlock':
+      return codeBlockToHtml(node)
     default:
       return childrenToHtml(node)
   }
+}
+
+function codeBlockToHtml(node: Node) {
+  const { language } = node.attrs as { language?: string | null }
+  const langAttr = language ? ` class="language-${escape(language)}"` : ''
+  return `<pre><code${langAttr}>${escape(node.textContent)}</code></pre>`
 }
 
 function mentionToHtml(node: Node) {
