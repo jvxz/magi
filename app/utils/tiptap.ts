@@ -31,7 +31,7 @@ function codeBlockToHtml(node: Node) {
 function mentionToHtml(node: Node) {
   const attrs = node.attrs as MentionNodeAttrs
   const prefix = String(attrs.id).startsWith('!') ? '#' : '@'
-  return `<a href="https://matrix.to/#/${encodeURIComponent(String(attrs.id))}">${prefix}${attrs.label}</a>`
+  return `<a href="https://matrix.to/#/${encodeURIComponent(String(attrs.id))}">${prefix}${escape(attrs.label ?? '')}</a>`
 }
 
 function emojiToHtml(node: Node) {
