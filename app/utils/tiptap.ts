@@ -17,6 +17,14 @@ export function nodeToFormattedBody(node: Node) {
       return blockquoteToHtml(node)
     case 'codeBlock':
       return codeBlockToHtml(node)
+    case 'paragraph':
+      return `<p>${childrenToHtml(node)}</p>`
+    case 'bulletList':
+      return `<ul>${childrenToHtml(node)}</ul>`
+    case 'orderedList':
+      return `<ol>${childrenToHtml(node)}</ol>`
+    case 'listItem':
+      return `<li>${childrenToHtml(node)}</li>`
     default:
       return childrenToHtml(node)
   }
