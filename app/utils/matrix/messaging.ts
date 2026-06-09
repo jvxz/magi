@@ -1,4 +1,6 @@
-import DOMPurify, { type UponSanitizeAttributeHook } from 'dompurify'
+import type { UponSanitizeAttributeHook } from 'dompurify'
+
+import DOMPurify from 'dompurify'
 
 const DATA_MX_COLOR_RE = /^#[0-9a-f]{6}$/i
 
