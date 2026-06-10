@@ -1,7 +1,7 @@
 import type { MatrixEvent } from 'matrix-js-sdk'
 import type { Room } from 'matrix-js-sdk'
 
-import { Direction } from 'matrix-js-sdk'
+import { Direction, EventType } from 'matrix-js-sdk'
 import QuickLRU from 'quick-lru'
 
 type MaybeElementRef = MaybeRefOrGetter<MaybeElement>
@@ -33,6 +33,13 @@ interface CachedScrollState {
 
 const itemNodeHeightCache = new QuickLRU<string, CachedItemNode>({ maxSize: 2048 })
 const pageScrollStateCache = new QuickLRU<string, CachedScrollState>({ maxSize: 32 })
+
+const AVG_MEMBER_EVENT_HEIGHT = 32
+const AVG_MESSAGE_HEIGHT = 72
+
+function estimateEventHeight(event: MatrixEvent) {
+  return event.getType() === EventType.RoomMember ? AVG_MEMBER_EVENT_HEIGHT : AVG_MESSAGE_HEIGHT
+}
 
 export function useEventPagination(opts: Opts) {
   const { events, getEventVersion, isFullyLoaded, scrollEventsAsync } = useRoomEvents(opts.room)
@@ -181,6 +188,8 @@ export function useEventPagination(opts: Opts) {
       await setRange({ dir })
       await nextTick()
 
+      cacheMountedHeights()
+
       if (opts.room.value.roomId !== startedForRoomId) return
 
       const containerAfter = unrefElement(scrollEl)
@@ -198,6 +207,7 @@ export function useEventPagination(opts: Opts) {
     } finally {
       isPaginating.value = false
       paginateMutex.release()
+
       if (nextDir !== null && opts.room.value.roomId === startedForRoomId) await paginate(nextDir)
     }
   }
@@ -274,38 +284,24 @@ export function useEventPagination(opts: Opts) {
     const index = getItemRealIndex(visibleAnchorId)
     if (index === undefined) return
 
-    const { end, start } = getPaddedRange(dir, index)
-    const { allCached, cached } = resolveCachedItems(events.value.slice(start, end).map(e => e.getId()!))
+    const sentinelIdx = getSentinelIndices()
+    if (sentinelIdx.backward === undefined || sentinelIdx.forward === undefined) return
 
-    let nodes: (HTMLElement | CachedItemNode)[] = []
-    // mount elements to read height
-    if (!allCached) {
-      const probeIndices = getSentinelIndices()
-      if (probeIndices.backward === undefined) return
+    const [scanStart, scanEnd] =
+      dir === Direction.Backward
+        ? [Math.max(0, sentinelIdx.backward - 80), sentinelIdx.backward]
+        : [sentinelIdx.forward + 1, Math.min(events.value.length, sentinelIdx.forward + 81)]
 
-      const probeStart = dir === Direction.Backward ? Math.max(0, index - 80) : probeIndices.backward
-      const probeEnd = dir === Direction.Backward ? probeIndices.forward : Math.min(events.value.length - 1, index + 80)
+    const nodes: (HTMLElement | CachedItemNode)[] = events.value.slice(scanStart, scanEnd).map((event, i) => {
+      const id = event.getId()!
+      const cachedNode = itemNodeHeightCache.get(id)
+      if (cachedNode) return cachedNode
 
-      await setRange({
-        dir,
-        end: probeEnd,
-        start: probeStart,
-      })
-
-      await nextTick()
-
-      const itemsContainer = unrefElement(itemsEl)
-      if (!itemsContainer) return
-
-      const sliceIndices = getSentinelIndices(false)
-
-      const arr = [...itemsContainer.children] as HTMLElement[]
-
-      nodes =
-        dir === Direction.Backward
-          ? arr.slice(Math.max(0, sliceIndices.backward! - 80), sliceIndices.backward!)
-          : arr.slice(sliceIndices.forward! + 1, Math.min(arr.length, sliceIndices.forward! + 81))
-    } else nodes = cached
+      return {
+        clientHeight: estimateEventHeight(event),
+        dataset: { index: String(scanStart + i), itemId: id },
+      }
+    })
 
     const heightNodes = dir === Direction.Backward ? nodes : nodes.toReversed()
 
@@ -444,11 +440,22 @@ export function useEventPagination(opts: Opts) {
     if (dir === Direction.Backward && (!eventData || !events.value[eventData.index - 1])) await scrollEventsAsync(dir)
   }
 
-  function getPaddedRange(dir: Direction, anchorIndex: number) {
-    const start = Math.max(0, dir === Direction.Backward ? anchorIndex - 80 : anchorIndex)
-    const end = Math.min(events.value.length, dir === Direction.Backward ? anchorIndex + 1 : anchorIndex + 80 + 1)
+  function cacheMountedHeights() {
+    const itemsContainer = unrefElement(itemsEl)
+    if (!itemsContainer) return
 
-    return { end, start }
+    for (const child of itemsContainer.children) {
+      if (!(child instanceof HTMLElement)) continue
+
+      const id = child.dataset.itemId
+      const index = child.dataset.index
+      if (!id || !index) continue
+
+      itemNodeHeightCache.set(id, {
+        clientHeight: child.clientHeight,
+        dataset: { index, itemId: id },
+      })
+    }
   }
 
   function getAnchor(dir: Direction, padHeight?: number) {
@@ -583,28 +590,6 @@ function getEventById(events: MatrixEvent[], id: string | undefined) {
         index: i,
       }
     }
-  }
-}
-
-function resolveCachedItems(itemIds: string[]) {
-  let allCached = true
-  const cached: CachedItemNode[] = []
-  for (let i = 0; i < itemIds.length; i++) {
-    const id = itemIds[i]
-    assert(id, 'id was undefined when resolving cached items')
-
-    const cachedNode = itemNodeHeightCache.get(id)
-    if (cachedNode) {
-      cached.push(cachedNode)
-      continue
-    }
-
-    allCached = false
-  }
-
-  return {
-    allCached,
-    cached,
   }
 }
 
