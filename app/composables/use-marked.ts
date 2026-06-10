@@ -1,5 +1,5 @@
-import { toRef } from '@vueuse/core'
 import DOMPurify from 'dompurify'
+import QuickLRU from 'quick-lru'
 
 const md = MARKED_INSTANCE.use({
   async: false,
@@ -8,15 +8,21 @@ const md = MARKED_INSTANCE.use({
   },
 })
 
+const cache = new QuickLRU<string, string>({ maxSize: 512 })
+
 export function useMarked(input: MaybeRefOrGetter<string | undefined>, options?: { inline?: boolean }) {
-  const inputRef = toRef(input)
-
   return computed(() => {
-    if (!inputRef.value) return
+    const inputValue = toValue(input)
 
-    const html = options?.inline
-      ? md.parseInline(inputRef.value, { breaks: true })
-      : md.parse(inputRef.value, { breaks: true })
-    return DOMPurify.sanitize(html as string)
+    if (!inputValue) return
+
+    return cache.getOrInsert(
+      `${options?.inline ? 'i' : 'o'}:${inputValue}`,
+      DOMPurify.sanitize(
+        options?.inline
+          ? (md.parseInline(inputValue, { breaks: true }) as string)
+          : (md.parse(inputValue, { breaks: true }) as string),
+      ),
+    )
   })
 }
