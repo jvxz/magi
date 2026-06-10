@@ -1,10 +1,19 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 
-export function useRoomReplyEvent(event: MatrixEvent, room: Room) {
+export const useRoomReplyEvent = createProvidableComposable('useRoomReplyEvent', (event: MatrixEvent, room: Room) => {
+  const isReplyEvent = checkReplyEvent(event)
+
+  if (!isReplyEvent || !event.replyEventId) {
+    return {
+      data: shallowRef<MatrixEvent | undefined>(undefined),
+      isLoading: shallowRef(false),
+      isReplyEvent,
+    }
+  }
+
   const { client } = useMatrixClient()
 
   const query = useQuery<MatrixEvent | undefined>({
-    enabled: () => !!event.replyEventId,
     queryFn: async () => {
       const replyEventId = event.replyEventId
       if (!replyEventId) return undefined
@@ -18,7 +27,5 @@ export function useRoomReplyEvent(event: MatrixEvent, room: Room) {
     shallow: true,
   })
 
-  const isReplyEvent = checkReplyEvent(event)
-
   return { ...query, isReplyEvent }
-}
+})
