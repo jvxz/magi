@@ -1,29 +1,20 @@
 <script lang="ts" setup>
-import type { MatrixEvent, Room } from 'matrix-js-sdk'
 import type { PopoverContentProps } from 'reka-ui'
 
 import { MsgType } from 'matrix-js-sdk'
 
-const props = defineProps<{
-  event: MatrixEvent
-  grouped: boolean
-  room: Room
-}>()
+import { injectEventContext } from './generic.vue'
 
-const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(props.event, props.room)
+const { room, event, grouped } = injectEventContext()
 
-const { content: eventContent } = useEventContent(() => props.event)
+const { content: eventContent } = useEventContent(event)
 const eventBody = computed(() => trimReplyFromBody(eventContent.value?.body))
-const eventProfile = useUserProfile(() => props.event.getSender())
-const eventUser = useUser<true>(() => props.event.getSender())
+const eventProfile = useUserProfile(() => (grouped.value ? undefined : event.value.getSender()))
+const eventUser = useUser<true>(() => event.value.getSender())
 
-const { content: replyEventContent, isRedacted: isReplyEventRedacted } = useEventContent(() => replyEvent.value)
-const replyEventBody = computed(() =>
-  isReplyEventRedacted.value ? 'Original message was deleted' : formatReplyPreviewBody(replyEventContent.value?.body),
-)
-const replyEventProfile = useUserProfile(() => replyEvent.value?.getSender())
+const hasReactions = useRoomEventHasReactions(room, event)
 
-const isDecrypting = computed(() => props.event.isBeingDecrypted())
+const isDecrypting = computed(() => event.value.isBeingDecrypted())
 
 const isJumboEmoji = computed(() => {
   const body = eventBody.value?.trim()
@@ -36,13 +27,12 @@ const isJumboEmoji = computed(() => {
 })
 
 const shouldRender = computed(() => {
-  const { event } = props
-  const content = event.getContent()
+  const content = event.value.getContent()
 
   const type = content.msgtype
 
   const isMsg = type === MsgType.Text || type === 'm.bad.encrypted'
-  const isEdit = isEditEvent(event)
+  const isEdit = isEditEvent(event.value)
 
   return (isMsg || isDecrypting.value) && !isEdit
 })
@@ -53,66 +43,48 @@ const contentProps: PopoverContentProps = {
   side: 'right',
   sideOffset: 8,
 }
+
+const { openProfilePopover } = useProfilePopover()
+function openProfile(e: MouseEvent) {
+  const el = e.currentTarget
+  if (!(el instanceof HTMLElement) || !eventUser.value) return
+
+  openProfilePopover(el, eventUser.value.userId, contentProps)
+}
 </script>
 
 <template>
   <PageRoomEvent
     v-if="shouldRender"
-    :room="props.room"
-    :event="props.event"
-    :event-id="props.event.getId()"
-    :event-type="props.event.getType()"
+    :room="room"
+    :event="event"
+    :event-id="event.getId()"
+    :event-type="event.getType()"
     :grouped
     side="right"
     class="py-0.5 w-full"
   >
     <PageRoomEventMessageRoot class="flex flex-col gap-px">
-      <div v-if="isReplyEvent" class="text-sm flex gap-1.5 items-center relative">
-        <Icon name="custom:reply" class="text-muted-foreground shrink-0 h-6 w-12 translate-x-2.5 translate-y-1" />
-
-        <div class="ms-1.5 size-3.5 aspect-square">
-          <MatrixAvatar v-if="!isReplyEventRedacted" class="size-full" :user="replyEvent?.getSender()" />
-          <Icon v-else class="text-muted-foreground -translate-y-0.5" name="tabler:arrow-back-up" />
-        </div>
-
-        <template v-if="!isReplyEventLoading">
-          <p v-if="!isReplyEventRedacted" class="text-muted-foreground font-medium">
-            {{ replyEventProfile?.displayname }}
-          </p>
-
-          <p
-            v-if="!isReplyEventRedacted"
-            class="max-w-2/3 truncate"
-            :class="{
-              'italic text-muted-foreground':
-                replyEvent?.isDecryptionFailure() || !replyEventBody || isReplyEventRedacted,
-            }"
-          >
-            <Twemojify :text="replyEventBody ?? ''" />
-          </p>
-        </template>
-        <template v-else>
-          <USkeleton class="h-4 w-32" />
-        </template>
-      </div>
+      <PageRoomEventMessageReply v-if="checkReplyEvent(event)" />
 
       <div class="flex gap-4">
-        <PageRoomEventMessageMemberContextMenu as-child>
-          <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
-            <PageRoomEventMessageAvatar :user="eventUser ?? undefined" :ghost="grouped" />
-          </UProfilePopoverTrigger>
-        </PageRoomEventMessageMemberContextMenu>
-
+        <PageRoomEventMessageAvatar
+          :user="eventUser"
+          :ghost="grouped"
+          :data-profile-user="eventUser?.userId"
+          @click="openProfile"
+        />
         <div>
           <PageRoomEventMessageContent>
             <template v-if="!grouped && isDefined(event.getTs())" #header>
-              <PageRoomEventMessageMemberContextMenu as-child>
-                <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
-                  <UButton variant="link" class="data-[state=open]:no-underline data-[popover-open]:underline!">
-                    {{ eventProfile?.displayname }}
-                  </UButton>
-                </UProfilePopoverTrigger>
-              </PageRoomEventMessageMemberContextMenu>
+              <UButton
+                variant="link"
+                class="data-[state=open]:no-underline data-[popover-open]:underline!"
+                :data-profile-user="eventUser?.userId"
+                @click="openProfile"
+              >
+                {{ eventProfile?.displayname }}
+              </UButton>
 
               <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
             </template>
@@ -130,7 +102,7 @@ const contentProps: PopoverContentProps = {
             <p v-else class="italic">Decrypting message...</p>
           </PageRoomEventMessageContent>
 
-          <PageRoomEventMessageReactions :room :event />
+          <PageRoomEventMessageReactions v-if="hasReactions" v-memo="[hasReactions]" />
         </div>
       </div>
     </PageRoomEventMessageRoot>

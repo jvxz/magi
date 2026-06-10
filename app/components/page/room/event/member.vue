@@ -1,18 +1,16 @@
 <script lang="ts" setup>
-import type { MatrixEvent } from 'matrix-js-sdk'
-
 import { EventType } from 'matrix-js-sdk'
 
-const props = defineProps<{
-  event: MatrixEvent
-}>()
+import { injectEventContext } from './generic.vue'
+
+const { event } = injectEventContext()
 
 assert(
-  props.event.getType() === EventType.RoomMember,
+  event.value.getType() === EventType.RoomMember,
   'Event provided in PageRoomEventMember is not a RoomMember event',
 )
 const body = computed(() => {
-  const parsed = parseMembershipEvent(props.event)
+  const parsed = parseMembershipEvent(event.value)
   if (parsed.type === 'ban') {
     return {
       icon: 'tabler:hammer',
@@ -121,9 +119,9 @@ const body = computed(() => {
 
 <template>
   <PageRoomEvent
-    :room="props.event.getRoomId()"
-    :event="props.event"
-    :event-type="props.event.getType()"
+    :room="event.getRoomId()"
+    :event="event"
+    :event-type="event.getType()"
     data-event-type="member"
     class="flex gap-2 items-center"
   >
