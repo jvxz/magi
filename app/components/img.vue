@@ -13,9 +13,12 @@ export interface ImgProps {
   onLoad?: (e: Event) => void
   onError?: (e: Event) => void
   doPlaceholder?: boolean
+  decoding?: 'sync' | 'async' | 'auto'
 }
 
-const props = defineProps<ImgProps>()
+const props = withDefaults(defineProps<ImgProps>(), {
+  decoding: 'async',
+})
 
 const error = shallowRef(false)
 const loaded = shallowRef(false)
