@@ -29,12 +29,12 @@ const nuxtTimeProps = computed<NuxtTimeProps>(() => {
 </script>
 
 <template>
-  <Primitive v-bind="$props" :class="cn('text-xs text-muted-foreground select-none', $attrs.class)">
+  <Primitive v-once v-bind="$props" :class="cn('text-xs text-muted-foreground select-none', $attrs.class)">
     <UTooltipRoot :delay-duration="1000">
       <UTooltipTrigger as-child>
         <NuxtTime v-bind="nuxtTimeProps" />
       </UTooltipTrigger>
-      <UTooltipContent>
+      <UTooltipContent :with-portal="false">
         <NuxtTime :datetime weekday="long" month="long" day="numeric" year="numeric" hour="numeric" minute="numeric" />
       </UTooltipContent>
     </UTooltipRoot>
