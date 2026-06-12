@@ -47,6 +47,7 @@
     "@tiptap/extension-heading": "^3.24.0",
     "@tiptap/extension-italic": "^3.24.0",
     "@tiptap/extension-mention": "^3.24.0",
+    "@tiptap/extension-placeholder": "^3.26.1",
     "@tiptap/extension-strike": "^3.24.0",
     "@tiptap/extension-underline": "^3.24.0",
     "@vite-pwa/nuxt": "^1.1.1",
