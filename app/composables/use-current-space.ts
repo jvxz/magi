@@ -1,5 +1,6 @@
-export function useCurrentSpace() {
-  const route = useRoute()
+export const useCurrentSpace = () => {
+  const spaceId = useCurrentSpaceId()
+  const space = useRoom(spaceId)
 
-  return useRoom(() => ('spaceId' in route.params ? route.params.spaceId : ''))
+  return space
 }
