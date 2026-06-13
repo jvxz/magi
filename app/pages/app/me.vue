@@ -31,5 +31,7 @@ definePageMeta({
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
+  <PageMeRecentRoomsList />
+
   <NuxtPage />
 </template>
