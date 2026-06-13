@@ -7,8 +7,8 @@ definePageMeta({
 
 <template>
   <LayoutAppSlot name="aside-header">
-    <div class="p-2.5 size-full">
-      <UButton variant="soft" class="py-4 w-full">
+    <div class="size-full px-2.5 flex items-center justify-center">
+      <UButton variant="soft" class="w-full">
         <p class="text-xs">Find or start a conversation</p>
       </UButton>
     </div>
