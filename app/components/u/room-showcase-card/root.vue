@@ -20,7 +20,7 @@ const avatarProps = computed(() => (props.manualAvatarSrc ? { src: props.manualA
     :as
     :as-child
     :class="
-      cn('w-full relative hover:(border-foreground/50 bg-hover) h-18 p-3.5 border flex-row gap-3.5 ', $attrs.class)
+      cn('w-full relative hover:(border-border-strong bg-hover) h-18 p-3.5 border flex-row gap-3.5 ', $attrs.class)
     "
   >
     <MatrixAvatar v-if="withAvatar" v-bind="avatarProps" square class="rounded-sm shrink-0 w-fit aspect-square" />
