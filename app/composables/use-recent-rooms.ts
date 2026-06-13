@@ -1,13 +1,14 @@
 interface RecentRoomEntry {
   lastVisited: number
-  isSpace: boolean
+  isSpace?: boolean
+  parentSpaceId?: string
 }
 
 type RecentRoomsState = Map<string, RecentRoomEntry>
 
 export const useRecentRooms = createGlobalState(() => {
   const { self } = useSelf()
-  const recentRooms = useLocalStorage<RecentRoomsState>(`${self.value?.userId}:recentRooms`, new Map(), {
+  const recentRooms = useLocalStorage<RecentRoomsState>(() => `${self.value?.userId}:recentRooms`, new Map(), {
     shallow: true,
   })
 
@@ -19,10 +20,10 @@ export const useRecentRooms = createGlobalState(() => {
     ),
   )
 
-  function bumpRecentRoom(room: MaybeRoomOrId, isSpace: boolean) {
+  function bumpRecentRoom(room: MaybeRoomOrId, opts?: { isSpace?: boolean; parentSpaceId?: string }) {
     recentRooms.value.set(resolveRoomId(room), {
-      isSpace,
       lastVisited: Date.now(),
+      ...opts,
     })
 
     triggerRef(recentRooms)
@@ -32,11 +33,6 @@ export const useRecentRooms = createGlobalState(() => {
     recentRooms.value.delete(resolveRoomId(room))
     triggerRef(recentRooms)
   }
-
-  const currentRoom = useCurrentRoom()
-  watch(currentRoom, r => {
-    if (r) bumpRecentRoom(r, r.isSpaceRoom())
-  })
 
   return {
     bumpRecentRoom,
