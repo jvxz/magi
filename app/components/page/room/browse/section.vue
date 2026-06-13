@@ -69,7 +69,7 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
         class="group flex shrink-0 w-4 cursor-pointer items-center justify-center"
         @click="openModel = !openModel"
       >
-        <div class="rounded-full bg-border h-full w-px group-hover:bg-foreground/50" />
+        <div class="rounded-full bg-border h-full w-px group-hover:bg-border-strong" />
       </button>
 
       <div class="flex flex-col gap-2 w-full">
