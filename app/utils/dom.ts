@@ -137,3 +137,10 @@ export function createFrozenReference(trigger: HTMLElement): VirtualElement {
     getBoundingClientRect: () => rect,
   }
 }
+
+export function createPointReference(point: { clientX: number; clientY: number }): VirtualElement {
+  const { clientX: x, clientY: y } = point
+
+  const rect: ClientRectObject = { bottom: y, height: 0, left: x, right: x, top: y, width: 0, x, y }
+  return { getBoundingClientRect: () => rect }
+}

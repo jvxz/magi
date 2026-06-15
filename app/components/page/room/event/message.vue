@@ -12,10 +12,11 @@ const props = defineProps<{
 
 const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(props.event, props.room)
 
+const userId = computed(() => props.event.getSender())
 const { content: eventContent } = useEventContent(() => props.event)
 const eventBody = computed(() => trimReplyFromBody(eventContent.value?.body))
-const eventProfile = useUserProfile(() => props.event.getSender())
-const eventUser = useUser<true>(() => props.event.getSender())
+const eventProfile = useUserProfile(userId)
+const eventMember = useRoomMember(() => props.room.roomId, userId)
 
 const { content: replyEventContent, isRedacted: isReplyEventRedacted } = useEventContent(() => replyEvent.value)
 const replyEventBody = computed(() =>
@@ -97,22 +98,25 @@ const contentProps: PopoverContentProps = {
       </div>
 
       <div class="flex gap-4">
-        <PageRoomEventMessageMemberContextMenu as-child>
-          <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
-            <PageRoomEventMessageAvatar :user="eventUser ?? undefined" :ghost="grouped" />
+        <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }">
+          <UProfilePopoverTrigger v-if="userId" :content-props :user="userId" as-child>
+            <PageRoomEventMessageAvatar :user="userId" :ghost="grouped" />
           </UProfilePopoverTrigger>
-        </PageRoomEventMessageMemberContextMenu>
+        </UContextMenuRegionTrigger>
 
         <div>
           <PageRoomEventMessageContent>
-            <template v-if="!grouped && isDefined(event.getTs())" #header>
-              <PageRoomEventMessageMemberContextMenu as-child>
-                <UProfilePopoverTrigger :content-props :user="eventUser" as-child>
-                  <UButton variant="link" class="data-[state=open]:no-underline data-[popover-open]:underline!">
+            <template v-if="!grouped && isDefined(event.getTs()) && userId" #header>
+              <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
+                <UProfilePopoverTrigger :content-props :user="userId" as-child>
+                  <UButton
+                    variant="link"
+                    class="context-menu-open:underline data-[state=open]:no-underline data-[popover-open]:underline!"
+                  >
                     {{ eventProfile?.displayname }}
                   </UButton>
                 </UProfilePopoverTrigger>
-              </PageRoomEventMessageMemberContextMenu>
+              </UContextMenuRegionTrigger>
 
               <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
             </template>

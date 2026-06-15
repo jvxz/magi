@@ -1,12 +1,15 @@
 <script lang="ts" setup>
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 
-defineProps<{
+const props = defineProps<{
   room: Room
   event: MatrixEvent
 }>()
 
-const { reactions } = useRoomEventReactions.inject()
+const { reactions } = useRoomEventReactions.provide(
+  () => props.room,
+  () => props.event,
+)
 </script>
 
 <template>
