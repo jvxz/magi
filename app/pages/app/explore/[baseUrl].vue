@@ -71,7 +71,7 @@ function handlePaginate(dir: 'f' | 'b') {
 <template>
   <LayoutAppSlot name="aside">
     <UAsideList>
-      <UContextMenu
+      <UContextMenuRoot
         v-model="contextMenuOpen"
         @update:open="
           e => {
@@ -96,13 +96,14 @@ function handlePaginate(dir: 'f' | 'b') {
             <span :title="server" class="truncate">{{ server }}</span>
           </UAsideListTab>
         </UContextMenuTrigger>
+
         <UContextMenuContent v-if="contextMenuServer">
           <UContextMenuItem :disabled="contextMenuServer === 'matrix.org'" @select="handleServerRemove()">
             <Icon name="tabler:trash" />
             Delete
           </UContextMenuItem>
         </UContextMenuContent>
-      </UContextMenu>
+      </UContextMenuRoot>
 
       <UAsideListSeparator />
 
