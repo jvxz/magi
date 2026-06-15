@@ -1,0 +1,66 @@
+<script lang="ts" setup>
+import type { CompactEmoji } from 'emojibase'
+
+import { ContextMenuSubContent } from '#components'
+
+const props = defineProps<ContextMenuRegions['event']>()
+
+const { openReactionViewer } = useRoomEventReactionsViewer()
+
+const mounted = ref(true)
+const { reactions, reactTo } = useRoomEventReactions(
+  () => props.roomId,
+  () => props.event,
+)
+
+function onEmojiPick(emoji: CompactEmoji) {
+  if (props.event) {
+    reactTo(emoji.unicode, true)
+  }
+
+  closeMenu()
+}
+
+function closeMenu() {
+  mounted.value = false
+  nextTick(() => (mounted.value = true))
+}
+
+const { sortedRecentReactions } = useRecentReactions()
+const firstFourRecentReactions = computed(() => sortedRecentReactions.value.slice(0, 4))
+</script>
+
+<template>
+  <template v-if="event && REACTABLE_EVENT_TYPES.includes(event.getType())">
+    <div class="flex items-center justify-around">
+      <ContextMenuItem v-for="(reaction, i) in firstFourRecentReactions" :key="i" as-child>
+        <UButton
+          size="icon"
+          variant="ghost"
+          class="grow h-full aspect-square cursor-default"
+          @click="
+            () => {
+              reactTo(reaction.key)
+              closeMenu()
+            }
+          "
+        >
+          <Twemojify class="text-6" :text="reaction.key" />
+        </UButton>
+      </ContextMenuItem>
+    </div>
+    <UContextMenuSub>
+      <UContextMenuSubTrigger> Add reaction </UContextMenuSubTrigger>
+
+      <UEmojiPickerRoot :as="ContextMenuSubContent" @pick="onEmojiPick">
+        <UEmojiPickerSearch />
+        <ContextMenuItem as-child>
+          <UEmojiPickerList />
+        </ContextMenuItem>
+      </UEmojiPickerRoot>
+    </UContextMenuSub>
+    <UContextMenuItem :disabled="!reactions || !reactions.size" @select="openReactionViewer(roomId, event)">
+      View reactions
+    </UContextMenuItem>
+  </template>
+</template>
