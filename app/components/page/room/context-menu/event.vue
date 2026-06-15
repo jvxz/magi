@@ -6,8 +6,8 @@ import { ContextMenuSubContent } from '#components'
 const props = defineProps<ContextMenuRegions['event']>()
 
 const { openReactionViewer } = useRoomEventReactionsViewer()
+const { close } = useContextMenuRegion('event')
 
-const mounted = ref(true)
 const { reactions, reactTo } = useRoomEventReactions(
   () => props.roomId,
   () => props.event,
@@ -18,12 +18,7 @@ function onEmojiPick(emoji: CompactEmoji) {
     reactTo(emoji.unicode, true)
   }
 
-  closeMenu()
-}
-
-function closeMenu() {
-  mounted.value = false
-  nextTick(() => (mounted.value = true))
+  close()
 }
 
 const { sortedRecentReactions } = useRecentReactions()
@@ -41,7 +36,7 @@ const firstFourRecentReactions = computed(() => sortedRecentReactions.value.slic
           @click="
             () => {
               reactTo(reaction.key)
-              closeMenu()
+              close()
             }
           "
         >
