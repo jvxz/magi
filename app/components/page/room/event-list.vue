@@ -45,27 +45,41 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
-    data-testid="scroll-container"
-  >
-    <div ref="wrapper" class="w-full" data-testid="scroll-container-wrapper">
-      <div data-ignore class="h-4.25" />
-
-      <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
-
+  <UContextMenuRoot name="event">
+    <UContextMenuRoot name="member">
       <div
-        v-for="(event, idx) in groupedEvents.events"
-        v-bind="createItemBind(event, idx)"
-        :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
-        :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
+        ref="container"
+        class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
+        data-testid="scroll-container"
       >
-        <PageRoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
+        <div ref="wrapper" class="w-full" data-testid="scroll-container-wrapper">
+          <div data-ignore class="h-4.25" />
+
+          <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
+
+          <div
+            v-for="(event, idx) in groupedEvents.events"
+            v-bind="createItemBind(event, idx)"
+            :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
+            :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
+          >
+            <PageRoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
+          </div>
+          <div data-ignore class="h-12" />
+        </div>
       </div>
-      <div data-ignore class="h-12" />
-    </div>
-  </div>
+
+      <!-- member ctx menu -->
+      <UContextMenuContent name="member" v-slot="{ payload }">
+        <PageRoomContextMenuMember v-if="payload" v-bind="payload" />
+      </UContextMenuContent>
+    </UContextMenuRoot>
+
+    <!-- event ctx menu -->
+    <UContextMenuContent name="event" v-slot="{ payload }">
+      <PageRoomContextMenuEvent v-if="payload" v-bind="payload" />
+    </UContextMenuContent>
+  </UContextMenuRoot>
 </template>
 
 <style scoped>
