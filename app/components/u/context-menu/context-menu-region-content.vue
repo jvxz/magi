@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<DropdownMenuContentProps & { name: TName 
 })
 const emits = defineEmits<DropdownMenuContentEmits>()
 
-const { reference, payload, close } = useContextMenuRegion(props.name)
+const { close, payload, reference } = useContextMenuRegion(props.name)
 
 const delegated = reactiveOmit(props, ['name', 'reference'])
 const forwarded = useForwardPropsEmits(delegated, emits)
@@ -18,8 +18,8 @@ const forwarded = useForwardPropsEmits(delegated, emits)
   <UDropdownMenuContent
     v-bind="forwarded"
     :reference="reference ?? undefined"
-    @close-auto-focus.prevent
     data-slot="context-menu-region-content"
+    @close-auto-focus.prevent
   >
     <slot :payload :close />
   </UDropdownMenuContent>

@@ -70,13 +70,13 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
       </div>
 
       <!-- member ctx menu -->
-      <UContextMenuRegionContent name="member" v-slot="{ payload }">
+      <UContextMenuRegionContent v-slot="{ payload }" name="member">
         <PageRoomContextMenuMember v-if="payload" v-bind="payload" />
       </UContextMenuRegionContent>
     </UContextMenuRegionRoot>
 
     <!-- event ctx menu -->
-    <UContextMenuRegionContent name="event" v-slot="{ payload }">
+    <UContextMenuRegionContent v-slot="{ payload }" name="event">
       <PageRoomContextMenuEvent v-if="payload" v-bind="payload" />
     </UContextMenuRegionContent>
   </UContextMenuRegionRoot>

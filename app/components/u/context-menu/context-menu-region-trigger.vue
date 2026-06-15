@@ -40,12 +40,12 @@ const clearLongPress = () => window.clearTimeout(longPress)
     :as-child
     :data-disabled="disabled ? '' : undefined"
     :style="{ webkitTouchCallout: 'none' }"
+    data-slot="context-menu-region-trigger"
     @contextmenu="onContextMenu"
     @pointerdown="onPointerDown"
     @pointermove="clearLongPress"
     @pointerup="clearLongPress"
     @pointercancel="clearLongPress"
-    data-slot="context-menu-region-trigger"
   >
     <slot />
   </Primitive>
