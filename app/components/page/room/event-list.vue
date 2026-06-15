@@ -45,8 +45,8 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
 </script>
 
 <template>
-  <UContextMenuRoot name="event">
-    <UContextMenuRoot name="member">
+  <UContextMenuRegionRoot name="event">
+    <UContextMenuRegionRoot name="member">
       <div
         ref="container"
         class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
@@ -70,16 +70,16 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
       </div>
 
       <!-- member ctx menu -->
-      <UContextMenuContent name="member" v-slot="{ payload }">
+      <UContextMenuRegionContent name="member" v-slot="{ payload }">
         <PageRoomContextMenuMember v-if="payload" v-bind="payload" />
-      </UContextMenuContent>
-    </UContextMenuRoot>
+      </UContextMenuRegionContent>
+    </UContextMenuRegionRoot>
 
     <!-- event ctx menu -->
-    <UContextMenuContent name="event" v-slot="{ payload }">
+    <UContextMenuRegionContent name="event" v-slot="{ payload }">
       <PageRoomContextMenuEvent v-if="payload" v-bind="payload" />
-    </UContextMenuContent>
-  </UContextMenuRoot>
+    </UContextMenuRegionContent>
+  </UContextMenuRegionRoot>
 </template>
 
 <style scoped>

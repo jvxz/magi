@@ -98,20 +98,16 @@ const contentProps: PopoverContentProps = {
       </div>
 
       <div class="flex gap-4">
-        <UContextMenuTrigger region="member" :value="{ kind: 'member', member: eventMember, roomId: room.roomId }">
+        <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }">
           <UProfilePopoverTrigger v-if="userId" :content-props :user="userId" as-child>
             <PageRoomEventMessageAvatar :user="userId" :ghost="grouped" />
           </UProfilePopoverTrigger>
-        </UContextMenuTrigger>
+        </UContextMenuRegionTrigger>
 
         <div>
           <PageRoomEventMessageContent>
             <template v-if="!grouped && isDefined(event.getTs()) && userId" #header>
-              <UContextMenuTrigger
-                region="member"
-                :value="{ kind: 'member', member: eventMember, roomId: room.roomId }"
-                as-child
-              >
+              <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
                 <UProfilePopoverTrigger :content-props :user="userId" as-child>
                   <UButton
                     variant="link"
@@ -120,7 +116,7 @@ const contentProps: PopoverContentProps = {
                     {{ eventProfile?.displayname }}
                   </UButton>
                 </UProfilePopoverTrigger>
-              </UContextMenuTrigger>
+              </UContextMenuRegionTrigger>
 
               <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
             </template>

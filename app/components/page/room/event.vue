@@ -20,13 +20,12 @@ withDefaults(
 </script>
 
 <template>
-  <UContextMenuTrigger
+  <UContextMenuRegionTrigger
     v-if="event && room"
     v-bind="$props"
     region="event"
     :value="{
       event,
-      kind: 'event',
       roomId: resolveRoomId(room),
     }"
     data-testid="event-root"
@@ -43,5 +42,5 @@ withDefaults(
     data-slot="room-event"
   >
     <slot />
-  </UContextMenuTrigger>
+  </UContextMenuRegionTrigger>
 </template>
