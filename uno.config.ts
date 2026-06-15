@@ -1,3 +1,4 @@
+import { variantMatcher } from '@unocss/rule-utils'
 import { defineConfig, definePreset, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { presetAnimations } from 'unocss-preset-animations'
 
@@ -67,7 +68,7 @@ export default defineConfig({
     [
       /^(bg|text|border)-(.+)-(hover|press)$/,
       ([, prop, name, state], { theme }) => {
-        const color = (theme.colors as Record<string, string>)[name]
+        const color = (theme.colors as Record<string, any>)[name]
         if (typeof color !== 'string') return
         const cssProp = prop === 'bg' ? 'background-color' : prop === 'text' ? 'color' : 'border-color'
         return { [cssProp]: `oklch(from ${color} calc(l + var(--shift-${state})) c h)` }
@@ -156,4 +157,5 @@ export default defineConfig({
     },
   },
   transformers: [transformerVariantGroup(), transformerDirectives({ throwOnMissing: false })],
+  variants: [variantMatcher('context-menu-open', input => ({ selector: `${input.selector}[data-context-menu-open]` }))],
 })
