@@ -19,7 +19,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
     v-bind="forwarded"
     :reference="reference ?? undefined"
     @close-auto-focus.prevent
-    data-slot="context-menu-content"
+    data-slot="context-menu-region-content"
   >
     <slot :payload :close />
   </UDropdownMenuContent>

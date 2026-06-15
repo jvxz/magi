@@ -1,23 +1,23 @@
-<script setup lang="ts">
-import type { DropdownMenuContentEmits, DropdownMenuContentProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
+<script lang="ts" setup>
+import type { ContextMenuContentEmits, ContextMenuContentProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = withDefaults(defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>(), {
-  align: 'start',
-})
-const emits = defineEmits<DropdownMenuContentEmits>()
+const props = defineProps<ContextMenuContentProps & { class?: string | undefined }>()
+const emits = defineEmits<ContextMenuContentEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class')
-
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const delegated = reactiveOmit(props, 'class')
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>
-  <DropdownMenuPortal>
-    <DropdownMenuContent v-bind="forwarded" :class="cn(popoverContentBase(), props.class)">
+  <ContextMenuPortal>
+    <ContextMenuContent
+      v-bind="forwarded"
+      :class="cn(popoverContentBase(), $props.class)"
+      data-slot="context-menu-content"
+    >
       <slot />
-    </DropdownMenuContent>
-  </DropdownMenuPortal>
+    </ContextMenuContent>
+  </ContextMenuPortal>
 </template>
