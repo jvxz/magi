@@ -18,7 +18,7 @@ export function getContextMenuKey<T extends ContextMenuName>(name: T) {
 
 export function useContextMenuRegion<T extends ContextMenuName>(name: T) {
   const api = inject(getContextMenuKey(name))
-  if (!api) throw new Error('useContextMenuRegion() must be used inside <UContextMenuRoot>')
+  if (!api) throw new Error('useContextMenuRegion() must be used inside <UContextMenuRegionRoot>')
 
   return api as ContextMenuRegionApi<ContextMenuRegions[T]>
 }
