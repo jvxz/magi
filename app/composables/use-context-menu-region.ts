@@ -6,13 +6,21 @@ export interface ContextMenuRegionApi<T = unknown> {
   close: () => void
 }
 
-export const CONTEXT_MENU_REGION_KEY = Symbol('context-menu-region')
+const contextMenuMap = new Map<ContextMenuName, InjectionKey<ContextMenuRegionApi<unknown>>>()
+export function getContextMenuKey<T extends ContextMenuName>(name: T) {
+  let key = contextMenuMap.get(name)
+  if (!key) {
+    key = Symbol(`context-menu:${name}`)
+    contextMenuMap.set(name, key)
+  }
+  return key
+}
 
-export function createPointReference(point: { clientX: number; clientY: number }): VirtualElement {
-  const { clientX: x, clientY: y } = point
+export function useContextMenuRegion<T extends ContextMenuName>(name: T) {
+  const api = inject(getContextMenuKey(name))
+  if (!api) throw new Error('useContextMenuRegion() must be used inside <UContextMenuRoot>')
 
-  const rect: ClientRectObject = { bottom: y, height: 0, left: x, right: x, top: y, width: 0, x, y }
-  return { getBoundingClientRect: () => rect }
+  return api as ContextMenuRegionApi<ContextMenuRegions[T]>
 }
 
 const CONTEXT_MENU_OPEN_ATTR = 'data-context-menu-open'
@@ -21,11 +29,4 @@ export function setContextMenuOpenAttr(el: MaybeElement, action: 'add' | 'remove
 
   if (action === 'add') el.setAttribute(CONTEXT_MENU_OPEN_ATTR, '')
   else el.removeAttribute(CONTEXT_MENU_OPEN_ATTR)
-}
-
-export function useContextMenuRegion<T = unknown>(): ContextMenuRegionApi<T> {
-  const api = inject(CONTEXT_MENU_REGION_KEY)
-  if (!api) throw new Error('useContextMenuRegion() must be used inside <UContextMenuRoot>')
-
-  return api as ContextMenuRegionApi<T>
 }
