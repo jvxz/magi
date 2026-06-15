@@ -4,7 +4,9 @@ import type { HTMLAttributes } from 'vue'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>()
+const props = withDefaults(defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>(), {
+  align: 'start',
+})
 const emits = defineEmits<DropdownMenuContentEmits>()
 
 const delegatedProps = reactiveOmit(props, 'class')

@@ -1,6 +1,11 @@
-<script lang="ts" setup generic="T">
-// type inference for `payload` in #menu slot
-defineProps<{ items?: T[] }>()
+<script lang="ts" setup generic="TName extends ContextMenuName">
+import type { DropdownMenuRootEmits, DropdownMenuRootProps } from 'reka-ui'
+
+import { useForwardPropsEmits } from 'reka-ui'
+
+const props = defineProps<DropdownMenuRootProps & { name: TName }>()
+const emits = defineEmits<DropdownMenuRootEmits>()
+type T = ContextMenuRegions[TName]
 
 const open = shallowRef(false)
 const reference = shallowRef<VirtualElement>(createPointReference({ clientX: 0, clientY: 0 }))
@@ -28,19 +33,16 @@ function openAt(event: MouseEvent | PointerEvent, next: T) {
   open.value = true
 }
 
-function close() {
-  open.value = false
-}
+const close = () => (open.value = false)
 
-provide(CONTEXT_MENU_REGION_KEY, { close, open, openAt, payload, reference } as ContextMenuRegionApi)
+provide(getContextMenuKey(props.name), { close, open, openAt, payload, reference } as ContextMenuRegionApi)
+
+const delegated = reactiveOmit(props, ['name', 'open', 'defaultOpen'])
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>
-  <DropdownMenuRoot v-model:open="open">
+  <DropdownMenuRoot v-bind="forwarded" v-model:open="open">
     <slot />
-
-    <UDropdownMenuContent :reference="reference ?? undefined" @close-auto-focus.prevent>
-      <slot name="menu" :payload :close />
-    </UDropdownMenuContent>
   </DropdownMenuRoot>
 </template>
