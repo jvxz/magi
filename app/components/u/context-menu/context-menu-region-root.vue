@@ -21,9 +21,9 @@ whenever(
   },
 )
 
-function openAt(event: MouseEvent | PointerEvent, next: T) {
+function openAt(event: MouseEvent | PointerEvent, next: T, el?: MaybeElement) {
   event.preventDefault()
-  const target = event.currentTarget instanceof HTMLElement ? event.currentTarget : undefined
+  const target = el ?? (event.currentTarget instanceof HTMLElement ? event.currentTarget : undefined)
   if (currentTarget && currentTarget !== target) setContextMenuOpenAttr(currentTarget, 'remove')
   setContextMenuOpenAttr(target, 'add')
   currentTarget = target

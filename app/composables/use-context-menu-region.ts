@@ -2,7 +2,7 @@ export interface ContextMenuRegionApi<T = unknown> {
   open: Ref<boolean>
   reference: Ref<VirtualElement | undefined>
   payload: Ref<T | undefined>
-  openAt: (event: MouseEvent | PointerEvent, payload: T) => void
+  openAt: (event: MouseEvent | PointerEvent, payload: T, el?: MaybeElement) => void
   close: () => void
 }
 

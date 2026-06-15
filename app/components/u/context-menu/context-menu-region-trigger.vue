@@ -29,7 +29,8 @@ function onContextMenu(e: MouseEvent) {
 function onPointerDown(e: PointerEvent) {
   if (props.disabled || !isTouchOrPen(e)) return
   e.stopPropagation()
-  longPress = window.setTimeout(openAt, 700, e, props.value)
+  const el = e.currentTarget instanceof HTMLElement ? e.currentTarget : undefined
+  longPress = window.setTimeout(openAt, 700, e, props.value, el)
 }
 const clearLongPress = () => window.clearTimeout(longPress)
 onUnmounted(clearLongPress)
