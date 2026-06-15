@@ -32,6 +32,7 @@ function onPointerDown(e: PointerEvent) {
   longPress = window.setTimeout(openAt, 700, e, props.value)
 }
 const clearLongPress = () => window.clearTimeout(longPress)
+onUnmounted(clearLongPress)
 </script>
 
 <template>
