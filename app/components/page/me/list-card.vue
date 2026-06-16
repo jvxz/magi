@@ -10,13 +10,11 @@ defineProps<{ roomId: string; spaceId: string }>()
       </URoomShowcaseCardTitle>
 
       <URoomShowcaseCardDescription>
-        <UseRoom v-if="spaceId" v-slot="{ room }" :room="spaceId">
-          {{ room?.getJoinedMemberCount() }} members
-          <template v-if="getRoomTopic(room)">
-            <UInlineSeparator />
-            <span> {{ getRoomTopic(room) }}</span>
-          </template>
-        </UseRoom>
+        {{ room?.getJoinedMemberCount() }} members
+        <template v-if="getRoomTopic(room)">
+          <UInlineSeparator />
+          <span> {{ getRoomTopic(room) }}</span>
+        </template>
       </URoomShowcaseCardDescription>
     </URoomShowcaseCardContent>
   </URoomShowcaseCardRoot>
