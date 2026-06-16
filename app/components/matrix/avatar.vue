@@ -20,6 +20,14 @@ const props = withDefaults(defineProps<MatrixAvatarProps>(), {
 const room = useRoom(() => props.room ?? undefined)
 const userProfile = useUserProfile(() => props.user ?? undefined)
 
+const alt = computed(() => {
+  if (room.value) return room.value.name ?? room.value.roomId ?? ''
+
+  if (userProfile.value) return userProfile.value.displayname ?? (props.user ? resolveUserId(props.user) : '')
+
+  return ''
+})
+
 const roomOrUserUrl = computed(() => {
   if (room.value) return room.value.getMxcAvatarUrl() ?? undefined
 
@@ -53,7 +61,7 @@ const placeholderName = computed(() => {
     v-bind="delegatedProps"
     :key="props.src ?? resolvedAvatar"
     data-slot="avatar"
-    :alt="userProfile?.displayname ? `${userProfile?.displayname}'s avatar` : 'Avatar'"
+    :alt
     :src="props.src ?? resolvedAvatar"
     :class="cn('object-cover', !square && 'rounded-full', props.class)"
     :do-placeholder="false"

@@ -7,8 +7,8 @@ definePageMeta({
 
 <template>
   <LayoutAppSlot name="aside-header">
-    <div class="p-2.5 size-full">
-      <UButton variant="soft" class="py-4 w-full">
+    <div class="px-2.5 flex size-full items-center justify-center">
+      <UButton variant="soft" class="w-full">
         <p class="text-xs">Find or start a conversation</p>
       </UButton>
     </div>
@@ -30,6 +30,15 @@ definePageMeta({
       </div>
     </LayoutAppPageHeader>
   </LayoutAppSlot>
+
+  <UContextMenuRegionRoot name="homeRoom">
+    <div class="p-3 flex flex-col gap-2">
+      <PageMePinnedRoomsList />
+      <PageMeRecentRoomsList />
+    </div>
+
+    <PageMeContextMenu />
+  </UContextMenuRegionRoot>
 
   <NuxtPage />
 </template>

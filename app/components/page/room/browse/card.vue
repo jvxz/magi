@@ -9,29 +9,21 @@ const props = defineProps<
   }
 >()
 
-const src = useResolveAvatarUrl(() => props.room.avatar_url ?? undefined)
+const manualAvatarSrc = useResolveAvatarUrl(() => props.room.avatar_url)
 </script>
 
 <template>
-  <UCard
-    :as="as"
-    :as-child="asChild"
-    :class="
-      cn('w-full relative hover:(border-foreground/50 bg-hover) h-18 p-3.5 border flex-row gap-3.5 ', $attrs.class)
-    "
-  >
-    <MatrixAvatar :placeholder-key="room.name ?? room.room_id" :src class="rounded-sm shrink-0 w-fit aspect-square" />
-
-    <div class="flex flex-col w-full justify-around tabular-nums">
-      <div class="flex gap-2 max-h-1em items-center">
+  <URoomShowcaseCardRoot :as :as-child :room="room.room_id" :manual-avatar-src>
+    <URoomShowcaseCardContent>
+      <URoomShowcaseCardTitle class="flex gap-2 max-h-1em items-center">
         <p class="text-sm font-medium truncate">
           {{ room.name ?? room.room_id }}
         </p>
 
         <UBadge v-if="suggested" size="sm"> Suggested </UBadge>
-      </div>
+      </URoomShowcaseCardTitle>
 
-      <div class="text-xs text-muted-foreground truncate">
+      <URoomShowcaseCardDescription class="text-xs text-muted-foreground truncate">
         <span class="text-muted-foreground shrink-0"> {{ room.num_joined_members }} members </span>
 
         <template v-if="room.topic">
@@ -40,7 +32,7 @@ const src = useResolveAvatarUrl(() => props.room.avatar_url ?? undefined)
             {{ room.topic }}
           </span>
         </template>
-      </div>
-    </div>
-  </UCard>
+      </URoomShowcaseCardDescription>
+    </URoomShowcaseCardContent>
+  </URoomShowcaseCardRoot>
 </template>
