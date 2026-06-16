@@ -24,8 +24,8 @@ definePageMeta({
     <LayoutAppPageHeader>
       <div class="px-6 flex gap-2 h-full items-center">
         <div class="flex gap-2 items-center">
-          <Icon name="tabler:door" />
-          <p>Recent rooms</p>
+          <Icon name="tabler:home" />
+          <p>Home</p>
         </div>
       </div>
     </LayoutAppPageHeader>
