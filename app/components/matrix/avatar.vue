@@ -25,7 +25,7 @@ const alt = computed(() => {
 
   if (userProfile.value) return userProfile.value.displayname ?? (props.user ? resolveUserId(props.user) : undefined)
 
-  return undefined
+  return ''
 })
 
 const roomOrUserUrl = computed(() => {
