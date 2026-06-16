@@ -21,9 +21,9 @@ const room = useRoom(() => props.room ?? undefined)
 const userProfile = useUserProfile(() => props.user ?? undefined)
 
 const alt = computed(() => {
-  if (room.value) return room.value.name ?? room.value.roomId ?? undefined
+  if (room.value) return room.value.name ?? room.value.roomId ?? ''
 
-  if (userProfile.value) return userProfile.value.displayname ?? (props.user ? resolveUserId(props.user) : undefined)
+  if (userProfile.value) return userProfile.value.displayname ?? (props.user ? resolveUserId(props.user) : '')
 
   return ''
 })
