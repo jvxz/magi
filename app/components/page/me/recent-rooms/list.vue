@@ -10,7 +10,7 @@ const collapsiblesState = useHomeRoomListCollapsibles()
       <UCollapsibleTrigger class="gap-2">
         <UCollapsibleTriggerIcon />
 
-        <h3 class="font-medium flex items-center gap-2">
+        <h3 class="font-medium flex gap-2 items-center">
           <Icon name="tabler:clock" />
           <span>Recent rooms</span>
         </h3>

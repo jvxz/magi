@@ -10,7 +10,7 @@ const collapsiblesState = useHomeRoomListCollapsibles()
       <UCollapsibleTrigger class="gap-2">
         <UCollapsibleTriggerIcon />
 
-        <h3 class="font-medium flex items-center gap-2">
+        <h3 class="font-medium flex gap-2 items-center">
           <Icon name="tabler:pin" />
           <span>Pinned rooms</span>
         </h3>
@@ -18,7 +18,7 @@ const collapsiblesState = useHomeRoomListCollapsibles()
 
       <UCollapsibleContent>
         <template v-if="!pinnedRoomEntries.length">
-          <div class="pl-3 text-sm text-muted-foreground flex items-center gap-1">
+          <div class="text-sm text-muted-foreground pl-3 flex gap-1 items-center">
             <Icon name="tabler:ghost-3" />
             <span>You have no pinned rooms</span>
           </div>

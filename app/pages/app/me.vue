@@ -7,7 +7,7 @@ definePageMeta({
 
 <template>
   <LayoutAppSlot name="aside-header">
-    <div class="size-full px-2.5 flex items-center justify-center">
+    <div class="px-2.5 flex size-full items-center justify-center">
       <UButton variant="soft" class="w-full">
         <p class="text-xs">Find or start a conversation</p>
       </UButton>
@@ -32,7 +32,7 @@ definePageMeta({
   </LayoutAppSlot>
 
   <UContextMenuRegionRoot name="homeRoom">
-    <div class="flex flex-col gap-2 p-3">
+    <div class="p-3 flex flex-col gap-2">
       <PageMePinnedRoomsList />
       <PageMeRecentRoomsList />
     </div>

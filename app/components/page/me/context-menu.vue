@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { pinRoom, isRoomPinned, unpinRoom } = usePinnedRooms()
+const { isRoomPinned, pinRoom, unpinRoom } = usePinnedRooms()
 const { blacklistRoom, removeRecentRoom } = useRecentRooms()
 const { payload } = useContextMenuRegion('homeRoom')
 
@@ -15,7 +15,7 @@ function handlePin() {
 </script>
 
 <template>
-  <UContextMenuRegionContent name="homeRoom" v-if="payload?.roomId" align="start">
+  <UContextMenuRegionContent v-if="payload?.roomId" name="homeRoom" align="start">
     <UContextMenuItem as-child>
       <NuxtLink
         :to="{

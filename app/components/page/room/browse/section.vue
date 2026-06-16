@@ -18,7 +18,7 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
 </script>
 
 <template>
-  <UCollapsibleRoot class="gap-0" v-model:open="openModel" :default-open>
+  <UCollapsibleRoot v-model:open="openModel" class="gap-0" :default-open>
     <UCollapsibleTrigger class="h-12">
       <UCollapsibleTriggerIcon />
 
