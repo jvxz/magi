@@ -21,7 +21,7 @@ const room = useRoom(() => props.room)
 
 const avatarProps = computed(() => (props.manualAvatarSrc ? { src: props.manualAvatarSrc } : { room: room.value }))
 
-const delegated = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class', 'room', 'withAvatar', 'manualAvatarSrc')
 const forwarded = useForwardProps(delegated)
 </script>
 
