@@ -1,31 +1,34 @@
 <script lang="ts" setup>
 const { sortedRecentRooms } = useRecentRooms()
+
+const collapsiblesState = useHomeRoomListCollapsibles()
 </script>
 
 <template>
-  <div class="p-3 flex flex-col gap-2.5">
-    <div v-for="recentRoom in sortedRecentRooms" :key="recentRoom.key">
-      <URoomShowcaseCardRoot :room="recentRoom.key" v-slot="{ room }">
-        <URoomShowcaseCardContent>
-          <URoomShowcaseCardTitle class="flex items-center">
-            <span>{{ room?.name }}</span>
-          </URoomShowcaseCardTitle>
+  <div class="flex flex-col gap-2.5">
+    <UCollapsibleRoot v-model:open="collapsiblesState.recents">
+      <UCollapsibleTrigger class="gap-2">
+        <UCollapsibleTriggerIcon />
 
-          <URoomShowcaseCardDescription>
-            <!-- <template v-if="recentRoom.parentSpaceId">
-              <MatrixAvatar :room="recentRoom.parentSpaceId" class="size-3" />
+        <h3 class="font-medium flex items-center gap-2">
+          <Icon name="tabler:clock" />
+          <span>Recent rooms</span>
+        </h3>
+      </UCollapsibleTrigger>
 
-              <UInlineSeparator />
-            </template> -->
-
-            <!-- <span>Last visited: <NuxtTime :datetime="recentRoom.lastVisited" /></span> -->
-
-            <UseRoom v-if="recentRoom.parentSpaceId" :room="recentRoom.parentSpaceId" v-slot="{ room }">
-              <span> {{ room?.name }}</span>
-            </UseRoom>
-          </URoomShowcaseCardDescription>
-        </URoomShowcaseCardContent>
-      </URoomShowcaseCardRoot>
-    </div>
+      <UCollapsibleContent>
+        <div class="flex flex-col gap-2">
+          <UContextMenuRegionTrigger
+            v-for="recentRoom in sortedRecentRooms"
+            :key="recentRoom.key"
+            region="homeRoom"
+            :value="{ roomId: recentRoom.key, spaceId: recentRoom.parentSpaceId, type: 'recent' }"
+            as-child
+          >
+            <PageMeListCard :room-id="recentRoom.key" :space-id="recentRoom.parentSpaceId" />
+          </UContextMenuRegionTrigger>
+        </div>
+      </UCollapsibleContent>
+    </UCollapsibleRoot>
   </div>
 </template>
