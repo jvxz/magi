@@ -19,7 +19,7 @@ const props = withDefaults(
   <Primitive
     v-bind="$props"
     data-slot="card"
-    :class="cn(staticBase({ variant }), 'flex flex-col gap-5 shadow-lg', props.class)"
+    :class="cn(staticBase({ variant }), 'flex flex-col gap-2.5 shadow-lg', props.class)"
   >
     <slot />
   </Primitive>
