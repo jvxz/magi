@@ -23,7 +23,7 @@ export const useRecentRooms = createGlobalState(() => {
     orderBy(
       Array.from(recentRooms.value, ([key, v]) => ({ key, ...v })),
       ['lastVisited'],
-      ['desc', 'desc'],
+      ['desc'],
     ),
   )
 
