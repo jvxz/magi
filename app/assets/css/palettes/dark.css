@@ -2,7 +2,7 @@
 
 .dark {
   --shift-hover: 0.02;
-  --shift-press: -0.015;
+  --shift-press: -0.008;
 
   --neutral-50: oklch(96% 0.007 285);
   --neutral-100: oklch(83.3% 0.007 285);

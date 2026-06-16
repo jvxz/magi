@@ -50,7 +50,7 @@ async function handleLogin() {
     type: 'm.login.password',
   })
 
-  return navigateTo('/app')
+  return navigateTo('/app', { external: true })
 }
 
 watch(

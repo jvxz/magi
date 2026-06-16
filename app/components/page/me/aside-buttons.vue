@@ -40,7 +40,7 @@ const toggle = computed({
   </DefineToggle>
 
   <UToggleGroupRoot v-model:model-value="toggle" class="p-2 flex flex-col gap-2 w-full">
-    <Toggle label="Recent rooms" icon="tabler:door" value="index" />
+    <Toggle label="Home" icon="tabler:home" value="index" />
 
     <div class="w-full space-y-2">
       <USeparator />

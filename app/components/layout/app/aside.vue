@@ -4,7 +4,8 @@ const rooms = useRooms('space')
 
 <template>
   <aside class="shrink-0 w-20 top-0 sticky">
-    <LayoutAppAsideDms />
+    <LayoutAppAsideHome />
+
     <USeparator class="mx-auto mb-[2px] w-1/2!" />
     <div class="py-2.5 flex flex-col gap-2.5 items-center">
       <template v-if="rooms">

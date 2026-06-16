@@ -23,7 +23,7 @@ export const interactiveBase = tv({
 })
 
 export const staticBase = tv({
-  base: 'rounded p-6 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+  base: 'rounded p-2.5 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   variants: {
     variant: {
       danger: 'bg-surface border-danger border [&>svg]:text-current',
@@ -41,7 +41,7 @@ export const popoverContentBase = tv({
 })
 
 export const popoverItemBase = tv({
-  base: 'duration-0 font-normal relative flex shadow-none cursor-default items-center p-1 px-2 text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  base: 'rounded-sm duration-0 font-normal relative flex shadow-none cursor-default items-center p-1 px-2 text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   defaultVariants: {
     size: 'default',
     variant: 'ghost',
