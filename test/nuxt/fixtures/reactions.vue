@@ -7,7 +7,11 @@ defineProps<{ event: MatrixEvent; room: Room }>()
 <template>
   <TooltipProvider>
     <PopoverRoot>
-      <PageRoomEventMessage v-if="event && room" :room :event :grouped="false" />
+      <UContextMenuRegionRoot name="event">
+        <UContextMenuRegionRoot name="member">
+          <PageRoomEventMessage v-if="event && room" :room :event :grouped="false" />
+        </UContextMenuRegionRoot>
+      </UContextMenuRegionRoot>
     </PopoverRoot>
   </TooltipProvider>
 </template>
