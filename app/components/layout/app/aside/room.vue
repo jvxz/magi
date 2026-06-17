@@ -11,8 +11,9 @@ const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 
 </script>
 
 <template>
-  <LayoutAppAsideButton class="p-0 size-11 overflow-hidden" :tooltip="room.name" as-child>
+  <LayoutAppAsideButton as-child class="p-0 size-11 overflow-hidden" :tooltip="room.name">
     <NuxtLink
+      active-class="anchor-name-active"
       :to="{
         name: 'space',
         params: {

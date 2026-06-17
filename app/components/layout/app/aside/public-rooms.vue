@@ -5,6 +5,7 @@
         name: 'explore',
         params: { baseUrl: 'matrix.org' },
       }"
+      exact-active-class="anchor-name-active"
     >
       <Icon name="tabler:compass-filled" class="text-foreground size-6" />
     </NuxtLink>
