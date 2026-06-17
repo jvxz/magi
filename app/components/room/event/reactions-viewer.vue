@@ -17,10 +17,10 @@ const reactionKeys = computed(() => reactions.value?.keys().toArray())
 
       <TabsRoot :default-value="reactionKeys?.at(0)" class="flex size-full *:p-2">
         <TabsList class="border-r border-border flex shrink-0 flex-col gap-1 items-center">
-          <PageRoomEventReactionsViewerItem v-for="reaction in reactionKeys" :key="reaction" :reaction />
+          <RoomEventReactionsViewerItem v-for="reaction in reactionKeys" :key="reaction" :reaction />
         </TabsList>
         <TabsContent v-for="reaction in reactionKeys" :key="reaction" :value="reaction" as-child>
-          <PageRoomEventReactionsViewerList :reaction />
+          <RoomEventReactionsViewerList :reaction />
         </TabsContent>
       </TabsRoot>
     </UDialogContent>

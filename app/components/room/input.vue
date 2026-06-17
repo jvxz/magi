@@ -250,7 +250,7 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
       }
     "
   >
-    <PageRoomInputMembersTyping v-if="!open" />
+    <RoomInputMembersTyping v-if="!open" />
 
     <div v-if="open" :class="cn(popoverContentBase(), 'w-full border-border-strong h-full bg-secondary mb-3.5')">
       <VList

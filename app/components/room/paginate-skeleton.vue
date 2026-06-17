@@ -13,10 +13,10 @@ const rows = Array.from({ length: 7 }, () => ({
 <template>
   <div class="pb-4.25" data-ignore>
     <div v-for="(row, idx) in rows" :key="idx" class="pb-4.25">
-      <PageRoomEvent event-type="" room="" class="hover:bg-transparent">
-        <PageRoomEventMessageRoot>
-          <PageRoomEventMessageAvatar :user="undefined" ghost />
-          <PageRoomEventMessageContent class="flex flex-col gap-1.5 translate-y-1">
+      <RoomEvent event-type="" room="" class="hover:bg-transparent">
+        <RoomEventMessageRoot>
+          <RoomEventMessageAvatar :user="undefined" ghost />
+          <RoomEventMessageContent class="flex flex-col gap-1.5 translate-y-1">
             <template #header>
               <USkeleton
                 class="h-4 relative overflow-clip after:bg-white/15 after:size-full after:content-[''] after:absolute"
@@ -27,9 +27,9 @@ const rows = Array.from({ length: 7 }, () => ({
             <div v-for="(line, idx) in row.lines" :key="idx" class="flex gap-1.5">
               <USkeleton v-for="(size, idx) in line" :key="idx" class="h-4" :style="{ width: `${size}px` }" />
             </div>
-          </PageRoomEventMessageContent>
-        </PageRoomEventMessageRoot>
-      </PageRoomEvent>
+          </RoomEventMessageContent>
+        </RoomEventMessageRoot>
+      </RoomEvent>
     </div>
   </div>
 </template>

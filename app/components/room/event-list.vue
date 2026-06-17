@@ -55,7 +55,7 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
         <div ref="wrapper" class="w-full" data-testid="scroll-container-wrapper">
           <div data-ignore class="h-4.25" />
 
-          <PageRoomPaginateSkeleton v-if="!isFullyLoaded" />
+          <RoomPaginateSkeleton v-if="!isFullyLoaded" />
 
           <div
             v-for="(event, idx) in groupedEvents.events"
@@ -63,7 +63,7 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
             :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
-            <PageRoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
+            <RoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
           </div>
           <div data-ignore class="h-12" />
         </div>
@@ -71,13 +71,13 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
 
       <!-- member ctx menu -->
       <UContextMenuRegionContent v-slot="{ payload }" name="member">
-        <PageRoomContextMenuMember v-if="payload" v-bind="payload" />
+        <RoomContextMenuMember v-if="payload" v-bind="payload" />
       </UContextMenuRegionContent>
     </UContextMenuRegionRoot>
 
     <!-- event ctx menu -->
     <UContextMenuRegionContent v-slot="{ payload }" name="event">
-      <PageRoomContextMenuEvent v-if="payload" v-bind="payload" />
+      <RoomContextMenuEvent v-if="payload" v-bind="payload" />
     </UContextMenuRegionContent>
   </UContextMenuRegionRoot>
 </template>

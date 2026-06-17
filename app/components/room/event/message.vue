@@ -57,7 +57,7 @@ const contentProps: PopoverContentProps = {
 </script>
 
 <template>
-  <PageRoomEvent
+  <RoomEvent
     v-if="shouldRender"
     :room="props.room"
     :event="props.event"
@@ -67,7 +67,7 @@ const contentProps: PopoverContentProps = {
     side="right"
     class="py-0.5 w-full"
   >
-    <PageRoomEventMessageRoot class="flex flex-col gap-px">
+    <RoomEventMessageRoot class="flex flex-col gap-px">
       <div v-if="isReplyEvent" class="text-sm flex gap-1.5 items-center relative">
         <Icon name="custom:reply" class="text-muted-foreground shrink-0 h-6 w-12 translate-x-2.5 translate-y-1" />
 
@@ -100,12 +100,12 @@ const contentProps: PopoverContentProps = {
       <div class="flex gap-4">
         <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }">
           <UProfilePopoverTrigger v-if="userId" :content-props :user="userId" as-child>
-            <PageRoomEventMessageAvatar :user="userId" :ghost="grouped" />
+            <RoomEventMessageAvatar :user="userId" :ghost="grouped" />
           </UProfilePopoverTrigger>
         </UContextMenuRegionTrigger>
 
         <div>
-          <PageRoomEventMessageContent>
+          <RoomEventMessageContent>
             <template v-if="!grouped && isDefined(event.getTs()) && userId" #header>
               <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
                 <UProfilePopoverTrigger :content-props :user="userId" as-child>
@@ -118,7 +118,7 @@ const contentProps: PopoverContentProps = {
                 </UProfilePopoverTrigger>
               </UContextMenuRegionTrigger>
 
-              <PageRoomEventMessageTimestamp :datetime="event.getTs()" />
+              <RoomEventMessageTimestamp :datetime="event.getTs()" />
             </template>
 
             <RenderMd
@@ -132,11 +132,11 @@ const contentProps: PopoverContentProps = {
               }"
             />
             <p v-else class="italic">Decrypting message...</p>
-          </PageRoomEventMessageContent>
+          </RoomEventMessageContent>
 
-          <PageRoomEventMessageReactions :room :event />
+          <RoomEventMessageReactions :room :event />
         </div>
       </div>
-    </PageRoomEventMessageRoot>
-  </PageRoomEvent>
+    </RoomEventMessageRoot>
+  </RoomEvent>
 </template>
