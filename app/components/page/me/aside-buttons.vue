@@ -9,10 +9,10 @@ const [DefineToggle, Toggle] = createReusableTemplate<{
 const { state: directRooms } = useDirectRooms()
 
 const route = useRoute()
-const toggleValue = shallowRef('index')
+const toggleValue = shallowRef('home')
 const toggle = computed({
   // fallback to "recent rooms" button if no param is present
-  get: () => ('directRoomId' in route.params ? route.params.directRoomId : 'index'),
+  get: () => ('directRoomId' in route.params ? route.params.directRoomId : 'home'),
   set: (v: string) => (toggleValue.value = v),
 })
 </script>
@@ -22,8 +22,8 @@ const toggle = computed({
     <UToggleGroupItem :key="value" :value="value" class="flex gap-3 w-full items-center h-2.25lh!" as-child>
       <NuxtLink
         :to="
-          value === 'index'
-            ? { name: 'me' }
+          value === 'home'
+            ? { name: 'me-home' }
             : {
                 name: 'direct-room',
                 params: {
@@ -40,7 +40,7 @@ const toggle = computed({
   </DefineToggle>
 
   <UToggleGroupRoot v-model:model-value="toggle" class="p-2 flex flex-col gap-2 w-full">
-    <Toggle label="Home" icon="tabler:home" value="index" />
+    <Toggle label="Home" icon="tabler:home" value="home" />
 
     <div class="w-full space-y-2">
       <USeparator />

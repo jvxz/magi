@@ -31,14 +31,5 @@ definePageMeta({
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
-  <UContextMenuRegionRoot name="homeRoom">
-    <div class="p-3 flex flex-col gap-2">
-      <PageMePinnedRoomsList />
-      <PageMeRecentRoomsList />
-    </div>
-
-    <PageMeContextMenu />
-  </UContextMenuRegionRoot>
-
   <NuxtPage />
 </template>
