@@ -16,9 +16,9 @@ const rooms = useRooms('space')
 
     <div
       aria-hidden="true"
-      class="pointer-events-none duration-100 flex items-center absolute position-anchor-active w-full anchor-top anchor-bottom ease-snappy z-1"
+      class="flex w-full pointer-events-none duration-100 items-center absolute z-1 position-anchor-active anchor-bottom anchor-top ease-snappy"
     >
-      <div class="w-1 rounded-r bg-foreground h-3/4"></div>
+      <div class="rounded-r bg-foreground h-3/4 w-1"></div>
     </div>
   </aside>
 </template>
