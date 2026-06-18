@@ -1,6 +1,21 @@
 <script lang="ts" setup>
 definePageMeta({
   layout: 'app',
+  middleware: (to, from) => {
+    const KEY = 'lastRoute'
+    const lastRoute = localStorage.getItem(KEY)
+
+    if (lastRoute === '/app/me') {
+      localStorage.setItem(KEY, '/app/me/home')
+      return navigateTo('/app/me/home')
+    }
+
+    if (!from.path.startsWith('/app/me') && to.path !== lastRoute) {
+      return navigateTo(lastRoute)
+    }
+
+    localStorage.setItem(KEY, to.path)
+  },
   name: 'me',
 })
 </script>
@@ -18,17 +33,6 @@ definePageMeta({
     <div class="p-1">
       <PageMeAsideButtons />
     </div>
-  </LayoutAppSlot>
-
-  <LayoutAppSlot name="page-header">
-    <LayoutAppPageHeader>
-      <div class="px-6 flex gap-2 h-full items-center">
-        <div class="flex gap-2 items-center">
-          <Icon name="tabler:home" />
-          <p>Home</p>
-        </div>
-      </div>
-    </LayoutAppPageHeader>
   </LayoutAppSlot>
 
   <NuxtPage />

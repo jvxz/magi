@@ -112,25 +112,23 @@ function handlePaginate(dir: 'f' | 'b') {
   </LayoutAppSlot>
 
   <LayoutAppSlot name="page-header">
-    <LayoutAppPageHeader>
-      <div class="px-6 grid grid-cols-2 h-full items-center">
-        <div class="flex gap-2 items-center">
-          <Icon name="tabler:server-2" />
-          <p class="font-medium">
-            {{ baseUrl }}
-          </p>
-          <LazyUSpinner v-if="isFetching" class="size-4" />
-        </div>
+    <LayoutAppPageHeader class="justify-between">
+      <div class="flex gap-2 items-center">
+        <Icon name="tabler:server-2" />
+        <p class="font-medium">
+          {{ baseUrl }}
+        </p>
+        <LazyUSpinner v-if="isFetching" class="size-4" />
+      </div>
 
-        <div>
-          <UInput
-            ref="inputRef"
-            v-model="query"
-            class="w-64 justify-self-end"
-            placeholder="Search"
-            leading-icon="tabler:search"
-          />
-        </div>
+      <div>
+        <UInput
+          ref="inputRef"
+          v-model="query"
+          class="w-64 justify-self-end"
+          placeholder="Search"
+          leading-icon="tabler:search"
+        />
       </div>
     </LayoutAppPageHeader>
   </LayoutAppSlot>

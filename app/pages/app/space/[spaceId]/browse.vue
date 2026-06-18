@@ -16,9 +16,9 @@ provideIntersectionObserver(scrollEl)
 
 <template>
   <LayoutAppSlot name="page-header">
-    <LayoutAppPageHeader class="px-3.5 flex gap-2 items-center">
+    <LayoutAppPageHeader class="flex gap-2 items-center">
       <Icon name="tabler:home" />
-      <p class="text-sm font-medium">Home</p>
+      <span>Home</span>
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 

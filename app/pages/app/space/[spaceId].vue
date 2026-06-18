@@ -83,7 +83,7 @@ const isPaginating = shallowRef(false)
   </LayoutAppSlot>
 
   <LayoutAppSlot v-if="currentRoom" name="page-header">
-    <LayoutAppPageHeader class="px-3.5 flex gap-2 items-center">
+    <LayoutAppPageHeader class="flex gap-2 items-center">
       {{ currentRoom.name }}
       <DevOnly>
         <USpinner v-if="isPaginating" class="size-4" />
