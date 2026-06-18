@@ -1,7 +1,5 @@
 import type { NuxtPage } from 'nuxt/schema'
 
-import { uniq } from 'es-toolkit/array'
-
 import { pwa } from './app/config/pwa'
 import { DEFAULT_COLOR_MODE } from './shared/constants/color-mode'
 import { appMeta } from './shared/utils/constants'
@@ -58,12 +56,6 @@ export default defineNuxtConfig({
           if (page?.path.startsWith('/app')) {
             page.meta ||= {}
             page.meta.requiresAuth = true
-
-            if (!page.meta.middleware) page.meta.middleware = ['auth']
-            else {
-              if (Array.isArray(page.meta.middleware)) page.meta.middleware = uniq([...page.meta.middleware, 'auth'])
-              else page.meta.middleware = uniq([page.meta.middleware, 'auth'])
-            }
           }
           if (page.children) requireAuth(page.children)
         }
