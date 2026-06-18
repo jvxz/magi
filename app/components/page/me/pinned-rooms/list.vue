@@ -29,10 +29,10 @@ const collapsiblesState = useHomeRoomListCollapsibles()
             v-for="pinnedRoom in pinnedRoomEntries"
             :key="pinnedRoom.key"
             region="homeRoom"
-            :value="{ roomId: pinnedRoom.key, spaceId: pinnedRoom.spaceId, type: 'pinned' }"
+            :value="{ type: 'pinned', room: pinnedRoom }"
             as-child
           >
-            <PageMeListCard :room-id="pinnedRoom.key" :space-id="pinnedRoom.spaceId" />
+            <PageMeListCard :payload="pinnedRoom" />
           </UContextMenuRegionTrigger>
         </div>
       </UCollapsibleContent>

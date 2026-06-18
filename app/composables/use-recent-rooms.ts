@@ -1,7 +1,5 @@
-interface RecentRoomEntry {
+type RecentRoomEntry = ContextMenuRegions['homeRoom']['room'] & {
   lastVisited: number
-  isSpace?: boolean
-  parentSpaceId: string
 }
 
 type RecentRoomsState = Map<string, RecentRoomEntry>
@@ -27,12 +25,12 @@ export const useRecentRooms = createGlobalState(() => {
     ),
   )
 
-  function bumpRecentRoom(room: MaybeRoomOrId, opts: { isSpace?: boolean; parentSpaceId: string }) {
-    if (isRoomBlacklisted(room)) return
+  function bumpRecentRoom(payload: ContextMenuRegions['homeRoom']['room']) {
+    if (isRoomBlacklisted(payload.roomId)) return
 
-    recentRooms.value.set(resolveRoomId(room), {
+    recentRooms.value.set(payload.roomId, {
+      ...payload,
       lastVisited: Date.now(),
-      ...opts,
     })
 
     triggerRef(recentRooms)

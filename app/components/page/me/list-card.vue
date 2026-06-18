@@ -1,21 +1,31 @@
 <script lang="ts" setup>
-defineProps<{ roomId: string; spaceId: string }>()
+import type { RouteLocationRaw } from 'vue-router'
+
+const props = defineProps<{ payload: ContextMenuRegions['homeRoom']['room'] }>()
+
+const to = computed<RouteLocationRaw>(() =>
+  props.payload.kind === 'group'
+    ? {
+        name: 'space-room',
+        params: {
+          roomId: props.payload.roomId,
+          spaceId: props.payload.spaceId,
+        },
+      }
+    : {
+        name: 'direct-room',
+        params: {
+          directRoomId: props.payload.roomId,
+        },
+      },
+)
 </script>
 
 <template>
-  <NuxtLink
-    class="group"
-    :to="{
-      name: 'space-room',
-      params: {
-        roomId,
-        spaceId,
-      },
-    }"
-  >
+  <NuxtLink class="group" :to>
     <URoomShowcaseCardRoot
       v-slot="{ room }"
-      :room="roomId"
+      :room="payload.roomId"
       class="cursor-pointer group-data-[context-menu-open]:(border-border-strong bg-hover)"
     >
       <URoomShowcaseCardContent>
@@ -31,6 +41,6 @@ defineProps<{ roomId: string; spaceId: string }>()
           </template>
         </URoomShowcaseCardDescription>
       </URoomShowcaseCardContent>
-    </URoomShowcaseCardRoot>
-  </NuxtLink>
+    </URoomShowcaseCardRoot></NuxtLink
+  >
 </template>

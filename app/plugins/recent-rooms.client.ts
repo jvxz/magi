@@ -2,15 +2,25 @@ export default defineNuxtPlugin({
   parallel: true,
   setup: () => {
     const { bumpRecentRoom } = useRecentRooms()
+    const { client } = useMatrixClient()
 
     const currentRoom = useCurrentRoom()
     const currentSpaceId = useCurrentSpaceId()
     watch(currentRoom, r => {
-      if (r)
-        bumpRecentRoom(r, {
-          isSpace: r.isSpaceRoom(),
-          parentSpaceId: currentSpaceId.value,
-        })
+      if (!r) return
+
+      bumpRecentRoom(
+        isDirectRoom(client.value, r)
+          ? {
+              kind: 'direct',
+              roomId: r.roomId,
+            }
+          : {
+              kind: 'group',
+              roomId: r.roomId,
+              spaceId: currentSpaceId.value!,
+            },
+      )
     })
   },
 })

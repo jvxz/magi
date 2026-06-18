@@ -10,8 +10,17 @@ export interface ContextMenuRegions {
     roomId: string
   }
   homeRoom: {
-    roomId: string
-    spaceId: string
+    room:
+      | {
+          kind: 'direct'
+          roomId: string
+          spaceId?: never
+        }
+      | {
+          kind: 'group'
+          roomId: string
+          spaceId: string
+        }
     type: 'recent' | 'pinned'
   }
 }
