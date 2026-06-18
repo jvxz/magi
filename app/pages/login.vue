@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import { required } from '@regle/rules'
 
-definePageMeta({
-  middleware: 'auth',
-})
-
 const homeservers = ['matrix.org', 'matrix.4d2.org', 'matrix.oblak.be']
 
 const { r$ } = useRegle(
