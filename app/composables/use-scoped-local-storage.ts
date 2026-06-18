@@ -1,5 +1,7 @@
 import type { RemovableRef, UseStorageOptions } from '@vueuse/core'
 
+import { pausableFilter } from '@vueuse/core'
+
 export function useScopedLocalStorage<T>(
   key: MaybeRefOrGetter<string>,
   initialValue: MaybeRefOrGetter<T>,
@@ -11,5 +13,19 @@ export function useScopedLocalStorage<T = unknown>(
   options?: UseStorageOptions<T>,
 ): RemovableRef<T> {
   const { self } = useSelf()
-  return useLocalStorage<T>(() => `${self.value?.userId}:${toValue(key)}`, initialValue, options)
+
+  const filter = pausableFilter(undefined, { initialState: 'paused' })
+
+  const storageRef = useLocalStorage<T>(() => `${self.value?.userId}:${toValue(key)}`, initialValue, {
+    eventFilter: filter.eventFilter,
+    writeDefaults: false,
+    ...options,
+  } as UseStorageOptions<T>)
+
+  watchImmediate(
+    () => !!self.value?.userId,
+    exists => filter[exists ? 'resume' : 'pause'](),
+  )
+
+  return storageRef
 }
