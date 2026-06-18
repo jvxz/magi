@@ -233,6 +233,11 @@ export function isSpaceChild(event: MatrixEvent) {
   return event.getType() === EventType.SpaceChild && Array.isArray(event.getContent().via)
 }
 
+export function isDirectRoom(client: MatrixClient, room: Room) {
+  const directRooms = getDirectRooms(client)
+  return directRooms.includes(room)
+}
+
 export function getRoomTopic(room: Room | undefined) {
   if (!room) return
 
@@ -259,6 +264,10 @@ export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
   if (maybeRoomOrId instanceof Room) return maybeRoomOrId.roomId
 
   return maybeRoomOrId
+}
+
+export function resolveRoomName(room: Room) {
+  return room.name ?? room.roomId
 }
 
 const ROOM_ID_RE = /^!(?<localpart>[^:]+):(?<server_name>.+)$/
