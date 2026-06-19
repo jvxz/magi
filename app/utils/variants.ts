@@ -87,3 +87,12 @@ export const toggleVariants = tv({
 })
 
 export type ToggleVariants = VariantProps<typeof toggleVariants>
+
+export const checkboxVariants = tv({
+  base: [buttonVariants(), 'size-4 aspect-square p-0 rounded-sm'],
+  defaultVariants: {
+    variant: 'soft',
+  },
+})
+
+export type CheckboxVariants = VariantProps<typeof checkboxVariants>
