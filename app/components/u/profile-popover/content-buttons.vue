@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 const props = defineProps<{ userId: string | undefined }>()
 
+const { context } = useProfilePopover()
+
 const { self } = useSelf()
 
 const { copy, isSupported } = useClipboard()
@@ -15,7 +17,12 @@ function handleCopyUserId() {
 
 <template>
   <div class="p-2 space-x-1">
-    <UButton v-if="userId !== self?.userId" size="icon" variant="soft" class="rounded-full border-none">
+    <UButton
+      v-if="context?.from !== 'direct' && userId !== self?.userId"
+      size="icon"
+      variant="soft"
+      class="rounded-full border-none"
+    >
       <Icon name="tabler:message" />
     </UButton>
     <UDropdownMenuRoot>
