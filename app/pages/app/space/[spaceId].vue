@@ -95,15 +95,7 @@ const isPaginating = shallowRef(false)
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
-  <div v-if="currentRoom" class="flex flex-1 size-full">
-    <div class="flex flex-col size-full relative">
-      <PageRoomEventList :room="currentRoom" @is-paginating="isPaginating = $event" />
-      <PageRoomInput />
-    </div>
-
-    <PageRoomMembersList />
-    <PageRoomEventReactionsViewer />
-  </div>
+  <RoomInstance :room="currentRoom" />
 
   <NuxtPage :is-paginating />
 </template>
