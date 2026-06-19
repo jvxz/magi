@@ -46,17 +46,11 @@ const toggle = computed({
       <USeparator />
 
       <div class="group flex items-center justify-between">
-        <span class="text-sm text-muted-foreground/80 font-medium px-2.5 group-hover:text-foreground"
-          >Direct Messages</span
-        >
-        <UTooltipRoot>
-          <UTooltipTrigger as-child>
-            <button class="text-muted-foreground/80 cursor-pointer">
-              <Icon name="tabler:plus" />
-            </button>
-          </UTooltipTrigger>
-          <UTooltipContent> Create Message </UTooltipContent>
-        </UTooltipRoot>
+        <span class="text-sm text-muted-foreground/80 font-medium px-2.5 group-hover:text-foreground">
+          Direct Messages
+        </span>
+
+        <PageMeCreateChat />
       </div>
     </div>
 
