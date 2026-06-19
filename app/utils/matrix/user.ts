@@ -79,3 +79,5 @@ export function parseUserId(userId: string | undefined) {
     name,
   }
 }
+
+export const isUserId = (input: unknown) => isString(input) && USER_ID_REG.test(input)
