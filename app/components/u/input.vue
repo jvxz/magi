@@ -18,6 +18,7 @@ export type UInputProps = PrimitiveProps & {
   disabled?: boolean
   trailingIcon?: string
   type?: InputTypeHTMLAttribute
+  disablePw?: boolean
 }
 </script>
 
@@ -52,6 +53,7 @@ const { forwardRef } = useForwardExpose()
       v-bind="$attrs"
       :ref="forwardRef"
       v-model="modelValue"
+      v-disable-pw="disablePw"
       :type="$props.type"
       :class="cn(inputStyles(), props.leadingIcon && 'ps-7', props.trailingIcon && 'pe-7', $props.classes?.input)"
     />
