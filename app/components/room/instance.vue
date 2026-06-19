@@ -3,17 +3,17 @@ const props = withDefaults(defineProps<{ withMembersList?: boolean; room: MaybeR
   withMembersList: true,
 })
 
-const room = useRoom(props.room)
+const room = useRoom(() => props.room)
 </script>
 
 <template>
   <div v-if="room" class="flex flex-1 size-full">
     <div class="flex flex-col size-full relative">
-      <RoomEventList :room="room" />
+      <RoomEventList :room />
       <RoomInput />
     </div>
 
-    <RoomMembersList />
+    <RoomMembersList v-if="withMembersList" />
     <RoomEventReactionsViewer />
   </div>
 </template>

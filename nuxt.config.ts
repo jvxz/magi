@@ -18,11 +18,17 @@ export default defineNuxtConfig({
     fallback: DEFAULT_COLOR_MODE,
     preference: DEFAULT_COLOR_MODE,
     storage: 'cookie',
+    storageKey: 'theme',
   },
 
   compatibilityDate: '2025-07-15',
 
-  css: ['~/assets/css/globals.css', '~/assets/css/transitions.css', '~/assets/css/palettes/dark.css'],
+  css: [
+    '~/assets/css/globals.css',
+    '~/assets/css/transitions.css',
+    '~/assets/css/palettes/dark.css',
+    '~/assets/css/palettes/darker.css',
+  ],
 
   devtools: { enabled: true },
 
