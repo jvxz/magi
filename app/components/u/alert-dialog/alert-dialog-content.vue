@@ -15,16 +15,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 <template>
   <AlertDialogPortal>
     <AlertDialogOverlay :class="cn(overlayStyles, props.class)" />
-    <AlertDialogContent
-      v-bind="forwarded"
-      :class="
-        cn(
-          staticBase({ variant: 'default' }),
-          'fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-2 sm:max-w-lg data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=closed]:animate-out data-[state=open]:zoom-in-95',
-          props.class,
-        )
-      "
-    >
+    <AlertDialogContent v-bind="forwarded" :class="cn(dialogStyles(), props.class)">
       <slot />
     </AlertDialogContent>
   </AlertDialogPortal>
