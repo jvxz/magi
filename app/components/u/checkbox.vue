@@ -14,7 +14,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
   <CheckboxRoot v-bind="forwarded" :class="cn(checkboxVariants(), $props.class)" data-slot="checkbox">
     <CheckboxIndicator
       data-slot="checkbox-indicator"
-      class="text-foreground absolute size-full flex items-center justify-center"
+      class="text-foreground flex size-full items-center justify-center absolute"
     >
       <Icon name="tabler:check" class="size-4/5" />
     </CheckboxIndicator>
