@@ -2,7 +2,7 @@
 import type { PrimitiveProps } from 'reka-ui'
 
 export interface FormPrimitiveProps extends PrimitiveProps {
-  label: string
+  label?: string
   ui?: DefineClasses<'container' | 'label' | 'error' | 'footer'>
   required?: boolean
   error?: string | string[] | undefined
@@ -25,7 +25,7 @@ const errorMessage = computed(() => {
   <Primitive v-bind="$props" :class="cn('space-y-1.5', $props.ui?.container)">
     <template v-if="!$slots.label && !$slots.error">
       <div class="flex size-fit w-full items-center justify-between">
-        <ULabel :for="id" :class="cn('text-sm font-medium gap-1', $props.ui?.label)">
+        <ULabel v-if="label" :for="id" :class="cn('text-sm font-medium gap-1', $props.ui?.label)">
           {{ label }}
           <span v-if="required" class="text-danger">*</span>
         </ULabel>
