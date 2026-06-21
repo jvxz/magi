@@ -34,7 +34,7 @@ const user = useUser(() => room.value?.getMembers().filter(m => m.userId !== sel
       >
         <UButton
           variant="link"
-          class="font-normal text-base gap-1 items-center context-menu-open:underline data-[state=open]:no-underline data-[popover-open]:underline!"
+          class="text-base font-normal gap-1 items-center context-menu-open:underline data-[state=open]:no-underline data-[popover-open]:underline!"
         >
           <Icon name="tabler:at" class="text-muted-foreground" />
           <span> {{ room ? resolveRoomName(room) : 'Unknown room' }}</span>

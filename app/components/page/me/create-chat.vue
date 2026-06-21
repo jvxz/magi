@@ -32,7 +32,7 @@ const { executeImmediate: handleCreate, isLoading: isCreating } = useAsyncState(
     <UTooltipRoot>
       <UDialogTrigger as-child>
         <UTooltipTrigger as-child>
-          <button class="text-muted-foreground cursor-pointer flex items-center justify-center">
+          <button class="text-muted-foreground flex cursor-pointer items-center justify-center">
             <Icon name="tabler:plus" />
           </button>
         </UTooltipTrigger>
