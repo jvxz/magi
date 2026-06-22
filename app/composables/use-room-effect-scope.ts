@@ -47,7 +47,7 @@ function acquire(roomId: string) {
 
     const instance = scope.run(() => {
       const { client } = useMatrixClient()
-      const { onRoom } = useMatrixHooks()
+      const { onRoom, onEvent } = useMatrixHooks()
 
       const getRoom = () => {
         const real = client.value.getRoom?.(key)
@@ -71,6 +71,9 @@ function acquire(roomId: string) {
       }, 50)
 
       onRoom(refresh)
+      onEvent(e => {
+        if (e.getRoomId() === roomId) refresh()
+      })
 
       const accountDataHook = createEventHook<Parameters<RoomHooks['onAccountData']>>()
       const currentStateUpdatedHook = createEventHook<Parameters<RoomHooks['onCurrentStateUpdated']>>()
