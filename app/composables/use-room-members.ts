@@ -2,12 +2,20 @@ import type { RoomMember } from 'matrix-js-sdk'
 
 import { EventType } from 'matrix-js-sdk'
 
-export function useRoomMembers(maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
+export function useRoomMembers(
+  maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>,
+  excludeSelf?: MaybeRefOrGetter<boolean>,
+) {
   const room = useRoom(maybeRoomOrId)
+  const excludeSelfRef = toRef(excludeSelf)
+  const { self } = useSelf()
   const members = shallowRef<RoomMember[]>([])
   const isLoaded = ref(false)
 
-  const setMembers = debounce((newMembers: RoomMember[]) => (members.value = newMembers), 0)
+  const setMembers = debounce((newMembers: RoomMember[]) => {
+    if (excludeSelfRef.value) members.value = [...newMembers].filter(m => m.userId !== self.value?.userId)
+    else members.value = newMembers
+  }, 0)
 
   let loadToken = 0
   watch(
