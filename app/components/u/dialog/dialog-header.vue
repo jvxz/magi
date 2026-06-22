@@ -1,23 +1,27 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-withDefaults(defineProps<PrimitiveProps & { withClose?: boolean }>(), { as: 'header', withClose: true })
+const props = withDefaults(
+  defineProps<PrimitiveProps & { class?: string; withClose?: boolean; closeDisabled?: boolean }>(),
+  { as: 'header', withClose: true },
+)
+
+const delegated = reactiveOmit(props, ['closeDisabled', 'withClose', 'class'])
 </script>
 
 <template>
-  <Primitive v-bind="$props" :class="cn('gap-1 mb-4 text-center sm:text-left flex flex-col', $attrs.class)">
+  <Primitive v-bind="delegated" :class="cn('gap-1 mb-4 text-center sm:text-left flex flex-col', props.class)">
     <slot />
-    <DialogClose
-      v-if="withClose"
-      :class="
-        cn(
-          interactiveBase({ variant: 'ghost', size: 'icon' }),
-          ' absolute right-3.5 top-3.5 inline-flex size-8 items-center justify-center opacity-70',
-        )
-      "
-    >
-      <Icon name="tabler:x" class="size-5" />
-      <VisuallyHidden>Close</VisuallyHidden>
+    <DialogClose v-if="withClose" as-child>
+      <UButton
+        variant="ghost"
+        size="icon"
+        class="absolute right-3.5 top-3.5 inline-flex size-8 items-center justify-center opacity-70"
+        :disabled="closeDisabled"
+      >
+        <Icon name="tabler:x" class="size-5" />
+        <VisuallyHidden>Close</VisuallyHidden>
+      </UButton>
     </DialogClose>
   </Primitive>
 </template>
