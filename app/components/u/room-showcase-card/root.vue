@@ -21,6 +21,8 @@ const room = useRoom(() => props.room)
 
 const avatarProps = computed(() => (props.manualAvatarSrc ? { src: props.manualAvatarSrc } : { room: room.value }))
 
+const isJoined = useRoomIsJoined(room)
+
 const delegated = reactiveOmit(props, 'class', 'room', 'withAvatar', 'manualAvatarSrc')
 const forwarded = useForwardProps(delegated)
 </script>
@@ -35,7 +37,10 @@ const forwarded = useForwardProps(delegated)
       )
     "
   >
-    <MatrixAvatar v-if="withAvatar" v-bind="avatarProps" square class="rounded-sm shrink-0 w-fit aspect-square" />
+    <template v-if="withAvatar">
+      <MatrixAvatar v-if="isJoined" v-bind="avatarProps" square class="rounded-sm shrink-0 w-fit aspect-square" />
+      <div v-else class="rounded-sm shrink-0 w-fit aspect-square border border-border-strong border-dashed" />
+    </template>
     <slot :room />
   </UCard>
 </template>
