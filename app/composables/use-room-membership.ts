@@ -1,5 +1,8 @@
 import type { KnownMembership } from 'matrix-js-sdk'
 
+/**
+ * membership is `undefined` if user has never joined the room
+ */
 export function useRoomMembership(
   maybeRoomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>,
   maybeUserOrId: MaybeRefOrGetter<MaybeUserOrId | undefined>,
@@ -17,7 +20,9 @@ export function useRoomMembership(
   watch([room, user], () => (membership.value = getMembership()))
 
   function getMembership() {
-    return user.value?.userId ? (room.value?.getMember(user.value?.userId)?.membership as KnownMembership) : undefined
+    return user.value?.userId
+      ? (room.value?.getMember(user.value?.userId)?.membership as KnownMembership | undefined)
+      : undefined
   }
 
   return membership
