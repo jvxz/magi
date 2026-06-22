@@ -19,28 +19,42 @@ const to = computed<RouteLocationRaw>(() =>
         },
       },
 )
+
+const room = useRoom(() => props.payload.roomId)
+const isJoined = useRoomIsJoined(() => props.payload.roomId)
 </script>
 
 <template>
   <NuxtLink class="group" :to>
     <URoomShowcaseCardRoot
-      v-slot="{ room }"
       :room="payload.roomId"
       class="cursor-pointer group-data-[context-menu-open]:(border-border-strong bg-hover)"
     >
       <URoomShowcaseCardContent>
-        <URoomShowcaseCardTitle class="flex items-center">
-          <span>{{ room?.name }}</span>
+        <URoomShowcaseCardTitle
+          class="flex items-center"
+          :class="{
+            'text-muted-foreground': !isJoined,
+          }"
+        >
+          <span>{{ room?.name ?? payload.roomId }}</span>
         </URoomShowcaseCardTitle>
 
         <URoomShowcaseCardDescription>
-          {{ room?.getJoinedMemberCount() }} members
-          <template v-if="getRoomTopic(room)">
-            <UInlineSeparator />
-            <span> {{ getRoomTopic(room) }}</span>
+          <template v-if="isJoined">
+            <span
+              >{{ room?.getJoinedMemberCount() }}
+              {{ handlePlural(room?.getJoinedMemberCount() ?? 0, 'members', 'member') }}</span
+            >
+            <template v-if="getRoomTopic(room)">
+              <UInlineSeparator />
+              <span> {{ getRoomTopic(room) }}</span>
+            </template>
           </template>
+
+          <span v-else class="italic">Not joined</span>
         </URoomShowcaseCardDescription>
       </URoomShowcaseCardContent>
-    </URoomShowcaseCardRoot></NuxtLink
-  >
+    </URoomShowcaseCardRoot>
+  </NuxtLink>
 </template>
