@@ -11,6 +11,7 @@ const roomEvent = createEventHook<Parameters<EmitterListener<ClientEvent.Room | 
 const roomStateEvent = createEventHook<Parameters<EmitterListener<RoomStateEvent.Update>>>()
 const roomMembershipEvent = createEventHook<Parameters<EmitterListener<RoomMemberEvent.Membership>>>()
 const eventHook = createEventHook<Parameters<EmitterListener<ClientEvent.Event>>>()
+const accountDataHook = createEventHook<Parameters<EmitterListener<ClientEvent.Event>>>()
 export const roomMemberTypingHook = createEventHook<Parameters<EmitterListener<RoomMemberEvent.Typing>>>()
 
 export const useMatrixHooks = createSharedComposable(() => {
@@ -27,11 +28,13 @@ export const useMatrixHooks = createSharedComposable(() => {
       bindListener(RoomMemberEvent.Typing, roomMemberTypingHook.trigger, { current, prev })
       bindListener(RoomMemberEvent.Membership, roomMembershipEvent.trigger, { current, prev })
       bindListener(MatrixEventEvent.Decrypted, decryptedHook.trigger, { current, prev })
+      bindListener(ClientEvent.AccountData, accountDataHook.trigger, { current, prev })
     },
     { immediate: true },
   )
 
   return {
+    onAccountData: accountDataHook.on,
     onDecrypted: decryptedHook.on,
     onEvent: eventHook.on,
     onRoom: roomEvent.on,
