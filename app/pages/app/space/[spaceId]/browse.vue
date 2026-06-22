@@ -5,7 +5,7 @@ definePageMeta({
 })
 
 const currentSpace = useCurrentSpace()
-const { isLoading, orphanedRooms, subspaces, suggestedRooms } = useSpaceHierarchy(
+const { conversationRooms, isLoading, subspaces, suggestedRooms } = useSpaceHierarchy(
   () => currentSpace.value?.roomId,
   true,
 )
@@ -33,7 +33,7 @@ provideIntersectionObserver(scrollEl)
       <div class="flex flex-col gap-2 *:w-full">
         <PageRoomBrowseSection title="Rooms" :default-open="true" class="h-fit">
           <template v-if="!isLoading">
-            <VisibleLazy v-for="room in orphanedRooms.values()" :key="room.room_id" :height="72" use-injection>
+            <VisibleLazy v-for="room in conversationRooms.values()" :key="room.room_id" :height="72" use-injection>
               <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
             </VisibleLazy>
           </template>
