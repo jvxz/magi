@@ -1,4 +1,4 @@
-import type { MatrixEvent, Room } from 'matrix-js-sdk'
+import type { InviteOpts, MatrixEvent, Room } from 'matrix-js-sdk'
 import type { RoomMessageEventContent } from 'matrix-js-sdk/lib/types'
 
 import { EventStatus, EventType, RelationType, RoomEvent } from 'matrix-js-sdk'
@@ -83,7 +83,25 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
     },
   })
 
+  const leave = useMutation({
+    mutationFn: async () => {
+      if (!room.value?.roomId) return
+      return client.value.leave(room.value.roomId)
+    },
+    mutationKey: ['leaveRoom'],
+  })
+
+  const invite = useMutation({
+    mutationFn: async ({ userId, opts }: { userId: string; opts?: InviteOpts }) => {
+      if (!room.value?.roomId) return
+      return client.value.invite(room.value.roomId, userId, opts)
+    },
+    mutationKey: ['leaveRoom'],
+  })
+
   return {
+    invite,
+    leave,
     message,
     react,
     typing,
