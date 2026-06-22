@@ -29,7 +29,7 @@ async function fetchHierarchyDeep(client: MatrixClient, spaceId: string, signal:
   return { rooms: allRooms }
 }
 
-const isOrphanedRoom = (type: string | undefined) =>
+const isConversationRoom = (type: string | undefined) =>
   type !== RoomType.Space && type !== RoomType.ElementVideo && type !== RoomType.UnstableCall
 
 export function useSpaceHierarchy(
@@ -69,12 +69,12 @@ export function useSpaceHierarchy(
       ),
   )
 
-  const orphanedRooms = computed(() => {
+  const conversationRooms = computed(() => {
     const map = new Map<string, IHierarchyRoom>()
     if (!rooms.value) return map
 
     for (const room of rooms.value.values()) {
-      if (!isOrphanedRoom(room.room_type)) continue
+      if (!isConversationRoom(room.room_type)) continue
 
       map.set(room.room_id, room)
     }
@@ -104,7 +104,7 @@ export function useSpaceHierarchy(
               break
             }
 
-            if (!isOrphanedRoom(childRoom.getType())) count++
+            if (!isConversationRoom(childRoom.getType())) count++
           }
 
           if (allKnown) localCount = count
@@ -123,7 +123,7 @@ export function useSpaceHierarchy(
 
             if (isDefined(d._localCount)) return d._localCount
 
-            return d.rooms.filter(r => r.room_id !== space.room_id && isOrphanedRoom(r.room_type)).length
+            return d.rooms.filter(r => r.room_id !== space.room_id && isConversationRoom(r.room_type)).length
           },
         }
       }),
@@ -144,7 +144,7 @@ export function useSpaceHierarchy(
 
   return {
     ...q,
-    orphanedRooms,
+    conversationRooms,
     rooms,
     subspaces,
     suggestedRooms,
