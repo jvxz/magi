@@ -104,7 +104,7 @@ export function useSpaceHierarchy(
               break
             }
 
-            if (!isConversationRoom(childRoom.getType())) count++
+            if (isConversationRoom(childRoom.getType())) count++
           }
 
           if (allKnown) localCount = count
