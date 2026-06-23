@@ -19,6 +19,13 @@ const { execute: leaveRoom, pending: isRemoving } = useAsyncData(async () => {
     name: 'me-home',
   })
 })
+
+const targetRoomMemberCount = useRoomMemberCount(targetRoom)
+const dialogDescription = computed(() =>
+  targetRoomMemberCount.value === 1
+    ? 'You are the only remaining member of this room. Nobody will be able to access this room again.'
+    : 'You will need an invite to join this room again.',
+)
 </script>
 
 <template>
@@ -33,7 +40,13 @@ const { execute: leaveRoom, pending: isRemoving } = useAsyncData(async () => {
     <UAlertDialogContent>
       <UAlertDialogHeader>
         <UAlertDialogTitle> Are you sure? </UAlertDialogTitle>
-        <UAlertDialogDescription> You will need an invite to join this room again. </UAlertDialogDescription>
+        <UAlertDialogDescription
+          :class="{
+            'text-danger': targetRoomMemberCount === 1,
+          }"
+        >
+          {{ dialogDescription }}
+        </UAlertDialogDescription>
       </UAlertDialogHeader>
 
       <UAlertDialogFooter>
@@ -50,21 +63,21 @@ const { execute: leaveRoom, pending: isRemoving } = useAsyncData(async () => {
       @select="
         () => {
           targetRoomId = payload?.roomId
-          leaveDialogOpen = true
-        }
-      "
-    >
-      Leave room
-    </UContextMenuItem>
-    <UContextMenuItem
-      @select="
-        () => {
-          targetRoomId = payload?.roomId
           inviteDialogOpen = true
         }
       "
     >
       Invite
+    </UContextMenuItem>
+    <UContextMenuItem
+      @select="
+        () => {
+          targetRoomId = payload?.roomId
+          leaveDialogOpen = true
+        }
+      "
+    >
+      Leave room
     </UContextMenuItem>
   </UContextMenuRegionContent>
 </template>
