@@ -63,9 +63,9 @@ onStartTyping(() => inputRef.value?.$el?.focus())
 
       <UAlertDialogFooter class="flex w-full items-center">
         <Transition name="zoom">
-          <p v-if="r$.homeserver.$error" class="text-sm text-danger mr-auto">
+          <UAlertDialogAnnotation v-if="r$.homeserver.$error" class="text-danger">
             {{ r$.homeserver.$errors[0] }}
-          </p>
+          </UAlertDialogAnnotation>
         </Transition>
 
         <div class="flex gap-2 items-center">
