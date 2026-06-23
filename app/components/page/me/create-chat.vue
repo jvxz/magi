@@ -1,34 +1,59 @@
 <script lang="ts" setup>
-import { required } from '@regle/rules'
+import { Preset, Visibility } from 'matrix-js-sdk'
 
 const open = shallowRef(false)
 
 const { r$ } = useRegle(
   { encrypt: false, userId: '' },
   {
-    userId: {
-      required: withMessage(required, 'User ID is required'),
-      validId: withMessage(isUserId, 'Invalid user ID'),
-    },
+    userId: regleUserIdDefs,
   },
 )
 
 whenever(() => open.value, r$.$reset)
 
+const { createRoom } = useClientActions()
+const { addRoomToDirectList } = useDirectRooms()
 const { executeImmediate: handleCreate, isLoading: isCreating } = useAsyncState(async () => {
   r$.$touch()
 
   const { valid } = await r$.$validate()
   if (!valid) return
 
-  await delay(1000)
+  const { userId } = r$.$value
+
+  const { room_id } = await createRoom.mutateAsync({
+    invite: [userId],
+    is_direct: true,
+    preset: Preset.PrivateChat,
+    visibility: Visibility.Private,
+  })
 
   open.value = false
+
+  await addRoomToDirectList(room_id, userId)
+
+  return navigateTo({
+    name: 'direct-room',
+    params: {
+      directRoomId: room_id,
+    },
+  })
 }, undefined)
+
+const inputEl = useTemplateRef('inputEl')
 </script>
 
 <template>
-  <UDialogRoot v-model:open="open">
+  <UDialogRoot
+    :open
+    @update:open="
+      e => {
+        if (isCreating) return
+        open = e
+      }
+    "
+  >
     <UTooltipRoot>
       <UDialogTrigger as-child>
         <UTooltipTrigger as-child>
@@ -40,8 +65,8 @@ const { executeImmediate: handleCreate, isLoading: isCreating } = useAsyncState(
       <UTooltipContent> Create chat </UTooltipContent>
     </UTooltipRoot>
 
-    <UDialogContent>
-      <UDialogHeader>
+    <UDialogContent @open-auto-focus.prevent="inputEl?.$el.focus()">
+      <UDialogHeader :close-disabled="isCreating">
         <UDialogTitle> Create chat </UDialogTitle>
         <UDialogDescription> Enter a user's ID to create a chat with them </UDialogDescription>
       </UDialogHeader>
@@ -49,6 +74,7 @@ const { executeImmediate: handleCreate, isLoading: isCreating } = useAsyncState(
       <form class="flex flex-col gap-2" @submit.prevent="handleCreate">
         <FormInput
           v-model="r$.userId.$value"
+          ref="inputEl"
           label="User ID"
           placeholder="@alice:matrix.org"
           :error="r$.userId.$errors"
@@ -71,7 +97,7 @@ const { executeImmediate: handleCreate, isLoading: isCreating } = useAsyncState(
       </form>
 
       <UDialogFooter>
-        <UDialogClose variant="ghost"> Cancel </UDialogClose>
+        <UDialogClose :disabled="isCreating" variant="ghost"> Cancel </UDialogClose>
         <UButton :disabled="r$.$invalid" :is-loading="isCreating" @click="handleCreate">
           <span>Create</span>
         </UButton>
