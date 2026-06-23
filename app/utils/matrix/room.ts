@@ -4,7 +4,6 @@ import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 
 import { $Error } from '#shared/utils/$error'
-import { objectEntries } from '#shared/utils/object'
 
 import type { MaybeRoomOrId, MaybeUserOrId } from './types'
 
@@ -23,6 +22,7 @@ interface GetAvatarUrlOpts {
   room: Room
   useAuthentication?: boolean
   size?: 32 | 96
+  mxc?: boolean
 }
 export interface RoomsWithBatchToken {
   nextBatchToken?: string
@@ -59,18 +59,21 @@ export function getRoomAvatarUrl({
   room,
   size = 32,
   useAuthentication = false,
+  mxc = false,
 }: GetAvatarUrlOpts): string | undefined {
   const mxcUrl = room.getMxcAvatarUrl()
   return mxcUrl
-    ? (mxcToHttps(mxcUrl, {
-        allowDirectLinks: false,
-        allowRedirects: true,
-        baseUrl: client.getHomeserverUrl(),
-        height: size,
-        resizeMethod: 'crop',
-        useAuthentication,
-        width: size,
-      }) ?? undefined)
+    ? mxc
+      ? mxcUrl
+      : (mxcToHttps(mxcUrl, {
+          allowDirectLinks: false,
+          allowRedirects: true,
+          baseUrl: client.getHomeserverUrl(),
+          height: size,
+          resizeMethod: 'crop',
+          useAuthentication,
+          width: size,
+        }) ?? undefined)
     : undefined
 }
 
@@ -79,20 +82,23 @@ export function getDirectRoomAvatarUrl({
   room,
   size = 32,
   useAuthentication = false,
+  mxc = false,
 }: GetAvatarUrlOpts): string | undefined {
   const mxcUrl = room.getAvatarFallbackMember()?.getMxcAvatarUrl()
 
-  if (!mxcUrl) return getRoomAvatarUrl({ client, room, size, useAuthentication })
+  if (!mxcUrl) return getRoomAvatarUrl({ client, mxc, room, size, useAuthentication })
 
-  return mxcToHttps(mxcUrl, {
-    allowDirectLinks: false,
-    allowRedirects: true,
-    baseUrl: client.getHomeserverUrl(),
-    height: size,
-    resizeMethod: 'crop',
-    useAuthentication,
-    width: size,
-  })
+  return mxc
+    ? mxcUrl
+    : mxcToHttps(mxcUrl, {
+        allowDirectLinks: false,
+        allowRedirects: true,
+        baseUrl: client.getHomeserverUrl(),
+        height: size,
+        resizeMethod: 'crop',
+        useAuthentication,
+        width: size,
+      })
 }
 
 export async function getSpaceRooms(
