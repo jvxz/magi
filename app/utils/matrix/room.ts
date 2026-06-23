@@ -38,23 +38,16 @@ export function getRoom(client: MatrixClient, roomId: Room['roomId'], allowedIds
 }
 
 export function getDirectRooms(client: MatrixClient) {
-  const data = client.getAccountData(EventType.Direct) as MDirect | undefined
-  if (!data) return []
+  const directsEvent = client.getAccountData(EventType.Direct) as MDirect | undefined
+  const directs = directsEvent?.getContent<MDirect['event']['content']>()
+  if (!directs) return []
 
-  const { event } = data
-
-  const directRooms: Room[] = []
-  for (const [, roomIds] of objectEntries(event.content)) {
-    const roomId = roomIds[0]
-    if (!roomIds.length || !roomId) continue
-
-    const room = client.getRoom(roomId)
-    if (!room) continue
-
-    directRooms.push(room)
+  const structuredDirects: { userId: string; roomId: string }[] = []
+  for (const [userId, roomIds] of objectEntries(directs)) {
+    roomIds.forEach(roomId => structuredDirects.push({ roomId, userId }))
   }
 
-  return directRooms
+  return structuredDirects
 }
 
 export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] {
@@ -234,8 +227,7 @@ export function isSpaceChild(event: MatrixEvent) {
 }
 
 export function isDirectRoom(client: MatrixClient, room: Room) {
-  const directRooms = getDirectRooms(client)
-  return directRooms.includes(room)
+  return getDirectRooms(client).some(direct => direct.roomId === room.roomId)
 }
 
 export function getRoomTopic(room: Room | undefined) {
