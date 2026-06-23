@@ -28,6 +28,12 @@ export const AVATAR_IMAGE_SIZE_VALUES = {
 
 export const TYPING_TIMEOUT_MS = 4000
 
+export const ASIDE_DISPLAY_MODES = {
+  all: 'All rooms',
+  direct: 'Direct rooms',
+  orphan: 'Orphan rooms',
+}
+
 export const MATRIX = {
   MESSAGING: {
     ALLOWED_ATTRS: [
