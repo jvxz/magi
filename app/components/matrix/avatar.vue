@@ -28,8 +28,14 @@ const alt = computed(() => {
   return ''
 })
 
+const { client } = useMatrixClient()
 const roomOrUserUrl = computed(() => {
-  if (room.value) return room.value.getMxcAvatarUrl() ?? undefined
+  if (room.value)
+    return room.value
+      ? isDirectRoom(client.value, room.value)
+        ? getDirectRoomAvatarUrl({ client: client.value, mxc: true, room: room.value })
+        : (room.value.getMxcAvatarUrl() ?? undefined)
+      : undefined
 
   if (userProfile.value) return userProfile.value.avatar_url
 
