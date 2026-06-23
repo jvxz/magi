@@ -64,29 +64,29 @@ const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(
         <UDialogTitle class="truncate"> Invite to "{{ resolveRoomName(room) }}" </UDialogTitle>
       </UDialogHeader>
 
-      <form @submit.prevent="handleInvite" class="flex flex-col gap-2">
+      <form class="flex flex-col gap-2" @submit.prevent="handleInvite">
         <FormInput
-          disable-pw
           ref="inputEl"
+          v-model:model-value="r$.userId.$value"
+          disable-pw
           label="User ID"
           :error="r$.userId.$errors"
-          v-model:model-value="r$.userId.$value"
           placeholder="@alice:matrix.org"
           required
         />
 
         <FormInput
+          v-model:model-value="r$.reason.$value"
           disable-pw
           label="Reason"
           :error="r$.reason.$errors"
-          v-model:model-value="r$.reason.$value"
           textarea
         />
       </form>
 
       <UDialogFooter>
         <UDialogClose :disabled="isInviting" variant="ghost"> Close </UDialogClose>
-        <UButton :is-loading="isInviting" @click="handleInvite" :disabled="r$.$invalid"> <span>Invite</span> </UButton>
+        <UButton :is-loading="isInviting" :disabled="r$.$invalid" @click="handleInvite"> <span>Invite</span> </UButton>
       </UDialogFooter>
     </UDialogContent>
   </UDialogRoot>

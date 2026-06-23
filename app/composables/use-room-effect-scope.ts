@@ -47,7 +47,7 @@ function acquire(roomId: string) {
 
     const instance = scope.run(() => {
       const { client } = useMatrixClient()
-      const { onRoom, onEvent } = useMatrixHooks()
+      const { onEvent, onRoom } = useMatrixHooks()
 
       const getRoom = () => {
         const real = client.value.getRoom?.(key)

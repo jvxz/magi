@@ -16,7 +16,7 @@ const delegated = reactiveOmit(props, ['closeDisabled', 'withClose', 'class'])
       <UButton
         variant="ghost"
         size="icon"
-        class="absolute right-3.5 top-3.5 inline-flex size-8 items-center justify-center opacity-70"
+        class="opacity-70 inline-flex size-8 items-center right-3.5 top-3.5 justify-center absolute"
         :disabled="closeDisabled"
       >
         <Icon name="tabler:x" class="size-5" />

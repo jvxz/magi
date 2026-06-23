@@ -56,10 +56,10 @@ export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] 
 
 export function getRoomAvatarUrl({
   client,
+  mxc = false,
   room,
   size = 32,
   useAuthentication = false,
-  mxc = false,
 }: GetAvatarUrlOpts): string | undefined {
   const mxcUrl = room.getMxcAvatarUrl()
   return mxcUrl
@@ -79,10 +79,10 @@ export function getRoomAvatarUrl({
 
 export function getDirectRoomAvatarUrl({
   client,
+  mxc = false,
   room,
   size = 32,
   useAuthentication = false,
-  mxc = false,
 }: GetAvatarUrlOpts): string | undefined {
   const mxcUrl = room.getAvatarFallbackMember()?.getMxcAvatarUrl()
 

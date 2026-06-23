@@ -34,7 +34,7 @@ export default defineNuxtPlugin(() => {
     dump: (type?: string) =>
       // oxlint-disable-next-line no-console
       console.table(
-        (type ? log.filter(e => e.type === type) : log).map(({ t, type, sender, room }) => ({
+        (type ? log.filter(e => e.type === type) : log).map(({ room, sender, t, type }) => ({
           room,
           sender,
           time: new Date(t),

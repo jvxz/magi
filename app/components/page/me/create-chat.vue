@@ -73,8 +73,8 @@ const inputEl = useTemplateRef('inputEl')
 
       <form class="flex flex-col gap-2" @submit.prevent="handleCreate">
         <FormInput
-          v-model="r$.userId.$value"
           ref="inputEl"
+          v-model="r$.userId.$value"
           label="User ID"
           placeholder="@alice:matrix.org"
           :error="r$.userId.$errors"

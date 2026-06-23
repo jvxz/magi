@@ -92,7 +92,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
   })
 
   const invite = useMutation({
-    mutationFn: async ({ userId, opts }: { userId: string; opts?: InviteOpts }) => {
+    mutationFn: async ({ opts, userId }: { userId: string; opts?: InviteOpts }) => {
       if (!room.value?.roomId) return
       return client.value.invite(room.value.roomId, userId, opts)
     },

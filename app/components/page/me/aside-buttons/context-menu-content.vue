@@ -38,14 +38,14 @@ const { execute: leaveRoom, pending: isRemoving } = useAsyncData(async () => {
 
       <UAlertDialogFooter>
         <UAlertDialogCancel> Cancel </UAlertDialogCancel>
-        <UButton @click="leaveRoom" :is-loading="isRemoving"> <span>Leave</span> </UButton>
+        <UButton :is-loading="isRemoving" @click="leaveRoom"> <span>Leave</span> </UButton>
       </UAlertDialogFooter>
     </UAlertDialogContent>
   </UAlertDialogRoot>
 
   <DialogInvite v-model:open="inviteDialogOpen" :room="targetRoom" />
 
-  <UContextMenuRegionContent name="directRoom" v-slot="{ payload }">
+  <UContextMenuRegionContent v-slot="{ payload }" name="directRoom">
     <UContextMenuItem
       @select="
         () => {

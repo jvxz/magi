@@ -39,7 +39,7 @@ const forwarded = useForwardProps(delegated)
   >
     <template v-if="withAvatar">
       <MatrixAvatar v-if="isJoined" v-bind="avatarProps" square class="rounded-sm shrink-0 w-fit aspect-square" />
-      <div v-else class="rounded-sm shrink-0 w-fit aspect-square border border-border-strong border-dashed" />
+      <div v-else class="border border-border-strong rounded-sm border-dashed shrink-0 w-fit aspect-square" />
     </template>
     <slot :room />
   </UCard>
