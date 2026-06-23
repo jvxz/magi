@@ -1,6 +1,5 @@
-import type { RoomMember, User } from 'matrix-js-sdk'
-
 import { assert, merge } from 'es-toolkit'
+import { type Room, type RoomMember, type User } from 'matrix-js-sdk'
 
 import { AVATAR_IMAGE_SIZE_VALUES } from '#shared/utils/constants'
 
@@ -81,3 +80,5 @@ export function parseUserId(userId: string | undefined) {
 }
 
 export const isUserId = (input: unknown) => isString(input) && USER_ID_REG.test(input)
+
+export const isJoined = (room: Room) => room.getMyMembership() === 'join'
