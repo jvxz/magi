@@ -14,16 +14,16 @@ const { self } = useSelf()
     as-child
   >
     <button
-      class="group -mx-1.5 rounded-sm text-foreground ps-1 flex flex-1 shrink-0 gap-1 w-full h-11 cursor-pointer duration-150 items-center hover:bg-white/7.5"
+      class="group text-foreground ps-1 rounded-sm flex flex-1 shrink-0 gap-1 h-11 w-full cursor-pointer duration-150 items-center -mx-1.5 hover:bg-white/7.5"
     >
       <MatrixAvatar
         loading="eager"
         fetchpriority="high"
         :user="self"
-        class="h-full py-1 w-auto aspect-square shrink-0"
+        class="py-1 shrink-0 h-full w-auto aspect-square"
       />
 
-      <div class="flex-col size-full translate-y-0.5 *:shrink-0 justify-between">
+      <div class="flex-col size-full translate-y-0.5 justify-between *:shrink-0">
         <p v-if="self?.displayName" class="text-sm font-medium h-1lh w-fit self-start">
           {{ self.displayName }}
         </p>
