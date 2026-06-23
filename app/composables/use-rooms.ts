@@ -10,8 +10,10 @@ export function useRooms(
   predicate: (room: Room, axes: RoomAxes) => boolean,
   opts?: {
     watch?: WatchSource<any> | WatchSource<any>[]
+    excludeUnjoined?: MaybeRefOrGetter<boolean>
   },
 ) {
+  const { excludeUnjoined = true } = opts ?? {}
   const { client } = useMatrixClient()
   const { onSync } = useMatrixHooks()
 
@@ -20,7 +22,12 @@ export function useRooms(
     const directRoomIds = new Set(getDirectRooms(client.value).map(d => d.roomId))
     const inSpaceRoomIds = getInSpaceRoomIds(client.value)
 
-    rooms.value = client.value.getRooms().filter(room => predicate(room, { directRoomIds, inSpaceRoomIds }))
+    rooms.value = client.value
+      .getRooms()
+      .filter(
+        room =>
+          (toValue(excludeUnjoined) ? isJoined(room) : true) && predicate(room, { directRoomIds, inSpaceRoomIds }),
+      )
   }
 
   onSync(refresh)
