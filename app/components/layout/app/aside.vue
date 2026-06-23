@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const rooms = useRooms('space')
+const rooms = useRooms(isSpace)
 </script>
 
 <template>

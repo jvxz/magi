@@ -1,32 +1,33 @@
 import type { Room } from 'matrix-js-sdk'
+import type { WatchSource } from 'vue'
 
-export function useRooms(_type: MaybeRefOrGetter<'direct' | 'space' | 'all' | 'non-direct'>) {
+export interface RoomAxes {
+  directRoomIds: ReadonlySet<string>
+  inSpaceRoomIds: ReadonlySet<string>
+}
+
+export function useRooms(
+  predicate: (room: Room, axes: RoomAxes) => boolean,
+  opts?: {
+    watch?: WatchSource<any> | WatchSource<any>[]
+  },
+) {
   const { client } = useMatrixClient()
   const { onSync } = useMatrixHooks()
-  const type = () => toValue(_type)
 
-  const get = () => {
-    if (type() === 'all') return client.value.getRooms()
+  const rooms = shallowRef<Room[]>([])
+  const refresh = () => {
+    const directRoomIds = new Set(getDirectRooms(client.value).map(d => d.roomId))
+    const inSpaceRoomIds = getInSpaceRoomIds(client.value)
 
-    const allRooms = client.value.getRooms()
-    const directRooms = getDirectRooms(client.value)
-    if (!directRooms) return
-
-    return allRooms.filter(room => {
-      const isDirect = directRooms.includes(room)
-      const isSpace = room.isSpaceRoom()
-
-      if (type() === 'space') return isSpace && !isDirect
-
-      if (type() === 'direct') return !isSpace && isDirect
-
-      return !isSpace && isDirect
-    })
+    rooms.value = client.value.getRooms().filter(room => predicate(room, { directRoomIds, inSpaceRoomIds }))
   }
 
-  const rooms = shallowRef<Room[] | undefined>(get())
+  onSync(refresh)
 
-  onSync(() => (rooms.value = get()))
+  if (opts?.watch) {
+    watch(opts.watch, refresh)
+  }
 
   return rooms
 }

@@ -284,3 +284,8 @@ export function parseRoomId(roomId: string) {
 export function isRoomId(roomId: string) {
   return ROOM_ID_RE.test(roomId)
 }
+
+export const isSpace = (room: Room) => room.isSpaceRoom()
+export const isDirect = (room: Room, a: RoomAxes) => !isSpace(room) && a.directRoomIds.has(room.roomId)
+export const isGroup = (room: Room, a: RoomAxes) => !isSpace(room) && !a.directRoomIds.has(room.roomId)
+export const isOrphan = (room: Room, a: RoomAxes) => !a.inSpaceRoomIds.has(room.roomId)
