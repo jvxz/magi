@@ -252,6 +252,17 @@ export function getRoomMembersTyping(room: Room) {
   return typingMembers
 }
 
+export function getInSpaceRoomIds(client: MatrixClient) {
+  const ids = new Set<string>()
+  for (const room of client.getRooms()) {
+    if (!room.isSpaceRoom()) continue
+    for (const e of getStateEvents(room, EventType.SpaceChild)) {
+      if (isSpaceChild(e) && e.getStateKey()) ids.add(e.getStateKey()!)
+    }
+  }
+  return ids
+}
+
 export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
   if (maybeRoomOrId instanceof Room) return maybeRoomOrId.roomId
 
