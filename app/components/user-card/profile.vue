@@ -23,7 +23,7 @@ const { self } = useSelf()
         class="py-1 shrink-0 h-full w-auto aspect-square"
       />
 
-      <div class="flex-col size-full translate-y-0.5 justify-between *:shrink-0">
+      <div class="size-full translate-y-0.5">
         <p v-if="self?.displayName" class="text-sm font-medium h-1lh w-fit self-start">
           {{ self.displayName }}
         </p>
