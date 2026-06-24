@@ -4,34 +4,32 @@ const { self } = useSelf()
 
 <template>
   <UProfilePopoverTrigger
-    v-if="self"
     :user="self"
     :content-props="{
-      sideOffset: 18,
+      sideOffset: 14,
       alignOffset: -8,
       side: 'top',
+      align: 'start',
     }"
     as-child
-    class="group"
   >
     <button
-      class="px-1.75 py-1.25 rounded-sm flex flex-1 shrink-0 gap-2 h-full cursor-pointer duration-150 items-center -mx-1.75 -my-1.25 hover:bg-white/7.5"
+      class="group text-foreground ps-1 rounded-sm flex flex-1 shrink-0 gap-1 h-11 w-full cursor-pointer duration-150 items-center -mx-1.5 hover:bg-white/7.5"
     >
       <MatrixAvatar
         loading="eager"
         fetchpriority="high"
-        :user="self?.userId"
-        :size="36"
-        class="max-h-full"
-        image-size="small"
+        :user="self"
+        class="py-1 shrink-0 h-full w-auto aspect-square"
       />
-      <div class="flex-col size-full *:shrink-0 -translate-y-0.5">
+
+      <div class="size-full translate-y-0.5">
         <p v-if="self?.displayName" class="text-sm font-medium h-1lh w-fit self-start">
           {{ self.displayName }}
         </p>
         <USkeleton v-else class="text-sm py-2 shrink h-1lh w-24" />
 
-        <div class="h-0.6lh w-full relative overflow-hidden *:duration-150 *:ease">
+        <div class="h-4 w-full relative overflow-hidden *:duration-150 *:ease">
           <p
             class="text-2xs text-muted-foreground bottom-0 absolute group-data-[popover-open]:bottom-1lh group-hover:bottom-1lh"
           >

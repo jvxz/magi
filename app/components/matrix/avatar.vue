@@ -71,6 +71,6 @@ const placeholderName = computed(() => {
     v-else
     :name="placeholderName"
     :square
-    :class="cn(!square && 'rounded-full', 'bg-primary size-full', props.class)"
+    :class="cn(!square && 'rounded-full', 'size-full', props.class)"
   />
 </template>

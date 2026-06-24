@@ -4,7 +4,7 @@ import type { PopoverContentProps, PopoverTriggerProps } from 'reka-ui'
 
 const props = defineProps<
   PopoverTriggerProps & {
-    user: MaybeUserOrId
+    user?: MaybeUserOrId | undefined
     contentProps?: PopoverContentProps
     freezeReference?: boolean
     manualRoom?: Room | undefined
@@ -13,6 +13,8 @@ const props = defineProps<
 const { openProfilePopover } = useProfilePopover()
 
 function handleOpen(e: Event) {
+  if (!props.user) return
+
   const currentTarget = e.currentTarget
   assert(
     currentTarget instanceof HTMLElement,
