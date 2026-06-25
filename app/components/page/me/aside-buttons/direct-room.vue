@@ -2,8 +2,6 @@
 const props = defineProps<{ roomId: string }>()
 
 const room = useRoom(() => props.roomId)
-
-// const { members } = useRoomMembers(room, true)
 </script>
 
 <template>
