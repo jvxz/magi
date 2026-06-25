@@ -3,6 +3,8 @@ definePageMeta({
   layout: 'app',
   name: 'me-home',
 })
+
+defineAppLabel({ label: 'Home' })
 </script>
 
 <template>

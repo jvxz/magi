@@ -7,6 +7,10 @@ definePageMeta({
   name: 'explore',
 })
 
+defineAppLabel({
+  label: 'Explore',
+})
+
 const route = useRoute()
 const baseUrl = computed({
   get: () => {
