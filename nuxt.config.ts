@@ -23,12 +23,7 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-07-15',
 
-  css: [
-    '~/assets/css/globals.css',
-    '~/assets/css/transitions.css',
-    '~/assets/css/palettes/dark.css',
-    '~/assets/css/palettes/darker.css',
-  ],
+  css: ['~/assets/css/globals.css', '~/assets/css/transitions.css', '~/assets/css/palettes/dark.css'],
 
   devtools: { enabled: true },
 
