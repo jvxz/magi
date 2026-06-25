@@ -13,7 +13,7 @@ defineAppLabel({
   label: () => (currentSpace.value ? resolveRoomName(currentSpace.value) : undefined),
 })
 
-const currentRoom = useCurrentRoom()
+const currentRoomId = useCurrentRoomId()
 const isPaginating = shallowRef(false)
 </script>
 
@@ -86,16 +86,16 @@ const isPaginating = shallowRef(false)
     </UAsideList>
   </LayoutAppSlot>
 
-  <LayoutAppSlot v-if="currentRoom" name="page-header">
-    <LayoutAppPageHeader class="flex gap-2 items-center">
+  <LayoutAppSlot v-if="currentRoomId" name="page-header">
+    <!-- <LayoutAppPageHeader class="flex gap-2 items-center">
       {{ currentRoom.name }}
       <DevOnly>
         <USpinner v-if="isPaginating" class="size-4" />
       </DevOnly>
-    </LayoutAppPageHeader>
+    </LayoutAppPageHeader> -->
   </LayoutAppSlot>
 
-  <RoomInstance :room="currentRoom" />
+  <RoomInstance :room="currentRoomId" />
 
   <NuxtPage :is-paginating />
 </template>
