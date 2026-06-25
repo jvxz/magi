@@ -1,12 +1,17 @@
-export const useAppHeaderLabel = createGlobalState(() => {
-  const label = shallowRef('Magi')
+interface Subscriber {
+  label: Ref<string | undefined>
+  isLoading?: Ref<boolean | undefined>
+}
 
-  const setAppHeaderLabel = (newLabel: string | undefined) => {
-    if (newLabel) label.value = newLabel
-  }
+export const useAppHeaderLabel = createGlobalState(() => {
+  const subs = shallowReactive<Subscriber[]>([])
+
+  const label = computed(() => last(subs)?.label.value ?? 'Magi')
+  const isLoading = computed(() => last(subs)?.isLoading?.value ?? false)
 
   return {
+    isLoading,
     label,
-    setAppHeaderLabel,
+    subs,
   }
 })
