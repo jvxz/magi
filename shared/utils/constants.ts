@@ -100,4 +100,16 @@ export const MATRIX = {
       'summary',
     ],
   },
+  ROOM: {
+    INITIAL_STATE: {
+      // https://github.com/cinnyapp/cinny/blob/80fd8863c9a07e89d6a2037e3e196cd8f372a2b1/src/app/components/create-room/utils.ts#L81-L87
+      ENCRYPTION: {
+        content: {
+          algorithm: 'm.megolm.v1.aes-sha2',
+        },
+        state_key: '',
+        type: 'm.room.encryption',
+      },
+    },
+  },
 } as const
