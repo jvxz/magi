@@ -37,6 +37,7 @@
 
 html {
   scrollbar-color: var(--muted-foreground) transparent;
+  overscroll-behavior: none;
 }
 
 body {
