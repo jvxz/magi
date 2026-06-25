@@ -1,3 +1,5 @@
+import type { UnwrapRef } from 'vue'
+
 export type DefineClasses<T extends keyof any> = Partial<Record<T, string>>
 
 export type Prettify<T> = {
@@ -5,3 +7,13 @@ export type Prettify<T> = {
 } & {}
 
 export type MaybeReadonlySet<T> = ReadonlySet<T> | Set<T>
+
+export type MaybeRefsOrGetters<T extends object> = Prettify<{
+  [K in keyof T]: MaybeRefOrGetter<UnwrapRef<T[K]>>
+}>
+
+export type DeepMaybeRefsOrGetters<T extends object> = Prettify<{
+  [K in keyof T]: UnwrapRef<T[K]> extends object
+    ? MaybeRefsOrGetters<UnwrapRef<T[K]>>
+    : MaybeRefOrGetter<UnwrapRef<T[K]>>
+}>
