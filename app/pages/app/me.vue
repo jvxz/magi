@@ -30,9 +30,7 @@ definePageMeta({
   </LayoutAppSlot>
 
   <LayoutAppSlot name="aside">
-    <div class="p-1">
-      <PageMeAsideButtons />
-    </div>
+    <PageMeAsideButtons />
   </LayoutAppSlot>
 
   <NuxtPage />
