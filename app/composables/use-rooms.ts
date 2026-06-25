@@ -15,7 +15,6 @@ export function useRooms(
 ) {
   const { excludeUnjoined = true } = opts ?? {}
   const { client } = useMatrixClient()
-  const { onSync } = useMatrixHooks()
 
   const rooms = shallowRef<Room[]>([])
   const refresh = () => {
@@ -30,11 +29,13 @@ export function useRooms(
       )
   }
 
+  const { onSync, onRoom, onMyMembership } = useMatrixHooks()
   onSync(refresh)
+  onRoom(refresh)
+  onMyMembership(refresh)
 
-  if (opts?.watch) {
-    watch(opts.watch, refresh)
-  }
+  refresh()
+  if (opts?.watch) watch(opts.watch, refresh)
 
   return rooms
 }
