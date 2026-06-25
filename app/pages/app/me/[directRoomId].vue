@@ -14,8 +14,7 @@ definePageMeta({
 const route = useRoute()
 const room = useRoom(() => route.params.directRoomId)
 
-// const { self } = useSelf()
-// const user = useUser(() => room.value?.getMembers().filter(m => m.userId !== self.value?.userId)[0]?.userId)
+defineAppLabel({ label: () => (room.value ? resolveRoomName(room.value) : route.params.directRoomId) })
 </script>
 
 <template>
