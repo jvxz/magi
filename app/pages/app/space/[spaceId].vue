@@ -14,6 +14,7 @@ defineAppLabel({
 })
 
 const currentRoomId = useCurrentRoomId()
+const currentRoom = useCurrentRoom()
 const isPaginating = shallowRef(false)
 </script>
 
