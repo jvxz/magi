@@ -28,26 +28,34 @@ const rooms = useRooms(
 </script>
 
 <template>
-  <UToggleGroupRoot v-model:model-value="toggle" class="p-2 flex flex-col gap-2 w-full">
-    <UToggleGroupItem value="home" class="flex gap-3 w-full items-center h-2.25lh!" as-child>
-      <NuxtLink to="/app/me/home">
-        <LazyIcon name="tabler:home" class="size-1lh" />
-        <span class="font-medium">Home</span>
-      </NuxtLink>
-    </UToggleGroupItem>
+  <UAsideList as-child>
+    <UToggleGroupRoot v-model:model-value="toggle">
+      <UToggleGroupItem value="home" class="flex w-full items-center" as-child>
+        <NuxtLink to="/app/me/home">
+          <LazyIcon name="tabler:home" class="size-1lh!" />
+          <span class="font-medium">Home</span>
+        </NuxtLink>
+      </UToggleGroupItem>
+      <UToggleGroupItem value="invites" class="flex w-full items-center" as-child>
+        <NuxtLink to="/app/me/home">
+          <LazyIcon name="tabler:users-plus" class="size-1lh!" />
+          <span class="font-medium">Invites</span>
+        </NuxtLink>
+      </UToggleGroupItem>
 
-    <div class="w-full space-y-2">
-      <USeparator />
+      <div class="w-full space-y-2">
+        <USeparator class="my-2.5" />
 
-      <PageMeAsideButtonsHeader />
-    </div>
+        <PageMeAsideButtonsHeader />
+      </div>
 
-    <div class="flex flex-col gap-1 w-full">
-      <UContextMenuRegionRoot name="directRoom">
-        <PageMeAsideButtonsDirectRoom v-for="room in rooms" :key="room.roomId" :room-id="room.roomId" />
+      <div class="flex flex-col gap-1 w-full">
+        <UContextMenuRegionRoot name="directRoom">
+          <PageMeAsideButtonsDirectRoom v-for="room in rooms" :key="room.roomId" :room-id="room.roomId" />
 
-        <PageMeAsideButtonsContextMenuContent />
-      </UContextMenuRegionRoot>
-    </div>
-  </UToggleGroupRoot>
+          <PageMeAsideButtonsContextMenuContent />
+        </UContextMenuRegionRoot>
+      </div>
+    </UToggleGroupRoot>
+  </UAsideList>
 </template>
