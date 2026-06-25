@@ -15,7 +15,7 @@ const { reactions } = useRoomEventReactions.provide(
 <template>
   <div v-if="reactions" class="flex flex-row gap-1">
     <UTooltipProvider :delay-duration="700">
-      <PageRoomEventMessageReactionsItem v-for="reaction in reactions.keys()" :key="reaction" :reaction />
+      <RoomEventMessageReactionsItem v-for="reaction in reactions.keys()" :key="reaction" :reaction />
     </UTooltipProvider>
   </div>
 </template>

@@ -1,13 +1,4 @@
 <script lang="ts" setup>
-const [DefineToggle, Toggle] = createReusableTemplate<{
-  label: string
-  value: string
-  icon?: string
-  avatarUrl?: string
-}>()
-
-const { state: directRooms } = useDirectRooms()
-
 const route = useRoute()
 const toggleValue = shallowRef('home')
 const toggle = computed({
@@ -15,59 +6,56 @@ const toggle = computed({
   get: () => ('directRoomId' in route.params ? route.params.directRoomId : 'home'),
   set: (v: string) => (toggleValue.value = v),
 })
+
+const displayMode = useScopedLocalStorage<AsideDisplayMode>('asideDisplayMode', 'all')
+provide('displayMode', displayMode)
+
+const rooms = useRooms(
+  (room, axes) => {
+    switch (displayMode.value) {
+      case 'all':
+        return isDirect(room, axes) || (isGroup(room, axes) && isOrphan(room, axes))
+      case 'direct':
+        return isDirect(room, axes)
+      case 'orphan':
+        return isGroup(room, axes) && isOrphan(room, axes)
+    }
+  },
+  {
+    watch: [displayMode],
+  },
+)
 </script>
 
 <template>
-  <DefineToggle v-slot="{ label, icon, value, avatarUrl }">
-    <UToggleGroupItem :key="value" :value="value" class="flex gap-3 w-full items-center h-2.25lh!" as-child>
-      <NuxtLink
-        :to="
-          value === 'home'
-            ? { name: 'me-home' }
-            : {
-                name: 'direct-room',
-                params: {
-                  directRoomId: value,
-                },
-              }
-        "
-      >
-        <LazyIcon v-if="icon && !avatarUrl" :name="icon" class="size-1lh" />
-        <LazyImg v-else-if="avatarUrl" :alt="label" :src="avatarUrl" class="rounded-full size-8" />
-        <span class="font-medium">{{ label }}</span>
-      </NuxtLink>
-    </UToggleGroupItem>
-  </DefineToggle>
+  <UAsideList as-child>
+    <UToggleGroupRoot v-model:model-value="toggle">
+      <UToggleGroupItem value="home" class="flex w-full items-center" as-child>
+        <NuxtLink to="/app/me/home">
+          <LazyIcon name="tabler:home" class="size-1lh!" />
+          <span class="font-medium">Home</span>
+        </NuxtLink>
+      </UToggleGroupItem>
+      <UToggleGroupItem value="invites" class="flex w-full items-center" as-child>
+        <NuxtLink to="/app/me/home">
+          <LazyIcon name="tabler:users-plus" class="size-1lh!" />
+          <span class="font-medium">Invites</span>
+        </NuxtLink>
+      </UToggleGroupItem>
 
-  <UToggleGroupRoot v-model:model-value="toggle" class="p-2 flex flex-col gap-2 w-full">
-    <Toggle label="Home" icon="tabler:home" value="home" />
+      <div class="w-full space-y-2">
+        <USeparator class="my-2.5" />
 
-    <div class="w-full space-y-2">
-      <USeparator />
-
-      <div class="group flex items-center justify-between">
-        <span class="text-sm text-muted-foreground/80 font-medium px-2.5 group-hover:text-foreground"
-          >Direct Messages</span
-        >
-        <UTooltipRoot>
-          <UTooltipTrigger as-child>
-            <button class="text-muted-foreground/80 cursor-pointer">
-              <Icon name="tabler:plus" />
-            </button>
-          </UTooltipTrigger>
-          <UTooltipContent> Create Message </UTooltipContent>
-        </UTooltipRoot>
+        <PageMeAsideButtonsHeader />
       </div>
-    </div>
 
-    <div class="flex flex-col gap-1 w-full">
-      <Toggle
-        v-for="directRoom in directRooms"
-        :key="directRoom.roomId"
-        :label="directRoom.name"
-        :value="directRoom.roomId"
-        :avatar-url="directRoom.avatarUrl"
-      />
-    </div>
-  </UToggleGroupRoot>
+      <div class="flex flex-col gap-1 w-full">
+        <UContextMenuRegionRoot name="directRoom">
+          <PageMeAsideButtonsDirectRoom v-for="room in rooms" :key="room.roomId" :room-id="room.roomId" />
+
+          <PageMeAsideButtonsContextMenuContent />
+        </UContextMenuRegionRoot>
+      </div>
+    </UToggleGroupRoot>
+  </UAsideList>
 </template>

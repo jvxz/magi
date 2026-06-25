@@ -24,14 +24,14 @@ watch(
       :data="membersGrouped.members"
       class="px-2 py-1"
     >
-      <PageRoomMembersListHeader
+      <RoomMembersListHeader
         v-if="'type' in item && item.type === 'header'"
         :key="item.title"
         :title="item.title"
         :total="membersGrouped.groupTotals[item.title]"
       />
 
-      <PageRoomMembersListCard v-else :key="item.userId" :is-owner="item.powerLevel >= 100" :user-id="item.userId" />
+      <RoomMembersListCard v-else :key="item.userId" :is-owner="item.powerLevel >= 100" :user-id="item.userId" />
     </VList>
 
     <div v-else class="p-2 h-full relative">

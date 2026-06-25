@@ -8,7 +8,8 @@ export function useRoom(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>) 
 
   watchEffect(() => {
     const input = inputRef.value
-    roomRef.value = input instanceof Room ? markRaw(input) : roomEffectScope.value?.ref.value
+    const scoped = roomEffectScope.value?.ref.value
+    roomRef.value = scoped ?? (input instanceof Room ? markRaw(input) : undefined)
     triggerRef(roomRef)
   })
 

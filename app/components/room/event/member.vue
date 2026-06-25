@@ -120,7 +120,7 @@ const body = computed(() => {
 </script>
 
 <template>
-  <PageRoomEvent
+  <RoomEvent
     :room="props.event.getRoomId()"
     :event="props.event"
     :event-type="props.event.getType()"
@@ -133,5 +133,5 @@ const body = computed(() => {
       {{ body.message }}
       <span v-if="body.subject" class="font-medium">{{ body.subject }}</span>
     </p>
-  </PageRoomEvent>
+  </RoomEvent>
 </template>

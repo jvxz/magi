@@ -3,7 +3,7 @@ import { DOMWrapper } from '@vue/test-utils'
 import { User } from 'matrix-js-sdk'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { PageRoomEventReactionsViewer, UProfilePopoverRoot } from '#components'
+import { RoomEventReactionsViewer, UProfilePopoverRoot } from '#components'
 
 import Reactions from '../fixtures/reactions.vue'
 import { DEFAULT_MOCK_NAMES, generateFakeHomeserver } from '../utils/matrix/credentials.ts'
@@ -20,7 +20,7 @@ mockNuxtImport('useSelf', () => useSelf)
 
 const createWrapper = () => {
   return defineComponent({
-    setup: () => () => h(UProfilePopoverRoot, null, () => h(PageRoomEventReactionsViewer)),
+    setup: () => () => h(UProfilePopoverRoot, null, () => h(RoomEventReactionsViewer)),
   })
 }
 

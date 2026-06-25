@@ -1,32 +1,47 @@
-export function useDirectRooms() {
+import { EventType } from 'matrix-js-sdk'
+
+export const useDirectRooms = createSharedComposable(() => {
   const { client } = useMatrixClient()
   const status = useMatrixStatus()
 
-  const asyncState = useAsyncState(
-    async () => {
-      const directRooms = getDirectRooms(client.value)
+  const directRooms = shallowRef(getDirectRooms(client.value))
 
-      return await Promise.all(
-        directRooms.map(async directRoom => {
-          const room = client.value.getRoom(directRoom.roomId)
-          if (!room) throw new Error(`Direct room ${directRoom.roomId} not found`)
+  const refreshDirectRooms = () => (directRooms.value = getDirectRooms(client.value))
 
-          const avatarUrl = getDirectRoomAvatarUrl({ client: client.value, room, useAuthentication: true })
+  async function addRoomToDirectList(roomId: string, userId: string) {
+    const directsEvent = client.value.getAccountData(AccountDataEvent.Direct)
+    let directs: Record<string, string[]> = {}
 
-          return {
-            ...room,
-            avatarUrl,
-          }
-        }),
-      )
-    },
-    undefined,
-    {
-      immediate: true,
-    },
+    if (isDefined(directsEvent)) directs = cloneDeep(directsEvent.getContent())
+
+    const validDirects = mapValues(directs, (v, k) => (k === userId ? v : pull([...v], [roomId])))
+    validDirects[userId] = uniq([...(validDirects[userId] ?? []), roomId])
+
+    await client.value.setAccountData(AccountDataEvent.Direct, validDirects)
+  }
+
+  async function removeRoomFromDirectList(roomId: string) {
+    const directsEvent = client.value.getAccountData(AccountDataEvent.Direct)
+    let directs: Record<string, string[]> = {}
+
+    if (isDefined(directsEvent)) directs = cloneDeep(directsEvent.getContent())
+
+    const validDirects = mapValues(directs, v => pull([...v], [roomId]))
+
+    await client.value.setAccountData(AccountDataEvent.Direct, validDirects)
+  }
+
+  const { onAccountData } = useMatrixHooks()
+  onAccountData(e => {
+    if (e.getType() !== EventType.Direct) return
+
+    refreshDirectRooms()
+  })
+
+  watch(
+    () => status.value.isDataSynced,
+    () => (directRooms.value = getDirectRooms(client.value)),
   )
 
-  watch(() => status.value.isDataSynced, asyncState.executeImmediate)
-
-  return asyncState
-}
+  return { addRoomToDirectList, directRooms, removeRoomFromDirectList }
+})

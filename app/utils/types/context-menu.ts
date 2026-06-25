@@ -23,6 +23,9 @@ export interface ContextMenuRegions {
         }
     type: 'recent' | 'pinned'
   }
+  directRoom: {
+    roomId: string
+  }
 }
 
 export type ContextMenuName = keyof ContextMenuRegions

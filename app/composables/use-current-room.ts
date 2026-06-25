@@ -1,14 +1,15 @@
-export const useCurrentRoom = createGlobalState(() => {
+export const useCurrentRoomId = createGlobalState(() => {
   const route = useRoute()
-  const roomId = computed(() =>
+  return computed(() =>
     'roomId' in route.params
       ? route.params.roomId
       : 'directRoomId' in route.params
         ? route.params.directRoomId
         : undefined,
   )
+})
 
-  const room = useRoom(roomId)
-
-  return room
+export const useCurrentRoom = createGlobalState(() => {
+  const roomId = useCurrentRoomId()
+  return useRoom(roomId)
 })

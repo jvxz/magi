@@ -28,6 +28,12 @@ export const AVATAR_IMAGE_SIZE_VALUES = {
 
 export const TYPING_TIMEOUT_MS = 4000
 
+export const ASIDE_DISPLAY_MODES = {
+  all: 'All rooms',
+  direct: 'Direct rooms',
+  orphan: 'Orphan rooms',
+}
+
 export const MATRIX = {
   MESSAGING: {
     ALLOWED_ATTRS: [
@@ -93,5 +99,17 @@ export const MATRIX = {
       'details',
       'summary',
     ],
+  },
+  ROOM: {
+    INITIAL_STATE: {
+      // https://github.com/cinnyapp/cinny/blob/80fd8863c9a07e89d6a2037e3e196cd8f372a2b1/src/app/components/create-room/utils.ts#L81-L87
+      ENCRYPTION: {
+        content: {
+          algorithm: 'm.megolm.v1.aes-sha2',
+        },
+        state_key: '',
+        type: 'm.room.encryption',
+      },
+    },
   },
 } as const

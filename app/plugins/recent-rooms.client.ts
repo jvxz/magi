@@ -1,7 +1,9 @@
+import { KnownMembership } from 'matrix-js-sdk'
+
 export default defineNuxtPlugin({
   parallel: true,
   setup: () => {
-    const { bumpRecentRoom } = useRecentRooms()
+    const { bumpRecentRoom, removeRecentRoom } = useRecentRooms()
     const { client } = useMatrixClient()
 
     const currentRoom = useCurrentRoom()
@@ -9,18 +11,24 @@ export default defineNuxtPlugin({
     watch(currentRoom, r => {
       if (!r) return
 
-      bumpRecentRoom(
-        isDirectRoom(client.value, r)
-          ? {
-              kind: 'direct',
-              roomId: r.roomId,
-            }
-          : {
-              kind: 'group',
-              roomId: r.roomId,
-              spaceId: currentSpaceId.value!,
-            },
-      )
+      if (r.getMyMembership() !== KnownMembership.Join) {
+        return removeRecentRoom(r.roomId)
+      }
+
+      if (isDirectRoom(client.value, r)) {
+        return bumpRecentRoom({
+          kind: 'direct',
+          roomId: r.roomId,
+        })
+      }
+
+      if (currentSpaceId.value) {
+        return bumpRecentRoom({
+          kind: 'group',
+          roomId: r.roomId,
+          spaceId: currentSpaceId.value!,
+        })
+      }
     })
   },
 })

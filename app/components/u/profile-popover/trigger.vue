@@ -8,6 +8,7 @@ const props = defineProps<
     contentProps?: PopoverContentProps
     freezeReference?: boolean
     manualRoom?: Room | undefined
+    context?: ProfilePopoverContext
   }
 >()
 const { openProfilePopover } = useProfilePopover()

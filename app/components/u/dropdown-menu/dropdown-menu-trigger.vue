@@ -14,7 +14,7 @@ const forwarded = useForwardProps(delegatedProps)
 <template>
   <DropdownMenuTrigger
     v-bind="forwarded"
-    :class="cn('outline-none data-[state=open]:(bg-selected text-foreground)', props.class)"
+    :class="cn('outline-none data-[state=open]:text-foreground', props.class)"
     data-slot="dropdown-menu-trigger"
   >
     <slot />

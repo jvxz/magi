@@ -1,4 +1,4 @@
-import type { RemovableRef, UseStorageOptions } from '@vueuse/core'
+import type { UseStorageOptions } from '@vueuse/core'
 
 import { pausableFilter } from '@vueuse/core'
 

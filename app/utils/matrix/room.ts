@@ -1,10 +1,10 @@
 import type { MatrixClient, MatrixEvent } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 
+import { JoinRule } from 'matrix-js-sdk'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 
 import { $Error } from '#shared/utils/$error'
-import { objectEntries } from '#shared/utils/object'
 
 import type { MaybeRoomOrId, MaybeUserOrId } from './types'
 
@@ -18,11 +18,12 @@ interface MDirect extends MatrixEvent {
   }
 }
 
-interface GetAvatarUrlOpts {
+export interface GetAvatarUrlOpts {
   client: MatrixClient
   room: Room
   useAuthentication?: boolean
   size?: 32 | 96
+  mxc?: boolean
 }
 export interface RoomsWithBatchToken {
   nextBatchToken?: string
@@ -38,23 +39,16 @@ export function getRoom(client: MatrixClient, roomId: Room['roomId'], allowedIds
 }
 
 export function getDirectRooms(client: MatrixClient) {
-  const data = client.getAccountData(EventType.Direct) as MDirect | undefined
-  if (!data) return []
+  const directsEvent = client.getAccountData(EventType.Direct) as MDirect | undefined
+  const directs = directsEvent?.getContent<MDirect['event']['content']>()
+  if (!directs) return []
 
-  const { event } = data
-
-  const directRooms: Room[] = []
-  for (const [, roomIds] of objectEntries(event.content)) {
-    const roomId = roomIds[0]
-    if (!roomIds.length || !roomId) continue
-
-    const room = client.getRoom(roomId)
-    if (!room) continue
-
-    directRooms.push(room)
+  const structuredDirects: { userId: string; roomId: string }[] = []
+  for (const [userId, roomIds] of objectEntries(directs)) {
+    roomIds.forEach(roomId => structuredDirects.push({ roomId, userId }))
   }
 
-  return directRooms
+  return structuredDirects
 }
 
 export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] {
@@ -63,13 +57,41 @@ export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] 
 
 export function getRoomAvatarUrl({
   client,
+  mxc = false,
   room,
   size = 32,
   useAuthentication = false,
 }: GetAvatarUrlOpts): string | undefined {
   const mxcUrl = room.getMxcAvatarUrl()
   return mxcUrl
-    ? (mxcToHttps(mxcUrl, {
+    ? mxc
+      ? mxcUrl
+      : (mxcToHttps(mxcUrl, {
+          allowDirectLinks: false,
+          allowRedirects: true,
+          baseUrl: client.getHomeserverUrl(),
+          height: size,
+          resizeMethod: 'crop',
+          useAuthentication,
+          width: size,
+        }) ?? undefined)
+    : undefined
+}
+
+export function getDirectRoomAvatarUrl({
+  client,
+  mxc = false,
+  room,
+  size = 32,
+  useAuthentication = false,
+}: GetAvatarUrlOpts): string | undefined {
+  const mxcUrl = room.getAvatarFallbackMember()?.getMxcAvatarUrl()
+
+  if (!mxcUrl) return getRoomAvatarUrl({ client, mxc, room, size, useAuthentication })
+
+  return mxc
+    ? mxcUrl
+    : mxcToHttps(mxcUrl, {
         allowDirectLinks: false,
         allowRedirects: true,
         baseUrl: client.getHomeserverUrl(),
@@ -77,29 +99,7 @@ export function getRoomAvatarUrl({
         resizeMethod: 'crop',
         useAuthentication,
         width: size,
-      }) ?? undefined)
-    : undefined
-}
-
-export function getDirectRoomAvatarUrl({
-  client,
-  room,
-  size = 32,
-  useAuthentication = false,
-}: GetAvatarUrlOpts): string | undefined {
-  const mxcUrl = room.getAvatarFallbackMember()?.getMxcAvatarUrl()
-
-  if (!mxcUrl) return getRoomAvatarUrl({ client, room, size, useAuthentication })
-
-  return mxcToHttps(mxcUrl, {
-    allowDirectLinks: false,
-    allowRedirects: true,
-    baseUrl: client.getHomeserverUrl(),
-    height: size,
-    resizeMethod: 'crop',
-    useAuthentication,
-    width: size,
-  })
+      })
 }
 
 export async function getSpaceRooms(
@@ -234,8 +234,7 @@ export function isSpaceChild(event: MatrixEvent) {
 }
 
 export function isDirectRoom(client: MatrixClient, room: Room) {
-  const directRooms = getDirectRooms(client)
-  return directRooms.includes(room)
+  return getDirectRooms(client).some(direct => direct.roomId === room.roomId)
 }
 
 export function getRoomTopic(room: Room | undefined) {
@@ -260,6 +259,17 @@ export function getRoomMembersTyping(room: Room) {
   return typingMembers
 }
 
+export function getInSpaceRoomIds(client: MatrixClient) {
+  const ids = new Set<string>()
+  for (const room of client.getRooms()) {
+    if (!room.isSpaceRoom()) continue
+    for (const e of getStateEvents(room, EventType.SpaceChild)) {
+      if (isSpaceChild(e) && e.getStateKey()) ids.add(e.getStateKey()!)
+    }
+  }
+  return ids
+}
+
 export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
   if (maybeRoomOrId instanceof Room) return maybeRoomOrId.roomId
 
@@ -268,6 +278,23 @@ export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
 
 export function resolveRoomName(room: Room) {
   return room.name ?? room.roomId
+}
+
+export function resolveJoinRuleLabel(joinRule: JoinRule) {
+  switch (joinRule) {
+    case JoinRule.Public:
+    case JoinRule.Private:
+    case JoinRule.Restricted: {
+      return joinRule
+    }
+
+    case JoinRule.Knock: {
+      return 'knock-only'
+    }
+    case JoinRule.Invite: {
+      return 'invite-only'
+    }
+  }
 }
 
 const ROOM_ID_RE = /^!(?<localpart>[^:]+):(?<server_name>.+)$/
@@ -284,3 +311,8 @@ export function parseRoomId(roomId: string) {
 export function isRoomId(roomId: string) {
   return ROOM_ID_RE.test(roomId)
 }
+
+export const isSpace = (room: Room) => room.isSpaceRoom()
+export const isDirect = (room: Room, a: RoomAxes) => !isSpace(room) && a.directRoomIds.has(room.roomId)
+export const isGroup = (room: Room, a: RoomAxes) => !isSpace(room) && !a.directRoomIds.has(room.roomId)
+export const isOrphan = (room: Room, a: RoomAxes) => !a.inSpaceRoomIds.has(room.roomId)

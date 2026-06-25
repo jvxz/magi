@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     fallback: DEFAULT_COLOR_MODE,
     preference: DEFAULT_COLOR_MODE,
     storage: 'cookie',
+    storageKey: 'theme',
   },
 
   compatibilityDate: '2025-07-15',
