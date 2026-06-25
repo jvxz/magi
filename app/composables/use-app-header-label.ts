@@ -18,7 +18,7 @@ export const useAppHeaderLabel = createGlobalState(() => {
   }
 })
 
-export const defineAppLabel = ({ label, isLoading }: MaybeRefsOrGetters<Subscriber>) => {
+export const defineAppLabel = ({ isLoading, label }: MaybeRefsOrGetters<Subscriber>) => {
   const { subs } = useAppHeaderLabel()
   const sub = { isLoading: toRef(isLoading), label: toRef(label) }
 
