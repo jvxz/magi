@@ -100,7 +100,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
       if (!room.value?.roomId) return
       return client.value.invite(room.value.roomId, userId, opts)
     },
-    mutationKey: ['leaveRoom'],
+    mutationKey: ['invite'],
   })
 
   return {
