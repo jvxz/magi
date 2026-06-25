@@ -86,7 +86,11 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
   const leave = useMutation({
     mutationFn: async () => {
       if (!room.value?.roomId) return
-      return client.value.leave(room.value.roomId)
+
+      const res = await client.value.leave(room.value.roomId)
+      await client.value.forget(room.value.roomId)
+
+      return res
     },
     mutationKey: ['leaveRoom'],
   })
