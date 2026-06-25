@@ -5,26 +5,15 @@ const props = defineProps<{
   room: Room
 }>()
 
-const emits = defineEmits<{
-  isPaginating: [value: boolean]
-}>()
 const containerRef = useTemplateRef('container')
 const wrapperRef = useTemplateRef('wrapper')
 
-const {
-  createItemBind,
-  events,
-  eventsPaginated,
-  getEventVersion,
-  handleOnMounted,
-  isFullyLoaded,
-  isPaginating,
-  scrollToBottom,
-} = useEventPagination({
-  itemsEl: wrapperRef,
-  room: toRef(props, 'room'),
-  scrollEl: containerRef,
-})
+const { createItemBind, events, eventsPaginated, getEventVersion, handleOnMounted, isFullyLoaded, scrollToBottom } =
+  useEventPagination({
+    itemsEl: wrapperRef,
+    room: toRef(props, 'room'),
+    scrollEl: containerRef,
+  })
 
 onMounted(handleRoomUpdate)
 watch(() => props.room.roomId, handleRoomUpdate)
@@ -38,8 +27,6 @@ async function handleRoomUpdate() {
   scrollToBottom()
   await handleOnMounted()
 }
-
-watch(isPaginating, v => emits('isPaginating', v))
 
 const groupedEvents = useEventGrouping({ events, eventsPaginated })
 </script>
