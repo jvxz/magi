@@ -1,6 +1,7 @@
 import type { MatrixClient, MatrixEvent } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 
+import { JoinRule } from 'matrix-js-sdk'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 
 import { $Error } from '#shared/utils/$error'
@@ -17,7 +18,7 @@ interface MDirect extends MatrixEvent {
   }
 }
 
-interface GetAvatarUrlOpts {
+export interface GetAvatarUrlOpts {
   client: MatrixClient
   room: Room
   useAuthentication?: boolean
@@ -277,6 +278,23 @@ export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
 
 export function resolveRoomName(room: Room) {
   return room.name ?? room.roomId
+}
+
+export function resolveJoinRuleLabel(joinRule: JoinRule) {
+  switch (joinRule) {
+    case JoinRule.Public:
+    case JoinRule.Private:
+    case JoinRule.Restricted: {
+      return joinRule
+    }
+
+    case JoinRule.Knock: {
+      return 'knock-only'
+    }
+    case JoinRule.Invite: {
+      return 'invite-only'
+    }
+  }
 }
 
 const ROOM_ID_RE = /^!(?<localpart>[^:]+):(?<server_name>.+)$/
