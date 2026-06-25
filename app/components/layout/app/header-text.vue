@@ -5,13 +5,11 @@ import { SyncState } from 'matrix-js-sdk'
 import { AnimatePresence, motion } from 'motion-v'
 
 const status = useMatrixStatus()
-const currentRoom = useCurrentRoom()
 
 const { $ready } = useNuxtApp()
-const route = useRoute()
-const roomLabel = computed(() => currentRoom.value?.name ?? upperFirst(route.name))
+const { label } = useAppHeaderLabel()
 
-const showInitializing = computed(() => !$ready.value || !status.value.isDataSynced || !roomLabel.value)
+const showInitializing = computed(() => !$ready.value || !status.value.isDataSynced || !label.value)
 
 const motionProps: MotionProps = {
   animate: { opacity: 1, scale: 1, y: 0 },
@@ -25,7 +23,7 @@ const motionProps: MotionProps = {
   <div class="text-sm font-medium flex w-auto items-center justify-center relative">
     <AnimatePresence mode="popLayout" :initial="false">
       <motion.div v-if="!status.clientState && !showInitializing" key="room" v-bind="motionProps">
-        {{ roomLabel }}
+        {{ label }}
       </motion.div>
 
       <motion.div v-else-if="showInitializing" key="ready" class="flex gap-2 items-center" v-bind="motionProps">
