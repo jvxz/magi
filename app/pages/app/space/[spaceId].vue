@@ -9,7 +9,9 @@ definePageMeta({
 const currentSpace = useCurrentSpace()
 const joinedRooms = useSpaceJoinedRooms(() => currentSpace.value?.roomId)
 
-defineAppLabel(() => (currentSpace.value ? resolveRoomName(currentSpace.value) : undefined))
+defineAppLabel({
+  label: () => (currentSpace.value ? resolveRoomName(currentSpace.value) : undefined),
+})
 
 const currentRoom = useCurrentRoom()
 const isPaginating = shallowRef(false)
