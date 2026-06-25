@@ -41,7 +41,14 @@ const { invite } = useRoomActions(() => props.room)
 const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(async () => {
   if (r$.$invalid || !r$.userId.$value) return
 
-  await invite.mutateAsync({ userId: r$.userId.$value })
+  await invite.mutateAsync({
+    opts: r$.reason.$value
+      ? {
+          reason: r$.reason.$value,
+        }
+      : undefined,
+    userId: r$.userId.$value,
+  })
   open.value = false
 }, undefined)
 </script>
