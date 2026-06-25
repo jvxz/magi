@@ -64,6 +64,19 @@ export default defineNuxtConfig({
     },
   },
 
+  i18n: {
+    defaultLocale: 'en',
+    locales: [
+      {
+        code: 'en',
+        name: 'English',
+      },
+    ],
+    parallelPlugin: true,
+    strategy: 'no_prefix',
+    vueI18n: './i18n.config.ts',
+  },
+
   icon: {
     clientBundle: {
       scan: true,
@@ -108,6 +121,7 @@ export default defineNuxtConfig({
     'motion-v/nuxt',
     'nuxt-twemoji',
     'nuxt-tiptap-editor',
+    '@nuxtjs/i18n',
   ],
 
   nitro: {
