@@ -1,5 +1,6 @@
 import type { ClientEventHandlerMap, EmittedEvents, Listener, MatrixClient } from 'matrix-js-sdk'
 
+import { RoomEvent } from 'matrix-js-sdk'
 import { ClientEvent, MatrixEventEvent, RoomMemberEvent, RoomStateEvent } from 'matrix-js-sdk'
 
 type ValidEvents = EmittedEvents | RoomMemberEvent
@@ -12,6 +13,7 @@ const roomStateEvent = createEventHook<Parameters<EmitterListener<RoomStateEvent
 const roomMembershipEvent = createEventHook<Parameters<EmitterListener<RoomMemberEvent.Membership>>>()
 const eventHook = createEventHook<Parameters<EmitterListener<ClientEvent.Event>>>()
 const accountDataHook = createEventHook<Parameters<EmitterListener<ClientEvent.Event>>>()
+const myMembershipHook = createEventHook<Parameters<EmitterListener<RoomEvent.MyMembership>>>()
 export const roomMemberTypingHook = createEventHook<Parameters<EmitterListener<RoomMemberEvent.Typing>>>()
 
 export const useMatrixHooks = createSharedComposable(() => {
@@ -29,6 +31,7 @@ export const useMatrixHooks = createSharedComposable(() => {
       bindListener(RoomMemberEvent.Membership, roomMembershipEvent.trigger, { current, prev })
       bindListener(MatrixEventEvent.Decrypted, decryptedHook.trigger, { current, prev })
       bindListener(ClientEvent.AccountData, accountDataHook.trigger, { current, prev })
+      bindListener(RoomEvent.MyMembership, myMembershipHook.trigger, { current, prev })
     },
     { immediate: true },
   )
@@ -37,6 +40,7 @@ export const useMatrixHooks = createSharedComposable(() => {
     onAccountData: accountDataHook.on,
     onDecrypted: decryptedHook.on,
     onEvent: eventHook.on,
+    onMyMembership: myMembershipHook.on,
     onRoom: roomEvent.on,
     onRoomMembership: roomMembershipEvent.on,
     onRoomState: roomStateEvent.on,
