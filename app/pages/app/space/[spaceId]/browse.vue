@@ -23,14 +23,12 @@ provideIntersectionObserver(scrollEl)
   </LayoutAppSlot>
 
   <div ref="scrollEl" class="py-page-y-padding h-full overflow-y-scroll scrollbar-gutter-stable">
-    <div class="mx-auto max-w-generic-page-max-width">
+    <UShowcaseRoot>
       <PageRoomBrowseHeader :space="currentSpace" :is-loading />
 
-      <div class="grid h-12 w-full place-items-center -mb-2">
-        <USeparator class="w-full" />
-      </div>
+      <UShowcaseSeparator />
 
-      <div class="flex flex-col gap-2 *:w-full">
+      <UShowcaseContent>
         <PageRoomBrowseSection title="Rooms" :default-open="true" class="h-fit">
           <template v-if="!isLoading">
             <VisibleLazy v-for="room in conversationRooms.values()" :key="room.room_id" :height="72" use-injection>
@@ -64,7 +62,7 @@ provideIntersectionObserver(scrollEl)
         <template v-else>
           <USkeleton v-for="key in 4" :key class="h-12" />
         </template>
-      </div>
-    </div>
+      </UShowcaseContent>
+    </UShowcaseRoot>
   </div>
 </template>

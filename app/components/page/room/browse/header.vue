@@ -14,24 +14,24 @@ const founder = useRoomFounder(() => props.space)
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <div class="flex gap-3 items-center *:text-clip">
-      <MatrixAvatar v-if="space" :room="space" class="rounded shrink-0 size-10" />
+  <UShowcaseHeader>
+    <UShowcaseTitle>
+      <UShowcaseAvatar v-if="space" :room="space" />
       <USkeleton v-else class="rounded shrink-0 size-10" />
 
-      <h1 v-if="space" class="text-3xl font-semibold">
+      <h1 v-if="space">
         {{ space?.name }}
       </h1>
       <USkeleton v-else class="text-3xl h-1em w-48" />
 
-      <USpinner v-if="isLoading" class="size-6" />
-    </div>
+      <UShowcaseSpinner v-if="isLoading" />
+    </UShowcaseTitle>
 
-    <p v-if="topic" class="text-muted-foreground">
+    <UShowcaseDescription v-if="topic">
       {{ topic }}
-    </p>
+    </UShowcaseDescription>
 
-    <div class="text-sm flex gap-2 items-center tabular-nums *:flex *:gap-1 *:items-center">
+    <UShowcaseDetails>
       <div>
         <Icon name="tabler:users" />
 
@@ -84,6 +84,6 @@ const founder = useRoomFounder(() => props.space)
         <USkeleton class="size-4" />
         <USkeleton class="h-1em w-16" />
       </div>
-    </div>
-  </div>
+    </UShowcaseDetails>
+  </UShowcaseHeader>
 </template>
