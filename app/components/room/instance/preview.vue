@@ -3,20 +3,20 @@ import type { RoomSummary } from 'matrix-js-sdk'
 
 import { JoinRule } from 'matrix-js-sdk'
 
-const { summary, roomId } = defineProps<{ roomId: string; summary: RoomSummary | null | undefined }>()
+const { roomId, summary } = defineProps<{ roomId: string; summary: RoomSummary | null | undefined }>()
 
 const name = computed(() => summary?.name ?? roomId)
 const avatarSrc = useResolveAvatarUrl(() => summary?.avatar_url)
 </script>
 
 <template>
-  <div class="flex items-center justify-center size-full">
-    <div class="w-full max-w-md flex flex-col gap-4">
+  <div class="flex size-full items-center justify-center">
+    <div class="flex flex-col gap-4 max-w-md w-full">
       <Img v-if="avatarSrc" :alt="name" :src="avatarSrc" square class="rounded size-16" />
-      <div v-else class="size-16 rounded border border-border border-dashed" />
+      <div v-else class="border border-border rounded border-dashed size-16" />
 
       <div class="flex flex-col gap-1">
-        <div class="flex items-center gap-2">
+        <div class="flex gap-2 items-center">
           <h1 class="text-xl font-semibold">
             {{ name }}
           </h1>
@@ -30,12 +30,12 @@ const avatarSrc = useResolveAvatarUrl(() => summary?.avatar_url)
           </UTooltipRoot>
         </div>
 
-        <p v-if="summary" class="text-muted-foreground text-sm">{{ roomId }}</p>
+        <p v-if="summary" class="text-sm text-muted-foreground">{{ roomId }}</p>
       </div>
 
       <p
         v-if="summary"
-        class="text-muted-foreground text-sm"
+        class="text-sm text-muted-foreground"
         :class="{
           italic: !summary?.topic,
         }"
@@ -44,7 +44,7 @@ const avatarSrc = useResolveAvatarUrl(() => summary?.avatar_url)
       </p>
 
       <div v-if="summary" class="flex flex-col gap-1">
-        <p class="text-sm flex items-center gap-1">
+        <p class="text-sm flex gap-1 items-center">
           <Icon name="tabler:users" />
           <span class="tabular-nums">
             {{ $n(summary.num_joined_members) }}
