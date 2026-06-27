@@ -1,5 +1,6 @@
+import type { Room, RoomMember, User } from 'matrix-js-sdk'
+
 import { assert, merge } from 'es-toolkit'
-import { type Room, type RoomMember, type User } from 'matrix-js-sdk'
 
 import { AVATAR_IMAGE_SIZE_VALUES } from '#shared/utils/constants'
 

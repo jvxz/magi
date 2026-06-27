@@ -31,8 +31,10 @@ const mockTypingEvent = (userIds: string[] | undefined) =>
 const emitTyping = (userIds: string[] | undefined) => typingHandler?.(mockTypingEvent(userIds), {} as RoomMember)
 
 describe('typing indicator', () => {
+  let roomSeq = 0
+
   beforeEach(() => {
-    currentMockRoom = createMockRoom({ id: 'typing' })
+    currentMockRoom = createMockRoom({ id: `typing-${roomSeq++}` })
     typingHandler = undefined
 
     useRoomHooks.mockImplementation((_room: unknown, params: { onRoomMemberTyping?: typeof typingHandler }) => {

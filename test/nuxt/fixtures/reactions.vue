@@ -9,7 +9,7 @@ defineProps<{ event: MatrixEvent; room: Room }>()
     <PopoverRoot>
       <UContextMenuRegionRoot name="event">
         <UContextMenuRegionRoot name="member">
-          <PageRoomEventMessage v-if="event && room" :room :event :grouped="false" />
+          <RoomEventMessage v-if="event && room" :room :event :grouped="false" />
         </UContextMenuRegionRoot>
       </UContextMenuRegionRoot>
     </PopoverRoot>
