@@ -147,6 +147,7 @@ export default defineConfig({
       'generic-page-max-width': '72rem',
       'header-height': '49px',
       'page-y-padding': '6rem',
+      toast: '27rem',
       'user-card-height': '3.625rem',
     },
     text: {

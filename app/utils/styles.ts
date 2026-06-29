@@ -24,6 +24,9 @@ export const interactiveBase = tv({
 
 export const staticBase = tv({
   base: 'rounded p-2.5 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+  defaultVariants: {
+    variant: 'default',
+  },
   variants: {
     variant: {
       danger: 'bg-surface border-danger border [&>svg]:text-current',

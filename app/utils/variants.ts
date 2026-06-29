@@ -66,7 +66,7 @@ export const alertVariants = tv({
   },
 })
 
-export type AlertVariants = VariantProps<typeof alertVariants>
+export type AlertVariants = VariantProps<typeof alertVariants>['variant']
 
 export const toggleVariants = tv({
   base: 'p-0 data-[state=off]:(hover:text-foreground hover:bg-hover) data-[state=on]:(bg-selected hover:bg-selected text-foreground)',
