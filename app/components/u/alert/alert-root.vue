@@ -1,14 +1,13 @@
-<script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
+<script lang="ts" setup>
+import type { PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-  variant?: AlertVariants['variant']
-}>()
+const props = defineProps<PrimitiveProps & { class?: string; variant?: AlertVariants; icon?: string }>()
+
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <div data-slot="alert" :class="cn(alertVariants({ variant }), props.class)" role="alert">
+  <Primitive v-bind="delegated" :class="cn(alertVariants({ variant }), 'p-4', props.class)" data-slot="alert-root">
     <slot />
-  </div>
+  </Primitive>
 </template>

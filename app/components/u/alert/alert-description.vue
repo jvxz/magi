@@ -1,16 +1,13 @@
-<script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
+<script lang="ts" setup>
+import type { PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-}>()
+const props = defineProps<PrimitiveProps & { class?: string }>()
+
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <div
-    data-slot="alert-description"
-    :class="cn('col-start-2 grid justify-items-start gap-1 text-sm text-muted-foreground', props.class)"
-  >
+  <Primitive v-bind="delegated" :class="cn('text-sm', $props.class)" data-slot="alert-description">
     <slot />
-  </div>
+  </Primitive>
 </template>
