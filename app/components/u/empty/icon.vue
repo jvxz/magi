@@ -14,7 +14,7 @@ const props = withDefaults(
   { size: 'default', variant: 'circle' },
 )
 
-const delegated = reactiveOmit(props, ['class', 'name', 'variant', 'size'])
+const delegated = reactiveOmit(props, ['class', 'name', 'variant', 'size', 'ui'])
 </script>
 
 <template>
