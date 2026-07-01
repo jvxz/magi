@@ -1,5 +1,5 @@
 // https://github.com/nuxt/ui/blob/dde09d06486e68b1b4dd4538f91fefd08a3d7548/src/runtime/composables/useToast.ts
-import type { InjectionKey, Ref } from 'vue'
+import type { EmitsToProps, InjectionKey, Ref } from 'vue'
 
 import type { UToastEmits, UToastProps } from '~/components/u/toast/root.vue'
 
