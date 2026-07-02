@@ -62,6 +62,7 @@ export default defineConfig({
     [
       'ease-snappy',
       {
+        'animation-timing-function': 'cubic-bezier(0.33, 1, 0.68, 1)',
         'transition-timing-function': 'cubic-bezier(0.33, 1, 0.68, 1)',
       },
     ],
@@ -86,6 +87,7 @@ export default defineConfig({
     },
     {
       'z-dialog': 'z-50',
+      'z-dropdown': 'z-65',
       'z-menu': 'z-70',
       'z-overlay': 'z-50',
       'z-popover': 'z-60',
