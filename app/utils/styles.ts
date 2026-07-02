@@ -5,6 +5,7 @@ export const interactiveBase = tv({
     size: {
       default: 'h-8 px-2.5 py-0.75 text-sm',
       icon: 'aspect-square size-8',
+      'icon-sm': 'aspect-square size-7 text-xs',
       lg: 'h-10 px-5 text-base text-base',
       sm: 'h-7 px-2.5 py-1 text-xs',
     },
@@ -13,7 +14,7 @@ export const interactiveBase = tv({
         'bg-danger border border-transparent hover:(bg-danger-hover) text-danger-foreground active:(bg-danger-press) ',
       default: 'bg-primary text-primary-foreground border border-transparent active:(bg-primary-press) ',
       ghost:
-        'text-muted-foreground border border-transparent hover:(bg-secondary text-foreground) data-[highlighted]:(bg-secondary text-foreground) active:(bg-secondary-press)',
+        'text-muted-foreground border border-transparent hover:(bg-secondary text-foreground) data-[highlighted]:(bg-secondary text-foreground) data-[state=open]:(bg-secondary text-foreground) active:(bg-secondary-press)',
       link: 'text-foreground px-2.5 -mx-2.5 underline-offset-4 hover:underline data-[state=open]:underline',
       outline:
         'text-muted-foreground border-border/90 hover:(text-foreground bg-secondary not-active:border-border-strong) focus-visible:(text-foreground bg-secondary not-active:border-border-strong) data-[state=open]:(text-foreground bg-secondary not-active:border-border-strong) active:(border-border bg-secondary-press) border bg-transparent',
