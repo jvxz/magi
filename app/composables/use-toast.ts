@@ -1,7 +1,7 @@
 // https://github.com/nuxt/ui/blob/dde09d06486e68b1b4dd4538f91fefd08a3d7548/src/runtime/composables/useToast.ts
 import type { EmitsToProps, InjectionKey, Ref } from 'vue'
 
-import type { UToastEmits, UToastProps } from '~/components/u/toast/root.vue'
+import { TOAST_EXIT_MS, type UToastEmits, type UToastProps } from '~/components/u/toast/root.vue'
 
 export const toastMaxInjectionKey: InjectionKey<Ref<number | undefined>> = Symbol('toast-max')
 
@@ -102,6 +102,12 @@ export function useToast() {
         open: false,
       }
       triggerRef(toasts)
+
+      setTimeout(() => {
+        toasts.value = toasts.value.filter((t: Toast) => t.id !== id)
+      }, TOAST_EXIT_MS)
+
+      return
     }
 
     toasts.value = toasts.value.filter((t: Toast) => t.id !== id)
