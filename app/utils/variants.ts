@@ -62,6 +62,7 @@ export const alertVariants = tv({
   variants: {
     variant: {
       danger: 'bg-danger/40 text-danger-foreground',
+      ghost: 'bg-transparent',
     },
   },
 })
