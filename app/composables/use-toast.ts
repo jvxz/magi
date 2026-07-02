@@ -105,9 +105,7 @@ export function useToast() {
       triggerRef(toasts)
     }
 
-    setTimeout(() => {
-      toasts.value = toasts.value.filter((t: Toast) => t.id !== id)
-    }, 200)
+    toasts.value = toasts.value.filter((t: Toast) => t.id !== id)
   }
 
   function clear() {
