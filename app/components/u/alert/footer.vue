@@ -7,7 +7,11 @@ const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <Primitive v-bind="delegated" :class="cn('font-medium', $props.class)" data-slot="alert-title">
+  <Primitive
+    v-bind="delegated"
+    :class="cn('pt-1 flex gap-1 items-center justify-end', $props.class)"
+    data-slot="alert-footer"
+  >
     <slot />
   </Primitive>
 </template>

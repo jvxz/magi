@@ -18,10 +18,16 @@ const env = computed<string | undefined>(() => {
 
     <LayoutAppHeaderText />
 
-    <div class="px-2 text-right">
+    <div class="px-2 text-right flex gap-1 items-center justify-end">
+      <DevOnly>
+        <DebugDetails />
+      </DevOnly>
+
       <p v-if="$config.public.showLoadTime" class="text-sm text-muted-foreground tabular-nums">
         {{ $_loadTime }}
       </p>
+
+      <NotificationsTrigger />
     </div>
   </header>
 </template>
