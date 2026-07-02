@@ -30,12 +30,23 @@ const { sortState } = useSortRegion('notificationsPopover')
 
         <UTooltipRoot>
           <UTooltipTrigger as-child>
-            <UButton @click="dismissAll" size="icon-sm" variant="outline" class="rounded-md">
-              <Icon name="tabler:checks" />
-            </UButton>
+            <span tabindex="-1">
+              <UButton
+                :disabled="!notifications.length"
+                @click="dismissAll"
+                size="icon-sm"
+                variant="outline"
+                class="rounded-md"
+              >
+                <Icon name="tabler:checks" />
+              </UButton>
+            </span>
           </UTooltipTrigger>
 
-          <UTooltipContent> Dismiss all </UTooltipContent>
+          <UTooltipContent>
+            <span v-if="notifications.length"> Dismiss all </span>
+            <span v-else> No notifications to dismiss </span>
+          </UTooltipContent>
         </UTooltipRoot>
       </div>
 

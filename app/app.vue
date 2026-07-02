@@ -1,12 +1,12 @@
 <template>
   <VitePwaManifest />
+
   <UTooltipProvider>
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
   </UTooltipProvider>
+  <UToastProvider />
+
   <NuxtAnnouncer />
-  <DevOnly>
-    <DebugDetails />
-  </DevOnly>
 </template>
