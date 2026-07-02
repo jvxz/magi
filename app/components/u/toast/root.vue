@@ -31,41 +31,42 @@ const forwarded = useForwardPropsEmits(picked, emits)
 </script>
 
 <template>
-  <ToastRoot
-    v-bind="forwarded"
-    :class="
-      cn(
-        staticBase({ variant }),
-        'flex flex-row gap-2 toast-anim p-4 w-full relative',
-        'data-[swipe=move]:translate-x-(--reka-toast-swipe-move-x)',
-        'data-[swipe=cancel]:(translate-x-0 transition-transform)',
-        $props.class,
-      )
-    "
-    data-slot="toast-root"
-  >
-    <ToastClose as-child>
-      <UButton size="icon" aria-label="Close" variant="ghost" class="absolute top-4 right-4 size-6 rounded-sm">
-        <Icon name="tabler:x" />
-      </UButton>
-    </ToastClose>
+  <ToastRoot v-bind="forwarded" data-slot="toast-root" as-child>
+    <UAlertRoot
+      :class="
+        cn(
+          'flex flex-row gap-2 toast-anim p-4 w-full relative',
+          'data-[swipe=move]:translate-x-(--reka-toast-swipe-move-x)',
+          'data-[swipe=cancel]:(translate-x-0 transition-transform)',
+          $props.class,
+        )
+      "
+    >
+      <ToastClose as-child>
+        <UButton size="icon" aria-label="Close" variant="ghost" class="absolute top-4 right-4 size-6 rounded-sm">
+          <Icon name="tabler:x" />
+        </UButton>
+      </ToastClose>
 
-    <div v-if="icon" class="flex shrink-0 h-full pt-0.75">
-      <Icon :name="icon" />
-    </div>
+      <UAlertIcon v-if="icon" :name="icon" />
 
-    <div class="flex flex-col gap-1 flex-1">
-      <ToastTitle class="font-medium" data-slot="toast-title"> {{ title }} </ToastTitle>
-      <ToastDescription class="text-sm" data-slot="toast-description"> {{ description }} </ToastDescription>
+      <UAlertContent data-slot="toast-content">
+        <ToastTitle data-slot="toast-title" as-child>
+          <UAlertTitle class="font-medium">{{ title }}</UAlertTitle>
+        </ToastTitle>
+        <ToastDescription v-if="description" data-slot="toast-description" as-child>
+          <UAlertDescription class="text-sm">{{ description }}</UAlertDescription>
+        </ToastDescription>
 
-      <div v-if="actions?.length" class="pt-1 flex gap-1 items-center justify-end">
-        <ToastAction v-for="action of actions" :key="action.label" :alt-text="action.label" as-child>
-          <UButton v-bind="action" :class="cn('w-fit self-end', action.class)">
-            {{ action.label }}
-          </UButton>
-        </ToastAction>
-      </div>
-    </div>
+        <UAlertFooter v-if="actions?.length" class="pt-1 flex gap-1 items-center justify-end" data-slot="toast-footer">
+          <ToastAction v-for="action of actions" :key="action.label" :alt-text="action.label" as-child>
+            <UButton v-bind="action" :class="cn('w-fit self-end', action.class)">
+              {{ action.label }}
+            </UButton>
+          </ToastAction>
+        </UAlertFooter>
+      </UAlertContent>
+    </UAlertRoot>
   </ToastRoot>
 </template>
 
