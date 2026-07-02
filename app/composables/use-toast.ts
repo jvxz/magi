@@ -3,7 +3,6 @@ import type { EmitsToProps, InjectionKey, Ref } from 'vue'
 
 import type { UToastEmits, UToastProps } from '~/components/u/toast/root.vue'
 
-export const MAX_TOASTS = 4
 export const toastMaxInjectionKey: InjectionKey<Ref<number | undefined>> = Symbol('toast-max')
 
 export interface Toast extends Omit<UToastProps, 'defaultOpen'>, EmitsToProps<UToastEmits> {

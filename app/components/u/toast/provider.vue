@@ -8,6 +8,7 @@ import UToast from '../toast/root.vue'
 
 export interface ToasterProps extends Omit<ToastProviderProps, 'swipeDirection'> {
   position?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+  max?: number
 }
 
 const props = withDefaults(defineProps<ToasterProps>(), {
@@ -17,7 +18,7 @@ const props = withDefaults(defineProps<ToasterProps>(), {
 })
 
 const { remove, toasts } = useToast()
-provide(toastMaxInjectionKey, toRef(MAX_TOASTS))
+provide(toastMaxInjectionKey, toRef(props, 'max'))
 
 const providerProps = useForwardProps(reactivePick(props, ['duration', 'label', 'swipeThreshold', 'disableSwipe']))
 
