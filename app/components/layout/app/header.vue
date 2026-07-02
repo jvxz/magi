@@ -18,7 +18,7 @@ const env = computed<string | undefined>(() => {
 
     <LayoutAppHeaderText />
 
-    <div class="px-2 text-right flex items-center justify-end gap-1">
+    <div class="px-2 text-right flex gap-1 items-center justify-end">
       <DevOnly>
         <DebugDetails />
       </DevOnly>

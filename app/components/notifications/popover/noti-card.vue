@@ -5,7 +5,7 @@ const { dismiss } = useNotifications()
 </script>
 
 <template>
-  <UAlertRoot variant="ghost" class="w-full not-last:border-b rounded-0 shrink-0">
+  <UAlertRoot variant="ghost" class="rounded-0 shrink-0 w-full not-last:border-b">
     <UAlertIcon v-if="notification.icon" :name="notification.icon" />
 
     <UAlertContent>

@@ -15,7 +15,7 @@ const tooltipOpen = ref(false)
     <PopoverRoot v-model:open="popoverOpen">
       <UTooltipTrigger as-child>
         <PopoverTrigger as-child>
-          <UButton variant="ghost" class="size-6 p-0">
+          <UButton variant="ghost" class="p-0 size-6">
             <Icon name="tabler:inbox" class="size-4" />
           </UButton>
         </PopoverTrigger>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { notifications, dismissAll } = useNotifications()
+const { dismissAll, notifications } = useNotifications()
 
 const { sortState } = useSortRegion('notificationsPopover')
 </script>
@@ -19,24 +19,24 @@ const { sortState } = useSortRegion('notificationsPopover')
       "
       :side-offset="8"
     >
-      <div class="w-full shrink-0 p-1 border-b flex items-center left-px">
+      <div class="p-1 border-b flex shrink-0 w-full items-center left-px">
         <USortSelect
+          v-model:model-value="sortState"
           :ui="{ trigger: 'rounded-l-md', toggle: 'rounded-r-md', content: 'rounded-md' }"
           :side-offset="5"
-          v-model:model-value="sortState"
         />
 
-        <div class="grow shrink-0" />
+        <div class="shrink-0 grow" />
 
         <UTooltipRoot>
           <UTooltipTrigger as-child>
             <span tabindex="-1">
               <UButton
                 :disabled="!notifications.length"
-                @click="dismissAll"
                 size="icon-sm"
                 variant="outline"
                 class="rounded-md"
+                @click="dismissAll"
               >
                 <Icon name="tabler:checks" />
               </UButton>
@@ -58,7 +58,7 @@ const { sortState } = useSortRegion('notificationsPopover')
         <UScrollAreaScrollbars />
       </UScrollAreaRoot>
 
-      <div v-else class="size-full grid place-items-center">
+      <div v-else class="grid size-full place-items-center">
         <UEmptyRoot>
           <UEmptyIcon variant="naked" name="tabler:inbox" size="sm" />
 

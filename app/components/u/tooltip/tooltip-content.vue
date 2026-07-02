@@ -23,8 +23,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <TooltipPortal>
     <TooltipContent
       v-bind="{ ...forwarded, ...$attrs }"
-      :collision-padding="4"
       id="tooltip-content"
+      :collision-padding="4"
       :class="
         cn(
           staticBase({ variant: 'default' }),

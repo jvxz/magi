@@ -43,7 +43,7 @@ const forwarded = useForwardPropsEmits(picked, emits)
       "
     >
       <ToastClose as-child>
-        <UButton size="icon" aria-label="Close" variant="ghost" class="absolute top-4 right-4 size-6 rounded-sm">
+        <UButton size="icon" aria-label="Close" variant="ghost" class="rounded-sm size-6 right-4 top-4 absolute">
           <Icon name="tabler:x" />
         </UButton>
       </ToastClose>

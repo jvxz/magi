@@ -32,7 +32,7 @@ function onUpdateOpen(value: boolean, id: string | number) {
 
     <ToastPortal>
       <ToastViewport
-        class="fixed flex flex-col gap-2 w-[calc(100%-2rem)] sm:w-108 right-8 bottom-8 z-[100] focus:outline-none"
+        class="flex flex-col gap-2 w-[calc(100%-2rem)] bottom-8 right-8 fixed z-[100] focus:outline-none sm:w-108"
       >
         <UToast
           v-for="toast of toasts"
