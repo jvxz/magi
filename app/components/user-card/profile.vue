@@ -4,7 +4,7 @@ const { self } = useSelf()
 
 <template>
   <UProfilePopoverTrigger
-    :user="self"
+    :user="self ?? undefined"
     :content-props="{
       sideOffset: 14,
       alignOffset: -8,
