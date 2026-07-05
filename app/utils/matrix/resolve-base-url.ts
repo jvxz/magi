@@ -11,6 +11,6 @@ export async function resolveBaseUrl(baseUrl: string): Promise<string> {
 
     return clientConfig['m.homeserver'].base_url
   } catch (error) {
-    throw parseMatrixError(error, { fallbackMessage: 'Failed to resolve base URL' })
+    throw parseError(error, { fallbackMessage: 'Failed to resolve base URL' }).message
   }
 }
