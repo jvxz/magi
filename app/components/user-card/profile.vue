@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { self, profile } = useSelf()
+const { profile, self } = useSelf()
 </script>
 
 <template>
