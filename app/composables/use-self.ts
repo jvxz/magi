@@ -2,9 +2,12 @@ export const useSelf = createGlobalState(() => {
   const { client } = useMatrixClient()
   const { onSync, onUserProfile } = useMatrixHooks()
 
-  const self = useUser(() => client.value.getUserId())
+  const userId = computed(() => client.value.getUserId() ?? undefined)
+  const self = useUser(userId)
+  const profile = useUserProfile(userId)
+
   onUserProfile(self.trigger)
   onSync(self.trigger)
 
-  return { self }
+  return { profile, self }
 })
