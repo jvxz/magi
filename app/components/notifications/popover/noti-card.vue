@@ -1,34 +1,41 @@
 <script lang="ts" setup>
-defineProps<{ notification: AppNotification }>()
+import type { UToastProps } from '~/components/u/toast/root.vue'
+
+export type NotiCardProps = Pick<UToastProps, 'description' | 'title' | 'actions' | 'icon'> &
+  Pick<AppNotification, 'id'>
+
+const props = defineProps<NotiCardProps>()
+const emits = defineEmits<{
+  dismiss: []
+}>()
 
 const { dismiss } = useNotifications()
+function handleDismiss() {
+  emits('dismiss')
+  dismiss(props.id)
+}
+
+const isToast = inject<true>('isToast')
 </script>
 
 <template>
-  <UAlertRoot variant="ghost" class="rounded-0 shrink-0 w-full not-last:border-b">
-    <UAlertIcon v-if="notification.icon" :name="notification.icon" />
+  <UAlertIcon v-if="icon" :name="icon" />
 
-    <UAlertContent>
-      <UAlertTitle v-if="notification.title">
-        {{ notification.title }}
-      </UAlertTitle>
+  <UAlertContent class="shrink-0 size-full">
+    <slot>
+      <UToastTitle v-if="title">
+        {{ title }}
+      </UToastTitle>
 
-      <UAlertDescription v-if="notification.description">
-        {{ notification.description }}
-      </UAlertDescription>
+      <UToastDescription v-if="description">
+        {{ description }}
+      </UToastDescription>
+    </slot>
 
+    <slot name="footer" :handle-dismiss :is-toast>
       <UAlertFooter>
-        <UButton size="sm" @click="dismiss(notification.id)"> Dismiss </UButton>
-
-        <UButton
-          v-for="action in notification.actions"
-          :key="action.label"
-          v-bind="omit(action, ['label'])"
-          :class="cn('w-fit self-end', action.class)"
-        >
-          <span>{{ action.label }}</span>
-        </UButton>
+        <UButton v-if="!isToast" size="sm" @click="handleDismiss"> Dismiss </UButton>
       </UAlertFooter>
-    </UAlertContent>
-  </UAlertRoot>
+    </slot>
+  </UAlertContent>
 </template>

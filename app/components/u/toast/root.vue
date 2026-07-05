@@ -11,8 +11,8 @@ import type { ButtonProps } from '../button.vue'
 
 export type UToastProps = ToastRootProps & {
   class?: string
-  title?: string
-  description?: string
+  title?: MaybeRefOrGetter<string>
+  description?: MaybeRefOrGetter<string>
   icon?: string
   variant?: AlertVariants
   actions?: (ButtonProps & { label: string })[]
@@ -41,6 +41,7 @@ const forwarded = useForwardPropsEmits(picked, emits)
           $props.class,
         )
       "
+      :variant
     >
       <ToastClose as-child>
         <UButton size="icon" aria-label="Close" variant="ghost" class="rounded-sm size-6 right-4 top-4 absolute">
@@ -48,24 +49,7 @@ const forwarded = useForwardPropsEmits(picked, emits)
         </UButton>
       </ToastClose>
 
-      <UAlertIcon v-if="icon" :name="icon" />
-
-      <UAlertContent data-slot="toast-content">
-        <ToastTitle data-slot="toast-title" as-child>
-          <UAlertTitle class="font-medium">{{ title }}</UAlertTitle>
-        </ToastTitle>
-        <ToastDescription v-if="description" data-slot="toast-description" as-child>
-          <UAlertDescription class="text-sm">{{ description }}</UAlertDescription>
-        </ToastDescription>
-
-        <UAlertFooter v-if="actions?.length" class="pt-1 flex gap-1 items-center justify-end" data-slot="toast-footer">
-          <ToastAction v-for="action of actions" :key="action.label" :alt-text="action.label" as-child>
-            <UButton v-bind="action" :class="cn('w-fit self-end', action.class)">
-              {{ action.label }}
-            </UButton>
-          </ToastAction>
-        </UAlertFooter>
-      </UAlertContent>
+      <slot />
     </UAlertRoot>
   </ToastRoot>
 </template>

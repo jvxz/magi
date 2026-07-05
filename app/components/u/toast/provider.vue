@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<ToasterProps>(), {
 
 const { remove, toasts } = useToast()
 provide(toastMaxInjectionKey, toRef(props, 'max'))
+provide('isToast', true)
 
 const providerProps = useForwardProps(reactivePick(props, ['duration', 'label', 'swipeThreshold', 'disableSwipe']))
 
@@ -37,11 +38,14 @@ function onUpdateOpen(value: boolean, id: string | number) {
       >
         <UToast
           v-for="toast of toasts"
+          v-bind="omit(toast, ['id', '_duplicate', '_updated', 'payload', 'type'])"
           :key="toast.id"
-          v-bind="omit(toast, ['id', '_duplicate', '_updated'])"
+          :variant="toast.variant"
           @update:open="onUpdateOpen($event, toast.id)"
           @click="toast.onClick?.(toast)"
-        />
+        >
+          <NotificationsContent :notification="toast" />
+        </UToast>
       </ToastViewport>
     </ToastPortal>
   </ToastProvider>

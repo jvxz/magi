@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<PrimitiveProps & { class?: string }>()
+export type AlertTitleProps = PrimitiveProps & { class?: string }
+
+const props = defineProps<AlertTitleProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>
