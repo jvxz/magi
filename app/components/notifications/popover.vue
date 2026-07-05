@@ -52,7 +52,7 @@ const { sortState } = useSortRegion('notificationsPopover')
 
       <UScrollAreaRoot v-if="notifications.length">
         <UScrollAreaViewport>
-          <UAlertRoot variant="ghost" v-for="notification in notifications" :key="notification.timestamp">
+          <UAlertRoot v-for="notification in notifications" :key="notification.timestamp" variant="ghost">
             <NotificationsContent :notification />
           </UAlertRoot>
         </UScrollAreaViewport>

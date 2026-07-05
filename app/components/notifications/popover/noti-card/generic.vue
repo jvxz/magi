@@ -4,8 +4,8 @@ defineProps<{ notification: AppNotification<'generic'> }>()
 
 <template>
   <NotificationsPopoverNotiCard
+    :id="notification.id"
     :description="notification.payload.description"
     :title="notification.payload.title"
-    :id="notification.id"
   />
 </template>

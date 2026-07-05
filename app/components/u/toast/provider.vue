@@ -40,9 +40,9 @@ function onUpdateOpen(value: boolean, id: string | number) {
           v-for="toast of toasts"
           v-bind="omit(toast, ['id', '_duplicate', '_updated', 'payload', 'type'])"
           :key="toast.id"
+          :variant="toast.variant"
           @update:open="onUpdateOpen($event, toast.id)"
           @click="toast.onClick?.(toast)"
-          :variant="toast.variant"
         >
           <NotificationsContent :notification="toast" />
         </UToast>
