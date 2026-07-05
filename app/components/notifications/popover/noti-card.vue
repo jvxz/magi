@@ -21,7 +21,7 @@ const isToast = inject<true>('isToast')
 <template>
   <UAlertIcon v-if="icon" :name="icon" />
 
-  <UAlertContent class="size-full shrink-0">
+  <UAlertContent class="shrink-0 size-full">
     <slot>
       <UToastTitle v-if="title">
         {{ title }}

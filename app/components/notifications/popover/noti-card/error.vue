@@ -6,9 +6,9 @@ const { copy } = useClipboard()
 
 <template>
   <NotificationsPopoverNotiCard
+    :id="notification.id"
     :description="notification.payload.description"
     :title="notification.payload.title"
-    :id="notification.id"
     icon="tabler:exclamation-circle"
   >
     <template #footer="{ handleDismiss, isToast }">
