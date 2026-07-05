@@ -57,7 +57,7 @@ export function useAuth() {
         return authedClient
       } catch (error) {
         sendSessionToSw()
-        throw new Error(parseMatrixError(error, { fallbackMessage: 'An unexpected error occurred' }))
+        throw new Error(parseError(error, { fallbackMessage: 'An unexpected error occurred' }).message)
       }
     },
     mutationKey: ['clientLogin'],

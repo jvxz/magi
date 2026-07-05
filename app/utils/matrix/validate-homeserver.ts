@@ -9,7 +9,7 @@ export async function validateHomeserver(homeserver: string, throwError?: boolea
     const res = await AutoDiscovery.getRawClientConfig(withoutProtocol(homeserver))
     return AutoDiscovery.fromDiscoveryConfig(res)
   } catch (error) {
-    if (throwError) throw new Error(parseMatrixError(error, { fallbackMessage: 'Invalid homeserver' }))
+    if (throwError) throw new Error(parseError(error, { fallbackMessage: 'Invalid homeserver' }).message)
 
     return undefined
   }
