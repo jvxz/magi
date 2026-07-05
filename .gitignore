@@ -30,3 +30,6 @@ test-results/
 
 .pnpm-store/
 .serena/
+
+AGENTS.md
+CLAUDE.md
