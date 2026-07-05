@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-const { self } = useSelf()
+const { profile, self } = useSelf()
 </script>
 
 <template>
   <UProfilePopoverTrigger
-    :user="self"
+    :user="self ?? undefined"
     :content-props="{
       sideOffset: 14,
       alignOffset: -8,
@@ -24,8 +24,8 @@ const { self } = useSelf()
       />
 
       <div class="flex-col size-full translate-y-0.5 justify-between *:shrink-0">
-        <p v-if="self?.displayName" class="text-sm font-medium h-1lh w-fit self-start">
-          {{ self.displayName }}
+        <p v-if="profile?.displayname" class="text-sm font-medium h-1lh w-fit self-start">
+          {{ profile.displayname }}
         </p>
         <USkeleton v-else class="text-sm py-2 shrink h-1lh w-24" />
 

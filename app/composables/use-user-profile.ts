@@ -17,7 +17,7 @@ function acquire(key: string) {
     const ref = scope.run(() => {
       const userId = key
       const { client } = useMatrixClient()
-      const { onEvent } = useMatrixHooks()
+      const { onEvent, onUserProfile } = useMatrixHooks()
 
       const user = shallowRef<User | undefined>(client.value.getUser(userId) ?? undefined)
 
@@ -45,6 +45,16 @@ function acquire(key: string) {
           ...profile.value,
           avatar_url: content.avatar_url,
           displayname: content.displayname ?? getDisplayNameFallback(userId),
+        }
+      })
+
+      onUserProfile((updatedUserId, updatedProfile) => {
+        if (updatedUserId !== userId) return
+
+        profile.value = {
+          ...profile.value,
+          avatar_url: updatedProfile?.avatar_url as string | undefined,
+          displayname: (updatedProfile?.displayname as string | undefined) ?? getDisplayNameFallback(userId),
         }
       })
 
