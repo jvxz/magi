@@ -1,12 +1,13 @@
 // https://github.com/nuxt/ui/blob/dde09d06486e68b1b4dd4538f91fefd08a3d7548/src/runtime/composables/useToast.ts
 import type { EmitsToProps, InjectionKey, Ref } from 'vue'
 
-import { TOAST_EXIT_MS, type UToastEmits, type UToastProps } from '~/components/u/toast/root.vue'
+import type { UToastEmits, UToastProps } from '~/components/u/toast/root.vue'
+
+import { TOAST_EXIT_MS } from '~/components/u/toast/root.vue'
 
 export const toastMaxInjectionKey: InjectionKey<Ref<number | undefined>> = Symbol('toast-max')
 
-export interface Toast extends Omit<UToastProps, 'defaultOpen'>, EmitsToProps<UToastEmits> {
-  id: string | number
+export interface Toast extends Omit<UToastProps, 'defaultOpen'>, EmitsToProps<UToastEmits>, AppNotification {
   onClick?: (toast: Toast) => void
   _duplicate?: number
   _updated?: boolean
@@ -40,7 +41,7 @@ export function useToast() {
     running.value = false
   }
 
-  function add(toast: Partial<Toast>): Toast {
+  function add(toast: Partial<Toast> & Pick<AppNotification, 'key'>): Toast {
     const body = {
       id: generateId(),
       open: true,
