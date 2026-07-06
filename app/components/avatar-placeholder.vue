@@ -7,6 +7,7 @@ export interface AvatarPlaceholderProps {
   title?: boolean
   square?: boolean
   size?: number | string
+  isLoading?: boolean
 }
 </script>
 
@@ -50,7 +51,16 @@ function generateColors(name: string, colors: string[]) {
 </script>
 
 <template>
+  <USkeleton
+    v-if="isLoading"
+    :style="{
+      width: typeof size === 'number' ? `${size}px` : size,
+      height: typeof size === 'number' ? `${size}px` : size,
+    }"
+    :class="square ? 'rounded' : 'rounded-full'"
+  />
   <svg
+    v-else
     :viewBox="`0 0 ${SIZE} ${SIZE}`"
     fill="none"
     role="img"

@@ -5,6 +5,7 @@ export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   square?: boolean
   imageSize?: AvatarImageSize
   placeholderKey?: string
+  isLoading?: boolean
 } & (
     | { room: MaybeRoomOrId | undefined | null; user?: never; src?: never }
     | { user: MaybeUserOrId | undefined | null; room?: never; src?: never }
@@ -50,7 +51,15 @@ watch(
   () => (isError.value = false),
 )
 
-const delegatedProps = reactiveOmit(props, 'room', 'user', 'src', 'square', 'imageSize', 'placeholderKey')
+const delegatedProps = reactiveOmit(props, [
+  'room',
+  'user',
+  'src',
+  'square',
+  'imageSize',
+  'placeholderKey',
+  'isLoading',
+])
 
 const placeholderName = computed(() => {
   if (props.placeholderKey) return props.placeholderKey
@@ -75,6 +84,7 @@ const placeholderName = computed(() => {
   />
   <AvatarPlaceholder
     v-else
+    :is-loading
     :name="placeholderName"
     :square
     :class="cn(!square && 'rounded-full', 'size-full', props.class)"
