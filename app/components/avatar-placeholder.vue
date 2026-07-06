@@ -12,6 +12,8 @@ export interface AvatarPlaceholderProps {
 </script>
 
 <script lang="ts" setup>
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<AvatarPlaceholderProps>(), {
   colors: () => [
     'var(--primary)',
@@ -53,6 +55,7 @@ function generateColors(name: string, colors: string[]) {
 <template>
   <USkeleton
     v-if="isLoading"
+    v-bind="$attrs"
     :style="{
       width: typeof size === 'number' ? `${size}px` : size,
       height: typeof size === 'number' ? `${size}px` : size,
@@ -61,6 +64,7 @@ function generateColors(name: string, colors: string[]) {
   />
   <svg
     v-else
+    v-bind="$attrs"
     :viewBox="`0 0 ${SIZE} ${SIZE}`"
     fill="none"
     role="img"
