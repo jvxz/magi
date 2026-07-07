@@ -84,7 +84,7 @@ function handlePaginate(dir: 'f' | 'b') {
         "
       >
         <UContextMenuTrigger class="flex flex-col gap-[2px] w-full *:w-full *:justify-start">
-          <UAsideListButton v-for="server in servers" :key="server" @click.right="contextMenuServer = server" as-child>
+          <UAsideListButton v-for="server in servers" :key="server" as-child @click.right="contextMenuServer = server">
             <NuxtLink
               :to="{
                 name: 'explore',
