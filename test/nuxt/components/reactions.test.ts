@@ -10,7 +10,7 @@ import { DEFAULT_MOCK_NAMES, generateFakeHomeserver } from '../utils/matrix/cred
 
 const { useMatrixClient, useMatrixHooks, useSelf } = vi.hoisted(() => ({
   useMatrixClient: vi.fn(() => ({ client: shallowRef({}) })),
-  useMatrixHooks: vi.fn(() => ({ onEvent: () => {}, onRoom: () => {}, onSync: () => {} })),
+  useMatrixHooks: vi.fn(() => ({ onEvent: () => {}, onRoom: () => {}, onSync: () => {}, onUserProfile: () => {} })),
   useSelf: vi.fn(() => ({ self: shallowRef() })),
 }))
 
@@ -60,6 +60,7 @@ describe('reactions', () => {
       onEvent: () => {},
       onRoom: () => {},
       onSync: () => {},
+      onUserProfile: () => {},
     })
 
     useMatrixClient.mockReturnValue({

@@ -24,8 +24,11 @@ const replyEventBody = computed(() =>
 )
 const replyEventProfile = useUserProfile(() => replyEvent.value?.getSender())
 
+const hasReactions = useRoomEventHasReactions(
+  () => props.room,
+  () => props.event,
+)
 const isDecrypting = computed(() => props.event.isBeingDecrypted())
-
 const isJumboEmoji = computed(() => {
   const body = eventBody.value?.trim()
   if (!body) return false
@@ -111,7 +114,7 @@ const contentProps: PopoverContentProps = {
                 <UProfilePopoverTrigger :content-props :user="userId" as-child>
                   <UButton
                     variant="link"
-                    class="context-menu-open:underline data-[state=open]:no-underline data-[popover-open]:underline!"
+                    class="data-popover-open:underline! context-menu-open:underline data-[state=open]:no-underline"
                   >
                     {{ eventProfile?.displayname }}
                   </UButton>
@@ -134,7 +137,7 @@ const contentProps: PopoverContentProps = {
             <p v-else class="italic">Decrypting message...</p>
           </RoomEventMessageContent>
 
-          <RoomEventMessageReactions :room :event />
+          <RoomEventMessageReactions v-if="hasReactions" :room :event />
         </div>
       </div>
     </RoomEventMessageRoot>

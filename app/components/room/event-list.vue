@@ -1,34 +1,49 @@
 <script lang="ts" setup>
 import type { Room } from 'matrix-js-sdk'
 
+import { usePaginatedScroll } from '@jamii/vue-paginated-scroll'
+import { Direction } from 'matrix-js-sdk'
+
 const props = defineProps<{
   room: Room
 }>()
 
 const containerRef = useTemplateRef('container')
-const wrapperRef = useTemplateRef('wrapper')
+const isPaginationBusy = ref(false)
 
-const { createItemBind, events, eventsPaginated, getEventVersion, handleOnMounted, isFullyLoaded, scrollToBottom } =
-  useEventPagination({
-    itemsEl: wrapperRef,
-    room: toRef(props, 'room'),
-    scrollEl: containerRef,
-  })
+const { events, getEventVersion, isFullyLoaded, scrollEventsAsync } = useRoomEvents(toRef(props, 'room'), {
+  isBusy: isPaginationBusy,
+})
 
-onMounted(handleRoomUpdate)
-watch(() => props.room.roomId, handleRoomUpdate)
+const {
+  isPaginating,
+  vItem,
+  window: paginationWindow,
+} = usePaginatedScroll(containerRef, {
+  buffer: 0.5,
+  followTail: true,
+  getKey: i => i.getId()!,
+  maxItems: 120,
+  onBeforePaginate: async dir => {
+    if (dir !== 'backward') return
 
-async function handleRoomUpdate() {
-  const expectedRoomId = props.room.roomId
-  await nextTick()
+    const atOldestLoaded = paginationWindow.value[0]?.getId() === events.value[0]?.getId()
+    if (!atOldestLoaded) return
 
-  if (props.room.roomId !== expectedRoomId) return
+    await scrollEventsAsync(Direction.Backward)
+  },
+  source: events,
+  targetHeight: 5,
+})
 
-  scrollToBottom()
-  await handleOnMounted()
-}
+watchEffect(() => {
+  isPaginationBusy.value = isPaginating.value.backward || isPaginating.value.forward
+})
 
-const groupedEvents = useEventGrouping({ events, eventsPaginated })
+const groupedEvents = useEventGrouping({
+  events,
+  eventsPaginated: paginationWindow,
+})
 </script>
 
 <template>
@@ -39,15 +54,15 @@ const groupedEvents = useEventGrouping({ events, eventsPaginated })
         class="scroll-container grid h-[calc(100%-3rem)] w-full content-end absolute overflow-x-hidden overflow-y-scroll"
         data-testid="scroll-container"
       >
-        <div ref="wrapper" class="w-full" data-testid="scroll-container-wrapper">
+        <div class="w-full" data-testid="scroll-container-wrapper">
           <div data-ignore class="h-4.25" />
 
           <RoomPaginateSkeleton v-if="!isFullyLoaded" />
 
           <div
             v-for="(event, idx) in groupedEvents.events"
-            v-bind="createItemBind(event, idx)"
             :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
+            v-item="event.getId()!"
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
             <RoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />

@@ -3,7 +3,7 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import type { NuxtTimeProps } from '#app'
 
-const props = defineProps<PrimitiveProps & { datetime: number }>()
+const props = defineProps<PrimitiveProps & { datetime: number; class?: string }>()
 
 const isOld = computed(() => {
   const yesterday = Temporal.Now.plainDateISO().subtract({ days: 1 })
@@ -27,17 +27,28 @@ const nuxtTimeProps = computed<NuxtTimeProps>(() => {
     minute: 'numeric',
   }
 })
+
+const { hide, show } = useRoomEventTimestampTooltip()
+const { start, stop } = useTimeoutFn((el: HTMLElement) => show(el, props.datetime), 700, { immediate: false })
+
+function onEnter(e: PointerEvent) {
+  start(e.currentTarget as HTMLElement)
+}
+function onLeave() {
+  stop()
+  hide()
+}
 </script>
 
 <template>
-  <Primitive v-bind="$props" :class="cn('text-xs text-muted-foreground select-none', $attrs.class)">
-    <UTooltipRoot :delay-duration="1000">
-      <UTooltipTrigger as-child>
-        <NuxtTime v-bind="nuxtTimeProps" />
-      </UTooltipTrigger>
-      <UTooltipContent>
-        <NuxtTime :datetime weekday="long" month="long" day="numeric" year="numeric" hour="numeric" minute="numeric" />
-      </UTooltipContent>
-    </UTooltipRoot>
+  <Primitive
+    v-bind="props"
+    :class="cn('text-xs text-muted-foreground select-none', props.class)"
+    @pointerenter="onEnter"
+    @pointerleave="onLeave"
+    @focus="show($event.currentTarget as HTMLElement, props.datetime)"
+    @blur="hide"
+  >
+    <NuxtTime v-bind="nuxtTimeProps" />
   </Primitive>
 </template>
