@@ -21,8 +21,8 @@ importers:
   .:
     dependencies:
       '@jamii/vue-paginated-scroll':
-        specifier: ^1.0.6
-        version: 1.0.6(vue@3.5.35(typescript@6.0.3))
+        specifier: ^1.0.8
+        version: 1.0.8(vue@3.5.35(typescript@6.0.3))
       '@nuxt/fonts':
         specifier: 0.14.0
         version: 0.14.0(db0@0.3.4)(idb-keyval@6.2.5)(ioredis@5.11.1)(magicast@0.5.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
@@ -1847,8 +1847,8 @@ packages:
     resolution: {integrity: sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==}
     engines: {node: '>=18.0.0'}
 
-  '@jamii/vue-paginated-scroll@1.0.6':
-    resolution: {integrity: sha512-hQ0NufzV3gWTPHmbcjsqW1/d1qEILAwezbV7Cey0bbLT7ebCxWPFTuD8+7r2dczEybdiaVV/na1s11YoVDZoYw==}
+  '@jamii/vue-paginated-scroll@1.0.8':
+    resolution: {integrity: sha512-3QVFG0DiP2rAEaicOljNkWeUCcVSQaGMfLtUpbf40IqeRNG+6JARuXBsvPVKWbuODGuSBNd+bZFgoG2npnSWxg==}
     engines: {node: '>=20'}
     peerDependencies:
       vue: ^3.4.0
@@ -11349,7 +11349,7 @@ snapshots:
     dependencies:
       minipass: 7.1.3
 
-  '@jamii/vue-paginated-scroll@1.0.6(vue@3.5.35(typescript@6.0.3))':
+  '@jamii/vue-paginated-scroll@1.0.8(vue@3.5.35(typescript@6.0.3))':
     dependencies:
       '@vueuse/core': 14.3.0(vue@3.5.35(typescript@6.0.3))
       vue: 3.5.35(typescript@6.0.3)
