@@ -1,37 +1,17 @@
-<script lang="ts">
-import type { ToggleGroupRootEmits, ToggleGroupRootProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
-import type { RouteLocationRaw, Router } from 'vue-router'
-
-import { useForwardPropsEmits } from 'reka-ui'
-
-export function resolveAsideListTabValue(route: RouteLocationRaw, router: Router) {
-  const { name, params } = router.resolve(route)
-
-  if (!params) return name
-
-  return Object.values(params).join('-')
-}
-</script>
-
 <script lang="ts" setup>
-const props = defineProps<ToggleGroupRootProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<ToggleGroupRootEmits>()
+import type { PrimitiveProps } from 'reka-ui'
 
-const delegatedProps = reactiveOmit(props, 'class')
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const props = defineProps<PrimitiveProps & { class?: string }>()
 
-const route = useRoute()
-const router = useRouter()
-const value = computed(() => resolveAsideListTabValue(route as RouteLocationRaw, router))
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <ToggleGroupRoot
-    v-bind="forwarded"
-    :model-value="value"
+  <Primitive
+    v-bind="delegated"
     :class="cn('p-2.5 flex flex-col gap-[2px] w-full *:w-full *:justify-start', props.class)"
+    data-slot="aside-list-root"
   >
     <slot />
-  </ToggleGroupRoot>
+  </Primitive>
 </template>
