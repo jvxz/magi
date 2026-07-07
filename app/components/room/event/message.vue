@@ -114,7 +114,7 @@ const contentProps: PopoverContentProps = {
                 <UProfilePopoverTrigger :content-props :user="userId" as-child>
                   <UButton
                     variant="link"
-                    class="context-menu-open:underline data-[state=open]:no-underline data-popover-open:underline!"
+                    class="data-popover-open:underline! context-menu-open:underline data-[state=open]:no-underline"
                   >
                     {{ eventProfile?.displayname }}
                   </UButton>
