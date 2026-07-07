@@ -11,7 +11,7 @@ const props = defineProps<{
 const containerRef = useTemplateRef('container')
 const isPaginationBusy = ref(false)
 
-const { events, isFullyLoaded, scrollEventsAsync } = useRoomEvents(toRef(props, 'room'), {
+const { events, getEventVersion, isFullyLoaded, scrollEventsAsync } = useRoomEvents(toRef(props, 'room'), {
   isBusy: isPaginationBusy,
 })
 
@@ -61,7 +61,7 @@ const groupedEvents = useEventGrouping({
 
           <div
             v-for="(event, idx) in groupedEvents.events"
-            :key="`${event.getId() ?? idx}`"
+            :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
             v-item="event.getId()!"
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
