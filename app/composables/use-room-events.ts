@@ -4,16 +4,9 @@ import { Direction } from 'matrix-js-sdk'
 
 export const BATCH_SIZE = 80
 
-type Hooks = Prettify<
-  Pick<
-    Required<NonNullable<Parameters<typeof useRoomHooks>[1]>>,
-    'onTimelineRefresh' | 'onTimeline' | 'onTimelineReset' | 'onLocalEchoUpdated'
-  >
->
-
 const roomEventsFullyLoadedSet = reactive(new Set<string>())
 
-export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
+export function useRoomEvents(room: Ref<Room>, opts?: { isBusy?: Ref<boolean> }) {
   const { client } = useMatrixClient()
 
   const events = shallowRef<MatrixEvent[]>([])
@@ -75,31 +68,28 @@ export function useRoomEvents(room: Ref<Room>, hooks?: Partial<Hooks>) {
     mutationKey: ['scrollEvents', () => room.value?.roomId],
   })
 
+  let missedSync = false
+  const shouldSuppressSync = () => isScrolling.value || (opts?.isBusy?.value ?? false)
+  if (opts?.isBusy) {
+    watch(opts.isBusy, busy => {
+      if (!busy && missedSync) {
+        missedSync = false
+        sync()
+      }
+    })
+  }
+
+  const hookSync = () => {
+    if (!shouldSuppressSync()) {
+      sync()
+    } else missedSync = true
+  }
+
   useRoomHooks(() => room.value.roomId, {
-    onLocalEchoUpdated: (...params) => {
-      if (!isScrolling.value) {
-        sync()
-        hooks?.onLocalEchoUpdated?.(...params)
-      }
-    },
-    onTimeline: (...params) => {
-      if (!isScrolling.value) {
-        sync()
-        hooks?.onTimeline?.(...params)
-      }
-    },
-    onTimelineRefresh: (...params) => {
-      if (!isScrolling.value) {
-        sync()
-        hooks?.onTimelineRefresh?.(...params)
-      }
-    },
-    onTimelineReset: (...params) => {
-      if (!isScrolling.value) {
-        sync()
-        hooks?.onTimelineReset?.(...params)
-      }
-    },
+    onLocalEchoUpdated: hookSync,
+    onTimeline: hookSync,
+    onTimelineRefresh: hookSync,
+    onTimelineReset: hookSync,
   })
 
   const { onDecrypted } = useMatrixHooks()
