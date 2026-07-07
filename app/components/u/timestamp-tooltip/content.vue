@@ -17,7 +17,6 @@ const forwarded = useForwardPropsEmits(delegated, emits)
     <PopoverContent
       v-bind="forwarded"
       data-slot="timestamp-tooltip-content"
-      disable-outside-pointer-events
       :reference="referenceElement ?? undefined"
       :collision-padding="4"
       :side-offset="4"
