@@ -66,7 +66,6 @@ const groupedEvents = useEventGrouping({
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
             <RoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
-            <!-- <RoomEventGeneric :grouped="false" :event :room /> -->
           </div>
           <div data-ignore class="h-12" />
         </div>
