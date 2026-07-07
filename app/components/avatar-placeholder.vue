@@ -7,10 +7,13 @@ export interface AvatarPlaceholderProps {
   title?: boolean
   square?: boolean
   size?: number | string
+  isLoading?: boolean
 }
 </script>
 
 <script lang="ts" setup>
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<AvatarPlaceholderProps>(), {
   colors: () => [
     'var(--primary)',
@@ -50,7 +53,18 @@ function generateColors(name: string, colors: string[]) {
 </script>
 
 <template>
+  <USkeleton
+    v-if="isLoading"
+    v-bind="$attrs"
+    :style="{
+      width: typeof size === 'number' ? `${size}px` : size,
+      height: typeof size === 'number' ? `${size}px` : size,
+    }"
+    :class="square ? 'rounded' : 'rounded-full'"
+  />
   <svg
+    v-else
+    v-bind="$attrs"
     :viewBox="`0 0 ${SIZE} ${SIZE}`"
     fill="none"
     role="img"
