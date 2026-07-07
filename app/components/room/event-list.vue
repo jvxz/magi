@@ -20,7 +20,6 @@ const { debugState, isPaginating, vItem, window } = usePaginatedScroll(container
   followTail: true,
   getKey: i => i.getId()!,
   maxItems: 120,
-  targetHeight: 5,
   onBeforePaginate: async dir => {
     if (dir !== 'backward') return
 
@@ -30,6 +29,7 @@ const { debugState, isPaginating, vItem, window } = usePaginatedScroll(container
     await scrollEventsAsync(Direction.Backward)
   },
   source: events,
+  targetHeight: 5,
 })
 
 watchEffect(() => {

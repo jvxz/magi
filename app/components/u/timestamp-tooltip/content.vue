@@ -6,7 +6,7 @@ import { useForwardPropsEmits } from 'reka-ui'
 const props = defineProps<PopoverContentProps & { class?: string }>()
 const emits = defineEmits<PopoverContentEmits>()
 
-const { referenceElement, datetime } = useRoomEventTimestampTooltip()
+const { datetime, referenceElement } = useRoomEventTimestampTooltip()
 
 const delegated = reactiveOmit(props, 'class')
 const forwarded = useForwardPropsEmits(delegated, emits)
