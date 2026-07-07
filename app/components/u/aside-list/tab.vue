@@ -3,7 +3,7 @@ import type { RouteLocationRaw } from 'vue-router'
 
 import type { NuxtLinkProps } from '#app'
 
-import { resolveAsideListTabValue } from './index.vue'
+import { resolveAsideListTabValue } from './root.vue'
 
 const props = defineProps<NuxtLinkProps>()
 

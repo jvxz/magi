@@ -27,7 +27,7 @@ const isPaginating = shallowRef(false)
   </LayoutAppSlot>
 
   <LayoutAppSlot name="aside">
-    <UAsideList>
+    <UAsideListRoot>
       <UAsideListTab
         :to="{
           name: 'space-browse',
@@ -83,7 +83,7 @@ const isPaginating = shallowRef(false)
           {{ room.name }}
         </UAsideListTab>
       </template>
-    </UAsideList>
+    </UAsideListRoot>
   </LayoutAppSlot>
 
   <LayoutAppSlot v-if="currentRoomId" name="page-header">

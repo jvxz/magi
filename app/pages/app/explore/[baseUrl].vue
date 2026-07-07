@@ -74,7 +74,7 @@ function handlePaginate(dir: 'f' | 'b') {
 
 <template>
   <LayoutAppSlot name="aside">
-    <UAsideList>
+    <UAsideListRoot>
       <UContextMenuRoot
         v-model="contextMenuOpen"
         @update:open="
@@ -112,7 +112,7 @@ function handlePaginate(dir: 'f' | 'b') {
       <UAsideListSeparator />
 
       <PageExploreAddServer :servers @server-submit="handleServerAdd($event)" />
-    </UAsideList>
+    </UAsideListRoot>
   </LayoutAppSlot>
 
   <LayoutAppSlot name="page-header">
