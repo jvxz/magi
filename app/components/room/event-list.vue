@@ -15,7 +15,7 @@ const { events, isFullyLoaded, scrollEventsAsync } = useRoomEvents(toRef(props, 
   isBusy: isPaginationBusy,
 })
 
-const { isPaginating, vItem, paginationWindow } = usePaginatedScroll(containerRef, {
+const { isPaginating, paginationWindow, vItem } = usePaginatedScroll(containerRef, {
   buffer: 0.5,
   followTail: true,
   getKey: i => i.getId()!,
