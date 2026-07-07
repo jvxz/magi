@@ -160,5 +160,9 @@ export default defineConfig({
     },
   },
   transformers: [transformerVariantGroup(), transformerDirectives({ throwOnMissing: false })],
-  variants: [variantMatcher('context-menu-open', input => ({ selector: `${input.selector}[data-context-menu-open]` }))],
+  variants: [
+    variantMatcher('context-menu-open', input => ({ selector: `${input.selector}[data-context-menu-open]` })),
+    variantMatcher('router-link-active', input => ({ selector: `${input.selector}.router-link-active` })),
+    variantMatcher('router-link-exact-active', input => ({ selector: `${input.selector}.router-link-exact-active` })),
+  ],
 })

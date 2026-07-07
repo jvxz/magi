@@ -27,18 +27,20 @@ const isPaginating = shallowRef(false)
   </LayoutAppSlot>
 
   <LayoutAppSlot name="aside">
-    <UAsideList>
-      <UAsideListTab
-        :to="{
-          name: 'space-browse',
-          params: {
-            spaceId: $route.params.spaceId,
-          },
-        }"
-      >
-        <UAsideListButtonIcon icon="tabler:list-search" />
-        Browse Rooms
-      </UAsideListTab>
+    <UAsideListRoot>
+      <UAsideListButton as-child>
+        <NuxtLink
+          :to="{
+            name: 'space-browse',
+            params: {
+              spaceId: $route.params.spaceId,
+            },
+          }"
+        >
+          <UAsideListButtonIcon icon="tabler:list-search" />
+          <span>Browse Rooms</span>
+        </NuxtLink>
+      </UAsideListButton>
       <UAsideListButton>
         <UAsideListButtonIcon icon="tabler:users" />
         Members
@@ -47,23 +49,23 @@ const isPaginating = shallowRef(false)
       <UAsideListSeparator />
 
       <template v-if="!isTestMode()">
-        <UAsideListTab
-          v-for="room in joinedRooms"
-          :key="room.roomId"
-          :to="{
-            name: 'space-room',
-            params: {
-              spaceId: $route.params.spaceId,
-              roomId: room.roomId,
-            },
-          }"
-        >
-          <UAsideListButtonIcon icon="tabler:hash" />
-          {{ room.name }}
-        </UAsideListTab>
+        <UAsideListButton v-for="room in joinedRooms" :key="room.roomId" as-child>
+          <NuxtLink
+            :to="{
+              name: 'space-room',
+              params: {
+                spaceId: $route.params.spaceId,
+                roomId: room.roomId,
+              },
+            }"
+          >
+            <UAsideListButtonIcon icon="tabler:hash" />
+            <span>{{ room.name }}</span>
+          </NuxtLink>
+        </UAsideListButton>
       </template>
       <template v-else>
-        <UAsideListTab
+        <UAsideListButton
           v-for="room in [
             createMockRoom({ id: '250', seedMessages: 250 }).room,
             createMockRoom({ id: '500', seedMessages: 500 }).room,
@@ -71,19 +73,23 @@ const isPaginating = shallowRef(false)
           ]"
           :key="room.name"
           :data-testid="`mock-room-${room.roomId}`"
-          :to="{
-            name: 'space-room',
-            params: {
-              spaceId: $route.params.spaceId,
-              roomId: room.roomId,
-            },
-          }"
+          as-child
         >
-          <UAsideListButtonIcon icon="tabler:hash" />
-          {{ room.name }}
-        </UAsideListTab>
+          <NuxtLink
+            :to="{
+              name: 'space-room',
+              params: {
+                spaceId: $route.params.spaceId,
+                roomId: room.roomId,
+              },
+            }"
+          >
+            <UAsideListButtonIcon icon="tabler:hash" />
+            <span>{{ room.name }}</span>
+          </NuxtLink>
+        </UAsideListButton>
       </template>
-    </UAsideList>
+    </UAsideListRoot>
   </LayoutAppSlot>
 
   <LayoutAppSlot v-if="currentRoomId" name="page-header">

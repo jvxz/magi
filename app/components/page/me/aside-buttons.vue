@@ -28,7 +28,7 @@ const rooms = useRooms(
 </script>
 
 <template>
-  <UAsideList as-child>
+  <UAsideListRoot as-child>
     <UToggleGroupRoot v-model:model-value="toggle">
       <UToggleGroupItem value="home" class="flex w-full items-center" as-child>
         <NuxtLink to="/app/me/home">
@@ -57,5 +57,5 @@ const rooms = useRooms(
         </UContextMenuRegionRoot>
       </div>
     </UToggleGroupRoot>
-  </UAsideList>
+  </UAsideListRoot>
 </template>
