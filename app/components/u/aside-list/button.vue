@@ -1,11 +1,23 @@
 <script lang="ts" setup>
 import type { ButtonProps } from '~/components/u/button.vue'
 
-defineProps<ButtonProps>()
+const props = defineProps<Omit<ButtonProps, 'variant'>>()
+
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <UButton v-bind="$props" variant="ghost" :class="cn('text-sm h-9 w-full justify-start w-full', $props.class)">
+  <UButton
+    v-bind="delegated"
+    variant="ghost"
+    :class="
+      cn(
+        'text-sm w-full justify-start',
+        'data-[state=off]:(hover:text-foreground hover:bg-hover) router-link-active:(bg-selected hover:bg-selected text-foreground)',
+        props.class,
+      )
+    "
+  >
     <slot />
   </UButton>
 </template>
