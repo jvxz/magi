@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Room } from 'matrix-js-sdk'
 
-import { PaginatedScrollDebug, usePaginatedScroll } from '@jamii/vue-paginated-scroll'
+import { usePaginatedScroll } from '@jamii/vue-paginated-scroll'
 import { Direction } from 'matrix-js-sdk'
 
 const props = defineProps<{
@@ -15,7 +15,7 @@ const { events, isFullyLoaded, scrollEventsAsync } = useRoomEvents(toRef(props, 
   isBusy: isPaginationBusy,
 })
 
-const { debugState, isPaginating, vItem, window } = usePaginatedScroll(containerRef, {
+const { isPaginating, vItem, paginationWindow } = usePaginatedScroll(containerRef, {
   buffer: 0.5,
   followTail: true,
   getKey: i => i.getId()!,
@@ -23,7 +23,7 @@ const { debugState, isPaginating, vItem, window } = usePaginatedScroll(container
   onBeforePaginate: async dir => {
     if (dir !== 'backward') return
 
-    const atOldestLoaded = window.value[0]?.getId() === events.value[0]?.getId()
+    const atOldestLoaded = paginationWindow.value[0]?.getId() === events.value[0]?.getId()
     if (!atOldestLoaded) return
 
     await scrollEventsAsync(Direction.Backward)
@@ -38,7 +38,7 @@ watchEffect(() => {
 
 const groupedEvents = useEventGrouping({
   events,
-  eventsPaginated: window,
+  eventsPaginated: paginationWindow,
 })
 </script>
 
@@ -62,9 +62,7 @@ const groupedEvents = useEventGrouping({
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
             <RoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
-            <!-- <RoomEventGeneric :grouped="false" :event :room /> -->
           </div>
-          <PaginatedScrollDebug :state="debugState" />
           <div data-ignore class="h-12" />
         </div>
       </div>
