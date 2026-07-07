@@ -12,7 +12,7 @@ export function useRoomEventHasReactions(room: MaybeRefOrGetter<Room>, event: Ma
   }
 
   useRoomHooks(room, {
-    onTimeline: refresh,
+    onTimeline: () => (hasReactions.value = refresh()),
   })
 
   return hasReactions
