@@ -23,6 +23,9 @@ export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
   appearance: {
     font: 'System',
   },
+  advanced: {
+    resync: undefined,
+  },
 }
 
 export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
@@ -40,6 +43,11 @@ export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
     icon: 'tabler:palette',
     key: 'appearance',
     title: 'Appearance',
+  },
+  advanced: {
+    icon: 'tabler:code-circle',
+    title: 'Advanced',
+    key: 'advanced',
   },
 }
 export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
@@ -62,6 +70,13 @@ export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
       description: 'The font to use in the app',
       options: ['Inter', 'System'],
       title: 'Font',
+    },
+  },
+  advanced: {
+    resync: {
+      title: 'Re-sync Magi',
+      description:
+        'Delete all cached data in Magi and fetch fresh data from the homeserver. This may fix some issues if you are having issues with state in the app.',
     },
   },
 }
