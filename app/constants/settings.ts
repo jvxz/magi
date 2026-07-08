@@ -17,11 +17,11 @@ export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
   accessibility: {
     uiAnimations: true,
   },
-  appearance: {
-    font: 'System',
-  },
   advanced: {
     resync: undefined,
+  },
+  appearance: {
+    font: 'System',
   },
 }
 
@@ -31,15 +31,15 @@ export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
     key: 'accessibility',
     title: 'Accessibility',
   },
+  advanced: {
+    icon: 'tabler:code-circle',
+    key: 'advanced',
+    title: 'Advanced',
+  },
   appearance: {
     icon: 'tabler:palette',
     key: 'appearance',
     title: 'Appearance',
-  },
-  advanced: {
-    icon: 'tabler:code-circle',
-    title: 'Advanced',
-    key: 'advanced',
   },
 }
 export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
@@ -50,18 +50,18 @@ export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
       title: 'UI animations',
     },
   },
+  advanced: {
+    resync: {
+      description:
+        'Delete all cached data in Magi and fetch fresh data from the homeserver. This may fix some issues if you are having issues with state in the app.',
+      title: 'Re-sync Magi',
+    },
+  },
   appearance: {
     font: {
       description: 'The font to use in the app',
       options: ['Inter', 'System'],
       title: 'Font',
-    },
-  },
-  advanced: {
-    resync: {
-      title: 'Re-sync Magi',
-      description:
-        'Delete all cached data in Magi and fetch fresh data from the homeserver. This may fix some issues if you are having issues with state in the app.',
     },
   },
 }
