@@ -1,17 +1,35 @@
 <script lang="ts" setup>
 const { client } = useMatrixClient()
+const { notifyError, notify } = useNotifications()
 
 const open = ref(false)
-const beganResync = ref(false)
-const { executeImmediate: resync } = useAsyncState(
+const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
   async () => {
-    beganResync.value = true
-
-    await resetClientData(client.value)
-    reloadNuxtApp()
+    try {
+      await resetClientData(client.value)
+      reloadNuxtApp()
+    } catch (e) {
+      if (isError(e)) throw e
+      else throw new Error(String(e))
+    }
   },
   undefined,
-  { immediate: false },
+  {
+    immediate: false,
+    onError: e => {
+      const title = 'Failed to re-sync Magi'
+      if (isError(e)) {
+        notifyError(e, title)
+      } else {
+        notify('error', {
+          payload: {
+            raw: String(e),
+            title,
+          },
+        })
+      }
+    },
+  },
 )
 </script>
 
@@ -25,7 +43,7 @@ const { executeImmediate: resync } = useAsyncState(
         :open
         @update:open="
           e => {
-            if (beganResync) return
+            if (isResyncing) return
             open = e
           }
         "
@@ -40,9 +58,9 @@ const { executeImmediate: resync } = useAsyncState(
           </UAlertDialogHeader>
 
           <UAlertDialogFooter>
-            <UAlertDialogCancel :disabled="beganResync"> Cancel </UAlertDialogCancel>
+            <UAlertDialogCancel :disabled="isResyncing"> Cancel </UAlertDialogCancel>
 
-            <UButton variant="danger" :is-loading="beganResync" @click="resync">
+            <UButton variant="danger" :is-loading="isResyncing" @click="resync">
               <span>Continue</span>
             </UButton>
           </UAlertDialogFooter>
