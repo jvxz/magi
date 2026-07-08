@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const { client } = useMatrixClient()
-const { notifyError, notify } = useNotifications()
+const { notify, notifyError } = useNotifications()
 
 const open = ref(false)
 const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
