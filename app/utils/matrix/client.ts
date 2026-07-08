@@ -115,3 +115,8 @@ export async function logoutClient(client: MatrixClient) {
 
   return reloadNuxtApp({ path: '/' })
 }
+
+export async function resetClientData(client: MatrixClient) {
+  client.stopClient()
+  await client.store.deleteAllData()
+}
