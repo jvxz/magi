@@ -7,10 +7,11 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
   async () => {
     try {
       await resetClientData(client.value)
-      reloadNuxtApp()
     } catch (e) {
       if (isError(e)) throw e
       else throw new Error(String(e))
+    } finally {
+      reloadNuxtApp()
     }
   },
   undefined,
