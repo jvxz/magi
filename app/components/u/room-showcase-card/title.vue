@@ -5,7 +5,7 @@ defineProps<PrimitiveProps>()
 </script>
 
 <template>
-  <Primitive v-bind="$props" :class="cn('flex gap-2 max-h-1em items-center', $attrs.class)">
+  <Primitive v-bind="$props" :class="cn('flex gap-2 max-h-1em items-center truncate', $attrs.class)">
     <slot />
   </Primitive>
 </template>
