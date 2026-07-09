@@ -4,13 +4,12 @@ import { findKey } from 'es-toolkit/map'
 import { KnownMembership, SyncState } from 'matrix-js-sdk'
 
 export const useInvites = createGlobalState(() => {
-  const { client } = useMatrixClient()
   const { notify, notificationsMap, dismiss: dismissNoti } = useNotifications()
   const { self } = useSelf()
   const { onSync } = useMatrixHooks()
 
   const dismissedInviteNotis = useScopedLocalStorage('dismissedInviteNotis', new Set())
-  const invitesMap = shallowRef(getInvitedRoomsMap())
+  const invitesMap = shallowRef(new Map<string, Room>())
 
   const settlingRoomIds = new Set<string>()
 
@@ -45,16 +44,6 @@ export const useInvites = createGlobalState(() => {
     }
 
     triggerRef(invitesMap)
-  }
-
-  function getInvitedRoomsMap() {
-    const rooms = client.value.getRooms()
-    const map = new Map<string, Room>()
-    for (const room of rooms) {
-      if (room.getMyMembership() === KnownMembership.Invite) map.set(room.roomId, room)
-    }
-
-    return map
   }
 
   function handleNotiDismiss(roomId: string) {
