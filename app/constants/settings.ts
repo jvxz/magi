@@ -1,4 +1,4 @@
-export const SETTINGS_CATEGORIES = ['appearance', 'accessibility'] as const
+export const SETTINGS_CATEGORIES = ['appearance', 'accessibility', 'advanced'] as const
 export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
 
 export interface Settings {
@@ -8,11 +8,17 @@ export interface Settings {
   accessibility: {
     uiAnimations: boolean
   }
+  advanced: {
+    resync: undefined
+  }
 }
 
 export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
   accessibility: {
     uiAnimations: true,
+  },
+  advanced: {
+    resync: undefined,
   },
   appearance: {
     font: 'System',
@@ -24,6 +30,11 @@ export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
     icon: 'tabler:accessible',
     key: 'accessibility',
     title: 'Accessibility',
+  },
+  advanced: {
+    icon: 'tabler:code-circle',
+    key: 'advanced',
+    title: 'Advanced',
   },
   appearance: {
     icon: 'tabler:palette',
@@ -37,6 +48,13 @@ export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
       description: 'Whether to enable animations in the app',
       options: [true, false],
       title: 'UI animations',
+    },
+  },
+  advanced: {
+    resync: {
+      description:
+        'Delete all cached data in Magi and fetch fresh data from the homeserver. This may fix some issues if you are having issues with state in the app.',
+      title: 'Re-sync Magi',
     },
   },
   appearance: {
