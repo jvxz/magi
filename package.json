@@ -25,7 +25,7 @@
     "test:e2e:ui": "pnpm build:test && pnpm test:e2e:prebuilt --ui",
     "test:e2e:webserver": "NODE_ENV=test pnpm exec nuxt preview --port 5678",
     "test:nuxt": "vitest --project nuxt",
-    "test:typecheck": "nuxt typecheck",
+    "test:typecheck": "nuxt prepare && vue-tsc -b --noEmit",
     "test:unit": "vitest --project unit",
     "test:watch": "vitest --watch"
   },
@@ -108,6 +108,7 @@
     "unocss": "^66.7.0",
     "unocss-preset-animations": "^1.3.0",
     "vite": "^8.0.14",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.7",
+    "vue-tsc": "^3.3.7"
   }
 }
