@@ -18,7 +18,6 @@ const { client } = useMatrixClient()
 
 async function handleDecline() {
   resetJoin()
-  console.log('joinError.value: ', joinError.value)
   decline.mutate()
 }
 
