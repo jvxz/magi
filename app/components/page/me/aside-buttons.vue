@@ -1,4 +1,13 @@
 <script lang="ts" setup>
+const route = useRoute()
+const toggleValue = shallowRef('home')
+const toggle = computed({
+  // fallback to "recent rooms" button if no param is present
+  get: () =>
+    'directRoomId' in route.params ? route.params.directRoomId : route.name === 'invites' ? 'invites' : 'home',
+  set: (v: string) => (toggleValue.value = v),
+})
+
 const displayMode = useScopedLocalStorage<AsideDisplayMode>('asideDisplayMode', 'all')
 provide('displayMode', displayMode)
 
@@ -22,39 +31,34 @@ const rooms = useRooms(
 </script>
 
 <template>
-  <UAsideListRoot>
-    <UAsideListButton
-      class="justify-start items-center flex w-full router-link-active:(bg-selected hover:bg-selected text-foreground)"
-      as-child
-    >
-      <NuxtLink to="/app/me/home">
-        <LazyIcon name="tabler:home" class="size-1lh!" />
-        <span class="font-medium">Home</span>
-      </NuxtLink>
-    </UAsideListButton>
+  <UAsideListRoot as-child>
+    <UToggleGroupRoot v-model:model-value="toggle">
+      <UToggleGroupItem value="home" class="flex w-full items-center" as-child>
+        <NuxtLink to="/app/me/home">
+          <LazyIcon name="tabler:home" class="size-1lh!" />
+          <span class="font-medium">Home</span>
+        </NuxtLink>
+      </UToggleGroupItem>
+      <UToggleGroupItem value="invites" class="flex w-full items-center" as-child>
+        <NuxtLink to="/app/me/invites">
+          <LazyIcon name="tabler:inbox" class="size-1lh!" />
+          <span class="font-medium">Invites</span>
+        </NuxtLink>
+      </UToggleGroupItem>
 
-    <UAsideListButton
-      class="justify-start items-center flex w-full router-link-active:(bg-selected hover:bg-selected text-foreground)"
-      as-child
-    >
-      <NuxtLink to="/app/me/invites">
-        <LazyIcon name="tabler:inbox" class="size-1lh!" />
-        <span class="font-medium">Invites</span>
-      </NuxtLink>
-    </UAsideListButton>
+      <div class="w-full space-y-2">
+        <USeparator class="my-2.5" />
 
-    <div class="w-full space-y-2">
-      <USeparator class="my-2.5" />
+        <PageMeAsideButtonsHeader />
+      </div>
 
-      <PageMeAsideButtonsHeader />
-    </div>
+      <div class="flex flex-col gap-1 w-full">
+        <UContextMenuRegionRoot name="directRoom">
+          <PageMeAsideButtonsDirectRoom v-for="room in rooms" :key="room.roomId" :room-id="room.roomId" />
 
-    <div class="flex flex-col gap-1 w-full">
-      <UContextMenuRegionRoot name="directRoom">
-        <PageMeAsideButtonsDirectRoom v-for="room in rooms" :key="room.roomId" :room-id="room.roomId" />
-
-        <PageMeAsideButtonsContextMenuContent />
-      </UContextMenuRegionRoot>
-    </div>
+          <PageMeAsideButtonsContextMenuContent />
+        </UContextMenuRegionRoot>
+      </div>
+    </UToggleGroupRoot>
   </UAsideListRoot>
 </template>
