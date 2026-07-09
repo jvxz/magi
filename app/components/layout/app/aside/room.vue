@@ -12,16 +12,18 @@ const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 
 
 <template>
   <LayoutAppAsideButton as-child class="p-0 size-11 overflow-hidden" :tooltip="room.name">
-    <NuxtLink
-      active-class="anchor-name-active"
-      :to="{
-        name: 'space',
-        params: {
-          spaceId: room.roomId,
-        },
-      }"
-    >
-      <Img :src="avatar" :alt="room.name" class="size-full" />
-    </NuxtLink>
+    <UContextMenuRegionTrigger as-child region="asideRoom" :value="{ room }">
+      <NuxtLink
+        active-class="anchor-name-active"
+        :to="{
+          name: 'space',
+          params: {
+            spaceId: room.roomId,
+          },
+        }"
+      >
+        <Img :src="avatar" :alt="room.name" class="size-full" />
+      </NuxtLink>
+    </UContextMenuRegionTrigger>
   </LayoutAppAsideButton>
 </template>
