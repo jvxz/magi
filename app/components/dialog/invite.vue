@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { Room } from 'matrix-js-sdk'
 import type { DialogRootEmits, DialogRootProps } from 'reka-ui'
 
 import { string } from '@regle/rules'
@@ -7,10 +6,12 @@ import { useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<
   DialogRootProps & {
-    room: Room | undefined
+    room: MaybeRoomOrId | undefined
   }
 >()
 const emits = defineEmits<DialogRootEmits>()
+
+const room = useRoom(() => props.room)
 
 const { self } = useSelf()
 const { r$ } = useRegle(
@@ -73,6 +74,7 @@ const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(
 
       <form class="flex flex-col gap-2" @submit.prevent="handleInvite">
         <FormInput
+          :disabled="isInviting"
           ref="inputEl"
           v-model:model-value="r$.userId.$value"
           disable-pw
@@ -83,6 +85,7 @@ const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(
         />
 
         <FormInput
+          :disabled="isInviting"
           v-model:model-value="r$.reason.$value"
           disable-pw
           label="Reason"
