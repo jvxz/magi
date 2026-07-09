@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
+import type { ButtonHTMLAttributes } from 'vue'
 
 export interface ButtonProps extends PrimitiveProps {
   disabled?: MaybeRefOrGetter<boolean>
@@ -7,6 +8,7 @@ export interface ButtonProps extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   class?: string
   isLoading?: MaybeRefOrGetter<boolean>
+  onClick?: ButtonHTMLAttributes['onClick']
 }
 
 withDefaults(defineProps<ButtonProps>(), { as: 'button' })
