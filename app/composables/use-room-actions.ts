@@ -1,11 +1,12 @@
 import type { InviteOpts, MatrixEvent, Room } from 'matrix-js-sdk'
 import type { RoomMessageEventContent } from 'matrix-js-sdk/lib/types'
 
-import { EventStatus, EventType, RelationType, RoomEvent } from 'matrix-js-sdk'
+import { EventStatus, EventType, KnownMembership, RelationType, RoomEvent } from 'matrix-js-sdk'
 
 export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
   const room = useRoom(roomOrId)
   const { client } = useMatrixClient()
+  const { notifyError } = useNotifications()
 
   const react = useMutation({
     mutationFn: async (params: {
@@ -83,16 +84,31 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
     },
   })
 
+  const join = useMutation({
+    mutationFn: async () => {
+      if (!room.value?.roomId) return
+
+      const res = await client.value.joinRoom(room.value.roomId)
+      room.value.updateMyMembership(KnownMembership.Join)
+
+      return res
+    },
+    mutationKey: ['joinRoom'],
+    onError: err => notifyError(err, `Failed to join ${room.value ? resolveRoomName(room.value) : 'room'}`),
+  })
+
   const leave = useMutation({
     mutationFn: async () => {
       if (!room.value?.roomId) return
 
       const res = await client.value.leave(room.value.roomId)
+      room.value.updateMyMembership(KnownMembership.Leave)
       await client.value.forget(room.value.roomId)
 
       return res
     },
     mutationKey: ['leaveRoom'],
+    onError: err => notifyError(err, `Failed to leave ${room.value ? resolveRoomName(room.value) : 'room'}`),
   })
 
   const invite = useMutation({
@@ -105,6 +121,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
   return {
     invite,
+    join,
     leave,
     message,
     react,
