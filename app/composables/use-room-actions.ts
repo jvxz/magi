@@ -6,7 +6,7 @@ import { EventStatus, EventType, KnownMembership, RelationType, RoomEvent } from
 export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
   const room = useRoom(roomOrId)
   const roomId = useResolveRoomId(roomOrId)
-  const { client } = useMatrixClient()
+  const { client, saveClient } = useMatrixClient()
   const { notifyError } = useNotifications()
 
   const react = useMutation({
@@ -91,6 +91,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
       const res = await client.value.joinRoom(room.value.roomId)
       room.value.updateMyMembership(KnownMembership.Join)
+      await saveClient()
 
       return res
     },
@@ -105,6 +106,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
       const res = await client.value.leave(room.value.roomId)
       room.value.updateMyMembership(KnownMembership.Leave)
       await client.value.forget(room.value.roomId)
+      await saveClient()
 
       return res
     },
