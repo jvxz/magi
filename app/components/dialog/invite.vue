@@ -38,8 +38,10 @@ whenever(
 )
 
 const open = useVModel(props, 'open', emits)
-const { invite } = useRoomActions(() => props.room)
-const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(async () => {
+
+const { invite } = useRoomInviteActions(() => props.room)
+const { isPending: isInviting } = invite
+const handleInvite = async () => {
   if (r$.$invalid || !r$.userId.$value) return
 
   await invite.mutateAsync({
@@ -50,8 +52,9 @@ const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(
       : undefined,
     userId: r$.userId.$value,
   })
+
   open.value = false
-}, undefined)
+}
 </script>
 
 <template>
