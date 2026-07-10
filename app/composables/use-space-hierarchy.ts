@@ -40,12 +40,11 @@ export function useSpaceHierarchy(
   const joinedRooms = useJoinedRooms()
   const spaceIdRef = refDefault(toRef(spaceId), '')
   const enabledRef = toRef(enabled)
-  const queryKey = computed(() => ['spaceSubspaces', spaceIdRef.value] as const)
 
   const q = useQuery({
     enabled: enabledRef,
     queryFn: ({ signal }) => fetchHierarchyDeep(client.value, spaceIdRef.value, signal),
-    queryKey,
+    queryKey: $qk.spaceSubspaces(spaceIdRef),
   })
 
   const rooms = computed(() => {
@@ -117,7 +116,7 @@ export function useSpaceHierarchy(
             : undefined,
           persister: lsPersister.persisterFn,
           queryFn: ({ signal }: { signal: AbortSignal }) => fetchHierarchyDeep(client.value, space.room_id, signal),
-          queryKey: ['spaceSubspaces', space.room_id] as const,
+          queryKey: $qk.spaceSubspaces(space.room_id),
           select: (data: unknown) => {
             const d = data as IRoomHierarchyLocal
 

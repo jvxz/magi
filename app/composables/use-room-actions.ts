@@ -5,6 +5,7 @@ import { EventStatus, EventType, KnownMembership, RelationType, RoomEvent } from
 
 export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
   const room = useRoom(roomOrId)
+  const roomId = useResolveRoomId(roomOrId)
   const { client } = useMatrixClient()
   const { notifyError } = useNotifications()
 
@@ -60,7 +61,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
         },
       })
     },
-    mutationKey: ['react', () => room.value?.roomId],
+    mutationKey: $mk.react(roomId),
   })
 
   const message = useMutation({
@@ -68,7 +69,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
       if (!room.value) return
       return await client.value.sendMessage(room.value.roomId, eventContent)
     },
-    mutationKey: [room.value?.roomId],
+    mutationKey: $mk.message(roomId),
   })
 
   const typing = useMutation({
@@ -107,7 +108,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
       return res
     },
-    mutationKey: ['leaveRoom'],
+    mutationKey: $mk.leaveRoom(roomId),
     onError: err => notifyError(err, `Failed to leave ${room.value ? resolveRoomName(room.value) : 'room'}`),
   })
 
@@ -116,7 +117,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
       if (!room.value?.roomId) return
       return client.value.invite(room.value.roomId, userId, opts)
     },
-    mutationKey: ['invite'],
+    mutationKey: $mk.invite(roomId),
   })
 
   return {

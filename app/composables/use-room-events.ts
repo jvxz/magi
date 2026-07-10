@@ -65,7 +65,7 @@ export function useRoomEvents(room: Ref<Room>, opts?: { isBusy?: Ref<boolean> })
         currentBatchSize = BATCH_SIZE
       }
     },
-    mutationKey: ['scrollEvents', () => room.value?.roomId],
+    mutationKey: $mk.scrollEvents(() => room.value?.roomId),
   })
 
   let missedSync = false
