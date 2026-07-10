@@ -5,6 +5,8 @@ import { ClientEvent, createClient, SyncState } from 'matrix-js-sdk'
 export const useMatrixClient = createGlobalState(() => {
   const client = shallowRef<MatrixClient>(createClient({ baseUrl: MATRIX_BASE_URL }))
 
+  const saveClient = () => client.value.store.save(true)
+
   async function initAuthedClient(waitForPrepared = true) {
     const auth = await idb.getItem<AuthPayload>('auth')
     if (!auth) return
@@ -39,5 +41,6 @@ export const useMatrixClient = createGlobalState(() => {
   return {
     client,
     initAuthedClient,
+    saveClient,
   }
 })
