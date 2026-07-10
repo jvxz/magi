@@ -7,7 +7,8 @@ const props = defineProps<DropdownMenuRootProps & { name: TName }>()
 const emits = defineEmits<DropdownMenuRootEmits>()
 type T = ContextMenuRegions[TName]
 
-const open = shallowRef(false)
+const open = defineModel<boolean>('open')
+
 const reference = shallowRef<VirtualElement>(createPointReference({ clientX: 0, clientY: 0 }))
 const payload = shallowRef<T>()
 
