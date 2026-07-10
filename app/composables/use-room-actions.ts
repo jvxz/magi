@@ -1,12 +1,13 @@
 import type { InviteOpts, MatrixEvent, Room } from 'matrix-js-sdk'
 import type { RoomMessageEventContent } from 'matrix-js-sdk/lib/types'
 
-import { EventStatus, EventType, RelationType, RoomEvent } from 'matrix-js-sdk'
+import { EventStatus, EventType, KnownMembership, RelationType, RoomEvent } from 'matrix-js-sdk'
 
 export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
   const room = useRoom(roomOrId)
   const roomId = useResolveRoomId(roomOrId)
-  const { client } = useMatrixClient()
+  const { client, saveClient } = useMatrixClient()
+  const { notifyError } = useNotifications()
 
   const react = useMutation({
     mutationFn: async (params: {
@@ -84,16 +85,35 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
     },
   })
 
+  const join = useMutation({
+    mutationFn: async () => {
+      const currentRoom = room.value
+      if (!currentRoom?.roomId) return
+
+      const res = await client.value.joinRoom(currentRoom.roomId)
+      currentRoom.updateMyMembership(KnownMembership.Join)
+      await saveClient()
+
+      return res
+    },
+    mutationKey: $mk.joinRoom(roomId),
+    onError: err => notifyError(err, `Failed to join ${room.value ? resolveRoomName(room.value) : 'room'}`),
+  })
+
   const leave = useMutation({
     mutationFn: async () => {
-      if (!room.value?.roomId) return
+      const currentRoom = room.value
+      if (!currentRoom?.roomId) return
 
-      const res = await client.value.leave(room.value.roomId)
-      await client.value.forget(room.value.roomId)
+      const res = await client.value.leave(currentRoom.roomId)
+      currentRoom.updateMyMembership(KnownMembership.Leave)
+      await client.value.forget(currentRoom.roomId)
+      await saveClient()
 
       return res
     },
     mutationKey: $mk.leaveRoom(roomId),
+    onError: err => notifyError(err, `Failed to leave ${room.value ? resolveRoomName(room.value) : 'room'}`),
   })
 
   const invite = useMutation({
@@ -106,6 +126,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
   return {
     invite,
+    join,
     leave,
     message,
     react,

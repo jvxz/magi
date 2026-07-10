@@ -7,6 +7,7 @@
     </NuxtLayout>
   </UTooltipProvider>
   <UToastProvider />
+  <DialogProvider />
 
   <NuxtAnnouncer />
 </template>

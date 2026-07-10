@@ -5,6 +5,7 @@ export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   square?: boolean
   imageSize?: AvatarImageSize
   placeholderKey?: string
+  direct?: boolean
   isLoading?: boolean
 } & (
     | { room: MaybeRoomOrId | undefined | null; user?: never; src?: never }
@@ -33,7 +34,7 @@ const { client } = useMatrixClient()
 const roomOrUserUrl = computed(() => {
   if (room.value)
     return room.value
-      ? isDirectRoom(client.value, room.value)
+      ? props.direct || isDirectRoom(client.value, room.value)
         ? getDirectRoomAvatarUrl({ client: client.value, mxc: true, room: room.value })
         : (room.value.getMxcAvatarUrl() ?? undefined)
       : undefined

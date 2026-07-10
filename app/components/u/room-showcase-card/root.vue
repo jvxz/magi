@@ -10,9 +10,12 @@ const props = withDefaults(
       withAvatar?: boolean
       manualAvatarSrc?: string | undefined
       class?: string
+      alwaysShowAvatar?: boolean
+      dynamicStyles?: boolean
     }
   >(),
   {
+    dynamicStyles: false,
     withAvatar: true,
   },
 )
@@ -23,6 +26,8 @@ const avatarProps = computed(() => (props.manualAvatarSrc ? { src: props.manualA
 
 const isJoined = useRoomIsJoined(room)
 
+const isDirectInvite = useIsDirectInvite(room)
+
 const delegated = reactiveOmit(props, 'class', 'room', 'withAvatar', 'manualAvatarSrc')
 const forwarded = useForwardProps(delegated)
 </script>
@@ -32,13 +37,21 @@ const forwarded = useForwardProps(delegated)
     v-bind="forwarded"
     :class="
       cn(
-        'w-full relative hover:(border-border-strong bg-hover) data-[context-menu-open]:(border-border-strong bg-hover) h-18 p-3.5 border flex-row gap-3.5',
+        'w-full relative h-18 p-3.5 border flex-row gap-3.5',
+        dynamicStyles &&
+          'hover:(border-border-strong bg-hover) data-[context-menu-open]:(border-border-strong bg-hover)',
         props.class,
       )
     "
   >
     <template v-if="withAvatar">
-      <MatrixAvatar v-if="isJoined" v-bind="avatarProps" square class="rounded-sm shrink-0 w-fit aspect-square" />
+      <MatrixAvatar
+        v-if="isJoined || isDirectInvite || alwaysShowAvatar"
+        v-bind="avatarProps"
+        :direct="isDirectInvite"
+        square
+        class="rounded-sm shrink-0 w-fit aspect-square"
+      />
       <div v-else class="border border-border-strong rounded-sm border-dashed shrink-0 w-fit aspect-square" />
     </template>
     <slot :room />

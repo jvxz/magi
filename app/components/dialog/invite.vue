@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { Room } from 'matrix-js-sdk'
 import type { DialogRootEmits, DialogRootProps } from 'reka-ui'
 
 import { string } from '@regle/rules'
@@ -7,10 +6,12 @@ import { useForwardPropsEmits } from 'reka-ui'
 
 const props = defineProps<
   DialogRootProps & {
-    room: Room | undefined
+    room: MaybeRoomOrId | undefined
   }
 >()
 const emits = defineEmits<DialogRootEmits>()
+
+const room = useRoom(() => props.room)
 
 const { self } = useSelf()
 const { r$ } = useRegle(
@@ -37,8 +38,10 @@ whenever(
 )
 
 const open = useVModel(props, 'open', emits)
-const { invite } = useRoomActions(() => props.room)
-const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(async () => {
+
+const { invite } = useRoomInviteActions(() => props.room)
+const { isPending: isInviting } = invite
+const handleInvite = async () => {
   if (r$.$invalid || !r$.userId.$value) return
 
   await invite.mutateAsync({
@@ -49,8 +52,9 @@ const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(
       : undefined,
     userId: r$.userId.$value,
   })
+
   open.value = false
-}, undefined)
+}
 </script>
 
 <template>
@@ -75,6 +79,7 @@ const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(
         <FormInput
           ref="inputEl"
           v-model:model-value="r$.userId.$value"
+          :disabled="isInviting"
           disable-pw
           label="User ID"
           :error="r$.userId.$errors"
@@ -84,6 +89,7 @@ const { executeImmediate: handleInvite, isLoading: isInviting } = useAsyncState(
 
         <FormInput
           v-model:model-value="r$.reason.$value"
+          :disabled="isInviting"
           disable-pw
           label="Reason"
           :error="r$.reason.$errors"

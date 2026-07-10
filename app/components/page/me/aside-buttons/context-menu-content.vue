@@ -51,7 +51,7 @@ const dialogDescription = computed(() =>
 
       <UAlertDialogFooter>
         <UAlertDialogCancel> Cancel </UAlertDialogCancel>
-        <UButton :is-loading="isRemoving" @click="leaveRoom"> <span>Leave</span> </UButton>
+        <UButton :is-loading="isRemoving" @click="() => leaveRoom()"> <span>Leave</span> </UButton>
       </UAlertDialogFooter>
     </UAlertDialogContent>
   </UAlertDialogRoot>

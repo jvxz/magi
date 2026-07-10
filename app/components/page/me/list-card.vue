@@ -28,32 +28,35 @@ const isJoined = useRoomIsJoined(() => props.payload.roomId)
   <NuxtLink class="group" :to>
     <URoomShowcaseCardRoot
       :room="payload.roomId"
+      dynamic-styles
       class="cursor-pointer group-data-[context-menu-open]:(border-border-strong bg-hover)"
     >
       <URoomShowcaseCardContent>
-        <URoomShowcaseCardTitle
-          class="flex items-center"
-          :class="{
-            'text-muted-foreground': !isJoined,
-          }"
-        >
-          <span>{{ room?.name ?? payload.roomId }}</span>
-        </URoomShowcaseCardTitle>
+        <URoomShowcaseCardHeader>
+          <URoomShowcaseCardTitle
+            class="flex items-center"
+            :class="{
+              'text-muted-foreground': !isJoined,
+            }"
+          >
+            <span>{{ room?.name ?? payload.roomId }}</span>
+          </URoomShowcaseCardTitle>
 
-        <URoomShowcaseCardDescription>
-          <template v-if="isJoined">
-            <span
-              >{{ room?.getJoinedMemberCount() }}
-              {{ handlePlural(room?.getJoinedMemberCount() ?? 0, 'members', 'member') }}</span
-            >
-            <template v-if="getRoomTopic(room)">
-              <UInlineSeparator />
-              <span> {{ getRoomTopic(room) }}</span>
+          <URoomShowcaseCardDescription>
+            <template v-if="isJoined">
+              <span
+                >{{ room?.getJoinedMemberCount() }}
+                {{ handlePlural(room?.getJoinedMemberCount() ?? 0, 'members', 'member') }}</span
+              >
+              <template v-if="getRoomTopic(room)">
+                <UInlineSeparator />
+                <span> {{ getRoomTopic(room) }}</span>
+              </template>
             </template>
-          </template>
 
-          <span v-else class="italic">Not joined</span>
-        </URoomShowcaseCardDescription>
+            <span v-else class="italic">Not joined</span>
+          </URoomShowcaseCardDescription>
+        </URoomShowcaseCardHeader>
       </URoomShowcaseCardContent>
     </URoomShowcaseCardRoot>
   </NuxtLink>

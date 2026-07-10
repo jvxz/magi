@@ -3,7 +3,8 @@ const route = useRoute()
 const toggleValue = shallowRef('home')
 const toggle = computed({
   // fallback to "recent rooms" button if no param is present
-  get: () => ('directRoomId' in route.params ? route.params.directRoomId : 'home'),
+  get: () =>
+    'directRoomId' in route.params ? route.params.directRoomId : route.name === 'invites' ? 'invites' : 'home',
   set: (v: string) => (toggleValue.value = v),
 })
 
@@ -17,8 +18,10 @@ const rooms = useRooms(
         return isDirect(room, axes) || (isGroup(room, axes) && isOrphan(room, axes))
       case 'direct':
         return isDirect(room, axes)
+      case 'loose':
+        return isGroup(room, axes) && isOrphan(room, axes) && getRoomParentSpaceIds(room).length > 0
       case 'orphan':
-        return isGroup(room, axes) && isOrphan(room, axes)
+        return isGroup(room, axes) && isOrphan(room, axes) && getRoomParentSpaceIds(room).length === 0
     }
   },
   {
@@ -37,8 +40,8 @@ const rooms = useRooms(
         </NuxtLink>
       </UToggleGroupItem>
       <UToggleGroupItem value="invites" class="flex w-full items-center" as-child>
-        <NuxtLink to="/app/me/home">
-          <LazyIcon name="tabler:users-plus" class="size-1lh!" />
+        <NuxtLink to="/app/me/invites">
+          <LazyIcon name="tabler:inbox" class="size-1lh!" />
           <span class="font-medium">Invites</span>
         </NuxtLink>
       </UToggleGroupItem>

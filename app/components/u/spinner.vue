@@ -1,5 +1,13 @@
+<script lang="ts" setup>
+const props = defineProps<{ class?: string }>()
+</script>
+
 <template>
-  <svg v-bind="$attrs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="animate-spin animate-duration-750">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    :class="cn('animate-spin animate-duration-750', props.class)"
+  >
     <!-- Icon from css.gg by Astrit - https://github.com/astrit/css.gg/blob/master/LICENSE -->
     <g fill="var(--foreground)">
       <path

@@ -31,6 +31,7 @@ const { forwardRef } = useForwardExpose()
       :is="textarea ? UTextarea : UInput"
       :ref="forwardRef"
       v-model="modelValue"
+      :disabled
       :disable-pw
       :placeholder
       :type="$props.type"

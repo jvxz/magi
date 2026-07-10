@@ -15,6 +15,9 @@ function handleDismiss() {
   dismiss(props.id)
 }
 
+const { remove: _removeToast } = useToast()
+const removeToast = () => _removeToast(props.id)
+
 const isToast = inject<true>('isToast')
 </script>
 
@@ -32,7 +35,7 @@ const isToast = inject<true>('isToast')
       </UToastDescription>
     </slot>
 
-    <slot name="footer" :handle-dismiss :is-toast>
+    <slot name="footer" :handle-dismiss :is-toast :remove-toast>
       <UAlertFooter>
         <UButton v-if="!isToast" size="sm" @click="handleDismiss"> Dismiss </UButton>
       </UAlertFooter>

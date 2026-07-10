@@ -27,6 +27,7 @@ export const $mk = {
   clientLogout: () => defineKey('clientLogout'),
   createRoom: () => defineKey('createRoom'),
   invite: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('invite', toRef(roomId)),
+  joinRoom: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('joinRoom', toRef(roomId)),
   leaveRoom: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('leaveRoom', toRef(roomId)),
   message: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('message', toRef(roomId)),
   react: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('react', toRef(roomId)),

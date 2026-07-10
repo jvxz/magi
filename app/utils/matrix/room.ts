@@ -205,6 +205,14 @@ export async function getRoomEventById(room: Room, client: MatrixClient, eventId
   return mapped
 }
 
+export function getInviter(room: Room | undefined, myUserId: string | undefined) {
+  if (!room || !myUserId) return
+
+  const me = room.getMember(myUserId)
+  const memberEvent = me?.events.member
+  return memberEvent?.getContent().membership === KnownMembership.Invite ? memberEvent.getSender() : undefined
+}
+
 export function getPowerLevelName(powerLevel: number | undefined, ownerIsAdmin = false): PowerLevelName {
   if (isNil(powerLevel)) return 'unknown'
 
@@ -235,6 +243,23 @@ export function isSpaceChild(event: MatrixEvent) {
 
 export function isDirectRoom(client: MatrixClient, room: Room) {
   return getDirectRooms(client).some(direct => direct.roomId === room.roomId)
+}
+
+export function getRoomParentSpaceIds(room: Room) {
+  return getStateEvents(room, EventType.SpaceParent)
+    .filter(e => Array.isArray(e.getContent().via))
+    .map(e => e.getStateKey())
+    .filter((id): id is string => !!id)
+}
+
+export function getRoomSpaceId(client: MatrixClient, room: Room) {
+  for (const space of client.getRooms()) {
+    if (!space.isSpaceRoom()) continue
+    for (const e of getStateEvents(space, EventType.SpaceChild)) {
+      if (isSpaceChild(e) && e.getStateKey() === room.roomId) return space.roomId
+    }
+  }
+  return undefined
 }
 
 export function getRoomTopic(room: Room | undefined) {
@@ -276,7 +301,7 @@ export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
   return maybeRoomOrId
 }
 
-export function resolveRoomName(room: Room) {
+export function resolveRoomName(room: Room): string {
   return room.name ?? room.roomId
 }
 
@@ -316,3 +341,16 @@ export const isSpace = (room: Room) => room.isSpaceRoom()
 export const isDirect = (room: Room, a: RoomAxes) => !isSpace(room) && a.directRoomIds.has(room.roomId)
 export const isGroup = (room: Room, a: RoomAxes) => !isSpace(room) && !a.directRoomIds.has(room.roomId)
 export const isOrphan = (room: Room, a: RoomAxes) => !a.inSpaceRoomIds.has(room.roomId)
+export const isInvite = (room: Room) => room.getMyMembership() === KnownMembership.Invite
+export const isEncrypted = (room: Room) => room.hasEncryptionStateEvent()
+
+// https://github.com/cinnyapp/cinny/blob/80fd8863c9a07e89d6a2037e3e196cd8f372a2b1/src/app/utils/room.ts#L67-L73
+export const isDirectInvite = (room: Room | undefined, myUserId: string | undefined) => {
+  if (!room || !myUserId) return false
+
+  const me = room.getMember(myUserId)
+  const memberEvent = me?.events?.member
+  const content = memberEvent?.getContent()
+
+  return content?.is_direct === true
+}

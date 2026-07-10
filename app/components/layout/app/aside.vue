@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 const rooms = useRooms(isSpace)
+
+const { openDialog } = useGlobalDialog()
 </script>
 
 <template>
@@ -7,12 +9,20 @@ const rooms = useRooms(isSpace)
     <LayoutAppAsideHome />
 
     <USeparator class="mx-auto mb-[2px] w-1/2!" />
-    <div class="py-2.5 flex flex-col gap-2.5 items-center">
-      <template v-if="rooms">
-        <LazyLayoutAppAsideRoom v-for="room in rooms" :key="room.roomId" :room />
-      </template>
-      <LayoutAppAsidePublicRooms />
-    </div>
+    <UContextMenuRegionRoot name="asideRoom">
+      <div class="py-2.5 flex flex-col gap-2.5 items-center">
+        <template v-if="rooms">
+          <LazyLayoutAppAsideRoom v-for="room in rooms" :key="room.roomId" :room />
+        </template>
+        <LayoutAppAsidePublicRooms />
+      </div>
+
+      <UContextMenuRegionContent v-slot="{ payload }" name="asideRoom">
+        <UContextMenuItem v-if="payload" @select="openDialog('leave', { room: payload.room })">
+          Leave space
+        </UContextMenuItem>
+      </UContextMenuRegionContent>
+    </UContextMenuRegionRoot>
 
     <div
       aria-hidden="true"

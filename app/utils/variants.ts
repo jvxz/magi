@@ -55,6 +55,16 @@ export type AvatarVariants = VariantProps<typeof avatarVariants>
 
 export const alertVariants = tv({
   base: 'relative grid w-full grid-cols-[0_1fr] items-start gap-y-1 py-3 has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:size-4 [&>svg]:translate-y-1 [&>svg]:text-foreground',
+  compoundVariants: [
+    {
+      class: 'shadow',
+      variant: 'default',
+    },
+    {
+      class: 'shadow',
+      variant: 'danger',
+    },
+  ],
   defaultVariants: {
     variant: 'default',
   },

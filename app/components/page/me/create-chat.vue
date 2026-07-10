@@ -76,6 +76,7 @@ const inputEl = useTemplateRef('inputEl')
         <FormInput
           ref="inputEl"
           v-model="r$.userId.$value"
+          :disabled="isCreating"
           label="User ID"
           placeholder="@alice:matrix.org"
           :error="r$.userId.$errors"
@@ -83,7 +84,7 @@ const inputEl = useTemplateRef('inputEl')
           required
         />
 
-        <UCheckboxCardRoot v-model:model-value="r$.encrypt.$value" class="w-full">
+        <UCheckboxCardRoot v-model:model-value="r$.encrypt.$value" :disabled="isCreating" class="w-full">
           <UCheckboxCardIcon name="tabler:lock" />
           <UCheckboxCardContent>
             <UCheckboxCardLabel> Encrypt room </UCheckboxCardLabel>
