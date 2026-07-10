@@ -6,6 +6,12 @@ definePageMeta({
 defineAppLabel({ label: 'Invites' })
 
 const { invites } = useInvites()
+
+const contextMenuOpen = ref(false)
+watch(
+  () => invites.value.length,
+  () => (contextMenuOpen.value = false),
+)
 </script>
 
 <template>
@@ -23,7 +29,7 @@ const { invites } = useInvites()
     <UShowcaseSeparator />
 
     <UShowcaseContent class="size-full">
-      <UContextMenuRegionRoot name="invite">
+      <UContextMenuRegionRoot v-model:open="contextMenuOpen" name="invite">
         <template v-if="invites.length">
           <PageMeInvitesCard v-for="inviteRoom in invites" :key="inviteRoom.roomId" :invite-room />
         </template>
@@ -34,8 +40,7 @@ const { invites } = useInvites()
         </UEmptyRoot>
 
         <UContextMenuRegionContent name="invite" v-slot="{ payload }">
-          <UContextMenuItem> Accept </UContextMenuItem>
-          <UContextMenuItem> Decline </UContextMenuItem>
+          <PageMeInvitesCardContextMenu :payload />
         </UContextMenuRegionContent>
       </UContextMenuRegionRoot>
     </UShowcaseContent>
