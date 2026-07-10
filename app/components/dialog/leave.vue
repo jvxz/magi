@@ -19,7 +19,7 @@ const openModel = defineModel('open', { default: false })
 const open = computed({
   get: () => openModel.value,
   set: (e: boolean) => {
-    if (isLeaving.value) return openModel.value
+    if (isLeaving.value) return
     openModel.value = e
   },
 })
@@ -51,7 +51,19 @@ const forwarded = useForwardPropsEmits(delegated, emits)
 
       <UAlertDialogFooter>
         <UAlertDialogCancel :disabled="isLeaving"> Cancel </UAlertDialogCancel>
-        <UButton :is-loading="isLeaving" @click="() => leave.mutate()"> <span>Leave</span> </UButton>
+        <UButton
+          :is-loading="isLeaving"
+          @click="
+            () =>
+              leave.mutate(undefined, {
+                onSuccess: () => {
+                  openModel = false
+                },
+              })
+          "
+        >
+          <span>Leave</span>
+        </UButton>
       </UAlertDialogFooter>
     </UAlertDialogContent>
   </UAlertDialogRoot>
