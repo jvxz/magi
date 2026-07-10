@@ -5,7 +5,7 @@ export function useMutualRooms(otherUserMaybeId: MaybeRefOrGetter<MaybeUserOrId 
   const query = useQuery({
     enabled: () => !!otherUser.value,
     queryFn: () => getMutualRooms(client.value, otherUser.value?.userId),
-    queryKey: ['mutualRooms', () => otherUser.value?.userId],
+    queryKey: $qk.mutualRooms(() => otherUser.value?.userId),
     retry: 1,
     retryOnMount: false,
   })

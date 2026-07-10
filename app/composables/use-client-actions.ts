@@ -5,7 +5,7 @@ export function useClientActions() {
 
   const createRoom = useMutation({
     mutationFn: (opts: ICreateRoomOpts) => client.value.createRoom(opts),
-    mutationKey: ['createRoom'],
+    mutationKey: $mk.createRoom(),
   })
 
   return { createRoom }

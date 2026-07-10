@@ -10,7 +10,7 @@ export const useRoomSummary = createProvidableComposable(
         const { serverName } = parseRoomId(roomId.value) ?? {}
         return client.value.getRoomSummary(roomId.value, serverName ? [serverName] : [])
       },
-      queryKey: ['roomSummary', roomId],
+      queryKey: $qk.roomSummary(roomId),
       refetchOnWindowFocus: true,
     })
   },

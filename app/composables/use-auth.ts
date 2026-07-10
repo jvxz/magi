@@ -60,12 +60,12 @@ export function useAuth() {
         throw new Error(parseError(error, { fallbackMessage: 'An unexpected error occurred' }).message)
       }
     },
-    mutationKey: ['clientLogin'],
+    mutationKey: $mk.clientLogin(),
   })
 
   const logout = useMutation({
     mutationFn: async () => logoutClient(client.value),
-    mutationKey: ['clientLogout'],
+    mutationKey: $mk.clientLogout(),
   })
 
   return {

@@ -30,7 +30,7 @@ export function usePublicRooms(
         server: serverResolved.value,
         since: pageParam,
       }),
-    queryKey: ['publicRooms', serverResolved, debouncedQuery],
+    queryKey: $qk.publicRooms(serverResolved, debouncedQuery),
     retry: 1,
   })
 
