@@ -87,10 +87,11 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
   const join = useMutation({
     mutationFn: async () => {
-      if (!room.value?.roomId) return
+      const currentRoom = room.value
+      if (!currentRoom?.roomId) return
 
-      const res = await client.value.joinRoom(room.value.roomId)
-      room.value.updateMyMembership(KnownMembership.Join)
+      const res = await client.value.joinRoom(currentRoom.roomId)
+      currentRoom.updateMyMembership(KnownMembership.Join)
       await saveClient()
 
       return res
@@ -101,11 +102,12 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
   const leave = useMutation({
     mutationFn: async () => {
-      if (!room.value?.roomId) return
+      const currentRoom = room.value
+      if (!currentRoom?.roomId) return
 
-      const res = await client.value.leave(room.value.roomId)
-      room.value.updateMyMembership(KnownMembership.Leave)
-      await client.value.forget(room.value.roomId)
+      const res = await client.value.leave(currentRoom.roomId)
+      currentRoom.updateMyMembership(KnownMembership.Leave)
+      await client.value.forget(currentRoom.roomId)
       await saveClient()
 
       return res
