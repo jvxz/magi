@@ -10,12 +10,9 @@ const { self } = useSelf()
 const inviterId = computed(() => getInviter(inviteRoom, self.value?.userId))
 const inviter = useUserProfile(inviterId)
 
-const { join, leave: decline } = useRoomActions(inviteRoom)
-const { reset: resetJoin } = join
-const { reset: resetDecline } = decline
-
-const isJoining = useIsKeyMutating('joinRoom', () => inviteRoom.roomId)
-const isDeclining = useIsKeyMutating('leaveRoom', () => inviteRoom.roomId)
+const { accept, decline } = useRoomInviteActions(inviteRoom)
+const { reset: resetJoin, isPending: isAccepting } = accept
+const { reset: resetDecline, isPending: isDeclining } = decline
 
 async function handleDecline() {
   resetJoin()
@@ -27,7 +24,7 @@ async function handleJoin() {
   const beforeNavEpoch = navEpoch.value
   resetDecline()
 
-  const room = await join.mutateAsync()
+  const room = await accept.mutateAsync()
   if (!room || navEpoch.value !== beforeNavEpoch) return
 
   return navigateTo(
@@ -66,10 +63,22 @@ async function handleJoin() {
 
         <div class="flex flex-1 h-full justify-end items-start">
           <div class="flex items-center gap-2">
-            <UButton @click="handleDecline()" :disabled="isJoining" :is-loading="isDeclining" size="sm" variant="soft">
+            <UButton
+              @click="handleDecline()"
+              :disabled="isAccepting"
+              :is-loading="isDeclining"
+              size="sm"
+              variant="soft"
+            >
               <span>Decline</span>
             </UButton>
-            <UButton @click="handleJoin()" :is-loading="isJoining" :disabled="isDeclining" size="sm" variant="default">
+            <UButton
+              @click="handleJoin()"
+              :is-loading="isAccepting"
+              :disabled="isDeclining"
+              size="sm"
+              variant="default"
+            >
               <span>Accept</span>
             </UButton>
           </div>
