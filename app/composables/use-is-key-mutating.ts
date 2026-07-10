@@ -5,6 +5,6 @@ type MutationParams<K extends $MKKey> = MutationFactory<K> extends (...args: inf
 
 export const useIsKeyMutating = <T extends $MKKey>(mkKey: T, ...params: MutationParams<T>) => {
   const factory = $mk[mkKey] as (...params: MutationParams<T>) => ReturnType<MutationFactory<T>>
-  const num = useIsMutating({ mutationKey: factory(...params) })
+  const num = useIsMutating(computed(() => ({ mutationKey: factory(...params) })))
   return computed(() => !!num.value)
 }
