@@ -20,7 +20,7 @@ const { handleNotiDismiss } = useInvites()
     <template #footer="{ handleDismiss, isToast, removeToast }">
       <UAlertFooter>
         <UButton v-if="!isToast" size="sm" @click="handleDismiss"> Dismiss </UButton>
-        <UButton variant="default" size="sm" @click="removeToast" as-child>
+        <UButton variant="default" size="sm" as-child @click="removeToast">
           <NuxtLink :to="{ name: 'invites' }">Go to invite</NuxtLink>
         </UButton>
       </UAlertFooter>

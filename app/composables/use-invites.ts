@@ -4,7 +4,7 @@ import { findKey } from 'es-toolkit/map'
 import { KnownMembership, SyncState } from 'matrix-js-sdk'
 
 export const useInvites = createGlobalState(() => {
-  const { notify, notificationsMap, dismiss: dismissNoti } = useNotifications()
+  const { dismiss: dismissNoti, notificationsMap, notify } = useNotifications()
   const { self } = useSelf()
   const { onSync } = useMatrixHooks()
 

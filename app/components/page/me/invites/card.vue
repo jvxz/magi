@@ -11,8 +11,8 @@ const inviterId = computed(() => getInviter(inviteRoom, self.value?.userId))
 const inviter = useUserProfile(inviterId)
 
 const { accept, decline } = useRoomInviteActions(inviteRoom)
-const { reset: resetJoin, isPending: isAccepting } = accept
-const { reset: resetDecline, isPending: isDeclining } = decline
+const { isPending: isAccepting, reset: resetJoin } = accept
+const { isPending: isDeclining, reset: resetDecline } = decline
 
 async function handleDecline() {
   resetJoin()
@@ -45,13 +45,13 @@ async function handleJoin() {
 
 <template>
   <UContextMenuRegionTrigger as-child region="invite" :value="{ roomId: inviteRoom.roomId }">
-    <URoomShowcaseCardRoot always-show-avatar :key="inviteRoom.roomId" :room="inviteRoom">
+    <URoomShowcaseCardRoot :key="inviteRoom.roomId" always-show-avatar :room="inviteRoom">
       <URoomShowcaseCardContent>
         <URoomShowcaseCardHeader>
           <URoomShowcaseCardTitle class="shrink-0 gap-1">
             <span>{{ resolveRoomName(inviteRoom) }}</span>
-            <UTooltipIcon name="direct" v-if="isDirectInvite" class="text-muted-foreground size-3.5" />
-            <UTooltipIcon name="encrypted" v-if="isEncrypted(inviteRoom)" class="text-muted-foreground size-3.5" />
+            <UTooltipIcon v-if="isDirectInvite" name="direct" class="text-muted-foreground size-3.5" />
+            <UTooltipIcon v-if="isEncrypted(inviteRoom)" name="encrypted" class="text-muted-foreground size-3.5" />
             <!-- <UBadge v-if="isDirectInvite" size="sm"> Direct Room </UBadge> -->
           </URoomShowcaseCardTitle>
 
@@ -61,23 +61,23 @@ async function handleJoin() {
           </URoomShowcaseCardDescription>
         </URoomShowcaseCardHeader>
 
-        <div class="flex flex-1 h-full justify-end items-start">
-          <div class="flex items-center gap-2">
+        <div class="flex flex-1 h-full items-start justify-end">
+          <div class="flex gap-2 items-center">
             <UButton
-              @click="handleDecline()"
               :disabled="isAccepting"
               :is-loading="isDeclining"
               size="sm"
               variant="soft"
+              @click="handleDecline()"
             >
               <span>Decline</span>
             </UButton>
             <UButton
-              @click="handleJoin()"
               :is-loading="isAccepting"
               :disabled="isDeclining"
               size="sm"
               variant="default"
+              @click="handleJoin()"
             >
               <span>Accept</span>
             </UButton>

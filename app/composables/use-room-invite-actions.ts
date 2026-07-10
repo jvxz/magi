@@ -1,6 +1,6 @@
 export function useRoomInviteActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
   const roomId = useResolveRoomId(roomOrId)
-  const { join, leave, invite: inviteAction } = useRoomActions(roomId)
+  const { invite: inviteAction, join, leave } = useRoomActions(roomId)
 
   const invite = {
     ...reactiveOmit(inviteAction, ['isPending', 'status']),

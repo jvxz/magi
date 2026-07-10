@@ -17,7 +17,7 @@ const { openDialog } = useGlobalDialog()
         <LayoutAppAsidePublicRooms />
       </div>
 
-      <UContextMenuRegionContent name="asideRoom" v-slot="{ payload }">
+      <UContextMenuRegionContent v-slot="{ payload }" name="asideRoom">
         <UContextMenuItem v-if="payload" @select="openDialog('leave', { room: payload.room })">
           Leave space
         </UContextMenuItem>

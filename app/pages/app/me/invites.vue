@@ -19,7 +19,7 @@ watch(
     <LayoutAppPageHeader icon="tabler:inbox"> Invites </LayoutAppPageHeader>
   </LayoutAppSlot>
 
-  <LayoutAppGenericPage class="size-full pb-page-y-padding">
+  <LayoutAppGenericPage class="pb-page-y-padding size-full">
     <UShowcaseRoot>
       <UShowcaseHeader>
         <UShowcaseTitle> Invites </UShowcaseTitle>
@@ -39,7 +39,7 @@ watch(
           <UEmptyDescription> No pending invites </UEmptyDescription>
         </UEmptyRoot>
 
-        <UContextMenuRegionContent name="invite" v-slot="{ payload }">
+        <UContextMenuRegionContent v-slot="{ payload }" name="invite">
           <PageMeInvitesCardContextMenu :payload />
         </UContextMenuRegionContent>
       </UContextMenuRegionRoot>

@@ -75,8 +75,8 @@ const inputEl = useTemplateRef('inputEl')
       <form class="flex flex-col gap-2" @submit.prevent="handleCreate">
         <FormInput
           ref="inputEl"
-          :disabled="isCreating"
           v-model="r$.userId.$value"
+          :disabled="isCreating"
           label="User ID"
           placeholder="@alice:matrix.org"
           :error="r$.userId.$errors"
@@ -84,7 +84,7 @@ const inputEl = useTemplateRef('inputEl')
           required
         />
 
-        <UCheckboxCardRoot :disabled="isCreating" v-model:model-value="r$.encrypt.$value" class="w-full">
+        <UCheckboxCardRoot v-model:model-value="r$.encrypt.$value" :disabled="isCreating" class="w-full">
           <UCheckboxCardIcon name="tabler:lock" />
           <UCheckboxCardContent>
             <UCheckboxCardLabel> Encrypt room </UCheckboxCardLabel>

@@ -28,10 +28,10 @@ const { forwardRef } = useForwardExpose()
 <template>
   <FormPrimitive v-bind="delegated" :class="$props.ui?.container">
     <component
-      :disabled
       :is="textarea ? UTextarea : UInput"
       :ref="forwardRef"
       v-model="modelValue"
+      :disabled
       :disable-pw
       :placeholder
       :type="$props.type"

@@ -77,9 +77,9 @@ const handleInvite = async () => {
 
       <form class="flex flex-col gap-2" @submit.prevent="handleInvite">
         <FormInput
-          :disabled="isInviting"
           ref="inputEl"
           v-model:model-value="r$.userId.$value"
+          :disabled="isInviting"
           disable-pw
           label="User ID"
           :error="r$.userId.$errors"
@@ -88,8 +88,8 @@ const handleInvite = async () => {
         />
 
         <FormInput
-          :disabled="isInviting"
           v-model:model-value="r$.reason.$value"
+          :disabled="isInviting"
           disable-pw
           label="Reason"
           :error="r$.reason.$errors"
