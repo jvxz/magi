@@ -14,7 +14,10 @@ export function useRoomReplyEvent(event: MatrixEvent, room: Room) {
 
       return replyEvent
     },
-    queryKey: $qk.roomReplyEvent(() => event.replyEventId, () => room.roomId),
+    queryKey: $qk.roomReplyEvent(
+      () => event.replyEventId,
+      () => room.roomId,
+    ),
     shallow: true,
   })
 
