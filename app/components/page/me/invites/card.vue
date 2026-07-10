@@ -11,35 +11,38 @@ const inviterId = computed(() => getInviter(inviteRoom, self.value?.userId))
 const inviter = useUserProfile(inviterId)
 
 const { join, leave: decline } = useRoomActions(inviteRoom)
-const { isPending: isJoining, error: joinError, reset: resetJoin } = join
-const { isPending: isDeclining, error: declineError, reset: resetDecline } = decline
+const { reset: resetJoin } = join
+const { reset: resetDecline } = decline
 
-const { client } = useMatrixClient()
+const isJoining = useIsKeyMutating('joinRoom', () => inviteRoom.roomId)
+const isDeclining = useIsKeyMutating('leaveRoom', () => inviteRoom.roomId)
 
 async function handleDecline() {
   resetJoin()
   decline.mutate()
 }
 
+const navEpoch = useNavEpoch()
 async function handleJoin() {
+  const beforeNavEpoch = navEpoch.value
   resetDecline()
 
   const room = await join.mutateAsync()
-  // if (!room) return
+  if (!room || navEpoch.value !== beforeNavEpoch) return
 
-  // return navigateTo(
-  //   isDirectInvite.value
-  //     ? {
-  //         name: 'direct-room',
-  //         params: {
-  //           directRoomId: room.roomId,
-  //         },
-  //       }
-  //     : {
-  //         name: 'space-room',
-  //         params: { roomId: room.roomId },
-  //       },
-  // )
+  return navigateTo(
+    isSpace(room)
+      ? {
+          name: 'space',
+          params: { spaceId: room.roomId },
+        }
+      : {
+          name: 'direct-room',
+          params: {
+            directRoomId: room.roomId,
+          },
+        },
+  )
 }
 </script>
 
@@ -58,27 +61,11 @@ async function handleJoin() {
           <URoomShowcaseCardDescription>
             Invited by
             <span class="font-medium">{{ inviter?.displayname }} ({{ inviterId }})</span>
-
-            <!-- <span>
-              {{ $n(inviteRoom.getJoinedMemberCount()) }}
-              {{ handlePlural(inviteRoom.getJoinedMemberCount(), 'members', 'member') }}
-            </span> -->
           </URoomShowcaseCardDescription>
         </URoomShowcaseCardHeader>
 
         <div class="flex flex-1 h-full justify-end items-start">
           <div class="flex items-center gap-2">
-            <!-- <p class="text-sm text-danger truncate" v-if="joinError || declineError">
-              {{ joinError ?? declineError }}
-            </p> -->
-            <!-- <UErrorText :error="[joinError, declineError]" /> -->
-            <!-- <p class="text-sm text-clip">
-              Invited by <span class="font-medium">{{ inviter?.displayname }}</span>
-            </p> -->
-
-            <!-- <div class="font-medium flex gap-1 items-center"></div> -->
-
-            <!-- <div class="text-sm"></div> -->
             <UButton @click="handleDecline()" :disabled="isJoining" :is-loading="isDeclining" size="sm" variant="soft">
               <span>Decline</span>
             </UButton>
