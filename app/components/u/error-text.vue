@@ -23,7 +23,7 @@ const parsedError = computed(() => {
 const textClass = computed(() => cn('text-sm text-danger truncate', props.class))
 
 const content = computed(
-  () => `${parsedError.value?.title ? `[${parsedError.value?.title}] ` : undefined}${parsedError.value?.message}`,
+  () => `${parsedError.value?.title ? `[${parsedError.value?.title}] ` : ''}${parsedError.value?.message}`,
 )
 </script>
 
