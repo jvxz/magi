@@ -94,7 +94,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
       return res
     },
-    mutationKey: ['joinRoom'],
+    mutationKey: $mk.joinRoom(roomId),
     onError: err => notifyError(err, `Failed to join ${room.value ? resolveRoomName(room.value) : 'room'}`),
   })
 
