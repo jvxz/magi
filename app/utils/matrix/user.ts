@@ -38,10 +38,14 @@ export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: ResolveAv
         allowRedirects: true,
         animated: opts?.animated ?? true,
         baseUrl: opts?.baseUrl,
-        height: size,
-        resizeMethod: 'crop',
         useAuthentication: true,
-        width: size,
+        ...(opts?.size !== 'full'
+          ? {
+              height: size,
+              resizeMethod: 'crop',
+              width: size,
+            }
+          : undefined),
       },
       (opts ||= {}),
     ),
@@ -54,7 +58,9 @@ export function resolveUserId(maybeUserOrId: MaybeUserOrId) {
   return maybeUserOrId.userId
 }
 
-export function resolveUserName(user: User | RoomMember | undefined) {
+export function resolveUserName(user: User | RoomMember | string | undefined) {
+  if (isString(user)) return getDisplayNameFallback(user)
+
   if (user?.rawDisplayName) return user.rawDisplayName
 
   return getDisplayNameFallback(user?.userId)

@@ -21,6 +21,7 @@ export const REACTABLE_EVENT_TYPES: (EventType | 'm.poll.start' | 'org.matrix.ms
 ]
 
 export const AVATAR_IMAGE_SIZE_VALUES = {
+  full: -1,
   large: 512,
   medium: 256,
   small: 64,

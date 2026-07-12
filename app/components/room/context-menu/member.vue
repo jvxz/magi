@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 defineProps<ContextMenuRegions['member']>()
+
+const { openDialog } = useGlobalDialog()
 </script>
 
 <template>
@@ -7,6 +9,8 @@ defineProps<ContextMenuRegions['member']>()
     <UContextMenuItem> Mention </UContextMenuItem>
     <UContextMenuItem> Message {{ member.name }} </UContextMenuItem>
     <UContextMenuSeparator />
-    <UContextMenuItem> View avatar </UContextMenuItem>
+    <UContextMenuItem @select="openDialog('avatar', { label: member.name, user: member.user ?? member.userId })">
+      View avatar
+    </UContextMenuItem>
   </template>
 </template>

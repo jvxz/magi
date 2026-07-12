@@ -24,6 +24,7 @@ const powerLevelName = computed(() => upperFirst(getPowerLevelName(powerLevel.va
 const isSelf = computed(() => self.value?.userId === user.value?.userId)
 
 const { copy } = useClipboard()
+const { openDialog } = useGlobalDialog()
 </script>
 
 <template>
@@ -54,7 +55,21 @@ const { copy } = useClipboard()
         </div>
 
         <div class="px-4 pb-4 pt-14 border border-border rounded flex flex-1 flex-col gap-2">
-          <MatrixAvatar :user class="bg-popover size-20 ring-6 ring-popover z-1" image-size="small" />
+          <button
+            class="group rounded-full size-20 relative"
+            @click="
+              () => {
+                const payload = { user, label: displayName }
+                open = false
+                nextTick(() => openDialog('avatar', payload))
+              }
+            "
+          >
+            <MatrixAvatar :user class="bg-popover size-20 ring-6 ring-popover" image-size="small" />
+            <div
+              class="rounded-full size-20 cursor-pointer content-[''] inset-0 absolute z-2 group-hover:bg-hover/25"
+            />
+          </button>
 
           <div class="flex flex-col">
             <p class="text-lg font-medium">

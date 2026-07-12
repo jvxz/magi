@@ -14,7 +14,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 <template>
   <DialogPortal>
-    <DialogOverlay :class="cn(overlayStyles)" />
+    <DialogOverlay :class="cn(overlayStyles)" data-slot="dialog-content-overlay" />
     <DialogContent v-bind="forwarded" data-slot="dialog-content" :class="cn(dialogStyles(), props.class)">
       <slot />
     </DialogContent>

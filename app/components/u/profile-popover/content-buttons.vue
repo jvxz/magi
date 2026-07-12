@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 const props = defineProps<{ userId: string | undefined }>()
 
-const { context } = useProfilePopover()
+const { context, open } = useProfilePopover()
 
 const { self } = useSelf()
+
+const { openDialog } = useGlobalDialog()
+const user = useUser(() => props.userId)
 
 const { copy, isSupported } = useClipboard()
 const copied = refAutoReset(false, 750)
@@ -35,6 +38,17 @@ function handleCopyUserId() {
         <UDropdownMenuItem :disabled="!isSupported || !props.userId" @click="handleCopyUserId">
           <Icon name="tabler:tag" /> Copy ID
         </UDropdownMenuItem>
+        <UDropdownMenuItem
+          @click="
+            () => {
+              const payload = { label: resolveUserName(user ?? userId), user }
+              open = false
+              openDialog('avatar', payload)
+            }
+          "
+        >
+          <Icon name="tabler:photo" /> View avatar</UDropdownMenuItem
+        >
       </UDropdownMenuContent>
     </UDropdownMenuRoot>
   </div>

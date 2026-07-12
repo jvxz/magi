@@ -1,5 +1,9 @@
-<script lang="ts">
-import type { ImgProps } from '~/components/img.vue'
+<script setup lang="ts">
+import type { RoomMember } from 'matrix-js-sdk'
+
+import { useForwardPropsEmits } from 'reka-ui'
+
+import type { ImgEmits, ImgProps } from '~/components/img.vue'
 
 export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   square?: boolean
@@ -7,31 +11,34 @@ export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   placeholderKey?: string
   direct?: boolean
   isLoading?: boolean
-} & (
-    | { room: MaybeRoomOrId | undefined | null; user?: never; src?: never }
-    | { user: MaybeUserOrId | undefined | null; room?: never; src?: never }
-    | { src: string | undefined | null; room?: never; user?: never }
-  )
-</script>
+  room?: MaybeRoomOrId | undefined | null
+  user?: MaybeUserOrId | undefined | null
+  roomMember?: RoomMember | undefined | null
+  src?: string | undefined | null
+}
 
-<script setup lang="ts">
+export type MatrixAvatarEmits = ImgEmits
+
 const props = withDefaults(defineProps<MatrixAvatarProps>(), {
   imageSize: 'small',
 })
+const emits = defineEmits<ImgEmits>()
 
 const room = useRoom(() => props.room ?? undefined)
 const userProfile = useUserProfile(() => props.user ?? undefined)
 
 const alt = computed(() => {
+  if (props.roomMember) return resolveUserName(props.roomMember)
   if (room.value) return room.value.name ?? room.value.roomId ?? ''
-
   if (userProfile.value) return userProfile.value.displayname ?? (props.user ? resolveUserId(props.user) : '')
 
   return ''
 })
 
 const { client } = useMatrixClient()
-const roomOrUserUrl = computed(() => {
+const mxcUrl = computed(() => {
+  if (props.roomMember) return props.roomMember.getMxcAvatarUrl()
+
   if (room.value)
     return room.value
       ? props.direct || isDirectRoom(client.value, room.value)
@@ -44,15 +51,28 @@ const roomOrUserUrl = computed(() => {
   return undefined
 })
 
-const resolvedAvatar = useResolveAvatarUrl(roomOrUserUrl, { size: props.imageSize })
+const resolvedAvatar = useResolveAvatarUrl(mxcUrl, { size: props.imageSize })
 
 const isError = ref(false)
 watch(
   () => props.src ?? resolvedAvatar.value,
-  () => (isError.value = false),
+  url => {
+    emits('url', url)
+    isError.value = false
+  },
+  { immediate: true },
 )
 
-const delegatedProps = reactiveOmit(props, [
+const placeholderName = computed(() => {
+  if (props.placeholderKey) return props.placeholderKey
+  if (props.roomMember) return resolveUserName(props.roomMember)
+  if (room.value) return room.value.roomId
+  if (props.user) return resolveUserId(props.user)
+  if (props.src) return props.src
+  return 'UNKNOWN'
+})
+
+const delegated = reactiveOmit(props, [
   'room',
   'user',
   'src',
@@ -60,23 +80,16 @@ const delegatedProps = reactiveOmit(props, [
   'imageSize',
   'placeholderKey',
   'isLoading',
+  'roomMember',
 ])
-
-const placeholderName = computed(() => {
-  if (props.placeholderKey) return props.placeholderKey
-  if (room.value) return room.value.roomId
-  if (props.user) return resolveUserId(props.user)
-  if (props.src) return props.src
-  return 'UNKNOWN'
-})
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>
   <Img
     v-if="(props.src || resolvedAvatar) && !isError"
-    v-bind="delegatedProps"
+    v-bind="forwarded"
     :key="props.src ?? resolvedAvatar"
-    data-slot="avatar"
     :alt
     :src="props.src ?? resolvedAvatar"
     :class="cn('object-cover', !square && 'rounded-full', props.class)"

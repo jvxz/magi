@@ -1,10 +1,13 @@
 import type { Room } from 'matrix-js-sdk'
 
+import type { MatrixAvatarProps } from '~/components/matrix/avatar.vue'
+
 export interface GlobalDialogMap {
   invite: ContextMenuRegions['invite']
   leave: {
     room: Room
   }
+  avatar: Pick<MatrixAvatarProps, 'user' | 'room' | 'src'> & { label: string }
 }
 export type GlobalDialog = keyof GlobalDialogMap
 
@@ -24,11 +27,6 @@ export const useGlobalDialog = createGlobalState(() => {
     state.value = { name, ...payload } as GlobalDialogState
     open.value = true
   }
-
-  whenever(
-    () => !open.value,
-    () => (state.value = undefined),
-  )
 
   return { open, openDialog, state }
 })

@@ -247,6 +247,7 @@ export default defineNuxtConfig({
         'tailwind-variants',
         'temporal-polyfill',
         'tiptap-extension-code-block-shiki',
+        'mime/lite',
         'valibot',
         'virtua/vue',
       ],

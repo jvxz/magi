@@ -21,6 +21,12 @@ const { openDialog } = useGlobalDialog()
         <UContextMenuItem v-if="payload" @select="openDialog('leave', { room: payload.room })">
           Leave space
         </UContextMenuItem>
+        <UContextMenuItem
+          v-if="payload"
+          @select="openDialog('avatar', { room: payload.room, label: resolveRoomName(payload.room) })"
+        >
+          View avatar
+        </UContextMenuItem>
       </UContextMenuRegionContent>
     </UContextMenuRegionRoot>
 
