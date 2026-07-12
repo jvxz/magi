@@ -1,3 +1,5 @@
+import mime from 'mime/lite'
+
 export type MaybeElement = HTMLElement | null | undefined
 export type ElementOrDimensions = HTMLElement & {
   scrollTop: number
@@ -143,4 +145,64 @@ export function createPointReference(point: { clientX: number; clientY: number }
 
   const rect: ClientRectObject = { bottom: y, height: 0, left: x, right: x, top: y, width: 0, x, y }
   return { getBoundingClientRect: () => rect }
+}
+
+export type SaveAsInput = Blob | BlobPart | BlobPart[]
+export function saveAs(input: SaveAsInput, filename: string, mimeType = 'application/octet-stream'): void {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    throw new Error('saveAs() must be called in a browser.')
+  }
+
+  let name = filename.trim()
+
+  if (!name) {
+    throw new TypeError('saveAs() requires a non-empty filename.')
+  }
+
+  const blob =
+    input instanceof Blob
+      ? input
+      : new Blob(Array.isArray(input) ? input : [input], {
+          type: mimeType,
+        })
+
+  const hasExtension = !!getFileExtension(filename)
+  if (!hasExtension && mime.getExtension(mimeType)) name = `${name}.${mime.getExtension(mimeType)}`
+
+  const url = URL.createObjectURL(blob)
+  const anchor = document.createElement('a')
+  const parent = document.body ?? document.documentElement
+
+  if (!parent) {
+    URL.revokeObjectURL(url)
+    throw new Error('Cannot access the document root.')
+  }
+
+  anchor.href = url
+  anchor.download = name
+  anchor.hidden = true
+
+  const cleanup = (): void => {
+    URL.revokeObjectURL(url)
+    anchor.remove()
+  }
+
+  try {
+    parent.append(anchor)
+    anchor.click()
+  } finally {
+    window.setTimeout(cleanup, 1000)
+  }
+}
+
+export async function saveAsImage(imageUrl: string, filename: string, mimeType?: string) {
+  const response = await fetch(imageUrl)
+
+  if (!response.ok) {
+    throw new Error(`Image download failed: ${response.status}`)
+  }
+
+  const imageBlob = await response.blob()
+
+  saveAs(imageBlob, filename, mimeType ?? response.headers.get('Content-Type') ?? undefined)
 }
