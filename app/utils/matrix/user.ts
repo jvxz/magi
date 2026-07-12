@@ -38,10 +38,14 @@ export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: ResolveAv
         allowRedirects: true,
         animated: opts?.animated ?? true,
         baseUrl: opts?.baseUrl,
-        height: size,
-        resizeMethod: 'crop',
         useAuthentication: true,
-        width: size,
+        ...(opts?.size !== 'full'
+          ? {
+              height: size,
+              resizeMethod: 'crop',
+              width: size,
+            }
+          : undefined),
       },
       (opts ||= {}),
     ),
