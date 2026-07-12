@@ -61,13 +61,12 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
       getPaginationToken: () => 'token',
     }),
     getMember: (userId: string) => {
-      let member = members.get(userId)
-      if (!member) {
-        member = new RoomMember(id, userId)
-        ;(member as unknown as { membership: string }).membership = KnownMembership.Join
-        members.set(userId, member)
-      }
-      return member
+      const member = members.get(userId)
+      if (member) return member
+
+      const stub = new RoomMember(id, userId)
+      ;(stub as unknown as { membership: string }).membership = KnownMembership.Join
+      return stub
     },
     getMembers: () => [...members.values()],
     getUnfilteredTimelineSet: () => timelineSet,
