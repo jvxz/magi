@@ -56,6 +56,7 @@ const { openDialog } = useGlobalDialog()
 
         <div class="px-4 pb-4 pt-14 border border-border rounded flex flex-1 flex-col gap-2">
           <button
+            class="group rounded-full size-20 relative"
             @click="
               () => {
                 const payload = { user, label: displayName }
@@ -63,11 +64,10 @@ const { openDialog } = useGlobalDialog()
                 nextTick(() => openDialog('avatar', payload))
               }
             "
-            class="group relative size-20 rounded-full"
           >
             <MatrixAvatar :user class="bg-popover size-20 ring-6 ring-popover" image-size="small" />
             <div
-              class="cursor-pointer content-[''] inset-0 absolute z-2 size-20 rounded-full group-hover:bg-hover/25"
+              class="rounded-full size-20 cursor-pointer content-[''] inset-0 absolute z-2 group-hover:bg-hover/25"
             />
           </button>
 

@@ -30,12 +30,12 @@ const saveAvatarImage = () => {
         </VisuallyHidden>
       </UDialogHeader>
 
-      <MatrixAvatar @url="imageUrl = $event" :room :src :user square class="rounded w-full" image-size="full" />
+      <MatrixAvatar :room :src :user square class="rounded w-full" image-size="full" @url="imageUrl = $event" />
 
       <UDialogFooter>
-        <UDialogAnnotation class="text-danger" v-if="isError"> Failed to load avatar </UDialogAnnotation>
+        <UDialogAnnotation v-if="isError" class="text-danger"> Failed to load avatar </UDialogAnnotation>
         <div class="grow" />
-        <UButton @click="saveAvatarImage" :disabled="isError"> Save avatar </UButton>
+        <UButton :disabled="isError" @click="saveAvatarImage"> Save avatar </UButton>
       </UDialogFooter>
     </UDialogContent>
   </UDialogRoot>
