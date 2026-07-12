@@ -25,7 +25,7 @@ export type MaybeUserOrId = User | User['userId']
 export type MaybeRoomOrId = Room | Room['roomId']
 export type MaybeEventOrId = MatrixEvent | string
 
-export type AvatarImageSize = 'small' | 'medium' | 'large'
+export type AvatarImageSize = 'small' | 'medium' | 'large' | 'full'
 
 export type PowerLevelName = 'member' | 'moderator' | 'admin' | 'owner' | 'unknown'
 
