@@ -215,6 +215,7 @@ export default defineNuxtConfig({
         'es-toolkit',
       ],
       include: [
+        '@jamii/vue-paginated-scroll',
         '@regle/core',
         '@regle/rules',
         '@tanstack/query-persist-client-core',
@@ -225,6 +226,7 @@ export default defineNuxtConfig({
         '@tiptap/extension-mention',
         '@tiptap/extension-placeholder',
         '@tiptap/pm/state',
+        '@unhead/schema-org/vue',
         'dompurify',
         'marked',
         'matrix-js-sdk',
