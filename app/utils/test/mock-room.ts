@@ -1,4 +1,4 @@
-import { MatrixEvent, Room, RoomMember } from 'matrix-js-sdk'
+import { KnownMembership, MatrixEvent, Room, RoomMember } from 'matrix-js-sdk'
 
 const DEFAULT_SENDER = '@test:localhost'
 const DEFAULT_START_TS = Date.UTC(2026, 0, 1)
@@ -60,7 +60,14 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
       getEvents: () => events,
       getPaginationToken: () => 'token',
     }),
-    getMember: (userId: string) => members.get(userId) ?? new RoomMember(id, userId),
+    getMember: (userId: string) => {
+      const member = members.get(userId)
+      if (member) return member
+
+      const stub = new RoomMember(id, userId)
+      ;(stub as unknown as { membership: string }).membership = KnownMembership.Join
+      return stub
+    },
     getMembers: () => [...members.values()],
     getUnfilteredTimelineSet: () => timelineSet,
     loadMembersIfNeeded: async () => {},
