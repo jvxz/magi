@@ -33,7 +33,7 @@ const inputEl = useTemplateRef('inputEl')
 const delegated = reactiveOmit(props, 'open')
 const forwarded = useForwardPropsEmits(delegated, emits)
 whenever(
-  () => forwarded.value.open,
+  () => props.open,
   () => r$.$reset({ toInitialState: true }),
 )
 
