@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { RoomMember } from 'matrix-js-sdk'
+
 import { useForwardPropsEmits } from 'reka-ui'
 
 import type { ImgEmits, ImgProps } from '~/components/img.vue'
@@ -11,6 +13,7 @@ export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   isLoading?: boolean
   room?: MaybeRoomOrId | undefined | null
   user?: MaybeUserOrId | undefined | null
+  roomMember?: RoomMember | undefined | null
   src?: string | undefined | null
 }
 
@@ -25,15 +28,17 @@ const room = useRoom(() => props.room ?? undefined)
 const userProfile = useUserProfile(() => props.user ?? undefined)
 
 const alt = computed(() => {
+  if (props.roomMember) return resolveUserName(props.roomMember)
   if (room.value) return room.value.name ?? room.value.roomId ?? ''
-
   if (userProfile.value) return userProfile.value.displayname ?? (props.user ? resolveUserId(props.user) : '')
 
   return ''
 })
 
 const { client } = useMatrixClient()
-const roomOrUserUrl = computed(() => {
+const mxcUrl = computed(() => {
+  if (props.roomMember) return props.roomMember.getMxcAvatarUrl()
+
   if (room.value)
     return room.value
       ? props.direct || isDirectRoom(client.value, room.value)
@@ -46,7 +51,7 @@ const roomOrUserUrl = computed(() => {
   return undefined
 })
 
-const resolvedAvatar = useResolveAvatarUrl(roomOrUserUrl, { size: props.imageSize })
+const resolvedAvatar = useResolveAvatarUrl(mxcUrl, { size: props.imageSize })
 
 const isError = ref(false)
 watch(
@@ -60,13 +65,23 @@ watch(
 
 const placeholderName = computed(() => {
   if (props.placeholderKey) return props.placeholderKey
+  if (props.roomMember) return resolveUserName(props.roomMember)
   if (room.value) return room.value.roomId
   if (props.user) return resolveUserId(props.user)
   if (props.src) return props.src
   return 'UNKNOWN'
 })
 
-const delegated = reactiveOmit(props, ['room', 'user', 'src', 'square', 'imageSize', 'placeholderKey', 'isLoading'])
+const delegated = reactiveOmit(props, [
+  'room',
+  'user',
+  'src',
+  'square',
+  'imageSize',
+  'placeholderKey',
+  'isLoading',
+  'roomMember',
+])
 const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
@@ -80,7 +95,6 @@ const forwarded = useForwardPropsEmits(delegated, emits)
     :class="cn('object-cover', !square && 'rounded-full', props.class)"
     :do-placeholder="false"
     @error="isError = true"
-    @url="console.log"
   />
   <AvatarPlaceholder
     v-else
