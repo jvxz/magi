@@ -17,7 +17,7 @@ export interface FormInputProps extends FormPrimitiveProps, UInputProps {
 }
 
 const props = defineProps<FormInputProps>()
-const modelValue = defineModel<string | number>()
+const modelValue = useVModel(props, 'modelValue')
 
 const hasError = computed(() => (props.error && Array.isArray(props.error) ? props.error.length > 0 : !!props.error))
 const delegated = reactiveOmit(props, ['placeholder', 'modelValue'])
