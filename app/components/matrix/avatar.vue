@@ -1,5 +1,7 @@
-<script lang="ts">
-import type { ImgProps } from '~/components/img.vue'
+<script setup lang="ts">
+import { useForwardPropsEmits } from 'reka-ui'
+
+import type { ImgEmits, ImgProps } from '~/components/img.vue'
 
 export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   square?: boolean
@@ -7,17 +9,17 @@ export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'alt'> & {
   placeholderKey?: string
   direct?: boolean
   isLoading?: boolean
-} & (
-    | { room: MaybeRoomOrId | undefined | null; user?: never; src?: never }
-    | { user: MaybeUserOrId | undefined | null; room?: never; src?: never }
-    | { src: string | undefined | null; room?: never; user?: never }
-  )
-</script>
+  room?: MaybeRoomOrId | undefined | null
+  user?: MaybeUserOrId | undefined | null
+  src?: string | undefined | null
+}
 
-<script setup lang="ts">
+export type MatrixAvatarEmits = ImgEmits
+
 const props = withDefaults(defineProps<MatrixAvatarProps>(), {
   imageSize: 'small',
 })
+const emits = defineEmits<ImgEmits>()
 
 const room = useRoom(() => props.room ?? undefined)
 const userProfile = useUserProfile(() => props.user ?? undefined)
@@ -49,18 +51,12 @@ const resolvedAvatar = useResolveAvatarUrl(roomOrUserUrl, { size: props.imageSiz
 const isError = ref(false)
 watch(
   () => props.src ?? resolvedAvatar.value,
-  () => (isError.value = false),
+  url => {
+    emits('url', url)
+    isError.value = false
+  },
+  { immediate: true },
 )
-
-const delegatedProps = reactiveOmit(props, [
-  'room',
-  'user',
-  'src',
-  'square',
-  'imageSize',
-  'placeholderKey',
-  'isLoading',
-])
 
 const placeholderName = computed(() => {
   if (props.placeholderKey) return props.placeholderKey
@@ -69,19 +65,22 @@ const placeholderName = computed(() => {
   if (props.src) return props.src
   return 'UNKNOWN'
 })
+
+const delegated = reactiveOmit(props, ['room', 'user', 'src', 'square', 'imageSize', 'placeholderKey', 'isLoading'])
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>
   <Img
     v-if="(props.src || resolvedAvatar) && !isError"
-    v-bind="delegatedProps"
+    v-bind="forwarded"
     :key="props.src ?? resolvedAvatar"
-    data-slot="avatar"
     :alt
     :src="props.src ?? resolvedAvatar"
     :class="cn('object-cover', !square && 'rounded-full', props.class)"
     :do-placeholder="false"
     @error="isError = true"
+    @url="console.log"
   />
   <AvatarPlaceholder
     v-else
