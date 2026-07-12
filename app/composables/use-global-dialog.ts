@@ -25,10 +25,5 @@ export const useGlobalDialog = createGlobalState(() => {
     open.value = true
   }
 
-  whenever(
-    () => !open.value,
-    () => (state.value = undefined),
-  )
-
   return { open, openDialog, state }
 })
