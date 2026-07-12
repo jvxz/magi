@@ -20,7 +20,7 @@ export default defineNuxtPlugin({
 
           client.value = createClient({
             accessToken: mockedAuth?.accessToken ?? 'test-token',
-            baseUrl: MATRIX_BASE_URL,
+            baseUrl: mockedAuth?.baseUrl ?? MATRIX_BASE_URL,
             deviceId: mockedAuth?.deviceId ?? 'TEST_DEVICE',
             store,
             userId,
