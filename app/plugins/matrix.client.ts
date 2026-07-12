@@ -1,4 +1,4 @@
-import { SyncState } from 'matrix-js-sdk'
+import { createClient, MemoryStore, SyncState, User } from 'matrix-js-sdk'
 
 export default defineNuxtPlugin({
   name: 'matrix',
@@ -7,12 +7,26 @@ export default defineNuxtPlugin({
   setup: () => {
     const status = useMatrixStatus()
     const { onSync } = useMatrixHooks()
+    const { client, initAuthedClient } = useMatrixClient()
     // always ready in e2e tests
     const ready = ref(isTestMode())
 
     const init = async () => {
       try {
         if (isAuthMocked()) {
+          const mockedAuth = getMockedAuth()
+          const userId = mockedAuth?.userId ?? '@test:localhost'
+          const store = new MemoryStore()
+
+          client.value = createClient({
+            accessToken: mockedAuth?.accessToken ?? 'test-token',
+            baseUrl: MATRIX_BASE_URL,
+            deviceId: mockedAuth?.deviceId ?? 'TEST_DEVICE',
+            store,
+            userId,
+          })
+          store.storeUser(new User(userId))
+
           status.value.isAuthed = true
           status.value.isDataSynced = true
 
@@ -21,8 +35,6 @@ export default defineNuxtPlugin({
 
         status.value.isStarting = true
         status.value.isDataSynced = false
-
-        const { client, initAuthedClient } = useMatrixClient()
 
         const authPayload = await idb.get<AuthPayload>('auth')
         if (authPayload) {
