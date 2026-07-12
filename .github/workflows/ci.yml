@@ -56,7 +56,6 @@ jobs:
             ${{ runner.os }}-playwright-browsers-
 
       - name: install playwright browsers
-        if: steps.cache-playwright.outputs.cache-hit != 'true'
         run: pnpm exec playwright install --with-deps chromium
 
       - name: e2e test
