@@ -4,7 +4,7 @@ export default defineNuxtPlugin({
     const settings = useScopedLocalStorage<Settings>('settings', DEFAULT_SETTINGS)
 
     // merge once on app load
-    settings.value = merge(DEFAULT_SETTINGS, settings.value)
+    settings.value = merge(cloneDeep(DEFAULT_SETTINGS), settings.value)
 
     return {
       provide: {
