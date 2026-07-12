@@ -63,6 +63,8 @@ const groupedEvents = useEventGrouping({
             v-for="(event, idx) in groupedEvents.events"
             :key="`${event.getId() ?? idx}:${getEventVersion(event.getId() ?? '')}`"
             v-item="event.getId()!"
+            :data-index="idx"
+            :data-item-id="event.getId()"
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
             <RoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
