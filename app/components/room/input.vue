@@ -3,7 +3,7 @@ import type { Editor } from '@tiptap/core'
 import type { MentionNodeAttrs } from '@tiptap/extension-mention'
 import type { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion'
 import type { CompactEmoji } from 'emojibase'
-import type { RoomMember, User } from 'matrix-js-sdk'
+import type { RoomMember } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 
 import { Extension } from '@tiptap/core'
@@ -30,7 +30,7 @@ const { emojiData } = useEmojiData()
 
 type SuggestionItem = { id: string; label: string; commandProps: Record<string, any> } & (
   | {
-      user: RoomMember | User
+      user: RoomMember
       room?: never
       emoji?: never
     }
@@ -270,8 +270,8 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
           @mouseenter="highlightedIdx = index"
           @mousedown.prevent="selectItem(item)"
         >
-          <MatrixAvatar v-if="item.user" class="h-4 w-fit" :user="item.user" />
-          <MatrixAvatar v-else-if="item.room" class="h-4 w-fit" :room="item.room" />
+          <MatrixAvatar v-if="item.user" class="h-4 w-fit" :room-member="item.user" />
+          <MatrixAvatar v-else-if="item.room" class="h-4 w-fit" :room="item.room.room_id" />
           <Twemoji v-else :emoji="item.emoji.hexcode" />
 
           <span class="text-foreground">{{ item.label }}</span>
