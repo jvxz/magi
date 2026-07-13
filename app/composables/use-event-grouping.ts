@@ -3,6 +3,7 @@ import type { MatrixEvent } from 'matrix-js-sdk'
 interface GroupedEvent {
   events: MatrixEvent[]
   grouped: boolean[]
+  dateDiffed: boolean[]
 }
 
 interface Opts {
@@ -11,14 +12,18 @@ interface Opts {
 }
 
 export function useEventGrouping(opts: Opts) {
+  const timezone = getCurrentTimezone()
+
   const groupedEvents = computed<GroupedEvent>(() => {
     const { events: rawEvents, eventsPaginated } = opts
 
     let prevEvent = getPreviousEvent(rawEvents.value, eventsPaginated.value[0])
     let currentGroupTsCutoff = -1
+    let latestDateSeen: Temporal.ZonedDateTime | undefined
 
     const events: MatrixEvent[] = []
     const grouped: GroupedEvent['grouped'] = []
+    const dateDiffed: GroupedEvent['dateDiffed'] = []
 
     const GROUP_WINDOW_MS = 15 * 60 * 1000
 
@@ -37,10 +42,23 @@ export function useEventGrouping(opts: Opts) {
       grouped.push(shouldGroup)
       events.push(event)
 
+      let isDateDiffed = false
+      const eventInstant = Temporal.Instant.fromEpochMilliseconds(event.getTs()).toZonedDateTimeISO(timezone)
+
+      if (!latestDateSeen) {
+        latestDateSeen = eventInstant
+        isDateDiffed = true
+      } else {
+        isDateDiffed = Temporal.PlainDate.compare(eventInstant, latestDateSeen) > 0
+        if (isDateDiffed) latestDateSeen = eventInstant
+      }
+
+      dateDiffed.push(isDateDiffed)
+
       prevEvent = event
     }
 
-    return { events, grouped }
+    return { dateDiffed, events, grouped }
   })
 
   return groupedEvents
