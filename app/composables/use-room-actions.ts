@@ -8,6 +8,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
   const roomId = useResolveRoomId(roomOrId)
   const { client, saveClient } = useMatrixClient()
   const { notifyError } = useNotifications()
+  const settings = useSettings()
 
   const react = useMutation({
     mutationFn: async (params: {
@@ -74,7 +75,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
   const typing = useMutation({
     mutationFn: async (params: { isTyping: boolean }) => {
-      if (!room.value) return false
+      if (!room.value || !settings.value.messaging.typingEvents) return false
 
       try {
         await client.value.sendTyping(room.value.roomId, params.isTyping, TYPING_TIMEOUT_MS)
