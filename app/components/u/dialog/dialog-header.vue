@@ -13,7 +13,7 @@ const props = withDefaults(
   { as: 'header', withClose: true },
 )
 
-const delegated = reactiveOmit(props, ['closeDisabled', 'withClose', 'class'])
+const delegated = reactiveOmit(props, ['closeDisabled', 'withClose', 'class', 'ui'])
 </script>
 
 <template>
