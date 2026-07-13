@@ -12,8 +12,7 @@ onUnmounted(() => {
     <DialogPortal>
       <DialogOverlay :class="cn(overlayStyles)" />
       <UDialogContent
-        :with-close="false"
-        class="p-0 border-0 rounded-none gap-4 grid size-full max-w-full md:border md:rounded md:h-[90%] md:w-352 sm:max-w-full"
+        class="p-0 border-0 rounded-none gap-4 grid size-full max-w-full overflow-clip md:border md:rounded md:h-[90%] md:w-352 sm:max-w-full"
         @close-auto-focus.prevent
       >
         <TabsRoot v-model:model-value="tab" activation-mode="manual" orientation="vertical" class="flex">
@@ -21,7 +20,10 @@ onUnmounted(() => {
 
           <div class="flex flex-1 flex-col">
             <UDialogHeader
-              class="pe-2.5 ps-4 text-center border-b flex shrink-0 gap-2 h-header-height items-center justify-between sm:text-left"
+              class="pe-2.5 ps-4 border-b flex shrink-0 gap-2 h-header-height justify-center sm:text-left"
+              :ui="{
+                closeButton: 'top-2 right-2',
+              }"
             >
               <DialogTitle class="font-medium">
                 {{ SETTINGS_CATEGORY_METADATA[tab].title }}
