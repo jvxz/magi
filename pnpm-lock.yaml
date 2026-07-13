@@ -22,7 +22,7 @@ overrides:
 packageExtensionsChecksum: sha256-4HkQ+U07WCjsxgg+e0YcyiFGaSIh8kFbFfVDZfP4IJw=
 
 patchedDependencies:
-  tiptap-extension-code-block-shiki: 0a9fa4c50f22fc6344e98513d6f98f052e5243dc8cde2f84418b2784f0fca75a
+  tiptap-extension-code-block-shiki: 30062a8ae7161e082a4751a7d8411af5f94a9d61a966536f8dbcc643f7637ce8
 
 importers:
 
@@ -159,7 +159,7 @@ importers:
         version: 0.3.2
       tiptap-extension-code-block-shiki:
         specifier: ^1.2.0
-        version: 1.2.0(patch_hash=0a9fa4c50f22fc6344e98513d6f98f052e5243dc8cde2f84418b2784f0fca75a)(@tiptap/core@3.27.3(@tiptap/pm@3.27.3))(@tiptap/pm@3.27.3)(shiki@4.3.1)
+        version: 1.2.0(patch_hash=30062a8ae7161e082a4751a7d8411af5f94a9d61a966536f8dbcc643f7637ce8)(@tiptap/core@3.27.3(@tiptap/pm@3.27.3))(@tiptap/pm@3.27.3)(shiki@4.3.1)
       ufo:
         specifier: ^1.6.4
         version: 1.6.4
@@ -21891,7 +21891,7 @@ snapshots:
 
   tinyrainbow@3.1.0: {}
 
-  tiptap-extension-code-block-shiki@1.2.0(patch_hash=0a9fa4c50f22fc6344e98513d6f98f052e5243dc8cde2f84418b2784f0fca75a)(@tiptap/core@3.27.3(@tiptap/pm@3.27.3))(@tiptap/pm@3.27.3)(shiki@4.3.1):
+  tiptap-extension-code-block-shiki@1.2.0(patch_hash=30062a8ae7161e082a4751a7d8411af5f94a9d61a966536f8dbcc643f7637ce8)(@tiptap/core@3.27.3(@tiptap/pm@3.27.3))(@tiptap/pm@3.27.3)(shiki@4.3.1):
     dependencies:
       '@shikijs/langs': 4.3.1
       '@shikijs/themes': 4.3.1

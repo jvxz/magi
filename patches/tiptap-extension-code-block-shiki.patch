@@ -963,7 +963,7 @@ index 7f3453c01d9b8b5fdde2e89c7c237611337150cc..62fed7fb87cc43bc6c9c5e4231d5ca08
        ...this.parent?.(),
        defaultLanguage: null,
 -      defaultTheme: "github-dark",
-+      defaultTheme: 'github-dark',
++      defaultTheme: 'github-dark-default',
        themes: null,
 -      customThemes: null
 -    };
