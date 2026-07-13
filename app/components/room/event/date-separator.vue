@@ -6,14 +6,14 @@ defineProps<{ event: MatrixEvent }>()
 
 <template>
   <div class="mt-4.25 px-6 flex items-center">
-    <USeparator class="w-full flex-1" />
+    <USeparator class="flex-1 w-full" />
 
     <NuxtTime
       :datetime="event.getTs()"
       v-bind="PROPS__NUXT_TIME_SHORT_DATE"
-      class="shrink-0 px-2 text-muted-foreground text-sm tabular-nums"
+      class="text-sm text-muted-foreground px-2 shrink-0 tabular-nums"
     />
 
-    <USeparator class="w-full flex-1" />
+    <USeparator class="flex-1 w-full" />
   </div>
 </template>
