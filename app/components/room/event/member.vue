@@ -3,9 +3,13 @@ import type { MatrixEvent } from 'matrix-js-sdk'
 
 import { EventType } from 'matrix-js-sdk'
 
-const props = defineProps<{
+import type { RoomEventProps } from '../event.vue'
+
+export interface RoomMemberEventProps extends Pick<RoomEventProps, 'grouped'> {
   event: MatrixEvent
-}>()
+}
+
+const props = defineProps<RoomMemberEventProps>()
 
 assert(
   props.event.getType() === EventType.RoomMember,
