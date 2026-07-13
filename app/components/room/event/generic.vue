@@ -7,17 +7,20 @@ const props = defineProps<{
   event: MatrixEvent
   grouped: boolean
   room: Room
+  dateDiffed: boolean
 }>()
 
 const type = computed(() => props.event.getType())
 </script>
 
 <template>
+  <RoomEventDateSeparator v-if="dateDiffed" :event />
+
   <RoomEventMessage
     v-if="type === EventType.RoomMessage || type === EventType.RoomMessageEncrypted"
     :event
     :grouped
     :room
   />
-  <RoomEventMember v-else-if="type === EventType.RoomMember" :event />
+  <RoomEventMember v-else-if="type === EventType.RoomMember" :event :grouped />
 </template>
