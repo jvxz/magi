@@ -49,7 +49,7 @@ export function useEventGrouping(opts: Opts) {
         latestDateSeen = eventInstant
         isDateDiffed = true
       } else {
-        isDateDiffed = Temporal.PlainDate.compare(eventInstant, latestDateSeen) > 0
+        isDateDiffed = Temporal.PlainDate.compare(eventInstant.toPlainDate(), latestDateSeen.toPlainDate()) > 0
         if (isDateDiffed) latestDateSeen = eventInstant
       }
 
