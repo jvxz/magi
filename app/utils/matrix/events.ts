@@ -8,30 +8,14 @@ export type FilterMatrixEventPredicate = EventType | string | ((event: MatrixEve
 export function filterMatrixEvents(
   events: MatrixEvent[],
   predicate: FilterMatrixEventPredicate | FilterMatrixEventPredicate[],
-  inverse = false,
+  exclude = true,
 ) {
-  const filtered: MatrixEvent[] = []
-  const isPredicateArray = Array.isArray(predicate)
+  const predicates = Array.isArray(predicate) ? predicate : [predicate]
 
-  for (const event of events) {
-    let ok = false
-    if (isPredicateArray) {
-      for (const p of predicate) {
-        ok = processEvent(event, p)
-        if (!ok) break
-      }
-    } else {
-      ok = processEvent(event, predicate)
-      if (!ok) continue
-    }
-    if (ok) filtered.push(event)
-  }
+  const matchesAny = (event: MatrixEvent) =>
+    predicates.some(p => (typeof p === 'function' ? p(event) : event.getType() === p))
 
-  function processEvent(event: MatrixEvent, predicate: FilterMatrixEventPredicate) {
-    return (typeof predicate === 'function' ? predicate(event) : event.getType() === predicate) === inverse
-  }
-
-  return filtered
+  return events.filter(event => matchesAny(event) !== exclude)
 }
 
 export function isEditEvent(event: MatrixEvent) {
