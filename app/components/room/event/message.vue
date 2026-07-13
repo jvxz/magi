@@ -101,7 +101,7 @@ const contentProps: PopoverContentProps = {
       </div>
 
       <div class="flex gap-4">
-        <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }">
+        <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
           <UProfilePopoverTrigger v-if="userId" :content-props :user="userId" as-child>
             <RoomEventMessageAvatar :user="userId" :ghost="grouped" />
           </UProfilePopoverTrigger>

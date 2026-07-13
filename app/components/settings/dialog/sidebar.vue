@@ -34,7 +34,7 @@ const filteredCategories = computed(() =>
       variant="ghost"
       class="group text-foreground font-normal shrink-0 gap-3.5 h-14 w-full items-center justify-center"
     >
-      <MatrixAvatar :user="self?.userId" :size="48" class="h-full w-auto aspect-square" />
+      <MatrixAvatar :user="self?.userId" :size="48" class="h-full w-auto aspect-square shrink-0" />
       <div class="flex flex-col h-full w-full justify-evenly *:w-fit">
         <span class="font-medium">{{ self?.displayName }}</span>
         <span class="text-muted-foreground group-hover:text-foreground">
