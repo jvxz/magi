@@ -6,7 +6,10 @@ export const BATCH_SIZE = 80
 
 const roomEventsFullyLoadedSet = reactive(new Set<string>())
 
-export function useRoomEvents(room: Ref<Room>, opts?: { isBusy?: Ref<boolean> }) {
+export function useRoomEvents(
+  room: Ref<Room>,
+  opts?: { isBusy?: Ref<boolean>; filter?: FilterMatrixEventPredicate | FilterMatrixEventPredicate[] },
+) {
   const { client } = useMatrixClient()
 
   const events = shallowRef<MatrixEvent[]>([])
@@ -23,7 +26,10 @@ export function useRoomEvents(room: Ref<Room>, opts?: { isBusy?: Ref<boolean> })
   const sync = () => {
     const liveEvents = room.value.getLiveTimeline().getEvents()
 
-    events.value = [...(liveEvents ?? [])]
+    const cloned = [...(liveEvents ?? [])]
+    if (!opts?.filter) return (events.value = cloned)
+
+    events.value = filterMatrixEvents(cloned, opts.filter)
   }
 
   whenever(room, sync, { immediate: true })
