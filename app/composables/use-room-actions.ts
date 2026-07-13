@@ -75,7 +75,7 @@ export function useRoomActions(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefi
 
   const typing = useMutation({
     mutationFn: async (params: { isTyping: boolean }) => {
-      if (!room.value || !settings.value.messaging.typingEvents) return false
+      if (!room.value || (params.isTyping && !settings.value.messaging.typingEvents)) return false
 
       try {
         await client.value.sendTyping(room.value.roomId, params.isTyping, TYPING_TIMEOUT_MS)
