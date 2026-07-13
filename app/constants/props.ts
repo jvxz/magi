@@ -8,3 +8,9 @@ export const PROPS__NUXT_TIME_FULL: Omit<NuxtTimeProps, 'datetime'> = {
   weekday: 'long',
   year: 'numeric',
 }
+
+export const PROPS__NUXT_TIME_SHORT_DATE: Omit<NuxtTimeProps, 'datetime'> = {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}

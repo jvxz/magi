@@ -3,20 +3,17 @@ import type { EventType, MatrixEvent } from 'matrix-js-sdk'
 import type { PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 
-withDefaults(
-  defineProps<
-    PrimitiveProps & {
-      class?: HTMLAttributes['class']
-      event?: MatrixEvent | undefined
-      eventType: EventType | string
-      grouped?: boolean
-      room: MaybeRoomOrId | undefined
-    }
-  >(),
-  {
-    as: 'div',
-  },
-)
+export type RoomEventProps = PrimitiveProps & {
+  class?: HTMLAttributes['class']
+  event?: MatrixEvent | undefined
+  eventType: EventType | string
+  grouped?: boolean
+  room: MaybeRoomOrId | undefined
+}
+
+withDefaults(defineProps<RoomEventProps>(), {
+  as: 'div',
+})
 </script>
 
 <template>
