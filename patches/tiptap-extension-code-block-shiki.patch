@@ -1,8 +1,8 @@
 diff --git a/dist/tiptap-extension-code-block-shiki.js b/dist/tiptap-extension-code-block-shiki.js
-index 7f3453c01d9b8b5fdde2e89c7c237611337150cc..e4376215c57202f076dce085334fac187445eea2 100644
+index 7f3453c01d9b8b5fdde2e89c7c237611337150cc..62fed7fb87cc43bc6c9c5e4231d5ca082ac80397 100644
 --- a/dist/tiptap-extension-code-block-shiki.js
 +++ b/dist/tiptap-extension-code-block-shiki.js
-@@ -1,442 +1,573 @@
+@@ -1,442 +1,577 @@
 -import { Node as O, textblockTypeInputRule as M, mergeAttributes as R, findChildren as L } from "@tiptap/core";
 -import { Plugin as z, PluginKey as I, TextSelection as $, Selection as j } from "@tiptap/pm/state";
 -import { DecorationSet as F, Decoration as P } from "@tiptap/pm/view";
@@ -97,8 +97,12 @@ index 7f3453c01d9b8b5fdde2e89c7c237611337150cc..e4376215c57202f076dce085334fac18
 +
 +const W = Object.fromEntries(CURATED_LANGS.flat().map(g => [g.name, 1]))
 +const E = { 'github-dark-default': 1 }
-+const K = () =>
-+  createHighlighterCore({ themes: CURATED_THEMES, langs: CURATED_LANGS, engine: createJavaScriptRegexEngine() })
++const K = ({ themes = [], langs = [] } = {}) =>
++  createHighlighterCore({
++    themes: [...CURATED_THEMES, ...themes.filter(t => typeof t === 'object')],
++    langs: [...CURATED_LANGS, ...langs.filter(l => typeof l === 'object')],
++    engine: createJavaScriptRegexEngine(),
++  })
 +
 +var A = 4,
 +  U = /^```([a-z]+)?[\s\n]$/,
@@ -954,7 +958,7 @@ index 7f3453c01d9b8b5fdde2e89c7c237611337150cc..e4376215c57202f076dce085334fac18
  }
  /* v8 ignore start -- @preserve */
  /* v8 ignore stop -- @preserve */
-@@ -445,42 +576,39 @@ const re = Z.extend({
+@@ -445,42 +580,39 @@ const re = Z.extend({
      return {
        ...this.parent?.(),
        defaultLanguage: null,
