@@ -3,13 +3,32 @@ import type { RoomMemberEventContent } from 'matrix-js-sdk/lib/types'
 
 import { EventType, KnownMembership, MatrixEvent, RelationType } from 'matrix-js-sdk'
 
-type Predicate = EventType | string | ((event: MatrixEvent) => boolean)
+export type FilterMatrixEventPredicate = EventType | string | ((event: MatrixEvent) => boolean)
 
-export function filterMatrixEvents(events: MatrixEvent[], predicate: Predicate) {
+export function filterMatrixEvents(
+  events: MatrixEvent[],
+  predicate: FilterMatrixEventPredicate | FilterMatrixEventPredicate[],
+  inverse = false,
+) {
   const filtered: MatrixEvent[] = []
+  const isPredicateArray = Array.isArray(predicate)
 
   for (const event of events) {
-    if (typeof predicate === 'function' ? predicate(event) : event.getType() === predicate) filtered.push(event)
+    let ok = false
+    if (isPredicateArray) {
+      for (const p of predicate) {
+        ok = processEvent(event, p)
+        if (!ok) break
+      }
+    } else {
+      ok = processEvent(event, predicate)
+      if (!ok) continue
+    }
+    if (ok) filtered.push(event)
+  }
+
+  function processEvent(event: MatrixEvent, predicate: FilterMatrixEventPredicate) {
+    return (typeof predicate === 'function' ? predicate(event) : event.getType() === predicate) === inverse
   }
 
   return filtered
@@ -106,6 +125,8 @@ export function isUserReacting(
 
   return userReactionEvent
 }
+
+export const isBadEncrypted = (event: MatrixEvent) => event.getContent().msgtype === 'm.bad.encrypted'
 
 export function canDecryptEvent(event: MatrixEvent | Partial<IEvent> | undefined) {
   if (!event) return false
