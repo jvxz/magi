@@ -2,7 +2,7 @@
 import type { Room } from 'matrix-js-sdk'
 
 import { usePaginatedScroll } from '@jamii/vue-paginated-scroll'
-import { Direction } from 'matrix-js-sdk'
+import { Direction, EventType } from 'matrix-js-sdk'
 
 const props = defineProps<{
   room: Room
@@ -12,6 +12,13 @@ const containerRef = useTemplateRef('container')
 const isPaginationBusy = ref(false)
 
 const { events, getEventVersion, isFullyLoaded, scrollEventsAsync } = useRoomEvents(toRef(props, 'room'), {
+  filter: [
+    EventType.Reaction,
+    EventType.RoomRedaction,
+    EventType.RoomPowerLevels,
+    e => isBadEncrypted(e),
+    e => isEditEvent(e),
+  ],
   isBusy: isPaginationBusy,
 })
 
@@ -67,7 +74,12 @@ const groupedEvents = useEventGrouping({
             :data-item-id="event.getId()"
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
-            <RoomEventGeneric :event :grouped="groupedEvents.grouped[idx] !== false" :room />
+            <RoomEventGeneric
+              :event
+              :grouped="groupedEvents.grouped[idx] !== false"
+              :date-diffed="!!groupedEvents.dateDiffed[idx]"
+              :room
+            />
           </div>
           <div data-ignore class="h-12" />
         </div>
