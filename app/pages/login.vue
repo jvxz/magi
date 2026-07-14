@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { required } from '@regle/rules'
+import { pipe, required } from '@regle/rules'
 
 const homeservers = ['matrix.org', 'matrix.4d2.org', 'matrix.oblak.be']
+
+const validHomeserver = getValidHomeserverRule()
 
 const { r$ } = useRegle(
   {
@@ -10,28 +12,12 @@ const { r$ } = useRegle(
     username: '',
   },
   {
-    homeserver: { required },
+    homeserver: pipe([required, validHomeserver], { debounce: 500 }),
     password: { required },
     username: { noSpaces, required },
   },
 )
-
-const runCheck = useDebounceFn(
-  async () => (r$.$value.homeserver?.trim() ? validateHomeserver(r$.$value.homeserver.trim(), true) : false),
-  300,
-)
-const {
-  data: isHomeserverValid,
-  error: homeserverError,
-  execute,
-  pending,
-} = useAsyncData(runCheck, {
-  default: () => true,
-  immediate: true,
-  lazy: false,
-  server: false,
-  timeout: 10000,
-})
+useHomeserverConfig(toRef(r$.homeserver, '$value'))
 
 const { login } = useAuth()
 
@@ -48,14 +34,6 @@ async function handleLogin() {
 
   return navigateTo('/app', { external: true })
 }
-
-watch(
-  () => r$.$value.homeserver,
-  () => {
-    homeserverError.value = undefined
-    execute()
-  },
-)
 </script>
 
 <template>
@@ -70,16 +48,16 @@ watch(
           <FormPrimitive
             label="Homeserver"
             required
-            :is-loading="pending"
+            :is-loading="r$.$pending"
             :ui="{ container: 'text-base w-full' }"
-            :error="(homeserverError ? upperFirst(homeserverError.message) : undefined) ?? r$.homeserver.$errors"
+            :error="r$.homeserver.$errors"
           >
             <UAutocompleteRoot v-model:model-value="r$.$value.homeserver" class="group" reset-search-term-on-blur>
               <UAutocompleteAnchor
                 class="has-focus-visible:border-border-strong"
                 :class="cn(inputStyles(), 'bg-surface group-data-[error]:border-danger')"
               >
-                <UAutocompleteInput :show-icon="false" data-testid="homeserver-input" class="shrink" />
+                <UAutocompleteInput :show-icon="false" data-testid="homeserver-input" class="shrink cursor-text" />
                 <UAutocompleteTrigger class="-mr-1.5">
                   <Icon name="tabler:chevron-down" class="text-muted-foreground size-3.25!" />
                 </UAutocompleteTrigger>
@@ -130,7 +108,7 @@ watch(
             />
             <UButton
               :is-loading="login.isPending.value"
-              :disabled="!isHomeserverValid || r$.$invalid"
+              :disabled="r$.$invalid"
               class="w-full"
               variant="default"
               type="submit"
