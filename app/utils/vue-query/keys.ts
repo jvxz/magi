@@ -8,6 +8,8 @@ const defineKey = <const T extends readonly unknown[]>(...parts: T): T => parts
  * query key factory
  */
 export const $qk = {
+  homeserverConfig: (homeserverUrl: MaybeRefOrGetter<string | undefined>) =>
+    defineKey('homeserverConfig', toRef(homeserverUrl)),
   mutualRooms: (userId: MaybeRefOrGetter<string | undefined>) => defineKey('mutualRooms', toRef(userId)),
   publicRooms: (server: MaybeRefOrGetter<string>, query: MaybeRefOrGetter<string | undefined>) =>
     defineKey('publicRooms', toRef(server), toRef(query)),
