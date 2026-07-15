@@ -35,11 +35,11 @@ const handleClick = async () => {
     <UTooltipTrigger as-child>
       <span tabindex="0" class="w-full">
         <UButton
-          @click="handleClick"
           :disabled="!ssoLoginFlow || !ssoLoginUrl || disabled"
           class="w-full"
           variant="soft"
           size="lg"
+          @click="handleClick"
         >
           Log in via SSO <Icon name="tabler:key" />
           <!-- <NuxtLink :to="ssoLoginUrl" external> </NuxtLink> -->
