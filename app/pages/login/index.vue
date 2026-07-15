@@ -1,6 +1,32 @@
 <script lang="ts" setup>
 import { pipe, required } from '@regle/rules'
 
+const route = useRoute()
+const router = useRouter()
+const { notify } = useNotifications()
+onMounted(() => {
+  const hasErrQuery = hasQuery(route, ['errCode', 'errMsg'])
+  if (!hasErrQuery) return
+
+  notify(
+    'error',
+    {
+      payload: {
+        description: decodeURIComponent(route.query.errMsg),
+        raw: decodeURIComponent(route.query.errMsg),
+        title: decodeURIComponent(route.query.errCode),
+      },
+    },
+    {
+      persist: false,
+      variant: 'danger',
+    },
+  )
+
+  // clear query after noti
+  router.replace({ path: route.path, query: {} })
+})
+
 const homeservers = ['matrix.org', 'matrix.4d2.org', 'matrix.oblak.be']
 
 const validHomeserver = getValidHomeserverRule()
@@ -17,12 +43,13 @@ const { r$ } = useRegle(
     username: { noSpaces, required },
   },
 )
-useHomeserverConfig(toRef(r$.homeserver, '$value'))
+const homeserverRef = toRef(r$.homeserver, '$value')
+
+useHomeserverConfig(homeserverRef)
 
 const { login } = useAuth()
-
 async function handleLogin() {
-  await login.mutateAsync({
+  await login.executeImmediate({
     baseUrl: r$.$value.homeserver,
     identifier: {
       type: 'm.id.user',
@@ -80,7 +107,7 @@ async function handleLogin() {
             <template v-else>
               <USeparator class="bg-danger shrink" />
               <p class="text-sm text-danger text-center shrink-0 h-1lh -translate-y-0.5">
-                {{ login.error.value && login.error.value?.message }}
+                {{ login.error.value && login.error.value }}
               </p>
               <USeparator class="bg-danger shrink" />
             </template>
@@ -107,16 +134,22 @@ async function handleLogin() {
               @keydown.enter="handleLogin"
             />
             <UButton
-              :is-loading="login.isPending.value"
+              :is-loading="login.isLoading.value"
               :disabled="r$.$invalid"
               class="w-full"
               variant="default"
               type="submit"
               size="lg"
             >
-              <p>Log In</p>
+              <p>Log in</p>
             </UButton>
           </form>
+
+          <LoginSsoButton
+            :disabled="r$.homeserver.$invalid"
+            :tooltip-disabled="r$.$pending"
+            :homeserver="homeserverRef"
+          />
         </div>
       </div>
     </UCard>
