@@ -3,7 +3,7 @@ const open = ref(false)
 const { logout } = useAuth()
 
 function handleOpen(value: boolean) {
-  if (logout.isPending.value) return
+  if (logout.isLoading.value) return
 
   open.value = value
 }
@@ -21,9 +21,9 @@ function handleOpen(value: boolean) {
       </UAlertDialogHeader>
       <UAlertDialogFooter>
         <UAlertDialogCancel>Cancel</UAlertDialogCancel>
-        <UButton variant="danger" :is-loading="logout.isPending.value" @click.prevent="logout.mutate()"
-          ><span>Log out</span></UButton
-        >
+        <UButton variant="danger" :is-loading="logout.isLoading.value" @click.prevent="logout.executeImmediate()">
+          <span>Log out</span>
+        </UButton>
       </UAlertDialogFooter>
     </UAlertDialogContent>
   </UAlertDialogRoot>

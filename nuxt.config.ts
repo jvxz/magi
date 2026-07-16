@@ -166,7 +166,7 @@ export default defineNuxtConfig({
     '/app': { appMiddleware: 'home-redirect' },
     '/app/**': { ssr: false },
     '/app/me': { appMiddleware: 'home-redirect' },
-    '/login': { ssr: false },
+    '/login/**': { ssr: false },
     '/playground': { appLayout: false },
   },
 

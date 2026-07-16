@@ -31,12 +31,19 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 <template>
   <div
     data-slot="autocomplete-input-wrapper"
-    :class="cn(staticBase(), interactiveBase({ size: 'default' }), 'flex items-center gap-2 px-0 w-full', props.class)"
+    :class="
+      cn(
+        staticBase(),
+        interactiveBase({ size: 'default' }),
+        'flex items-center border-none gap-2 px-0 w-full',
+        props.class,
+      )
+    "
   >
     <Icon v-if="props.showIcon" name="tabler:search" class="opacity-50 shrink-0 size-4" />
     <AutocompleteInput
       data-slot="autocomplete-input"
-      :class="cn('flex-1 outline-hidden ', props.class)"
+      :class="cn('flex-1 outline-hidden border-none', props.class)"
       v-bind="{ ...$attrs, ...forwarded }"
     >
       <slot />

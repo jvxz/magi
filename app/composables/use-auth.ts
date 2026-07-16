@@ -1,4 +1,5 @@
-import type { ICreateClientOpts, LoginRequest as MatrixLoginRequest } from 'matrix-js-sdk'
+import type { ICreateClientOpts, LoginResponse, LoginRequest as MatrixLoginRequest } from 'matrix-js-sdk'
+import type { MatrixError } from 'matrix-js-sdk'
 
 import { createClient } from 'matrix-js-sdk'
 
@@ -7,14 +8,18 @@ export type AuthPayload = Pick<
   'baseUrl' | 'deviceId' | 'refreshToken' | 'userId' | 'accessToken'
 > & { expiresAt?: number }
 
-interface PasswordLoginRequest extends MatrixLoginRequest {
+interface BaseLoginRequest extends MatrixLoginRequest {
+  baseUrl: string
+}
+
+interface PasswordLoginRequest extends BaseLoginRequest {
   type: 'm.login.password'
   identifier: MatrixLoginRequest['identifier']
   token?: never
   password: string
 }
 
-interface TokenLoginRequest extends MatrixLoginRequest {
+interface TokenLoginRequest extends BaseLoginRequest {
   type: 'm.login.token'
   identifier?: never
   token: string
@@ -24,59 +29,48 @@ interface TokenLoginRequest extends MatrixLoginRequest {
 export type LoginRequest = Prettify<PasswordLoginRequest | TokenLoginRequest>
 
 export function useAuth() {
-  const { client, initAuthedClient } = useMatrixClient()
-  const status = useMatrixStatus()
+  const { client } = useMatrixClient()
 
-  const login = useMutation({
-    mutationFn: async (req: LoginRequest) => {
-      try {
-        const homeserver = await resolveBaseUrl(withHttps(req.baseUrl))
+  const login = useAsyncState(
+    async (req: LoginRequest) => {
+      const homeserver =
+        req.type === 'm.login.password' ? await resolveHomeserverBaseUrl(withHttps(req.baseUrl)) : req.baseUrl
 
-        const tempClient = createClient({
-          baseUrl: homeserver,
-        })
+      const tempClient = createClient({
+        baseUrl: homeserver,
+      })
 
-        const loginRes = await tempClient.loginRequest({
+      const [loginError, loginRes] = await attemptAsync<LoginResponse, MatrixError>(() =>
+        tempClient.loginRequest({
           ...req,
           refresh_token: true,
-        })
+        }),
+      )
 
-        const authPayload: AuthPayload = {
-          accessToken: loginRes.access_token,
-          baseUrl: homeserver,
-          deviceId: loginRes.device_id,
-          expiresAt: loginRes.expires_in_ms ? Date.now() + loginRes.expires_in_ms : undefined,
-          refreshToken: loginRes.refresh_token,
-          userId: loginRes.user_id,
-        }
-        await idb.setItem<AuthPayload>('auth', authPayload)
-
-        const authedClient = await initAuthedClient(false)
-        status.value.isAuthed = true
-
-        return authedClient
-      } catch (error) {
-        sendSessionToSw()
-        throw new Error(parseError(error, { fallbackMessage: 'An unexpected error occurred' }).message)
+      if (loginError) {
+        return loginError
       }
-    },
-    mutationKey: $mk.clientLogin(),
-  })
 
-  const logout = useMutation({
-    mutationFn: async () => logoutClient(client.value),
-    mutationKey: $mk.clientLogout(),
-  })
+      const authPayload: AuthPayload = {
+        accessToken: loginRes.access_token,
+        baseUrl: homeserver,
+        deviceId: loginRes.device_id,
+        expiresAt: loginRes.expires_in_ms ? Date.now() + loginRes.expires_in_ms : undefined,
+        refreshToken: loginRes.refresh_token,
+        userId: loginRes.user_id,
+      }
+      await idb.setItem<AuthPayload>('auth', authPayload)
+
+      return authPayload
+    },
+    undefined,
+    { immediate: false, throwError: true },
+  )
+
+  const logout = useAsyncState(async () => logoutClient(client.value), undefined, { immediate: false })
 
   return {
     login,
     logout,
   }
-}
-
-async function sendSessionToSw(baseUrl?: string, accessToken?: string) {
-  await messageSw('session', {
-    accessToken,
-    baseUrl,
-  })
 }

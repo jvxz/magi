@@ -1,0 +1,49 @@
+<script lang="ts" setup>
+import { createClient } from 'matrix-js-sdk'
+
+import { injectLoginPageEditableStateContext } from '~/pages/login/index.vue'
+
+const { editableInput: homeserverUrl, isLoggingIn, isSSONavigating } = injectLoginPageEditableStateContext()
+
+const router = useRouter()
+const requestUrl = useRequestURL()
+const redirectUrl = computed(() => new URL(router.resolve('/login/sso').href, requestUrl.origin).href)
+const resolvedHomeserverBaseUrl = useResolveHomeserverBaseUrl(homeserverUrl)
+
+const { data: ssoLoginUrl } = useQuery({
+  queryFn: () => {
+    if (!resolvedHomeserverBaseUrl.value) return
+    const client = createClient({ baseUrl: resolvedHomeserverBaseUrl.value })
+    return client.getSsoLoginUrl(redirectUrl.value)
+  },
+  queryKey: $qk.homeserverSSOUrl(homeserverUrl),
+  watch: [redirectUrl],
+})
+
+const handleClick = async () => {
+  if (isLoggingIn.value) return
+
+  assert(resolvedHomeserverBaseUrl.value, 'no resolved homeserver base URL when attempting to login via SSO')
+  try {
+    isSSONavigating.value = true
+    await idb.set(SSO_BASE_URL_KEY, resolvedHomeserverBaseUrl.value)
+    return navigateTo(ssoLoginUrl.value, { external: true })
+  } catch {
+    isSSONavigating.value = false
+  }
+}
+</script>
+
+<template>
+  <UButton
+    :disabled="isLoggingIn"
+    :is-loading="isSSONavigating"
+    variant="soft"
+    size="lg"
+    class="w-full"
+    @click="handleClick"
+  >
+    <span>Continue with SSO</span>
+    <Icon name="tabler:key" class="size-4" />
+  </UButton>
+</template>
