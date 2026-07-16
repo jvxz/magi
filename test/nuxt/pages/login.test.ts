@@ -1,7 +1,7 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { describe, expect, it, vi } from 'vitest'
 
-import LoginPage from '~/pages/login.vue'
+import LoginPage from '~/pages/login/index.vue'
 
 const mountPage = async () => mountSuspended(LoginPage)
 
