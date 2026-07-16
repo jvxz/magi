@@ -4,8 +4,6 @@ import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 import { JoinRule } from 'matrix-js-sdk'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 
-import { $Error } from '#shared/utils/$error'
-
 import type { MaybeRoomOrId, MaybeUserOrId } from './types'
 
 import { mxcToHttps } from './mxc-to-https'
@@ -232,7 +230,7 @@ export async function getMutualRooms(client: MatrixClient, otherUser: MaybeUserO
     const otherUserId = resolveUserId(otherUser)
     return client._unstable_getSharedRooms(otherUserId)
   } catch {
-    if (throwOnError) throw new $Error('Failed to get mutual rooms')
+    if (throwOnError) throw new $Error({ message: 'Failed to get mutual rooms', title: 'Unexpected error' })
   }
 }
 

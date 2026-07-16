@@ -124,7 +124,7 @@ export function useRoomEvents(
     if (prevLen === newLen) {
       if (!canLoadMore) return false
 
-      throw new $Error('previous event length equals new event length')
+      throw new $Error({ message: 'previous event length equals new event length', title: 'Unexpected error' })
     }
 
     return canLoadMore

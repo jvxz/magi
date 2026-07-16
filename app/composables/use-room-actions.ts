@@ -147,7 +147,7 @@ function waitForEvent(room: Room, event: MatrixEvent) {
         resolve(updatedEvent)
       } else if (updatedEvent.status === EventStatus.NOT_SENT || updatedEvent.status === EventStatus.CANCELLED) {
         room.off(RoomEvent.LocalEchoUpdated, onUpdate)
-        reject(new $Error('Event failed to send'))
+        reject(new $Error({ message: 'Event failed to send', title: 'Event failure' }))
       }
     }
 
