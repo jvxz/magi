@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { injectLoginPageEditableStateContext } from '~/pages/login/new.vue'
+import { injectLoginPageEditableStateContext } from '~/pages/login/index.vue'
 
 const { editableInput, editableState, error, isPending, refreshHook } = injectLoginPageEditableStateContext()
 </script>

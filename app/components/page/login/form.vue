@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { PageLoginFlowPw, PageLoginFlowSso } from '#components'
-import { injectLoginPageEditableStateContext } from '~/pages/login/new.vue'
+import { injectLoginPageEditableStateContext } from '~/pages/login/index.vue'
 
 const {
   editableInput: homeserverInput,

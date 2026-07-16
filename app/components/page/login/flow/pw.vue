@@ -2,7 +2,7 @@
 import { required } from '@regle/rules'
 import { MatrixError } from 'matrix-js-sdk'
 
-import { injectLoginPageEditableStateContext } from '~/pages/login/new.vue'
+import { injectLoginPageEditableStateContext } from '~/pages/login/index.vue'
 
 const { editableInput: homeserverUrl, error, isLoggingIn, isSSONavigating } = injectLoginPageEditableStateContext()
 

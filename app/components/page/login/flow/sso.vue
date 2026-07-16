@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { createClient } from 'matrix-js-sdk'
 
-import { injectLoginPageEditableStateContext } from '~/pages/login/new.vue'
+import { injectLoginPageEditableStateContext } from '~/pages/login/index.vue'
 
 const { editableInput: homeserverUrl, isLoggingIn, isSSONavigating } = injectLoginPageEditableStateContext()
 
