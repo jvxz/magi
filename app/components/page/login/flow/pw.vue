@@ -4,7 +4,7 @@ import { MatrixError } from 'matrix-js-sdk'
 
 import { injectLoginPageEditableStateContext } from '~/pages/login/new.vue'
 
-const { editableInput: homeserverUrl, error, isSSONavigating, isLoggingIn } = injectLoginPageEditableStateContext()
+const { editableInput: homeserverUrl, error, isLoggingIn, isSSONavigating } = injectLoginPageEditableStateContext()
 
 const { r$ } = useRegle(
   {
@@ -54,28 +54,28 @@ async function handleLogin() {
 <template>
   <form class="contents" @submit.prevent>
     <FormInput
-      label="Username"
-      @keydown.enter="handleLogin"
       v-model:model-value="r$.username.$value"
+      label="Username"
       :error="r$.username.$errors"
       required
+      @keydown.enter="handleLogin"
     />
     <FormInput
+      v-model:model-value="r$.password.$value"
       label="Password"
-      @keydown.enter="handleLogin"
       required
       type="password"
-      v-model:model-value="r$.password.$value"
       :error="r$.password.$errors"
+      @keydown.enter="handleLogin"
     />
 
     <UButton
-      @click="handleLogin"
       :disabled="!canLogin"
       :is-loading="login.isLoading.value"
       variant="default"
       size="lg"
-      class="w-full mt-1"
+      class="mt-1 w-full"
+      @click="handleLogin"
     >
       <span>Log in</span>
     </UButton>

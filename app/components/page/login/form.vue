@@ -5,19 +5,19 @@ import { injectLoginPageEditableStateContext } from '~/pages/login/new.vue'
 const {
   editableInput: homeserverInput,
   editableState,
+  error: contextError,
   isPending,
   refreshHook,
-  error: contextError,
 } = injectLoginPageEditableStateContext()
 
 const {
   data: loginFlows,
+  dataUpdatedAt,
+  error,
+  isError,
   isFetching,
   isSuccess,
   refetch,
-  isError,
-  error,
-  dataUpdatedAt,
 } = useHomeserverLoginFlows(homeserverInput)
 const parsedError = useParseError(error)
 
@@ -42,9 +42,9 @@ watch(dataUpdatedAt, () => (contextError.value = undefined))
   >
     <div v-if="isSuccess && !isFetching" class="flex flex-col gap-3">
       <template v-for="(flow, i) in flows" :key="i">
-        <div v-if="i > 0" class="flex items-center gap-3 my-1">
+        <div v-if="i > 0" class="my-1 flex gap-3 items-center">
           <USeparator class="shrink" />
-          <span class="shrink-0 text-xs text-muted-foreground">or</span>
+          <span class="text-xs text-muted-foreground shrink-0">or</span>
           <USeparator class="shrink" />
         </div>
 
@@ -61,7 +61,7 @@ watch(dataUpdatedAt, () => (contextError.value = undefined))
       </UAlertContent>
     </UAlertRoot>
 
-    <div v-else-if="isFetching" class="text-sm flex items-center gap-2 mx-auto w-fit">
+    <div v-else-if="isFetching" class="text-sm mx-auto flex gap-2 w-fit items-center">
       <USpinner class="size-1lh" />
       <span class="font-medium">Fetching login methods...</span>
     </div>

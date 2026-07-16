@@ -42,8 +42,8 @@ provideLoginPageEditableStateContext({
 </script>
 
 <template>
-  <div class="flex flex-col p-16 w-full">
-    <div class="flex flex-col gap-6 w-full max-w-sm">
+  <div class="p-16 flex flex-col w-full">
+    <div class="flex flex-col gap-6 max-w-sm w-full">
       <PageLoginHeading />
       <PageLoginForm />
     </div>

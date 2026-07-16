@@ -15,7 +15,7 @@ export class $Error extends Error {
   code?: ErrorCode | (string & {})
   title?: string
 
-  constructor({ message, code, title }: $ErrorOptions) {
+  constructor({ code, message, title }: $ErrorOptions) {
     super(message)
     this.code = code
     this.title = title

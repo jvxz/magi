@@ -16,7 +16,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>
-  <EditableRoot v-bind="forwarded" :class="props.class" data-slot="editable-root" v-slot="props">
+  <EditableRoot v-slot="props" v-bind="forwarded" :class="props.class" data-slot="editable-root">
     <slot v-bind="props" />
   </EditableRoot>
 </template>

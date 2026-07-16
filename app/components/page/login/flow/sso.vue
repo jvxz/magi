@@ -3,7 +3,7 @@ import { createClient } from 'matrix-js-sdk'
 
 import { injectLoginPageEditableStateContext } from '~/pages/login/new.vue'
 
-const { editableInput: homeserverUrl, isSSONavigating, isLoggingIn } = injectLoginPageEditableStateContext()
+const { editableInput: homeserverUrl, isLoggingIn, isSSONavigating } = injectLoginPageEditableStateContext()
 
 const router = useRouter()
 const requestUrl = useRequestURL()
@@ -38,10 +38,10 @@ const handleClick = async () => {
   <UButton
     :disabled="isLoggingIn"
     :is-loading="isSSONavigating"
-    @click="handleClick"
     variant="soft"
     size="lg"
     class="w-full"
+    @click="handleClick"
   >
     <span>Continue with SSO</span>
     <Icon name="tabler:key" class="size-4" />

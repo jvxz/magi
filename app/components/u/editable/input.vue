@@ -17,7 +17,7 @@ const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <span v-if="leadingIcon && isEditing" class="px-1 size-fit flex items-center justify-center shrink-0">
+  <span v-if="leadingIcon && isEditing" class="px-1 flex shrink-0 size-fit items-center justify-center">
     <Icon :name="leadingIcon" />
   </span>
 
