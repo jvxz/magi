@@ -63,7 +63,7 @@
     "matrix-js-sdk": "^41.9.0",
     "mime": "^4.1.0",
     "motion-v": "^2.3.0",
-    "nuxt": "4.4.8",
+    "nuxt": "4.5.0",
     "nuxt-security": "2.6.0",
     "nuxt-tiptap-editor": "3.4.0",
     "nuxt-twemoji": "4.0.4",
