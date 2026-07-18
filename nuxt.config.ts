@@ -5,11 +5,6 @@ import { DEFAULT_COLOR_MODE } from './shared/constants/color-mode'
 import { appMeta } from './shared/utils/constants'
 
 export default defineNuxtConfig({
-  // nuxt-schema-org currently does not support unhead v3
-  schemaOrg: {
-    enabled: false,
-  },
-
   app: {
     head: {
       htmlAttrs: {
@@ -179,6 +174,11 @@ export default defineNuxtConfig({
     public: {
       showLoadTime: false,
     },
+  },
+
+  // nuxt-schema-org currently does not support unhead v3
+  schemaOrg: {
+    enabled: false,
   },
 
   security: {
