@@ -5,6 +5,13 @@ import { DEFAULT_COLOR_MODE } from './shared/constants/color-mode'
 import { appMeta } from './shared/utils/constants'
 
 export default defineNuxtConfig({
+  $test: {
+    schemaOrg: {
+      // unhead v3 temporarily unsupported
+      enabled: false,
+    },
+  },
+
   app: {
     head: {
       htmlAttrs: {
