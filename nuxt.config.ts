@@ -5,11 +5,9 @@ import { DEFAULT_COLOR_MODE } from './shared/constants/color-mode'
 import { appMeta } from './shared/utils/constants'
 
 export default defineNuxtConfig({
-  $test: {
-    schemaOrg: {
-      // unhead v3 temporarily unsupported
-      enabled: false,
-    },
+  // nuxt-schema-org currently does not support unhead v3
+  schemaOrg: {
+    enabled: false,
   },
 
   app: {
