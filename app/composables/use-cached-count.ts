@@ -1,3 +1,5 @@
+import { toRef } from '@vueuse/core'
+
 export function useCachedCount(
   key: MaybeRefOrGetter<string>,
   count: MaybeRefOrGetter<number | undefined>,
@@ -5,11 +7,11 @@ export function useCachedCount(
 ) {
   const keyRef = toRef(key)
   const countRef = toRef(count)
-  const cached = useScopedLocalStorage<number | undefined>(() => `count:${keyRef.value}`, undefined)
+  const cached = useLocalStorage<number | undefined>(() => `cacheCount:${keyRef.value}`, undefined)
 
   watchImmediate(countRef, value => {
-    if (value != null) cached.value = value
+    if (isDefined(value)) cached.value = value
   })
 
-  return computed(() => countRef.value ?? cached.value ?? fallback)
+  return computed(() => Number(countRef.value ?? cached.value ?? fallback))
 }
