@@ -10,12 +10,12 @@ const { conversationRooms, isLoading, isSuccess, subspaces, suggestedRooms } = u
 
 const conversationCachedCount = useCachedCount(
   () => `${currentSpaceId.value}-conversations`,
-  () => (isSuccess.value ? conversationRooms.value.size : undefined),
+  () => (isSuccess.value ? Math.min(50, conversationRooms.value.size) : undefined),
   6,
 )
 const subspaceCachedCount = useCachedCount(
   () => `${currentSpaceId.value}-subspaces`,
-  () => (isSuccess.value ? subspaces.value.size : undefined),
+  () => (isSuccess.value ? Math.min(24, subspaces.value.size) : undefined),
   4,
 )
 
