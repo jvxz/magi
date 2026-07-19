@@ -1,4 +1,11 @@
-export const SETTINGS_CATEGORIES = ['appearance', 'accessibility', 'advanced', 'messaging'] as const
+export const SETTINGS_CATEGORIES = [
+  'general',
+  'appearance',
+  'messaging',
+  'devices',
+  'accessibility',
+  'advanced',
+] as const
 export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
 
 export interface Settings {
@@ -14,6 +21,8 @@ export interface Settings {
   messaging: {
     typingEvents: boolean
   }
+  devices: object
+  general: object
 }
 
 export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
@@ -26,6 +35,8 @@ export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
   appearance: {
     font: 'System',
   },
+  devices: {},
+  general: {},
   messaging: {
     typingEvents: true,
   },
@@ -46,6 +57,16 @@ export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
     icon: 'tabler:palette',
     key: 'appearance',
     title: 'Appearance',
+  },
+  devices: {
+    icon: 'tabler:device-desktop',
+    key: 'devices',
+    title: 'Devices',
+  },
+  general: {
+    icon: 'tabler:settings',
+    key: 'general',
+    title: 'General',
   },
   messaging: {
     icon: 'tabler:message',
@@ -75,6 +96,8 @@ export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
       title: 'Font',
     },
   },
+  devices: {},
+  general: {},
   messaging: {
     typingEvents: {
       description: 'Share your typing status with the current room',

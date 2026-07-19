@@ -22,9 +22,10 @@ function categorySearchText<K extends SettingsCategory>(categoryKey: K): string 
 }
 
 const filteredCategories = computed(() =>
-  objectValues(SETTINGS_CATEGORY_METADATA).filter(cat =>
-    contains(categorySearchText(cat.key), searchQuery.value.trim()),
-  ),
+  SETTINGS_CATEGORIES.filter(key => {
+    const cat = SETTINGS_CATEGORY_METADATA[key]
+    return contains(categorySearchText(cat.key), searchQuery.value.trim())
+  }).map(k => SETTINGS_CATEGORY_METADATA[k]),
 )
 </script>
 
