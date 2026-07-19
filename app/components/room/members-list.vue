@@ -25,7 +25,7 @@ watch(
   <div class="border-l border-border shrink-0 h-full w-72">
     <VList
       v-if="membersGrouped && isLoaded"
-      :key="room?.roomId"
+      :key="room.roomId"
       v-slot="{ item }"
       ref="list"
       :item-size="40"
