@@ -50,6 +50,10 @@ export default defineNuxtConfig({
     },
   },
 
+  future: {
+    compatibilityVersion: 5,
+  },
+
   hooks: {
     'pages:extend': pages => {
       function requireAuth(pages: NuxtPage[]) {
