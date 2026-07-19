@@ -6,7 +6,7 @@ definePageMeta({
 
 const currentSpaceId = useCurrentSpaceId()
 const currentSpace = useCurrentSpace()
-const { conversationRooms, isLoading, subspaces, suggestedRooms, isSuccess } = useSpaceHierarchy(currentSpaceId, true)
+const { conversationRooms, isLoading, isSuccess, subspaces, suggestedRooms } = useSpaceHierarchy(currentSpaceId, true)
 
 const conversationCachedCount = useCachedCount(
   () => `${currentSpaceId.value}-conversations`,

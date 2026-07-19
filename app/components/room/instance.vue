@@ -18,7 +18,7 @@ const isJoined = useRoomIsJoined(room)
         <RoomInput />
       </div>
 
-      <RoomMembersList :room v-if="withMembersList" />
+      <RoomMembersList v-if="withMembersList" :room />
       <RoomEventReactionsViewer />
     </div>
 
