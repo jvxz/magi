@@ -38,27 +38,3 @@ export function setTooltipOpenAttr(el: Element, action: 'add' | 'remove') {
   if (action === 'add') el.setAttribute(TOOLTIP_OPEN_ATTR, '')
   else el.removeAttribute(TOOLTIP_OPEN_ATTR)
 }
-
-export const useTooltipRegionZ = () => {
-  const open = shallowRef(false)
-  const referenceElement = shallowRef<MaybeElement | VirtualElement>()
-  const datetime = shallowRef<number>()
-
-  function show(trigger: HTMLElement, next: number) {
-    referenceElement.value = createFrozenReference(trigger)
-    datetime.value = next
-    open.value = true
-  }
-
-  function hide() {
-    open.value = false
-  }
-
-  return {
-    datetime,
-    hide,
-    open,
-    referenceElement,
-    show,
-  }
-}
