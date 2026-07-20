@@ -27,8 +27,6 @@ const forwarded = useForwardPropsEmits(delegated, emits)
   <PopoverPortal>
     <PopoverContent
       v-bind="forwarded"
-      @open-auto-focus.prevent
-      @close-auto-focus.prevent
       data-slot="tooltip-region-content"
       :reference="reference ?? undefined"
       :class="
@@ -38,6 +36,8 @@ const forwarded = useForwardPropsEmits(delegated, emits)
           props.class,
         )
       "
+      @open-auto-focus.prevent
+      @close-auto-focus.prevent
     >
       <slot :payload :close />
 

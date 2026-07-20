@@ -8,7 +8,7 @@ const props = withDefaults(
   { as: 'div' },
 )
 
-const { close, currentTarget, contentId, disableClosingTrigger, disabled, openAt } = useTooltipRegion(props.region)
+const { close, contentId, currentTarget, disableClosingTrigger, disabled, openAt } = useTooltipRegion(props.region)
 const { currentElement, forwardRef } = useForwardExpose()
 
 const isOpen = computed(() => !!currentElement.value && currentElement.value === currentTarget.value)
