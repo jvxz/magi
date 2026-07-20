@@ -32,7 +32,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
       :class="
         cn(
           staticBase({ variant: 'default' }),
-          'tooltip-content will-change-transform will-change-opacity z-tooltip p-0 bg-surface-raised px-3 py-1.5 text-sm text-balance font-medium',
+          'tooltip-content will-change-[transform,opacity] z-tooltip p-0 bg-surface-raised px-3 py-1.5 text-sm text-balance font-medium',
           props.class,
         )
       "
