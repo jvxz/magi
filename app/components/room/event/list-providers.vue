@@ -17,7 +17,7 @@
     </UContextMenuRegionRoot>
 
     <!-- timestamp tooltip -->
-    <UTooltipRegionContent name="timestamp" v-slot="{ payload }">
+    <UTooltipRegionContent v-slot="{ payload }" name="timestamp">
       <NuxtTime v-if="payload" :datetime="payload?.datetime" v-bind="PROPS__NUXT_TIME_FULL" />
     </UTooltipRegionContent>
   </UTooltipRegionRoot>
