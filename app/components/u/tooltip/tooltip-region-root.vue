@@ -80,7 +80,7 @@ provide(getTooltipKey(props.name), {
   reference,
 } as TooltipRegionApi)
 
-const delegated = reactiveOmit(props, ['name', 'skipDelayDuration', 'open', 'defaultOpen', 'disableClosingTrigger'])
+const delegated = reactiveOmit(props, ['name', 'skipDelayDuration', 'open', 'defaultOpen', 'disableClosingTrigger', 'disabled'])
 const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
