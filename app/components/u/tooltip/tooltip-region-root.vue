@@ -7,7 +7,6 @@ export type UTooltipRegionRootProps<TName extends TooltipName> = PopoverRootProp
   Pick<TooltipRootProps, 'disableClosingTrigger'> & {
     name: TName
     disabled?: boolean
-    skipDelayDuration?: number
     delayDuration?: number
   }
 
@@ -15,7 +14,6 @@ const props = withDefaults(defineProps<UTooltipRegionRootProps<TName>>(), {
   delayDuration: undefined,
   disableClosingTrigger: false,
   disabled: false,
-  skipDelayDuration: 300,
 })
 const emits = defineEmits<PopoverRootEmits>()
 type T = TooltipRegions[TName]
@@ -28,17 +26,18 @@ const reference = shallowRef<VirtualElement>()
 const payload = shallowRef<T>()
 
 const contentId = useId()
-const wasDelayed = shallowRef(false)
 const { start: startOpen, stop: stopOpen } = useTimeoutFn(
-  () => {
-    wasDelayed.value = true
-    open.value = true
-  },
+  () => (open.value = true),
   () => props.delayDuration ?? providerContext.delayDuration.value,
   { immediate: false },
 )
 
-watch(open, v => (v ? providerContext.onOpen() : providerContext.onClose()))
+watch(open, v => {
+  if (v) return providerContext.onOpen()
+
+  providerContext.onClose()
+  close()
+})
 
 const currentTarget = shallowRef<MaybeElement>()
 watch(currentTarget, (el, prev) => {
@@ -56,7 +55,6 @@ function openAt(el: HTMLElement, next: T) {
   if (providerContext.isOpenDelayed.value) startOpen()
   else {
     stopOpen()
-    wasDelayed.value = false
     open.value = true
   }
 }
@@ -84,7 +82,6 @@ provide(getTooltipKey(props.name), {
 
 const delegated = reactiveOmit(props, [
   'name',
-  'skipDelayDuration',
   'open',
   'defaultOpen',
   'disableClosingTrigger',
