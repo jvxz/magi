@@ -8,9 +8,11 @@ export type UTooltipRegionRootProps<TName extends TooltipName> = PopoverRootProp
     name: TName
     disabled?: boolean
     skipDelayDuration?: number
+    delayDuration?: number
   }
 
 const props = withDefaults(defineProps<UTooltipRegionRootProps<TName>>(), {
+  delayDuration: undefined,
   disableClosingTrigger: false,
   disabled: false,
   skipDelayDuration: 300,
@@ -32,7 +34,7 @@ const { start: startOpen, stop: stopOpen } = useTimeoutFn(
     wasDelayed.value = true
     open.value = true
   },
-  providerContext.delayDuration,
+  () => props.delayDuration ?? providerContext.delayDuration.value,
   { immediate: false },
 )
 
@@ -80,7 +82,15 @@ provide(getTooltipKey(props.name), {
   reference,
 } as TooltipRegionApi)
 
-const delegated = reactiveOmit(props, ['name', 'skipDelayDuration', 'open', 'defaultOpen', 'disableClosingTrigger', 'disabled'])
+const delegated = reactiveOmit(props, [
+  'name',
+  'skipDelayDuration',
+  'open',
+  'defaultOpen',
+  'disableClosingTrigger',
+  'disabled',
+  'delayDuration',
+])
 const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
