@@ -9,7 +9,7 @@ export const buttonVariants = tv({
       variant: 'link',
     },
     {
-      class: 'h-fit py-0',
+      class: 'h-fit p-0',
       variant: 'ghost-inline',
     },
   ],
