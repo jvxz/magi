@@ -11,6 +11,8 @@ export interface ClickToCopyProps extends PrimitiveProps {
 </script>
 
 <script lang="ts" setup>
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<ClickToCopyProps>(), {
   as: 'button',
   copiedDuration: 1000,
@@ -19,12 +21,10 @@ const props = withDefaults(defineProps<ClickToCopyProps>(), {
 
 const emit = defineEmits<{ copy: [text: string] }>()
 
-defineOptions({ inheritAttrs: false })
-
 const { polite } = useAnnouncer()
 
 const el = useTemplateRef('el')
-const { copy, copied } = useClipboard({ copiedDuring: props.copiedDuration, legacy: true })
+const { copied, copy } = useClipboard({ copiedDuring: props.copiedDuration, legacy: true })
 
 async function onCopy() {
   const text = props.text ?? unrefElement(el)?.textContent?.trim() ?? ''
@@ -39,7 +39,7 @@ defineExpose({ copied, copy: onCopy })
 </script>
 
 <template>
-  <span class="relative inline-flex size-fit">
+  <span class="inline-flex size-fit relative">
     <Primitive
       ref="el"
       v-bind="$attrs"
@@ -65,7 +65,7 @@ defineExpose({ copied, copy: onCopy })
           "
         >
           <span class="text-sm"> Copied </span>
-          <Icon name="tabler:check" class="size-0.8em text-foreground" />
+          <Icon name="tabler:check" class="text-foreground size-0.8em" />
         </div>
       </Transition>
     </slot>
