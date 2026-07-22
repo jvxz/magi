@@ -35,11 +35,16 @@ export const interactiveBase = tv({
 })
 
 export const staticBase = tv({
-  base: 'rounded p-2.5 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+  base: 'rounded focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   defaultVariants: {
+    spacing: 'default',
     variant: 'default',
   },
   variants: {
+    spacing: {
+      default: 'p-2.5 gap-2',
+      lg: 'p-4 gap-4',
+    },
     variant: {
       danger: 'bg-surface border-danger border [&>svg]:text-current',
       default: 'bg-surface border text-surface-foreground',
