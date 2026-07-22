@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { UCardProps } from '../card/index.vue'
 
-export interface CardGroupItemProps extends UCardProps {}
+export interface UCardGroupItemProps extends UCardProps {}
 
-const props = defineProps<CardGroupItemProps>()
+const props = defineProps<UCardGroupItemProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>
