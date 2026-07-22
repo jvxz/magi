@@ -8,7 +8,9 @@ export interface USeparatorProps extends SeparatorProps {
   class?: HTMLAttributes['class']
 }
 
-const props = defineProps<USeparatorProps>()
+const props = withDefaults(defineProps<USeparatorProps>(), {
+  decorative: true,
+})
 
 const delegated = reactiveOmit(props, 'class')
 const forwarded = useForwardPropsEmits(delegated)
