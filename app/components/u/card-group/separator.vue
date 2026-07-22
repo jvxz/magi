@@ -1,15 +1,13 @@
 <script lang="ts" setup>
 import type { USeparatorProps } from '../separator.vue'
 
-export interface CardGroupSeparatorProps extends USeparatorProps {}
+export interface UCardGroupSeparatorProps extends USeparatorProps {}
 
-const props = defineProps<CardGroupSeparatorProps>()
-
-const delegated = reactiveOmit(props, 'class')
+const props = defineProps<UCardGroupSeparatorProps>()
 </script>
 
 <template>
-  <USeparator v-bind="delegated" :class="cn('', props.class)" data-slot="card-group-separator">
+  <USeparator v-bind="props" data-slot="card-group-separator">
     <slot />
   </USeparator>
 </template>

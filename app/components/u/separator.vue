@@ -2,13 +2,12 @@
 import type { SeparatorProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 
-import { useForwardPropsEmits } from 'reka-ui'
+export type USeparatorProps = SeparatorProps & { class?: HTMLAttributes['class'] }
 
-export interface USeparatorProps extends SeparatorProps {
-  class?: HTMLAttributes['class']
-}
-
-const props = defineProps<USeparatorProps>()
+const props = withDefaults(defineProps<USeparatorProps>(), {
+  decorative: true,
+  orientation: 'horizontal',
+})
 
 const delegated = reactiveOmit(props, 'class')
 const forwarded = useForwardPropsEmits(delegated)

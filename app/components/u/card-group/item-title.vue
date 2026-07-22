@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { UCardTitleProps } from '../card/title.vue'
 
-export interface CardGroupItemTitleProps extends UCardTitleProps {}
+export interface UCardGroupItemTitleProps extends UCardTitleProps {}
 
-const props = defineProps<CardGroupItemTitleProps>()
+const props = defineProps<UCardGroupItemTitleProps>()
 </script>
 
 <template>
