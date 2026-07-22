@@ -53,21 +53,30 @@ export const staticBase = tv({
 })
 
 export const popoverContentBase = tv({
-  base: 'shadow-lg z-popover w-52 bg-popover overflow-hidden p-1',
+  base: 'shadow-lg z-popover w-52 bg-popover overflow-hidden',
   defaultVariants: {
+    spacing: 'default',
     variant: 'default',
   },
   extend: staticBase,
+  variants: {
+    spacing: {
+      default: 'p-1',
+    },
+  },
 })
 
 export const popoverItemBase = tv({
-  base: 'rounded-sm duration-0 font-normal relative flex shadow-none cursor-default items-center p-1 px-2 text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  base: 'rounded-sm duration-0 font-normal relative flex shadow-none cursor-default items-center text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   defaultVariants: {
     size: 'default',
     variant: 'ghost',
   },
   extend: interactiveBase,
   variants: {
+    size: {
+      default: 'p-1 px-2',
+    },
     variant: {
       ghost: 'text-foreground',
     },
@@ -86,7 +95,12 @@ export const inputStyles = tv({
 })
 
 export const dialogStyles = tv({
-  base: 'fixed top-[50%] left-[50%] z-50 flex flex-col gap-2 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) sm:max-w-lg data-[state=closed]:(animate-out fade-out-0) z-dialog p-5',
+  base: 'fixed top-[50%] left-[50%] z-50 flex flex-col gap-2 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) sm:max-w-lg data-[state=closed]:(animate-out fade-out-0) z-dialog',
   defaultVariants: { variant: 'default' },
   extend: staticBase,
+  variants: {
+    spacing: {
+      default: 'p-5',
+    },
+  },
 })
