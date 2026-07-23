@@ -86,21 +86,23 @@ const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>
-  <Img
-    v-if="(props.src || resolvedAvatar) && !isError"
-    v-bind="forwarded"
-    :key="props.src ?? resolvedAvatar"
-    :alt
-    :src="props.src ?? resolvedAvatar"
-    :class="cn('object-cover', !square && 'rounded-full', props.class)"
-    :do-placeholder="false"
-    @error="isError = true"
-  />
-  <AvatarPlaceholder
-    v-else
-    :is-loading
-    :name="placeholderName"
-    :square
-    :class="cn(!square && 'rounded-full', 'size-full', props.class)"
-  />
+  <Slot data-slot="matrix-avatar">
+    <Img
+      v-if="(props.src || resolvedAvatar) && !isError"
+      v-bind="forwarded"
+      :key="props.src ?? resolvedAvatar"
+      :alt
+      :src="props.src ?? resolvedAvatar"
+      :class="cn('object-cover', !square && 'rounded-full', props.class)"
+      :do-placeholder="false"
+      @error="isError = true"
+    />
+    <AvatarPlaceholder
+      v-else
+      :is-loading
+      :name="placeholderName"
+      :square
+      :class="cn(!square && 'rounded-full', 'size-full', props.class)"
+    />
+  </Slot>
 </template>
