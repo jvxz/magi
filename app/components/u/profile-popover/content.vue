@@ -1,6 +1,9 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
+
 import { KnownMembership } from 'matrix-js-sdk'
 
+defineProps<{ class?: HTMLAttributes['class'] }>()
 const { contentProps, manualRoom, open, referenceElement, user } = useProfilePopover()
 
 const { self } = useSelf()
@@ -35,10 +38,10 @@ const { openDialog } = useGlobalDialog()
       data-slot="profile-popover"
       disable-outside-pointer-events
       :reference="referenceElement ?? undefined"
-      :class="cn('z-popover', $attrs.class)"
+      :class="cn('z-popover', $props.class)"
     >
       <UCard
-        class="p-0 border-none bg-popover gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3"
+        class="p-0 border-none bg-popover gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3 shadow-popover"
       >
         <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
           <div class="rounded-t flex h-full justify-end relative">
@@ -54,7 +57,7 @@ const { openDialog } = useGlobalDialog()
           </div>
         </div>
 
-        <div class="px-4 pb-4 pt-14 border border-border rounded flex flex-1 flex-col gap-2">
+        <div class="px-4 pb-4 pt-14 border border-border-strong rounded flex flex-1 flex-col gap-2">
           <button
             class="group rounded-full size-20 relative"
             @click="
@@ -65,7 +68,7 @@ const { openDialog } = useGlobalDialog()
               }
             "
           >
-            <MatrixAvatar :user class="bg-popover size-20 ring-6 ring-popover" image-size="small" />
+            <MatrixAvatar :user class="size-20 ring-6 ring-popover" image-size="small" />
             <div
               class="rounded-full size-20 cursor-pointer content-[''] inset-0 absolute z-2 group-hover:bg-hover/25"
             />
