@@ -18,8 +18,8 @@ const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => 
         :size="32"
         :alt="room?.name"
         :src
-        @error="isError = true"
         class="size-full scale-120 object-cover blur-xl -m-px -translate-y-1/3"
+        @error="isError = true"
       />
       <div v-else class="border border-border rounded-t-lg border-b-none bg-surface-top size-full"></div>
     </div>
