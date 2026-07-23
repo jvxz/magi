@@ -51,7 +51,10 @@ const { openDialog } = useGlobalDialog()
               class="rounded-t size-full scale-150 absolute object-cover blur-xl -z-1"
             />
 
-            <div v-else class="rounded-t bg-muted size-full absolute -z-1" />
+            <div
+              v-else
+              class="rounded-t bg-surface-top border border-border-strong border-b-0 size-full absolute -z-1"
+            />
 
             <UProfilePopoverContentButtons :user-id="user?.userId" />
           </div>
