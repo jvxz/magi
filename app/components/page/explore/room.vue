@@ -6,16 +6,19 @@ const props = defineProps<{
 }>()
 
 const src = useResolveAvatarUrl(() => props.room?.avatar_url)
+
+const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => false)
 </script>
 
 <template>
   <div class="p-0 rounded-lg border-none relative overflow-clip" :class="!room && 'border'">
     <div class="h-full inset-0 absolute">
       <MatrixAvatar
-        v-if="room"
+        v-if="room && src && !isError"
         :size="32"
         :alt="room?.name"
         :src
+        @error="isError = true"
         class="size-full scale-120 object-cover blur-xl -m-px -translate-y-1/3"
       />
       <div v-else class="border border-border rounded-t-lg border-b-none bg-surface-top size-full"></div>
