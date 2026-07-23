@@ -48,12 +48,14 @@ export const staticBase = tv({
     variant: {
       danger: 'bg-surface border-danger border [&>svg]:text-current',
       default: 'bg-surface border text-surface-foreground',
+      raised: 'bg-surface-raised border text-surface-foreground',
+      top: 'bg-surface-top border text-surface-foreground',
     },
   },
 })
 
 export const popoverContentBase = tv({
-  base: 'shadow-lg z-popover w-52 bg-popover overflow-hidden',
+  base: 'shadow z-popover w-52 overflow-hidden',
   defaultVariants: {
     spacing: 'default',
     variant: 'default',
@@ -62,6 +64,9 @@ export const popoverContentBase = tv({
   variants: {
     spacing: {
       default: 'p-1',
+    },
+    variant: {
+      default: 'bg-popover border-border-strong',
     },
   },
 })

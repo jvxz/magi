@@ -35,6 +35,7 @@ const forwarded = useForwardProps(delegated)
 <template>
   <UCard
     v-bind="forwarded"
+    variant="raised"
     :class="
       cn(
         'w-full relative h-18 p-3.5 border flex-row gap-3.5',
