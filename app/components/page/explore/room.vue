@@ -9,7 +9,7 @@ const src = useResolveAvatarUrl(() => props.room?.avatar_url)
 </script>
 
 <template>
-  <div class="rounded-lg relative overflow-clip p-0 border-none" :class="!room && 'border'">
+  <div class="p-0 rounded-lg border-none relative overflow-clip" :class="!room && 'border'">
     <div class="h-full inset-0 absolute">
       <MatrixAvatar
         v-if="room"
@@ -18,7 +18,7 @@ const src = useResolveAvatarUrl(() => props.room?.avatar_url)
         :src
         class="size-full scale-120 object-cover blur-xl -m-px -translate-y-1/3"
       />
-      <div v-else class="bg-surface-top size-full border border-border border-b-none rounded-t-lg"></div>
+      <div v-else class="border border-border rounded-t-lg border-b-none bg-surface-top size-full"></div>
     </div>
 
     <UCard

@@ -30,7 +30,7 @@ function handleCopyUserId() {
     </UButton>
     <UDropdownMenuRoot>
       <UDropdownMenuTrigger as-child>
-        <UButton size="icon" variant="soft" class="rounded-full bg-popover border-none">
+        <UButton size="icon" variant="soft" class="rounded-full border-none bg-popover">
           <Icon name="tabler:dots" />
         </UButton>
       </UDropdownMenuTrigger>

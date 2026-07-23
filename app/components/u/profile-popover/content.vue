@@ -41,7 +41,7 @@ const { openDialog } = useGlobalDialog()
       :class="cn('z-popover', $props.class)"
     >
       <UCard
-        class="p-0 border-none bg-popover gap-0 w-74 transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3 shadow-popover"
+        class="p-0 border-none bg-popover gap-0 w-74 shadow-popover transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3"
       >
         <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
           <div class="rounded-t flex h-full justify-end relative">
