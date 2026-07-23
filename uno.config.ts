@@ -118,9 +118,12 @@ export default defineConfig({
       'secondary-foreground': 'var(--secondary-foreground)',
       'secondary-raised': 'var(--secondary-raised)',
       selected: 'var(--selected)',
+      success: 'var(--success)',
       surface: 'var(--surface)',
       'surface-foreground': 'var(--surface-foreground)',
       'surface-raised': 'var(--surface-raised)',
+      'surface-top': 'var(--surface-top)',
+      warn: 'var(--warn)',
     },
     duration: {
       DEFAULT: '92.5ms',
