@@ -193,7 +193,7 @@ importers:
         specifier: ^8.3.0
         version: 8.3.0(@typescript-eslint/rule-tester@8.61.0(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(@typescript-eslint/typescript-estree@8.63.0(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(@typescript-eslint/utils@8.63.0(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(@unocss/eslint-plugin@66.7.5(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(@vue/compiler-sfc@3.6.0-rc.1)(eslint-plugin-format@2.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2)))(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(oxlint@1.73.0)(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2)(vitest@4.1.10)
       '@e18e/eslint-plugin':
-        specifier: ^0.5.1
+        specifier: 0.5.1
         version: 0.5.1(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(oxlint@1.73.0)
       '@faker-js/faker':
         specifier: ^10.5.0
@@ -217,7 +217,7 @@ importers:
         specifier: ^25.9.5
         version: 25.9.5
       '@unocss/eslint-plugin':
-        specifier: ^66.7.5
+        specifier: 66.7.5
         version: 66.7.5(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2)
       '@unocss/nuxt':
         specifier: ^66.7.5
@@ -232,25 +232,25 @@ importers:
         specifier: ^2.4.11
         version: 2.4.11(@vue/compiler-dom@3.6.0-rc.1)(@vue/server-renderer@3.5.40)(vue@3.6.0-rc.1(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))
       eslint:
-        specifier: ^10.7.0
+        specifier: 10.7.0
         version: 10.7.0(jiti@2.7.0)(supports-color@10.2.2)
       eslint-plugin-format:
-        specifier: ^2.0.1
+        specifier: 2.0.1
         version: 2.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))
       eslint-plugin-oxlint:
-        specifier: ^1.73.0
+        specifier: 1.73.0
         version: 1.73.0(oxlint@1.73.0)
       happy-dom:
         specifier: ^20.10.6
         version: 20.10.6
       knip:
-        specifier: ^6.26.0
+        specifier: 6.26.0
         version: 6.26.0
       oxfmt:
         specifier: ^0.54.0
         version: 0.54.0
       oxlint:
-        specifier: ^1.73.0
+        specifier: 1.73.0
         version: 1.73.0
       pathe:
         specifier: ^2.0.3
