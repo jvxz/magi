@@ -223,7 +223,7 @@ importers:
         specifier: ^66.7.5
         version: 66.7.5(esbuild@0.28.0)(magic-string@1.0.0)(magicast@0.5.3)(oxc-parser@0.139.0)(rolldown@1.2.0)(rollup@4.61.1)(unplugin@3.3.0(esbuild@0.28.0)(rolldown@1.2.0)(rollup@4.61.1)(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))(webpack@5.107.2(cssnano@8.0.2(postcss@8.5.19))(csso@5.0.5)(esbuild@0.28.0)(lightningcss@1.32.0)(postcss@8.5.19)))(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))(webpack@5.107.2(cssnano@8.0.2(postcss@8.5.19))(csso@5.0.5)(esbuild@0.28.0)(lightningcss@1.32.0)(postcss@8.5.19))
       '@vitest/coverage-v8':
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(vitest@4.1.10)
       '@vue/language-core':
         specifier: ^3.3.7
@@ -241,7 +241,7 @@ importers:
         specifier: ^1.73.0
         version: 1.73.0(oxlint@1.73.0)
       happy-dom:
-        specifier: ^20.10.6
+        specifier: 20.10.6
         version: 20.10.6
       knip:
         specifier: ^6.26.0
@@ -274,7 +274,7 @@ importers:
         specifier: ^8.1.4
         version: 8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0)
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@25.9.5)(@vitest/coverage-v8@4.1.10)(happy-dom@20.10.6)(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
       vue-tsc:
         specifier: ^3.3.7
