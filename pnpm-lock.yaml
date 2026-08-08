@@ -190,16 +190,16 @@ importers:
         version: 7.4.1
     devDependencies:
       '@antfu/eslint-config':
-        specifier: ^8.3.0
+        specifier: 8.3.0
         version: 8.3.0(@typescript-eslint/rule-tester@8.61.0(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(@typescript-eslint/typescript-estree@8.63.0(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(@typescript-eslint/utils@8.63.0(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(@unocss/eslint-plugin@66.7.5(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(@vue/compiler-sfc@3.6.0-rc.1)(eslint-plugin-format@2.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2)))(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(oxlint@1.73.0)(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2)(vitest@4.1.10)
       '@e18e/eslint-plugin':
         specifier: ^0.5.1
         version: 0.5.1(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(oxlint@1.73.0)
       '@faker-js/faker':
-        specifier: ^10.5.0
+        specifier: 10.5.0
         version: 10.5.0
       '@iconify-json/tabler':
-        specifier: ^1.2.35
+        specifier: 1.2.35
         version: 1.2.35
       '@nuxt/eslint':
         specifier: 1.16.0
@@ -208,28 +208,28 @@ importers:
         specifier: ^4.0.3
         version: 4.0.3(@playwright/test@1.61.1)(@vue/test-utils@2.4.11(@vue/compiler-dom@3.6.0-rc.1)(@vue/server-renderer@3.5.40)(vue@3.6.0-rc.1(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2)))(crossws@0.4.6(srvx@0.11.22))(esbuild@0.28.0)(happy-dom@20.10.6)(magicast@0.5.3)(playwright-core@1.61.1)(rolldown@1.2.0)(rollup@4.61.1)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2)(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))(vitest@4.1.10)(webpack@5.107.2(cssnano@8.0.2(postcss@8.5.19))(csso@5.0.5)(esbuild@0.28.0)(lightningcss@1.32.0)(postcss@8.5.19))
       '@playwright/test':
-        specifier: ^1.61.1
+        specifier: 1.61.1
         version: 1.61.1
       '@regle/nuxt':
         specifier: 1.28.3
         version: 1.28.3(magicast@0.5.3)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2)(valibot@1.4.2(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(vue@3.6.0-rc.1(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))(zod@4.4.3)
       '@types/node':
-        specifier: ^25.9.5
+        specifier: 25.9.5
         version: 25.9.5
       '@unocss/eslint-plugin':
         specifier: ^66.7.5
         version: 66.7.5(eslint@10.7.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2)
       '@unocss/nuxt':
-        specifier: ^66.7.5
+        specifier: 66.7.5
         version: 66.7.5(esbuild@0.28.0)(magic-string@1.0.0)(magicast@0.5.3)(oxc-parser@0.139.0)(rolldown@1.2.0)(rollup@4.61.1)(unplugin@3.3.0(esbuild@0.28.0)(rolldown@1.2.0)(rollup@4.61.1)(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))(webpack@5.107.2(cssnano@8.0.2(postcss@8.5.19))(csso@5.0.5)(esbuild@0.28.0)(lightningcss@1.32.0)(postcss@8.5.19)))(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))(webpack@5.107.2(cssnano@8.0.2(postcss@8.5.19))(csso@5.0.5)(esbuild@0.28.0)(lightningcss@1.32.0)(postcss@8.5.19))
       '@vitest/coverage-v8':
         specifier: ^4.1.10
         version: 4.1.10(vitest@4.1.10)
       '@vue/language-core':
-        specifier: ^3.3.7
+        specifier: 3.3.7
         version: 3.3.7
       '@vue/test-utils':
-        specifier: ^2.4.11
+        specifier: 2.4.11
         version: 2.4.11(@vue/compiler-dom@3.6.0-rc.1)(@vue/server-renderer@3.5.40)(vue@3.6.0-rc.1(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2))
       eslint:
         specifier: ^10.7.0
@@ -247,28 +247,28 @@ importers:
         specifier: ^6.26.0
         version: 6.26.0
       oxfmt:
-        specifier: ^0.54.0
+        specifier: 0.54.0
         version: 0.54.0
       oxlint:
         specifier: ^1.73.0
         version: 1.73.0
       pathe:
-        specifier: ^2.0.3
+        specifier: 2.0.3
         version: 2.0.3
       playwright-core:
-        specifier: ^1.61.1
+        specifier: 1.61.1
         version: 1.61.1
       taze:
-        specifier: ^19.14.1
+        specifier: 19.14.1
         version: 19.14.1
       typescript:
         specifier: npm:typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2
         version: typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2
       unocss:
-        specifier: ^66.7.5
+        specifier: 66.7.5
         version: 66.7.5(@unocss/webpack@66.7.5(esbuild@0.28.0)(rolldown@1.2.0)(rollup@4.61.1)(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))(webpack@5.107.2(cssnano@8.0.2(postcss@8.5.19))(csso@5.0.5)(esbuild@0.28.0)(lightningcss@1.32.0)(postcss@8.5.19)))(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
       unocss-preset-animations:
-        specifier: ^1.3.0
+        specifier: 1.3.0
         version: 1.3.0(@unocss/preset-wind3@66.7.5)(unocss@66.7.5(@unocss/webpack@66.7.5(esbuild@0.28.0)(rolldown@1.2.0)(rollup@4.61.1)(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))(webpack@5.107.2(cssnano@8.0.2(postcss@8.5.19))(csso@5.0.5)(esbuild@0.28.0)(lightningcss@1.32.0)(postcss@8.5.19)))(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0)))
       vite:
         specifier: ^8.1.4
@@ -277,7 +277,7 @@ importers:
         specifier: ^4.1.10
         version: 4.1.10(@types/node@25.9.5)(@vitest/coverage-v8@4.1.10)(happy-dom@20.10.6)(vite@8.1.4(@types/node@25.9.5)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
       vue-tsc:
-        specifier: ^3.3.7
+        specifier: 3.3.7
         version: 3.3.7(typescript-native-bridge@6.0.3-bridge.0.tsgo.7.0.2)
 
 packages:
