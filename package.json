@@ -82,7 +82,7 @@
     "valibot": "^1.4.2",
     "virtua": "^0.49.3",
     "vitest-localstorage-mock": "^0.1.2",
-    "vue": "3.6.0-rc.3",
+    "vue": "3.6.0-rc.5",
     "vue-router": "^5.2.0",
     "workbox-core": "7.4.1"
   },
@@ -92,7 +92,7 @@
     "@faker-js/faker": "^10.5.0",
     "@iconify-json/tabler": "^1.2.38",
     "@nuxt/eslint": "1.17.0",
-    "@nuxt/test-utils": "^4.1.0",
+    "@nuxt/test-utils": "4.1.0",
     "@playwright/test": "^1.62.1",
     "@regle/nuxt": "1.29.0",
     "@types/grecaptcha": "^3.0.9",
