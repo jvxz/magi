@@ -99,6 +99,7 @@ export default defineConfig({
       'z-overlay': 'z-50',
       'z-popover': 'z-60',
       'z-tooltip': 'z-80',
+      'z-uia': 'z-55',
     },
   ],
   theme: {
