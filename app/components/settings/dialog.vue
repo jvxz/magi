@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 const { open, searchQuery, tab } = useSettingsDialog()
 
+const visited = reactive(new Set<SettingsCategory>())
+watchImmediate(tab, t => visited.add(t))
+
 onUnmounted(() => {
   tab.value = SETTINGS_DEFAULT_TAB
   searchQuery.value = ''
@@ -34,7 +37,13 @@ onUnmounted(() => {
               </VisuallyHidden>
             </UDialogHeader>
 
-            <TabsContent v-for="setting in SETTINGS_CATEGORY_METADATA" :key="setting.key" :value="setting.key">
+            <TabsContent
+              v-for="setting in SETTINGS_CATEGORY_METADATA"
+              :key="setting.key"
+              :value="setting.key"
+              :force-mount="visited.has(setting.key)"
+              class="data-[state=inactive]:hidden"
+            >
               <SettingsContent :category="setting.key" />
             </TabsContent>
           </div>
