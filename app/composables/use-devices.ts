@@ -56,5 +56,5 @@ export const useDevices = createGlobalState(() => {
     sessionDevices.refetch()
   }
 
-  return { cryptoDevices, devices, error, isFetching, sessionDevices, refetch }
+  return { cryptoDevices, devices, error, isFetching, refetch, sessionDevices }
 })

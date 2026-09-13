@@ -94,9 +94,9 @@ const isDeletingDevice = computed(() => deviceDeleting.value === device?.device_
           v-if="device"
           :disabled="isLoadingAuthMetadata || isDeletingAnyDevice"
           :is-loading="isDeletingDevice"
-          @click="deleteDevice(device.device_id)"
           size="icon"
           variant="ghost"
+          @click="deleteDevice(device.device_id)"
         >
           <Icon name="tabler:trash" />
         </UButton>
