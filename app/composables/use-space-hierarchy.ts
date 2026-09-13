@@ -43,7 +43,7 @@ export function useSpaceHierarchy(
 
   const q = useQuery({
     enabled: enabledRef,
-    queryFn: ({ signal }) => fetchHierarchyDeep(client.value, spaceIdRef.value, signal),
+    queryFn: ({ signal }: { signal: AbortSignal }) => fetchHierarchyDeep(client.value, spaceIdRef.value, signal),
     queryKey: $qk.spaceSubspaces(spaceIdRef),
   })
 
