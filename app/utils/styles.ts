@@ -113,7 +113,7 @@ export const inputStyles = tv({
 })
 
 export const dialogStyles = tv({
-  base: 'fixed top-[50%] left-[50%] z-50 flex flex-col gap-2 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) sm:max-w-lg data-[state=closed]:(animate-out fade-out-0) z-dialog',
+  base: 'fixed top-[50%] left-[50%] z-dialog flex flex-col gap-2 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) sm:max-w-lg data-[state=closed]:(animate-out fade-out-0) z-dialog',
   defaultVariants: { variant: 'default' },
   extend: staticBase,
   variants: {
