@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 const { open, searchQuery, tab } = useSettingsDialog()
 
+const visited = reactive(new Set<SettingsCategory>())
+watchImmediate(tab, t => visited.add(t))
+
 onUnmounted(() => {
   tab.value = SETTINGS_DEFAULT_TAB
   searchQuery.value = ''
@@ -20,7 +23,7 @@ onUnmounted(() => {
 
           <div class="flex flex-1 flex-col">
             <UDialogHeader
-              class="pe-2.5 ps-4 border-b flex shrink-0 gap-2 h-header-height justify-center sm:text-left"
+              class="mb-0 pe-2.5 ps-4 border-b flex shrink-0 gap-2 h-header-height justify-center sm:text-left"
               :ui="{
                 closeButton: 'top-2 right-2',
               }"
@@ -34,7 +37,13 @@ onUnmounted(() => {
               </VisuallyHidden>
             </UDialogHeader>
 
-            <TabsContent v-for="setting in SETTINGS_CATEGORY_METADATA" :key="setting.key" :value="setting.key">
+            <TabsContent
+              v-for="setting in SETTINGS_CATEGORY_METADATA"
+              :key="setting.key"
+              :value="setting.key"
+              :force-mount="visited.has(setting.key)"
+              class="data-[state=inactive]:hidden"
+            >
               <SettingsContent :category="setting.key" />
             </TabsContent>
           </div>

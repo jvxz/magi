@@ -70,6 +70,7 @@ export const popoverContentBase = tv({
     },
     variant: {
       default: 'bg-popover border-border-strong',
+      raised: '',
     },
   },
 })
@@ -93,6 +94,13 @@ export const popoverItemBase = tv({
 })
 export type PopoverItemVariants = VariantProps<typeof popoverItemBase>
 
+export const tooltipContentBase = tv({
+  base: [
+    popoverContentBase({ variant: 'raised' }),
+    'will-change-transform relative overflow-visible w-fit will-change-opacity border-border-strong bg-surface-top z-tooltip p-0 px-3 py-1.5 text-sm text-balance font-medium shadow',
+  ],
+})
+
 export const overlayStyles =
   'duration-75 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-overlay bg-overlay'
 
@@ -105,7 +113,7 @@ export const inputStyles = tv({
 })
 
 export const dialogStyles = tv({
-  base: 'fixed top-[50%] left-[50%] z-50 flex flex-col gap-2 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) sm:max-w-lg data-[state=closed]:(animate-out fade-out-0) z-dialog',
+  base: 'fixed top-[50%] left-[50%] z-dialog flex flex-col gap-2 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) sm:max-w-lg data-[state=closed]:(animate-out fade-out-0) z-dialog',
   defaultVariants: { variant: 'default' },
   extend: staticBase,
   variants: {

@@ -3,6 +3,7 @@ import type { ClientEventHandlerMap, EmittedEvents, Listener, MatrixClient } fro
 import { HttpApiEvent } from 'matrix-js-sdk'
 import { RoomEvent } from 'matrix-js-sdk'
 import { ClientEvent, MatrixEventEvent, RoomMemberEvent, RoomStateEvent } from 'matrix-js-sdk'
+import { CryptoEvent } from 'matrix-js-sdk/lib/crypto-api'
 
 type ValidEvents = EmittedEvents | RoomMemberEvent
 type EmitterListener<T extends ValidEvents = ValidEvents> = Listener<ValidEvents, ClientEventHandlerMap, T>
@@ -17,6 +18,7 @@ const userProfileHook = createEventHook<Parameters<EmitterListener<ClientEvent.U
 const accountDataHook = createEventHook<Parameters<EmitterListener<ClientEvent.Event>>>()
 const roomMyMembership = createEventHook<Parameters<EmitterListener<RoomEvent.MyMembership>>>()
 const logoutHook = createEventHook<Parameters<EmitterListener<HttpApiEvent.SessionLoggedOut>>>()
+const devicesUpdatedHook = createEventHook<Parameters<EmitterListener<CryptoEvent.DevicesUpdated>>>()
 const roomTimeline = createEventHook<Parameters<EmitterListener<RoomEvent.Timeline>>>()
 const roomTimelineReset = createEventHook<Parameters<EmitterListener<RoomEvent.TimelineReset>>>()
 const nameHook = createEventHook<Parameters<EmitterListener<RoomEvent.Name>>>()
@@ -45,6 +47,7 @@ export const useMatrixHooks = createSharedComposable(() => {
       bindListener(ClientEvent.UserProfileUpdate, userProfileHook.trigger, { current, prev })
       bindListener(ClientEvent.AccountData, accountDataHook.trigger, { current, prev })
       bindListener(RoomEvent.MyMembership, roomMyMembership.trigger, { current, prev })
+      bindListener(CryptoEvent.DevicesUpdated, devicesUpdatedHook.trigger, { current, prev })
       bindListener(HttpApiEvent.SessionLoggedOut, logoutHook.trigger, { current, prev })
       bindListener(RoomEvent.Timeline, roomTimeline.trigger, { current, prev })
       bindListener(RoomEvent.TimelineReset, roomTimelineReset.trigger, { current, prev })
@@ -62,6 +65,7 @@ export const useMatrixHooks = createSharedComposable(() => {
   return {
     onAccountData: accountDataHook.on,
     onDecrypted: decryptedHook.on,
+    onDevicesUpdated: devicesUpdatedHook.on,
     onEvent: eventHook.on,
     onLogout: logoutHook.on,
     onRoom: roomEvent.on,

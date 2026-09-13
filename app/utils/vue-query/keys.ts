@@ -1,3 +1,4 @@
+import type { IMyDevice } from 'matrix-js-sdk'
 import type { MaybeRefOrGetter } from 'vue'
 
 import { toRef } from '@vueuse/core'
@@ -9,6 +10,9 @@ const defineKey = <const T extends readonly unknown[]>(...parts: T): T => parts
  */
 export const $qk = {
   authMetadata: () => defineKey('authMetadata'),
+  cryptoDevices: (myUserId: MaybeRefOrGetter<string | undefined>) => defineKey('cryptoDevices', toRef(myUserId)),
+  deviceVerificationStatus: (deviceId: MaybeRefOrGetter<IMyDevice['device_id'] | undefined>) =>
+    defineKey('deviceVerificationStatus', toRef(deviceId)),
   homeserverConfig: (homeserverUrl: MaybeRefOrGetter<string | undefined>) =>
     defineKey('homeserverConfig', toRef(homeserverUrl)),
   homeserverLoginFlows: (homeserverUrl: MaybeRefOrGetter<string | undefined>) =>
@@ -24,6 +28,7 @@ export const $qk = {
     defineKey('roomReplyEvent', toRef(replyEventId), toRef(roomId)),
   roomSummary: (roomId: MaybeRefOrGetter<string | undefined>, via: MaybeRefOrGetter<string[] | undefined>) =>
     defineKey('roomSummary', toRef(roomId), toRef(via)),
+  sessionDevices: (myUserId: MaybeRefOrGetter<string | undefined>) => defineKey('sessionDevices', toRef(myUserId)),
   spaceSubspaces: (spaceId: MaybeRefOrGetter<string>) => defineKey('spaceSubspaces', toRef(spaceId)),
 } as const
 
@@ -36,6 +41,8 @@ export const $mk = {
   clientLogin: () => defineKey('clientLogin'),
   clientLogout: () => defineKey('clientLogout'),
   createRoom: () => defineKey('createRoom'),
+  // deleteDevice: (deviceId: MaybeRefOrGetter<string | undefined>) => defineKey('deleteDevice', toRef(deviceId)),
+  deleteDevice: () => defineKey('deleteDevice'),
   invite: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('invite', toRef(roomId)),
   joinRoom: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('joinRoom', toRef(roomId)),
   leaveRoom: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('leaveRoom', toRef(roomId)),
