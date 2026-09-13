@@ -4,9 +4,13 @@ import type { HTMLAttributes } from 'vue'
 
 import type { ButtonProps } from '../button.vue'
 
+import { injectAlertDialogPreventClose } from './alert-dialog-root.vue'
+
 const props = withDefaults(defineProps<AlertDialogCancelProps & ButtonProps & { class?: HTMLAttributes['class'] }>(), {
   variant: 'ghost',
 })
+
+const { preventClose } = injectAlertDialogPreventClose()
 
 const delegatedProps = reactiveOmit(props, 'class')
 </script>
@@ -14,6 +18,7 @@ const delegatedProps = reactiveOmit(props, 'class')
 <template>
   <AlertDialogCancel
     v-bind="delegatedProps"
+    :disabled="preventClose"
     :class="
       cn(
         buttonVariants({
