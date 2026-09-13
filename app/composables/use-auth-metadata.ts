@@ -1,4 +1,4 @@
-export const useAuthMetadata = createGlobalState(() => {
+export const useAuthMetadata = createSharedComposable(() => {
   const { client } = useMatrixClient()
 
   const query = useQuery({

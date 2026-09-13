@@ -1,4 +1,4 @@
-import type { MatrixClient } from 'matrix-js-sdk'
+import type { Device, IMyDevice, MatrixClient } from 'matrix-js-sdk'
 
 export function getDeviceVerificationStatus(client: MatrixClient, deviceId: string) {
   const crypto = getCryptoSafe(client)
@@ -13,4 +13,8 @@ export function getDeviceVerificationStatus(client: MatrixClient, deviceId: stri
 export function getUserDevices(client: MatrixClient, userIds?: string[]) {
   const crypto = getCryptoSafe(client)
   return crypto.getUserDeviceInfo(userIds ?? [client.getSafeUserId()])
+}
+
+export function resolveDeviceName(device: Device | DeviceEntry | IMyDevice) {
+  return 'device_id' in device ? (device.display_name ?? device.device_id) : (device.displayName ?? device.deviceId)
 }

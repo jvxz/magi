@@ -1,38 +1,59 @@
+<script lang="ts">
+import { createContext } from 'reka-ui'
+
+export interface SettingsContentDevicesContext {
+  deleteDevice: (deviceId: string) => void
+  isDeletingAnyDevice: Ref<boolean>
+  deviceDeleting: Ref<string | undefined>
+  now: Readonly<Ref<Date>>
+}
+
+export const [injectSettingsContentDevicesContext, provideSettingsContentDevicesContext] =
+  createContext<SettingsContentDevicesContext>('SettingsContentDevices')
+</script>
+
 <script lang="ts" setup>
-const { devices, error } = useDevices()
+const { devices, error, isFetching, refetch } = useDevices()
+
 const currentDevice = useCurrentDevice()
 
 const cachedCount = useCachedCount('devices', () => (devices.value ? devices.value.size || undefined : undefined), 4)
 
 const { sortState } = useSortRegion('deviceList')
-
 const sortedDevices = computed(() => {
-  const sortOption = sortState.value.option
-  const arr = [...devices.value]
+  const { option, dir } = sortState.value
+  const sign = dir === 'asc' ? 1 : -1
 
-  const res = arr.toSorted(([, a], [, b]) => {
-    switch (sortOption) {
-      case 'name': {
-        const aName = a.display_name ?? a.device_id
-        const bName = b.display_name ?? b.device_id
-        return aName.localeCompare(bName)
-      }
-      case 'last-active': {
-        const aLast = a.last_seen_ts ?? -1
-        const bLast = b.last_seen_ts ?? -1
-        return aLast > bLast ? 1 : -1
-      }
-      case 'verified': {
-        const aVer = !!a.crypto?.verified
-        const bVer = !!b.crypto?.verified
-        return aVer && bVer ? 0 : aVer && !bVer ? 1 : -1
-      }
+  return [...devices.value.values()].toSorted((a, b) => {
+    switch (option) {
+      case 'last-active':
+        return sign * ((a.last_seen_ts ?? 0) - (b.last_seen_ts ?? 0))
+      case 'verified':
+        return sign * (Number(!!a.crypto?.verified) - Number(!!b.crypto?.verified))
       default:
-        return 1
+        return sign * resolveDeviceName(a).localeCompare(resolveDeviceName(b))
     }
   })
+})
 
-  return new Map(sortState.value.dir === 'asc' ? res : res.toReversed())
+const clientActions = useClientActions()
+const deviceDeleting = ref<string>()
+async function deleteDevice(deviceId: string) {
+  try {
+    deviceDeleting.value = deviceId
+    await clientActions.deleteDevice.mutateAsync({ deviceId })
+  } finally {
+    deviceDeleting.value = undefined
+  }
+}
+
+const now = useNow({ interval: 30_000 })
+
+provideSettingsContentDevicesContext({
+  deleteDevice,
+  deviceDeleting,
+  isDeletingAnyDevice: clientActions.deleteDevice.isPending,
+  now,
 })
 </script>
 
@@ -44,21 +65,31 @@ const sortedDevices = computed(() => {
           <SettingsItemPrimitive class="gap-2 w-full">
             <template #label>
               <div class="flex w-full items-center justify-between">
-                <p class="font-medium">Device list</p>
+                <div class="flex items-center gap-1">
+                  <p class="font-medium">Device list</p>
 
-                <USortSelect
-                  v-model:model-value="sortState"
-                  :disabled="!!error"
-                  :default-value="{ dir: 'asc', option: 'last-active' }"
-                  :options="['last-active', 'name', 'verified']"
-                  size="sm"
-                />
+                  <USpinner v-if="isFetching" class="size-1em" />
+                </div>
+
+                <div class="flex items-center gap-1">
+                  <UButton @click="refetch" size="icon-sm" variant="ghost">
+                    <Icon name="tabler:reload" />
+                  </UButton>
+
+                  <USortSelect
+                    v-model:model-value="sortState"
+                    :disabled="!!error"
+                    :default-value="{ dir: 'asc', option: 'last-active' }"
+                    :options="['last-active', 'name', 'verified']"
+                    size="sm"
+                  />
+                </div>
               </div>
             </template>
 
             <UCardGroupRoot v-if="!error" variant="raised" class="w-full">
-              <template v-if="sortedDevices.size">
-                <template v-for="(device, i) in sortedDevices.values()" :key="device.device_id">
+              <template v-if="devices.size">
+                <template v-for="(device, i) in sortedDevices" :key="device.device_id">
                   <UCardGroupSeparator v-if="i" />
                   <SettingsContentDevicesCard :is-current="device.device_id === currentDevice?.device_id" :device />
                 </template>

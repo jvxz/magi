@@ -5,7 +5,6 @@ export const useCurrentDevice = createGlobalState(() => {
   const currentDeviceId = computed(() => client.value.deviceId)
 
   return computed(() => {
-    if (!currentDeviceId.value || !devices.value) return
-    return devices.value.get(currentDeviceId.value)
+    if (currentDeviceId.value) return devices.value.get(currentDeviceId.value)
   })
 })
