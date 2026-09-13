@@ -65,14 +65,14 @@ provideSettingsContentDevicesContext({
           <SettingsItemPrimitive class="gap-2 w-full">
             <template #label>
               <div class="flex w-full items-center justify-between">
-                <div class="flex items-center gap-1">
+                <div class="flex gap-1 items-center">
                   <p class="font-medium">Device list</p>
 
                   <USpinner v-if="isFetching" class="size-1em" />
                 </div>
 
-                <div class="flex items-center gap-1">
-                  <UButton @click="refetch" size="icon-sm" variant="ghost">
+                <div class="flex gap-1 items-center">
+                  <UButton size="icon-sm" variant="ghost" @click="refetch">
                     <Icon name="tabler:reload" />
                   </UButton>
 
