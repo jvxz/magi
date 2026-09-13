@@ -10,9 +10,18 @@ const keyNameMap = {
 </script>
 
 <script lang="ts" setup>
-const { device } = defineProps<{ device: DeviceEntry | undefined; isCurrent?: boolean }>()
+import { CollapsibleRoot } from '#components'
 
-const targetDetails = computed(() =>
+import { injectSettingsContentDevicesContext } from '../devices.vue'
+
+const { device } = defineProps<{
+  device: DeviceEntry | undefined
+  isCurrent?: boolean
+}>()
+
+const { deleteDevice, isDeletingAnyDevice, deviceDeleting, now } = injectSettingsContentDevicesContext()
+
+const details = computed(() =>
   device
     ? pick(omitBy(device, isNil), [
         'device_id',
@@ -25,12 +34,17 @@ const targetDetails = computed(() =>
     : undefined,
 )
 
-const timeSinceActive = useTimeAgoIntl(() => targetDetails.value?.last_seen_ts ?? -1)
+const { query } = useAuthMetadata()
+const { isLoading: isLoadingAuthMetadata } = query
+
 const timeSinceActiveText = computed(() =>
-  targetDetails.value?.last_seen_ts ? `Last active ${timeSinceActive.value}` : `Last active (unknown)`,
+  device?.last_seen_ts
+    ? `Last active ${formatTimeAgoIntl(new Date(device.last_seen_ts), {}, now.value)}`
+    : `Last active (unknown)`,
 )
 
 const verified = computed(() => !!device?.crypto?.verified)
+const isDeletingDevice = computed(() => deviceDeleting.value === device?.device_id)
 </script>
 
 <template>
@@ -56,7 +70,7 @@ const verified = computed(() => !!device?.crypto?.verified)
           </template>
           <USkeleton v-else class="rounded-sm h-1em w-1/4" />
 
-          <UCardGroupItemDescription v-if="targetDetails" class="text-clip">
+          <UCardGroupItemDescription v-if="device" class="text-clip">
             <CollapsibleTrigger as-child>
               <UButton
                 title="More details"
@@ -75,18 +89,29 @@ const verified = computed(() => !!device?.crypto?.verified)
           </UCardGroupItemDescription>
           <USkeleton v-else class="rounded-sm h-1em w-1/3" />
         </UCardGroupItemHeader>
+
+        <UButton
+          v-if="device"
+          :disabled="isLoadingAuthMetadata || isDeletingAnyDevice"
+          :is-loading="isDeletingDevice"
+          @click="deleteDevice(device.device_id)"
+          size="icon"
+          variant="ghost"
+        >
+          <Icon name="tabler:trash" />
+        </UButton>
       </div>
 
       <CollapsibleContent class="ps-14 bg-transparent w-full">
-        <ul v-if="targetDetails" class="text-sm pt-2 gap-x-2 grid grid-cols-[auto_1fr] *:(flex flex-col gap-1)">
+        <ul v-if="details" class="text-sm pt-2 gap-x-2 grid grid-cols-[auto_1fr] *:(flex flex-col gap-1)">
           <div class="text-muted-foreground">
-            <span v-for="key in objectKeys(targetDetails)" :key>
+            <span v-for="key in objectKeys(details)" :key>
               {{ keyNameMap[key] }}
             </span>
           </div>
 
           <div>
-            <template v-for="[key, value] in objectEntries(targetDetails)" :key="value">
+            <template v-for="[key, value] in objectEntries(details)" :key>
               <UClickToCopy as-child side="right" class="text-xs">
                 <UButton variant="link">
                   <template v-if="key === 'last_seen_ts'">

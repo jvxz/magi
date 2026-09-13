@@ -50,6 +50,11 @@ export const useDevices = createGlobalState(() => {
   })
 
   const error = computed(() => cryptoDevices.error.value ?? sessionDevices.error.value)
+  const isFetching = computed(() => cryptoDevices.isFetching.value ?? sessionDevices.isFetching.value)
+  const refetch = () => {
+    cryptoDevices.refetch()
+    sessionDevices.refetch()
+  }
 
-  return { cryptoDevices, devices, error, sessionDevices }
+  return { cryptoDevices, devices, error, isFetching, sessionDevices, refetch }
 })
