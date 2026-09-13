@@ -51,8 +51,8 @@ importers:
         specifier: ^0.10.0
         version: 0.10.0(vue@3.6.0-rc.6(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))
       '@tanstack/vue-query':
-        specifier: 5.101.4
-        version: 5.101.4(vue@3.6.0-rc.6(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))
+        specifier: 5.102.8
+        version: 5.102.8(vue@3.6.0-rc.6(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))
       '@tanstack/vue-virtual':
         specifier: ^3.13.36
         version: 3.13.36(vue@3.6.0-rc.6(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))
@@ -3663,9 +3663,6 @@ packages:
     resolution: {integrity: sha512-Wo1iKt2b9OT7d+YGhvEPD3DXvPv2etTusIMhMUoG7fbhmxcXCtIjJDEygy91Y2JFlwGyjqiBPRozme7UD8hoqg==}
     engines: {node: '>=12'}
 
-  '@tanstack/query-core@5.101.4':
-    resolution: {integrity: sha512-gNwcvOJcRbLWPOLG/2OBm+zM+Yv+MKsXKEOWC57USuZDEsI71hEErQsiEGx5wX9rzWWkfwM0fVSPoiIFSsxfiw==}
-
   '@tanstack/query-core@5.102.8':
     resolution: {integrity: sha512-ZNjkJ33CqvPNec/6lZBnHqLc3EVGPZ9ySLhYahU9TcuRFdmwXewuj0c4hwSWcGHqEUwcSrKeZ+oGcvPBqXcQcg==}
 
@@ -3687,8 +3684,8 @@ packages:
     peerDependencies:
       vue: 3.6.0-rc.6
 
-  '@tanstack/vue-query@5.101.4':
-    resolution: {integrity: sha512-UYjkUZhnWQIFGNb7SdgjCitAftNyYQfOIVUh6vBUQAG4SQKNMSBKeQERFDubpxLAMpIBJTaOrE8fM4c1kZcIGQ==}
+  '@tanstack/vue-query@5.102.8':
+    resolution: {integrity: sha512-W3Q6Od3FbdttACuavgbICKMFgYCPobvuMiO8tIpqMP073QnREVSaO4ZPqrFqosIbFKikiQTmZhEEbYR9bPsWLA==}
     peerDependencies:
       '@vue/composition-api': ^1.1.2
       vue: 3.6.0-rc.6
@@ -12630,8 +12627,6 @@ snapshots:
     dependencies:
       remove-accents: 0.5.0
 
-  '@tanstack/query-core@5.101.4': {}
-
   '@tanstack/query-core@5.102.8': {}
 
   '@tanstack/query-persist-client-core@5.102.8':
@@ -12652,10 +12647,10 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
 
-  '@tanstack/vue-query@5.101.4(vue@3.6.0-rc.6(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))':
+  '@tanstack/vue-query@5.102.8(vue@3.6.0-rc.6(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))':
     dependencies:
       '@tanstack/match-sorter-utils': 8.19.4
-      '@tanstack/query-core': 5.101.4
+      '@tanstack/query-core': 5.102.8
       '@vue/devtools-api': 6.6.4
       vue: 3.6.0-rc.6(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2)
       vue-demi: 0.14.10(vue@3.6.0-rc.6(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))
