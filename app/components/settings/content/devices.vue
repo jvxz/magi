@@ -3,8 +3,11 @@ import { createContext } from 'reka-ui'
 
 export interface SettingsContentDevicesContext {
   deleteDevice: (deviceId: string) => void
+  renameDevice: (deviceId: string) => void
   isDeletingAnyDevice: Ref<boolean>
   deviceDeleting: Ref<string | undefined>
+  deviceRenaming: Ref<string | undefined>
+  renameDialogOpen: Ref<boolean>
   now: Readonly<Ref<Date>>
 }
 
@@ -36,8 +39,11 @@ const sortedDevices = computed(() => {
   })
 })
 
-const clientActions = useClientActions()
+const renameDialogOpen = ref(false)
 const deviceDeleting = ref<string>()
+const deviceRenaming = ref<string>()
+
+const clientActions = useClientActions()
 async function deleteDevice(deviceId: string) {
   try {
     deviceDeleting.value = deviceId
@@ -47,13 +53,21 @@ async function deleteDevice(deviceId: string) {
   }
 }
 
+function renameDevice(deviceId: string) {
+  deviceRenaming.value = deviceId
+  renameDialogOpen.value = true
+}
+
 const now = useNow({ interval: 30_000 })
 
 provideSettingsContentDevicesContext({
   deleteDevice,
   deviceDeleting,
+  deviceRenaming,
   isDeletingAnyDevice: clientActions.deleteDevice.isPending,
   now,
+  renameDevice,
+  renameDialogOpen,
 })
 </script>
 
@@ -122,4 +136,6 @@ provideSettingsContentDevicesContext({
 
     <UScrollAreaScrollbars />
   </UScrollAreaRoot>
+
+  <SettingsContentDevicesRenameDialog />
 </template>

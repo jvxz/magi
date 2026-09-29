@@ -41,7 +41,6 @@ export const $mk = {
   clientLogin: () => defineKey('clientLogin'),
   clientLogout: () => defineKey('clientLogout'),
   createRoom: () => defineKey('createRoom'),
-  // deleteDevice: (deviceId: MaybeRefOrGetter<string | undefined>) => defineKey('deleteDevice', toRef(deviceId)),
   deleteDevice: () => defineKey('deleteDevice'),
   invite: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('invite', toRef(roomId)),
   joinRoom: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('joinRoom', toRef(roomId)),
@@ -52,6 +51,7 @@ export const $mk = {
   redact: (roomId: MaybeRefOrGetter<string | undefined>, eventId: MaybeRefOrGetter<string | undefined>) =>
     defineKey('redact', toRef(roomId), toRef(eventId)),
   register: () => defineKey('register'),
+  renameDevice: () => defineKey('renameDevice'),
   scrollEvents: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('scrollEvents', toRef(roomId)),
 } as const
 

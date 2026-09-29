@@ -19,7 +19,8 @@ const { device } = defineProps<{
   isCurrent?: boolean
 }>()
 
-const { deleteDevice, isDeletingAnyDevice, deviceDeleting, now } = injectSettingsContentDevicesContext()
+const { deleteDevice, isDeletingAnyDevice, renameDevice, deviceRenaming, deviceDeleting, now } =
+  injectSettingsContentDevicesContext()
 
 const details = computed(() =>
   device
@@ -45,6 +46,7 @@ const timeSinceActiveText = computed(() =>
 
 const verified = computed(() => !!device?.crypto?.verified)
 const isDeletingDevice = computed(() => deviceDeleting.value === device?.device_id)
+const isRenamingDevice = computed(() => deviceRenaming.value === device?.device_id)
 </script>
 
 <template>
@@ -56,18 +58,16 @@ const isDeletingDevice = computed(() => deviceDeleting.value === device?.device_
         </div>
 
         <UCardGroupItemHeader class="flex flex-col w-full self-stretch justify-evenly">
-          <template v-if="device">
-            <UCardGroupItemTitle class="flex gap-2 text-clip">
-              <span :title="device.display_name ?? device.device_id" class="w-fit truncate">
-                {{ device.display_name ?? device.device_id }}
-              </span>
+          <UCardGroupItemTitle v-if="device" class="flex gap-2 text-clip">
+            <span :title="device.display_name ?? device.device_id" class="w-fit truncate">
+              {{ device.display_name ?? device.device_id }}
+            </span>
 
-              <UTooltipRegionTrigger region="deviceListVerifiedIcon" :value="{ verified }">
-                <Icon v-if="verified" class="text-muted-foreground" name="tabler:rosette-discount-check" />
-                <Icon v-else class="text-danger" name="tabler:alert-triangle" />
-              </UTooltipRegionTrigger>
-            </UCardGroupItemTitle>
-          </template>
+            <UTooltipRegionTrigger region="deviceListVerifiedIcon" :value="{ verified }">
+              <Icon v-if="verified" class="text-muted-foreground" name="tabler:rosette-discount-check" />
+              <Icon v-else class="text-danger" name="tabler:alert-triangle" />
+            </UTooltipRegionTrigger>
+          </UCardGroupItemTitle>
           <USkeleton v-else class="rounded-sm h-1em w-1/4" />
 
           <UCardGroupItemDescription v-if="device" class="text-clip">
@@ -90,16 +90,27 @@ const isDeletingDevice = computed(() => deviceDeleting.value === device?.device_
           <USkeleton v-else class="rounded-sm h-1em w-1/3" />
         </UCardGroupItemHeader>
 
-        <UButton
-          v-if="device"
-          :disabled="isLoadingAuthMetadata || isDeletingAnyDevice"
-          :is-loading="isDeletingDevice"
-          size="icon"
-          variant="ghost"
-          @click="deleteDevice(device.device_id)"
-        >
-          <Icon name="tabler:trash" />
-        </UButton>
+        <div v-if="device" class="flex items-center gap-1 shrink-0">
+          <UButton
+            :disabled="isLoadingAuthMetadata || isDeletingAnyDevice"
+            :is-loading="isRenamingDevice"
+            size="icon"
+            variant="ghost"
+            @click="renameDevice(device.device_id)"
+          >
+            <Icon name="tabler:pencil" />
+          </UButton>
+
+          <UButton
+            :disabled="isLoadingAuthMetadata || isDeletingAnyDevice"
+            :is-loading="isDeletingDevice"
+            size="icon"
+            variant="ghost"
+            @click="deleteDevice(device.device_id)"
+          >
+            <Icon name="tabler:trash" />
+          </UButton>
+        </div>
       </div>
 
       <CollapsibleContent class="ps-14 bg-transparent w-full">

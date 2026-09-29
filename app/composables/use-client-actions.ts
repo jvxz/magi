@@ -44,5 +44,12 @@ export const useClientActions = () => {
     },
   })
 
-  return { createRoom, deleteDevice }
+  const renameDevice = useMutation({
+    mutationFn: async ({ deviceId, name }: { deviceId: string; name: string }) =>
+      client.value.setDeviceDetails(deviceId, { display_name: name }),
+    mutationKey: $mk.renameDevice(),
+    onError: err => notifyError(err, 'Failed to rename device'),
+  })
+
+  return { createRoom, deleteDevice, renameDevice }
 }
