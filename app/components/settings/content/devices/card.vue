@@ -90,7 +90,7 @@ const isRenamingDevice = computed(() => deviceRenaming.value === device?.device_
           <USkeleton v-else class="rounded-sm h-1em w-1/3" />
         </UCardGroupItemHeader>
 
-        <div v-if="device" class="flex items-center gap-1 shrink-0">
+        <div v-if="device" class="flex shrink-0 gap-1 items-center">
           <UButton
             :disabled="isLoadingAuthMetadata || isDeletingAnyDevice"
             :is-loading="isRenamingDevice"

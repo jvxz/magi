@@ -55,7 +55,7 @@ async function handleRename() {
           <UAlertDialogTitle> Rename "{{ resolveDeviceName(device) }}" </UAlertDialogTitle>
         </UAlertDialogHeader>
 
-        <FormInput autofocus v-model:model-value="r$.$value.name" label="Device name" :errors="r$.$errors.name" />
+        <FormInput v-model:model-value="r$.$value.name" autofocus label="Device name" :errors="r$.$errors.name" />
 
         <UAlertDialogFooter>
           <UAlertDialogAnnotation>
