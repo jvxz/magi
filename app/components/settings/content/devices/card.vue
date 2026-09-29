@@ -46,9 +46,7 @@ const timeSinceActiveText = computed(() =>
 
 const verified = computed(() => !!device?.crypto?.verified)
 const isDeletingDevice = computed(() => deviceDeleting.value === device?.device_id)
-const isRenamingDevice = computed(
-  () => renameMutation.isPending.value && deviceRenaming.value === device?.device_id,
-)
+const isRenamingDevice = computed(() => renameMutation.isPending.value && deviceRenaming.value === device?.device_id)
 </script>
 
 <template>
