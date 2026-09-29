@@ -19,7 +19,7 @@ const { device } = defineProps<{
   isCurrent?: boolean
 }>()
 
-const { deleteDevice, isDeletingAnyDevice, renameDevice, deviceRenaming, deviceDeleting, now } =
+const { deleteDevice, isDeletingAnyDevice, renameDevice, deviceRenaming, deviceDeleting, renameMutation, now } =
   injectSettingsContentDevicesContext()
 
 const details = computed(() =>
@@ -46,7 +46,9 @@ const timeSinceActiveText = computed(() =>
 
 const verified = computed(() => !!device?.crypto?.verified)
 const isDeletingDevice = computed(() => deviceDeleting.value === device?.device_id)
-const isRenamingDevice = computed(() => deviceRenaming.value === device?.device_id)
+const isRenamingDevice = computed(
+  () => renameMutation.isPending.value && deviceRenaming.value === device?.device_id,
+)
 </script>
 
 <template>

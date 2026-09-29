@@ -3,13 +3,12 @@ import { required } from '@regle/rules'
 
 import { injectSettingsContentDevicesContext } from '../devices.vue'
 
-const { renameDialogOpen, deviceRenaming } = injectSettingsContentDevicesContext()
+const { renameDialogOpen, deviceRenaming, renameMutation: renameDevice } = injectSettingsContentDevicesContext()
 
 const { devices, refetch: refetchDevices } = useDevices()
 const device = computed(() => (deviceRenaming.value ? devices.value.get(deviceRenaming.value) : undefined))
 
-const { renameDevice } = useClientActions()
-const { isPending: isDeletingDevice, error: renameError } = renameDevice
+const { isPending: isRenamingDevice, error: renameError } = renameDevice
 
 const { r$ } = useRegle(
   {
@@ -33,7 +32,14 @@ const dialogOpen = computed({
 watch(renameDialogOpen, open => {
   if (!open) {
     deviceRenaming.value = undefined
-  } else r$.name.$value = device.value?.display_name ?? ''
+  } else {
+    renameDevice.reset()
+    r$.name.$value = device.value?.display_name ?? ''
+  }
+})
+
+watch(device, d => {
+  if (!d) renameDialogOpen.value = false
 })
 
 async function handleRename() {
@@ -41,7 +47,7 @@ async function handleRename() {
 
   try {
     await renameDevice.mutateAsync({ deviceId: device.value.device_id, name: r$.$value.name })
-    refetchDevices()
+    await refetchDevices()
     renameDialogOpen.value = false
   } catch {}
 }
@@ -55,7 +61,7 @@ async function handleRename() {
           <UAlertDialogTitle> Rename "{{ resolveDeviceName(device) }}" </UAlertDialogTitle>
         </UAlertDialogHeader>
 
-        <FormInput v-model:model-value="r$.$value.name" autofocus label="Device name" :errors="r$.$errors.name" />
+        <FormInput v-model:model-value="r$.$value.name" autofocus label="Device name" :error="r$.$errors.name" />
 
         <UAlertDialogFooter>
           <UAlertDialogAnnotation>
@@ -63,7 +69,7 @@ async function handleRename() {
           </UAlertDialogAnnotation>
 
           <UAlertDialogCancel :disabled="renameDevice.isPending.value" variant="ghost"> Cancel </UAlertDialogCancel>
-          <UButton :is-loading="isDeletingDevice" type="submit">
+          <UButton :is-loading="isRenamingDevice" type="submit">
             <span>Rename</span>
           </UButton>
         </UAlertDialogFooter>

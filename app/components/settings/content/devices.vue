@@ -5,6 +5,7 @@ export interface SettingsContentDevicesContext {
   deleteDevice: (deviceId: string) => void
   renameDevice: (deviceId: string) => void
   isDeletingAnyDevice: Ref<boolean>
+  renameMutation: ReturnType<typeof useClientActions>['renameDevice']
   deviceDeleting: Ref<string | undefined>
   deviceRenaming: Ref<string | undefined>
   renameDialogOpen: Ref<boolean>
@@ -68,6 +69,7 @@ provideSettingsContentDevicesContext({
   now,
   renameDevice,
   renameDialogOpen,
+  renameMutation: clientActions.renameDevice,
 })
 </script>
 
