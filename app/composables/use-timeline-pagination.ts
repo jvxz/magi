@@ -18,7 +18,6 @@ interface Options<T> {
   followTail?: boolean
 }
 
-
 const ARM_VIEWPORTS = 0.5
 const FILL_VIEWPORTS = 3
 const PREFETCH_PAGES = 3

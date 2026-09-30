@@ -18,13 +18,20 @@ export const GENERAL__ASIDE_DISPLAY_MODES = {
 
 export const GENERAL__DEFAULT_RECENT_REACTIONS = ['😭', '❤️', '🔥', '🥺']
 
-export const GENERAL__IMG_PLACEHOLDER_URL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+export const GENERAL__IMG_PLACEHOLDER_URL =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
 export const GENERAL__PUBLIC_ROOM_PAGINATION_LIMIT = 36
 
 export const GENERAL__SORT_SELECT_DIRS = ['asc', 'desc'] as const
 
-export const GENERAL__SORT_SELECT_OPTIONS = ['name', 'date-modified', 'date-created', 'last-active', 'verified'] as const
+export const GENERAL__SORT_SELECT_OPTIONS = [
+  'name',
+  'date-modified',
+  'date-created',
+  'last-active',
+  'verified',
+] as const
 
 export const GENERAL__TOAST_EXIT_MS = 150
 

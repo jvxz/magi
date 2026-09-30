@@ -43,7 +43,6 @@ export const MARKED_MESSAGE_INSTANCE = new Marked(
   }),
 )
 
-
 function findEmojiByShortcode(shortcode: string, emojis: EmojiItem[]) {
   return emojis.find(e => e.name === shortcode || e.shortcodes?.includes(shortcode))
 }

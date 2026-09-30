@@ -34,7 +34,6 @@ export default defineNuxtModule({
   },
 })
 
-
 export function collectInlinedStylesheets(
   inlined: Set<string>,
   shouldInline: boolean | ((id?: string) => boolean),

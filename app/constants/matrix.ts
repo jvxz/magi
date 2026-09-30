@@ -1,6 +1,6 @@
-import type { AvatarImageSize } from '../utils/matrix/types'
-
 import { AuthType, EventType } from 'matrix-js-sdk'
+
+import type { AvatarImageSize } from '../utils/matrix/types'
 
 // https://github.com/cinnyapp/cinny/blob/5e00d517ebd6b77663e41bcbe888b37df6d3b3d9/src/app/hooks/useAccountManagement.ts#L6-L11
 export const MATRIX__ACCOUNT_MANAGEMENT_ACTIONS = {
@@ -87,7 +87,12 @@ export const MATRIX__AVATAR_IMAGE_SIZE_VALUES = {
 
 export const MATRIX__BASE_URL = 'https://matrix-client.matrix.org'
 
-export const MATRIX__REACTABLE_EVENT_TYPES: (EventType | 'm.poll.start' | 'org.matrix.msc3381.poll.start' | (string & {}))[] = [
+export const MATRIX__REACTABLE_EVENT_TYPES: (
+  | EventType
+  | 'm.poll.start'
+  | 'org.matrix.msc3381.poll.start'
+  | (string & {})
+)[] = [
   EventType.RoomMessage,
   EventType.RoomMessageEncrypted,
   EventType.Sticker,

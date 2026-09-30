@@ -4,7 +4,8 @@ export const REGEX__CSS_FILE = /\.(?:css|less|sass|scss|styl|stylus|pcss|postcss
 export const REGEX__DATA_MX_COLOR = /^#[0-9a-f]{6}$/i
 export const REGEX__EMOJI = /\p{RGI_Emoji}/gv
 export const REGEX__EMOJI_VARIATION = /[\uFE00-\uFE0F]/gu
-export const REGEX__MATRIX_ROOM_ALIAS = /^#[^\0:\uD800-\uDFFF]+:(?:\[[0-9A-F:.]{2,45}\]|[0-9A-Z.-]{1,255})(?::\d{1,5})?$/i
+export const REGEX__MATRIX_ROOM_ALIAS =
+  /^#[^\0:\uD800-\uDFFF]+:(?:\[[0-9A-F:.]{2,45}\]|[0-9A-Z.-]{1,255})(?::\d{1,5})?$/i
 export const REGEX__MXID = /^([@$+#])([^\s:]*):(\S+)$/
 export const REGEX__P_TAG = /^<p>(.*)<\/p>$/s
 export const REGEX__QUERY_STRING = /\?.*$/

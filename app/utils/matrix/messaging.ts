@@ -4,7 +4,6 @@ import type { MatrixClient } from 'matrix-js-sdk'
 
 import DOMPurify from 'dompurify'
 
-
 type RestrictedTag = keyof typeof MATRIX__ALLOWED_ATTRS_PER_TAG
 
 const sanitizeAttribute: UponSanitizeAttributeHook = (node, data) => {

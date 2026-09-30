@@ -2,7 +2,6 @@ import type { Room } from 'matrix-js-sdk'
 
 import { KnownMembership, MatrixError } from 'matrix-js-sdk'
 
-
 export const isUserId = (input: unknown): input is string => isString(input) && REGEX__USER_ID.test(input)
 
 export const isRoomId = (input: unknown): input is string => isString(input) && REGEX__ROOM_ID.test(input)

@@ -5,7 +5,6 @@ import { toRef } from '@vueuse/core'
 
 export type IPublicRoomsResponse = Awaited<ReturnType<MatrixClient['publicRooms']>>
 
-
 export function usePublicRooms(
   server: MaybeRefOrGetter<string>,
   page?: MaybeRefOrGetter<number>,
