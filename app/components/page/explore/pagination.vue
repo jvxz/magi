@@ -25,7 +25,7 @@ function handlePaginate(dir: 'f' | 'b') {
   <div class="grid grid-cols-3 items-center">
     <div class="mr-auto flex gap-2 items-center justify-center">
       <UButton :disabled="!canPaginateBackward" @click="handlePaginate('b')">
-        <Icon name="tabler:arrow-left" />
+        <Icon :name="ICON__PREVIOUS" />
         <span>Previous</span>
       </UButton>
     </div>
@@ -39,7 +39,7 @@ function handlePaginate(dir: 'f' | 'b') {
 
     <div class="ml-auto flex gap-2 items-center justify-center">
       <UButton :disabled="!canPaginateForward" @click="handlePaginate('f')">
-        <Icon name="tabler:arrow-right" />
+        <Icon :name="ICON__NEXT" />
         <span>Next</span>
       </UButton>
     </div>

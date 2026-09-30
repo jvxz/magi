@@ -141,6 +141,6 @@ const handleClick = () => {
     @click="handleClick"
   >
     <span>Continue with SSO</span>
-    <Icon name="tabler:key" class="size-4" />
+    <Icon :name="ICON__SSO" class="size-4" />
   </UButton>
 </template>

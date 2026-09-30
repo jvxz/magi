@@ -59,7 +59,7 @@ const inputEl = useTemplateRef('inputEl')
       <UDialogTrigger as-child>
         <UTooltipTrigger as-child>
           <button class="text-muted-foreground flex cursor-pointer items-center justify-center">
-            <Icon name="tabler:plus" />
+            <Icon :name="ICON__ADD" />
           </button>
         </UTooltipTrigger>
       </UDialogTrigger>
@@ -85,7 +85,7 @@ const inputEl = useTemplateRef('inputEl')
         />
 
         <UCheckboxCardRoot v-model:model-value="r$.encrypt.$value" :disabled="isCreating" class="w-full">
-          <UCheckboxCardIcon name="tabler:lock" />
+          <UCheckboxCardIcon :name="ICON__ENCRYPTED" />
           <UCheckboxCardContent>
             <UCheckboxCardTitle> Encrypt room </UCheckboxCardTitle>
             <UCheckboxCardDescription>

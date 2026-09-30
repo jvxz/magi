@@ -328,7 +328,7 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
       class="px-3.5 py-0 rounded bg-input flex gap-3.5 size-full min-h-user-card-height ring-1 ring-border ring-inset *:shrink-0 has-focus-visible:ring-border-strong"
     >
       <UButton variant="ghost" size="icon" class="mt-[calc((var(--spacing-user-card-height)-2rem)/2)]">
-        <Icon name="tabler:plus" class="size-5" />
+        <Icon :name="ICON__ADD" class="size-5" />
       </UButton>
 
       <div
@@ -343,7 +343,7 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
         :disabled="!content"
         class="mt-[calc((var(--spacing-user-card-height)-2rem)/2)]"
       >
-        <Icon name="tabler:send" class="size-5" />
+        <Icon :name="ICON__SEND" class="size-5" />
       </UButton>
     </div>
 

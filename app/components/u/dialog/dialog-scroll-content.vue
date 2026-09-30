@@ -44,7 +44,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
             )
           "
         >
-          <Icon name="tabler:x" class="size-4" />
+          <Icon :name="ICON__CLOSE" class="size-4" />
           <span class="sr-only">Close</span>
         </DialogClose>
       </DialogContent>

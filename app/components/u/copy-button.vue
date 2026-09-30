@@ -56,7 +56,7 @@ const delegated = reactiveOmit(props, ['class', 'value'])
         :transition="transition"
         class="size-fit aspect-square absolute"
       >
-        <Icon name="tabler:check" class="text-foreground" />
+        <Icon :name="ICON__CHECK" class="text-foreground" />
       </motion.div>
       <motion.div
         v-else
@@ -66,7 +66,7 @@ const delegated = reactiveOmit(props, ['class', 'value'])
         :transition="transition"
         class="size-fit aspect-square absolute"
       >
-        <Icon name="tabler:copy" />
+        <Icon :name="ICON__COPY" />
       </motion.div>
     </AnimatePresence>
   </UButton>

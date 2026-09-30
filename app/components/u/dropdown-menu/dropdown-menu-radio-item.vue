@@ -17,7 +17,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <DropdownMenuRadioItem v-bind="forwarded" :class="cn(popoverItemBase(), props.class)">
     <span class="flex size-3.5 pointer-events-none items-center left-2 justify-center absolute">
       <DropdownMenuItemIndicator>
-        <Icon name="tabler:circle-dot" class="size-2 fill-current" />
+        <Icon :name="ICON__RADIO" class="size-2 fill-current" />
       </DropdownMenuItemIndicator>
     </span>
     <slot />

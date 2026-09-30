@@ -30,7 +30,7 @@ function toggle() {
     @click="toggle"
   >
     <slot>
-      <Icon :name="modelValue.dir === 'asc' ? 'tabler:sort-ascending' : 'tabler:sort-descending'" />
+      <Icon :name="modelValue.dir === 'asc' ? ICON__SORT_ASC : ICON__SORT_DESC" />
     </slot>
   </UButton>
 </template>

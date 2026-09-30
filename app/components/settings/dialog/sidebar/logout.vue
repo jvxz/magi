@@ -12,7 +12,7 @@ function handleOpen(value: boolean) {
 <template>
   <UAlertDialogRoot :open @update:open="handleOpen">
     <UAlertDialogTrigger as-child>
-      <UButton variant="ghost" class="justify-start"> <Icon name="tabler:power" /> <span>Log out</span> </UButton>
+      <UButton variant="ghost" class="justify-start"> <Icon :name="ICON__LOGOUT" /> <span>Log out</span> </UButton>
     </UAlertDialogTrigger>
     <UAlertDialogContent>
       <UAlertDialogHeader>

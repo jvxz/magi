@@ -40,7 +40,7 @@ const filteredCategories = computed(() =>
         <span class="font-medium">{{ self?.displayName }}</span>
         <span class="text-muted-foreground group-hover:text-foreground">
           Edit Profile
-          <Icon name="tabler:pencil-filled" class="h-0.6lh" />
+          <Icon :name="ICON__EDIT_PROFILE" class="h-0.6lh" />
         </span>
       </div>
     </UButton>
@@ -50,7 +50,7 @@ const filteredCategories = computed(() =>
         v-model:model-value="searchQuery"
         placeholder="Search"
         class="w-full"
-        leading-icon="tabler:search"
+        :leading-icon="ICON__SEARCH"
       />
     </div>
 

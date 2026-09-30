@@ -21,6 +21,6 @@ const forwarded = useForwardProps(delegated)
     variant="ghost"
     class="rounded-sm size-6 right-4 top-4 absolute"
   >
-    <Icon name="tabler:x" />
+    <Icon :name="ICON__CLOSE" />
   </UButton>
 </template>

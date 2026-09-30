@@ -13,7 +13,7 @@ const body = computed(() => {
   const parsed = parseMembershipEvent(event.value)
   if (parsed.type === 'ban') {
     return {
-      icon: 'tabler:hammer',
+      icon: ICON__BAN,
       message: ` was banned by `,
       sender: parsed.data.bannedName,
       subject: parsed.data.bannerName,
@@ -22,7 +22,7 @@ const body = computed(() => {
 
   if (parsed.type === 'unban') {
     return {
-      icon: 'tabler:hammer-off',
+      icon: ICON__UNBAN,
       message: ` was unbanned by `,
       sender: parsed.data.unbannedName,
       subject: parsed.data.unbannerName,
@@ -31,7 +31,7 @@ const body = computed(() => {
 
   if (parsed.type === 'kick') {
     return {
-      icon: 'tabler:user-minus',
+      icon: ICON__KICK,
       message: ` was kicked by `,
       sender: parsed.data.kickedName,
       subject: parsed.data.kickerName,
@@ -41,7 +41,7 @@ const body = computed(() => {
   if (parsed.type === 'displayName') {
     if (parsed.data.type === 'changed') {
       return {
-        icon: 'tabler:label',
+        icon: ICON__DISPLAY_NAME,
         message: ` changed their display name`,
         sender: parsed.data.to,
       }
@@ -49,7 +49,7 @@ const body = computed(() => {
 
     if (parsed.data.type === 'removed') {
       return {
-        icon: 'tabler:label-off',
+        icon: ICON__DISPLAY_NAME_REMOVED,
         message: ` removed their display name`,
         sender: parsed.data.name,
       }
@@ -59,7 +59,7 @@ const body = computed(() => {
   if (parsed.type === 'avatar') {
     if (parsed.data.type === 'changed') {
       return {
-        icon: 'tabler:user',
+        icon: ICON__AVATAR,
         message: ` changed their avatar`,
         sender: parsed.data.name,
       }
@@ -67,7 +67,7 @@ const body = computed(() => {
 
     if (parsed.data.type === 'removed') {
       return {
-        icon: 'tabler:user-off',
+        icon: ICON__AVATAR_REMOVED,
         message: ` removed their avatar`,
         sender: parsed.data.name,
       }
@@ -76,7 +76,7 @@ const body = computed(() => {
 
   if (parsed.type === 'leave') {
     return {
-      icon: 'tabler:minus',
+      icon: ICON__LEAVE,
       message: ` left the room`,
       sender: parsed.data.name,
     }
@@ -84,7 +84,7 @@ const body = computed(() => {
 
   if (parsed.type === 'join') {
     return {
-      icon: 'tabler:plus',
+      icon: ICON__JOIN,
       message: ` joined the room`,
       sender: parsed.data.name,
     }
@@ -92,7 +92,7 @@ const body = computed(() => {
 
   if (parsed.type === 'invite') {
     return {
-      icon: 'tabler:mail',
+      icon: ICON__INVITE,
       message: ` was invited to the room by `,
       sender: parsed.data.invitedName,
       subject: parsed.data.inviterName,
@@ -101,14 +101,14 @@ const body = computed(() => {
 
   if (parsed.type === 'knock') {
     return {
-      icon: 'tabler:door',
+      icon: ICON__KNOCK,
       message: ` knocked on the room`,
       sender: parsed.data.name,
     }
   }
 
   return {
-    icon: 'tabler:question-circle',
+    icon: ICON__UNKNOWN,
     message: 'Unknown membership event',
     sender: null,
     subject: null,

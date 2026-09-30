@@ -21,7 +21,7 @@ const forwarded = useForwardProps(delegatedProps)
     :class="cn(interactiveBase({ size: 'icon', variant: 'ghost' }), 'size-6', props.class)"
   >
     <slot>
-      <Icon name="tabler:chevron-down" class="text-muted-foreground translate-y-0.5 size-3!" />
+      <Icon :name="ICON__CHEVRON_DOWN" class="text-muted-foreground translate-y-0.5 size-3!" />
     </slot>
   </AutocompleteTrigger>
 </template>

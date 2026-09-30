@@ -9,7 +9,7 @@ const { copy } = useClipboard()
     :id="notification.id"
     :description="notification.payload.description"
     :title="notification.payload.title"
-    icon="tabler:exclamation-circle"
+    :icon="ICON__ERROR"
   >
     <template #footer="{ handleDismiss, isToast }">
       <UAlertFooter v-if="isDefined(notification.payload.raw) || !isToast">

@@ -40,7 +40,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       )
     "
   >
-    <Icon v-if="props.showIcon" name="tabler:search" class="opacity-50 shrink-0 size-4" />
+    <Icon v-if="props.showIcon" :name="ICON__SEARCH" class="opacity-50 shrink-0 size-4" />
     <AutocompleteInput
       data-slot="autocomplete-input"
       :class="cn('flex-1 outline-hidden border-none', props.class)"

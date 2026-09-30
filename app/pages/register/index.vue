@@ -75,7 +75,7 @@ whenever(
   </template>
 
   <UAlertRoot v-else variant="danger">
-    <UAlertIcon name="tabler:exclamation-circle" class="shrink-0" />
+    <UAlertIcon :name="ICON__ERROR" class="shrink-0" />
 
     <UAlertContent>
       <UAlertTitle>Registrations disabled</UAlertTitle>

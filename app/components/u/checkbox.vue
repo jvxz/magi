@@ -16,7 +16,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
       data-slot="checkbox-indicator"
       class="text-foreground flex size-full items-center justify-center absolute"
     >
-      <Icon name="tabler:check" class="size-4/5" />
+      <Icon :name="ICON__CHECK" class="size-4/5" />
     </CheckboxIndicator>
   </CheckboxRoot>
 </template>

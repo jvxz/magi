@@ -35,12 +35,12 @@ const isPaginating = shallowRef(false)
             },
           }"
         >
-          <UAsideListButtonIcon icon="tabler:list-search" />
+          <UAsideListButtonIcon :icon="ICON__BROWSE" />
           <span>Browse Rooms</span>
         </NuxtLink>
       </UAsideListButton>
       <UAsideListButton>
-        <UAsideListButtonIcon icon="tabler:users" />
+        <UAsideListButtonIcon :icon="ICON__MEMBERS" />
         Members
       </UAsideListButton>
 
@@ -57,7 +57,7 @@ const isPaginating = shallowRef(false)
               },
             }"
           >
-            <UAsideListButtonIcon icon="tabler:hash" />
+            <UAsideListButtonIcon :icon="ICON__ROOM" />
             <span>{{ room.name }}</span>
           </NuxtLink>
         </UAsideListButton>
@@ -82,7 +82,7 @@ const isPaginating = shallowRef(false)
               },
             }"
           >
-            <UAsideListButtonIcon icon="tabler:hash" />
+            <UAsideListButtonIcon :icon="ICON__ROOM" />
             <span>{{ room.name }}</span>
           </NuxtLink>
         </UAsideListButton>

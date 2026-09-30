@@ -21,7 +21,7 @@ const forwarded = useForwardProps(delegatedProps)
     :class="cn(interactiveBase({ size: 'icon' }), props.class)"
   >
     <slot>
-      <Icon name="tabler:x" class="text-muted-foreground size-3.5" />
+      <Icon :name="ICON__CLOSE" class="text-muted-foreground size-3.5" />
     </slot>
   </AutocompleteCancel>
 </template>

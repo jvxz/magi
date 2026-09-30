@@ -37,7 +37,7 @@ const { join } = useRoomActions(() => props.roomId)
           <!-- join rule icon -->
           <UTooltipRoot v-if="summary?.join_rule">
             <UTooltipTrigger as-child>
-              <Icon :name="summary.join_rule === JoinRule.Public ? 'tabler:world' : 'tabler:lock'" />
+              <Icon :name="summary.join_rule === JoinRule.Public ? ICON__PUBLIC : ICON__PRIVATE" />
             </UTooltipTrigger>
 
             <UTooltipContent> This room is {{ resolveJoinRuleLabel(summary.join_rule) }} </UTooltipContent>
@@ -56,7 +56,7 @@ const { join } = useRoomActions(() => props.roomId)
       <!-- details -->
       <div v-if="summary" class="flex flex-col gap-1">
         <p class="text-sm flex gap-1 items-center">
-          <Icon name="tabler:users" />
+          <Icon :name="ICON__MEMBERS" />
           <span class="tabular-nums">
             {{ $n(summary.num_joined_members) }}
             {{ handlePlural(summary.num_joined_members, 'members', 'member') }}
