@@ -79,7 +79,8 @@ export default defineNuxtConfig({
 
   icon: {
     clientBundle: {
-      scan: true,
+      // only scan icon constants
+      scan: { globInclude: ['**/*.{vue,jsx,tsx,md,mdc,mdx,yml,yaml}', 'app/constants/icon.ts'] },
     },
     collections: ['tabler', 'custom'],
     customCollections: [{ dir: './app/assets/icons', prefix: 'custom', provider: 'none' }],

@@ -135,6 +135,12 @@ export default defineConfig({
   ],
   overrides: [
     {
+      files: ['app/constants/icon.ts'],
+      rules: {
+        'perfectionist/sort-variable-declarations': ['warn', { type: 'natural' }],
+      },
+    },
+    {
       files: ['**/*.config.{js,mjs,cjs,ts,mts,cts}'],
       rules: {
         'antfu/no-top-level-await': 'off',
