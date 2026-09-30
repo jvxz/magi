@@ -30,10 +30,10 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <DialogPortal>
     <DialogOverlay :class="cn(overlayStyles)" data-slot="dialog-content-overlay" />
     <DialogContent
-      @open-auto-focus="onOpenAutoFocus"
       v-bind="forwarded"
       data-slot="dialog-content"
       :class="cn(dialogStyles(), props.class)"
+      @open-auto-focus="onOpenAutoFocus"
     >
       <slot />
     </DialogContent>
