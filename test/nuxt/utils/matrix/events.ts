@@ -4,7 +4,7 @@ import type { RoomMember } from 'matrix-js-sdk/lib/models/room-member'
 import { sample } from 'es-toolkit'
 import { EventType, KnownMembership, MatrixEvent } from 'matrix-js-sdk'
 
-import { objectKeys } from '#shared/utils/object'
+import { objectKeys } from '~/utils/object'
 
 import { generateFakeEventId, generateFakeRoomId, generateFakeUserId } from './credentials'
 

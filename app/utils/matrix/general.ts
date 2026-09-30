@@ -1,5 +1,9 @@
 import type { MatrixClient } from 'matrix-js-sdk'
 
+import { getHttpUriForMxc } from 'matrix-js-sdk'
+
+import { MATRIX__BASE_URL } from '~/constants/matrix'
+
 export function getMatrixIdType(id: string | undefined): 'user' | 'room' | 'unknown' {
   if (!id) return 'unknown'
 
@@ -91,4 +95,33 @@ export function resolveViaArray(roomId: string, viaServers?: (string | undefined
   const via = toArray(viaServers ?? [])
   const res = compact(uniq([...via, ...(serverName ? [serverName] : [])]))
   return res.length ? res : undefined
+}
+
+export interface MxcToHttpsOptions {
+  baseUrl?: string | undefined
+  width?: number | undefined
+  height?: number | undefined
+  resizeMethod?: string | undefined
+  allowDirectLinks?: boolean | undefined
+  allowRedirects?: boolean | undefined
+  useAuthentication?: boolean | undefined
+  animated?: boolean | undefined
+}
+
+export function mxcToHttps(mxc: string | undefined, opts?: MxcToHttpsOptions) {
+  try {
+    return getHttpUriForMxc(
+      opts?.baseUrl ?? MATRIX__BASE_URL,
+      mxc,
+      opts?.width,
+      opts?.height,
+      opts?.resizeMethod,
+      opts?.allowDirectLinks,
+      opts?.allowRedirects,
+      opts?.useAuthentication,
+      opts?.animated,
+    )
+  } catch {
+    return undefined
+  }
 }
