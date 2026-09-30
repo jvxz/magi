@@ -4,7 +4,7 @@ import type { DialogRootEmits, DialogRootProps } from 'reka-ui'
 import type { Component } from 'vue'
 
 import { AuthType } from 'matrix-js-sdk'
-import { createContext, useForwardPropsEmits } from 'reka-ui'
+import { useForwardPropsEmits } from 'reka-ui'
 
 import { DialogUiaStagePassword, DialogUiaStageRecaptcha } from '#components'
 
