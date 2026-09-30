@@ -1,5 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 
+import { experimental_createQueryPersister } from '@tanstack/query-persist-client-core'
 import { toRef } from '@vueuse/core'
 
 const defineKey = <const T extends readonly unknown[]>(...parts: T): T => parts
@@ -53,3 +54,9 @@ export const $mk = {
 } as const
 
 export type $MKKey = keyof typeof $mk
+
+export const lsPersister = experimental_createQueryPersister({
+  maxAge: 1000 * 60 * 60 * 24,
+  prefix: 'magi',
+  storage: import.meta.client ? localStorage : null,
+})

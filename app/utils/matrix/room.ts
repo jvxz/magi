@@ -6,7 +6,7 @@ import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 
 import type { MaybeRoomOrId, MaybeUserOrId } from './types'
 
-import { mxcToHttps } from './mxc-to-https'
+import { mxcToHttps } from './general'
 import { resolveUserId } from './user'
 
 interface MDirect extends MatrixEvent {

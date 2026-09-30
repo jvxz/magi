@@ -1,7 +1,12 @@
 import type { Maybe } from '@regle/core'
 
-import { withAsync, withMessage } from '@regle/rules'
+import { required, withAsync, withMessage } from '@regle/rules'
 import { useQueryClient } from '@tanstack/vue-query'
+
+export const regleUserIdDefs = {
+  required: withMessage(required, 'User ID is required'),
+  validId: withMessage(isUserId, 'Invalid user ID'),
+}
 
 export function getValidHomeserverRule() {
   const queryClient = useQueryClient()
@@ -23,3 +28,12 @@ export function getValidHomeserverRule() {
     'Invalid homeserver',
   )
 }
+
+export const noSpaces = createRule({
+  message: 'No spaces allowed',
+  validator: value => {
+    if (typeof value === 'string' && value.includes(' ')) return false
+
+    return true
+  },
+})
