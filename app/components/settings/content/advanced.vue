@@ -38,8 +38,8 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
 <template>
   <SettingsContentLayout>
     <SettingsFormPrimitive
-      :label="SETTINGS_ITEM_METADATA.advanced.resync.title"
-      :description="SETTINGS_ITEM_METADATA.advanced.resync.description"
+      :label="SETTINGS__ITEM_METADATA.advanced.resync.title"
+      :description="SETTINGS__ITEM_METADATA.advanced.resync.description"
     >
       <UAlertDialogRoot
         :open
@@ -52,7 +52,7 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
       >
         <UAlertDialogContent>
           <UAlertDialogHeader>
-            <UAlertDialogTitle> {{ SETTINGS_ITEM_METADATA.advanced.resync.title }} </UAlertDialogTitle>
+            <UAlertDialogTitle> {{ SETTINGS__ITEM_METADATA.advanced.resync.title }} </UAlertDialogTitle>
             <UAlertDescription>
               Re-syncing Magi does not log you out or invalidate your recovery key. Continuing will refresh the page
               when finished.
@@ -70,7 +70,7 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
 
         <UAlertDialogTrigger variant="default" as-child>
           <UButton variant="danger">
-            {{ SETTINGS_ITEM_METADATA.advanced.resync.title }}
+            {{ SETTINGS__ITEM_METADATA.advanced.resync.title }}
           </UButton>
         </UAlertDialogTrigger>
       </UAlertDialogRoot>
@@ -78,8 +78,8 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
 
     <SettingsFormSwitch
       v-model:model-value="settings.advanced.developerMode"
-      :label="SETTINGS_ITEM_METADATA.advanced.developerMode.title"
-      :description="SETTINGS_ITEM_METADATA.advanced.developerMode.description"
+      :label="SETTINGS__ITEM_METADATA.advanced.developerMode.title"
+      :description="SETTINGS__ITEM_METADATA.advanced.developerMode.description"
     />
   </SettingsContentLayout>
 </template>

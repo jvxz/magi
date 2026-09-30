@@ -6,8 +6,8 @@ const settings = useSettings()
   <SettingsContentLayout>
     <SettingsFormSwitch
       v-model:model-value="settings.messaging.typingEvents"
-      :label="SETTINGS_ITEM_METADATA.messaging.typingEvents.title"
-      :description="SETTINGS_ITEM_METADATA.messaging.typingEvents.description"
+      :label="SETTINGS__ITEM_METADATA.messaging.typingEvents.title"
+      :description="SETTINGS__ITEM_METADATA.messaging.typingEvents.description"
     >
     </SettingsFormSwitch>
   </SettingsContentLayout>

@@ -1,4 +1,4 @@
-const TYPING_REFRESH_TIMEOUT = TYPING_TIMEOUT_MS - 1000
+const TYPING_REFRESH_TIMEOUT = GENERAL__TYPING_TIMEOUT_MS - 1000
 
 export const useRoomMembersTyping = createProvidableComposable(
   'useRoomMembersTyping',

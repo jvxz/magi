@@ -16,7 +16,7 @@ const handleClick = async () => {
   assert(resolvedHomeserverBaseUrl.value, 'no resolved homeserver base URL when attempting to login via SSO')
   try {
     isSSONavigating.value = true
-    await idb.set(SSO_BASE_URL_KEY, resolvedHomeserverBaseUrl.value)
+    await idb.set(AUTH__SSO_BASE_URL_KEY, resolvedHomeserverBaseUrl.value)
     return navigateTo(ssoLoginUrl.value, { external: true })
   } catch {
     isSSONavigating.value = false

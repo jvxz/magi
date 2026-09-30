@@ -1,1 +1,1 @@
-export const SSO_BASE_URL_KEY = 'ssoBaseUrl'
+export const AUTH__SSO_BASE_URL_KEY = 'ssoBaseUrl'

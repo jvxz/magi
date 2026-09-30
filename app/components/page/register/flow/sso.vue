@@ -116,7 +116,7 @@ async function handleRedirectFlow() {
 
   try {
     isSSONavigating.value = true
-    await idb.set(SSO_BASE_URL_KEY, resolvedHomeserverBaseUrl.value)
+    await idb.set(AUTH__SSO_BASE_URL_KEY, resolvedHomeserverBaseUrl.value)
     return navigateTo(ssoRegisterUrl.value, { external: true })
   } catch {
     isSSONavigating.value = false

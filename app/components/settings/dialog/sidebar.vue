@@ -12,8 +12,8 @@ onStartTyping(() => inputRef.value?.$el?.focus())
 const { contains } = useFilter({ sensitivity: 'base' })
 
 function categorySearchText<K extends SettingsCategory>(categoryKey: K): string {
-  const cat = SETTINGS_CATEGORY_METADATA[categoryKey]
-  const items = SETTINGS_ITEM_METADATA[categoryKey]
+  const cat = SETTINGS__CATEGORY_METADATA[categoryKey]
+  const items = SETTINGS__ITEM_METADATA[categoryKey]
   const fromItems: string[] = []
   for (const [settingKey, meta] of objectEntries(items))
     fromItems.push(String(settingKey), meta.title, meta.description)
@@ -22,10 +22,10 @@ function categorySearchText<K extends SettingsCategory>(categoryKey: K): string 
 }
 
 const filteredCategories = computed(() =>
-  SETTINGS_CATEGORIES.filter(key => {
-    const cat = SETTINGS_CATEGORY_METADATA[key]
+  SETTINGS__CATEGORIES.filter(key => {
+    const cat = SETTINGS__CATEGORY_METADATA[key]
     return contains(categorySearchText(cat.key), searchQuery.value.trim())
-  }).map(k => SETTINGS_CATEGORY_METADATA[k]),
+  }).map(k => SETTINGS__CATEGORY_METADATA[k]),
 )
 </script>
 

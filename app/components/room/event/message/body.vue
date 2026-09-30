@@ -21,12 +21,12 @@ const { messageNodes } = useMessageBodyNodes(() => props.event)
 const { content: eventContent } = useEventContent(() => props.event)
 const eventBody = computed(() => trimReplyFromBody(eventContent.value?.body))
 const isJumboEmoji = computed(() => {
-  const body = eventBody.value?.trim().replace(EMOJI_VARIATION_RE, '')
+  const body = eventBody.value?.trim().replace(REGEX__EMOJI_VARIATION, '')
   if (!body) return false
 
-  if (body.replace(EMOJI_RE, '').trim() !== '') return false
+  if (body.replace(REGEX__EMOJI, '').trim() !== '') return false
 
-  const count = body.match(EMOJI_RE)?.length ?? 0
+  const count = body.match(REGEX__EMOJI)?.length ?? 0
   return count > 0 && count <= 27
 })
 

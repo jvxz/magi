@@ -4,6 +4,8 @@ import type { ResourceMeta } from 'vue-bundle-renderer'
 
 import { defineNuxtModule, useLogger } from 'nuxt/kit'
 
+import { REGEX__CSS_FILE, REGEX__QUERY_STRING } from '../constants/regex'
+
 export default defineNuxtModule({
   defaults: {
     disablePrefetchLinks: 'dynamicImports',
@@ -32,9 +34,6 @@ export default defineNuxtModule({
   },
 })
 
-const CSS_RE = /\.(?:css|less|sass|scss|styl|stylus|pcss|postcss)(?:\?[^.]+)?$/
-const QUERY_RE = /\?.*$/
-
 export function collectInlinedStylesheets(
   inlined: Set<string>,
   shouldInline: boolean | ((id?: string) => boolean),
@@ -50,17 +49,17 @@ export function collectInlinedStylesheets(
 
         const sources = new Set<string>()
         for (const moduleId of chunk.moduleIds) {
-          if (CSS_RE.test(moduleId)) sources.add(moduleId)
+          if (REGEX__CSS_FILE.test(moduleId)) sources.add(moduleId)
 
           for (const importedId of this.getModuleInfo(moduleId)?.importedIds ?? []) {
-            if (CSS_RE.test(importedId)) sources.add(importedId)
+            if (REGEX__CSS_FILE.test(importedId)) sources.add(importedId)
           }
         }
 
         const isFromVueAlone =
           sources.size > 0 &&
           [...sources].every(source => {
-            const moduleId = source.replace(QUERY_RE, '')
+            const moduleId = source.replace(REGEX__QUERY_STRING, '')
             return (
               moduleId.endsWith('.vue') &&
               (shouldInline === true || (typeof shouldInline === 'function' && shouldInline(moduleId)))

@@ -27,26 +27,12 @@ export interface Settings {
   devices: object
   general: object
 }
-export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
-  accessibility: {
-    uiAnimations: true,
-  },
-  advanced: {
-    developerMode: false,
-    resync: undefined,
-  },
-  appearance: {
-    font: 'System',
-    palette: 'default',
-  },
-  devices: {},
-  general: {},
-  messaging: {
-    typingEvents: true,
-  },
-}
 
-export const SETTINGS_CATEGORIES = [
+export type SettingsCategory = (typeof SETTINGS__CATEGORIES)[number]
+
+export type SettingsCategoryValue<T extends SettingsCategory> = Settings[T]
+
+export const SETTINGS__CATEGORIES = [
   'general',
   'appearance',
   'messaging',
@@ -55,7 +41,7 @@ export const SETTINGS_CATEGORIES = [
   'advanced',
 ] as const
 
-export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
+export const SETTINGS__CATEGORY_METADATA: SettingsCategoryMetadata = {
   accessibility: {
     icon: ICON__ACCESSIBILITY,
     key: 'accessibility',
@@ -88,8 +74,28 @@ export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
   },
 }
 
-export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
-export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
+export const SETTINGS__DEFAULT_TAB: SettingsCategory = 'accessibility'
+
+export const SETTINGS__DEFAULTS: EnforcedSettingsKeys<Settings> = {
+  accessibility: {
+    uiAnimations: true,
+  },
+  advanced: {
+    developerMode: false,
+    resync: undefined,
+  },
+  appearance: {
+    font: 'System',
+    palette: 'default',
+  },
+  devices: {},
+  general: {},
+  messaging: {
+    typingEvents: true,
+  },
+}
+
+export const SETTINGS__ITEM_METADATA: SettingsItemMetadata = {
   accessibility: {
     uiAnimations: {
       description: 'Whether to enable animations in the app',
@@ -128,9 +134,6 @@ export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
     },
   },
 }
-
-export type SettingsCategory = (typeof SETTINGS_CATEGORIES)[number]
-export type SettingsCategoryValue<T extends SettingsCategory> = Settings[T]
 
 type EnforcedSettingsKeys<T extends Record<string, any>> = {
   [K in keyof T]: K extends SettingsCategory ? T[K] : never

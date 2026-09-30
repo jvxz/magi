@@ -22,7 +22,7 @@ const { editableInput: homeserverInput, registrationDisabled, setFormError, urlP
 const { data: registrationFlows, error: registrationFlowsError } = useHomeserverRegistration(homeserverInput, false)
 
 const compatibleFlows = computed(() =>
-  registrationFlows.value?.flows?.filter(f => f.stages.every(s => MATRIX.AUTH.UIA.SUPPORTED_STAGES.has(s))),
+  registrationFlows.value?.flows?.filter(f => f.stages.every(s => MATRIX__UIA_SUPPORTED_STAGES.has(s))),
 )
 const renderableFlows = computed(() =>
   compatibleFlows.value?.map(f => ({

@@ -3,8 +3,6 @@ import type { EmitsToProps, InjectionKey, Ref } from 'vue'
 
 import type { UToastEmits, UToastProps } from '~/components/u/toast/root.vue'
 
-import { TOAST_EXIT_MS } from '~/components/u/toast/root.vue'
-
 export const toastMaxInjectionKey: InjectionKey<Ref<number | undefined>> = Symbol('toast-max')
 
 export interface Toast extends Omit<UToastProps, 'defaultOpen'>, EmitsToProps<UToastEmits>, AppNotification {
@@ -106,7 +104,7 @@ export function useToast() {
 
       setTimeout(() => {
         toasts.value = toasts.value.filter((t: Toast) => t.id !== id)
-      }, TOAST_EXIT_MS)
+      }, GENERAL__TOAST_EXIT_MS)
 
       return
     }

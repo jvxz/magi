@@ -1,7 +1,7 @@
 export default defineNuxtRouteMiddleware(({ params }) => {
   function getBaseUrl() {
     const baseUrl = 'baseUrl' in params ? params.baseUrl : undefined
-    if (!baseUrl) return MATRIX_BASE_URL
+    if (!baseUrl) return MATRIX__BASE_URL
 
     if (Array.isArray(baseUrl)) return baseUrl[0]
 
@@ -12,7 +12,7 @@ export default defineNuxtRouteMiddleware(({ params }) => {
   if (!baseUrl) {
     return navigateTo({
       name: 'explore',
-      params: { baseUrl: withoutProtocol(MATRIX_BASE_URL) },
+      params: { baseUrl: withoutProtocol(MATRIX__BASE_URL) },
     })
   }
 
@@ -23,7 +23,7 @@ export default defineNuxtRouteMiddleware(({ params }) => {
   if (!host) {
     return navigateTo({
       name: 'explore',
-      params: { baseUrl: withoutProtocol(MATRIX_BASE_URL) },
+      params: { baseUrl: withoutProtocol(MATRIX__BASE_URL) },
     })
   }
 

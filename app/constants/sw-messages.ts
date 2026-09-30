@@ -1,9 +1,10 @@
 import * as v from 'valibot'
 
-export type SwMessage = v.InferOutput<typeof SwMessageSchema>
-
+export type SwMessage = v.InferOutput<typeof SW_MESSAGES__SCHEMA>
 export type SwMessagePayload<T extends SwMessage['type']> = Extract<SwMessage, { type: T }>['payload']
-export const SwMessageSchema = v.union([
+export type SwMessageType = SwMessage['type']
+
+export const SW_MESSAGES__SCHEMA = v.union([
   makeMessage(
     'session',
     v.object({
@@ -20,7 +21,6 @@ export const SwMessageSchema = v.union([
     }),
   ),
 ])
-export type SwMessageType = SwMessage['type']
 
 function makeMessage<T extends string, P extends v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>(
   type: T,

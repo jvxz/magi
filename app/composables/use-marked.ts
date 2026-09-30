@@ -39,7 +39,7 @@ const segment = (input: string) => {
     if (token.type === 'code') {
       flush()
       const { lang, text } = token as Tokens.Code
-      segments.push({ code: text, lang: lang?.split(WHITESPACE_RE)[0] || 'plain', type: 'code' })
+      segments.push({ code: text, lang: lang?.split(REGEX__WHITESPACE)[0] || 'plain', type: 'code' })
     } else buffer.push(token)
   }
 
