@@ -138,7 +138,7 @@ export default defineConfig({
     {
       files: ['app/constants/**'],
       rules: {
-        'sort-exports/sort-exports': ['warn', { ignoreCase: true, sortDir: 'asc' }],
+        'sort-exports/sort-exports': ['warn', { ignoreCase: true, sortDir: 'asc', sortExportKindFirst: 'type' }],
       },
     },
     {
