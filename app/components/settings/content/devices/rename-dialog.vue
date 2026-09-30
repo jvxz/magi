@@ -58,26 +58,26 @@ const { executeImmediate: handleRename, isLoading: isRenamingDevice } = useAsync
 </script>
 
 <template>
-  <UAlertDialogRoot v-model:open="dialogOpen">
-    <UAlertDialogContent v-if="device" as-child>
+  <UDialogRoot v-model:open="dialogOpen">
+    <UDialogContent v-if="device" as-child>
       <Form @submit="handleRename">
-        <UAlertDialogHeader>
-          <UAlertDialogTitle> Rename "{{ resolveDeviceName(device) }}" </UAlertDialogTitle>
-        </UAlertDialogHeader>
+        <UDialogHeader>
+          <UDialogTitle> Rename "{{ resolveDeviceName(device) }}" </UDialogTitle>
+        </UDialogHeader>
 
-        <FormInput v-model:model-value="r$.$value.name" autofocus label="Device name" :error="r$.$errors.name" />
+        <FormInput v-model:model-value="r$.$value.name" data-autofocus label="Device name" :error="r$.$errors.name" />
 
-        <UAlertDialogFooter>
-          <UAlertDialogAnnotation>
+        <UDialogFooter>
+          <UDialogAnnotation>
             {{ renameError }}
-          </UAlertDialogAnnotation>
+          </UDialogAnnotation>
 
-          <UAlertDialogCancel :disabled="isRenamingDevice" variant="ghost"> Cancel </UAlertDialogCancel>
+          <UDialogClose :disabled="isRenamingDevice" variant="ghost"> Cancel </UDialogClose>
           <UButton :is-loading="isRenamingDevice" type="submit">
             <span>Rename</span>
           </UButton>
-        </UAlertDialogFooter>
+        </UDialogFooter>
       </Form>
-    </UAlertDialogContent>
-  </UAlertDialogRoot>
+    </UDialogContent>
+  </UDialogRoot>
 </template>
