@@ -3,7 +3,7 @@ import type { MatrixClient } from 'matrix-js-sdk'
 import { ClientEvent, createClient, SyncState } from 'matrix-js-sdk'
 
 export const useMatrixClient = createGlobalState(() => {
-  const client = shallowRef<MatrixClient>(createClient({ baseUrl: MATRIX_BASE_URL }))
+  const client = shallowRef<MatrixClient>(createClient({ baseUrl: MATRIX__BASE_URL }))
 
   const saveClient = () => client.value.store.save(true)
 

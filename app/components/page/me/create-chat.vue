@@ -23,7 +23,7 @@ const { executeImmediate: handleCreate, isLoading: isCreating } = useAsyncState(
   const { userId } = r$.$value
 
   const { room_id } = await createRoom.mutateAsync({
-    initial_state: r$.encrypt.$value ? [MATRIX.ROOM.INITIAL_STATE.ENCRYPTION] : undefined,
+    initial_state: r$.encrypt.$value ? [MATRIX__ROOM_INITIAL_STATE_ENCRYPTION] : undefined,
     invite: [userId],
     is_direct: true,
     preset: Preset.PrivateChat,

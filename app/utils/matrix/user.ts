@@ -2,7 +2,7 @@ import type { RoomMember, User } from 'matrix-js-sdk'
 
 import { assert, merge } from 'es-toolkit'
 
-import { AVATAR_IMAGE_SIZE_VALUES } from '#shared/utils/constants'
+import { MATRIX__AVATAR_IMAGE_SIZE_VALUES } from '~/constants/matrix'
 
 import type { MxcToHttpsOptions } from './mxc-to-https'
 import type { AvatarImageSize, MaybeUserOrId } from './types'
@@ -27,7 +27,7 @@ export type ResolveAvatarUrlOpts = Partial<
 export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: ResolveAvatarUrlOpts) {
   if (!avatarUrl) return undefined
 
-  const size = opts?.size ? AVATAR_IMAGE_SIZE_VALUES[opts.size] : AVATAR_IMAGE_SIZE_VALUES.medium
+  const size = opts?.size ? MATRIX__AVATAR_IMAGE_SIZE_VALUES[opts.size] : MATRIX__AVATAR_IMAGE_SIZE_VALUES.medium
 
   return mxcToHttps(
     avatarUrl,

@@ -5,13 +5,13 @@ import type { MatrixClient } from 'matrix-js-sdk'
 import DOMPurify from 'dompurify'
 
 
-type RestrictedTag = keyof typeof MATRIX.MESSAGING.ALLOWED_ATTRS_PER_TAG
+type RestrictedTag = keyof typeof MATRIX__ALLOWED_ATTRS_PER_TAG
 
 const sanitizeAttribute: UponSanitizeAttributeHook = (node, data) => {
   const tag = node.tagName.toLowerCase()
   const { attrName, attrValue } = data
 
-  const allowed = (MATRIX.MESSAGING.ALLOWED_ATTRS_PER_TAG[tag as RestrictedTag] ?? []) as readonly string[]
+  const allowed = (MATRIX__ALLOWED_ATTRS_PER_TAG[tag as RestrictedTag] ?? []) as readonly string[]
 
   if (!allowed.includes(attrName)) {
     data.keepAttr = false
@@ -37,8 +37,8 @@ export function sanitizeFormattedBody(formattedBody: string) {
   DOMPurify.addHook('uponSanitizeAttribute', sanitizeAttribute)
   try {
     return DOMPurify.sanitize(formattedBody, {
-      ALLOWED_ATTR: MATRIX.MESSAGING.ALLOWED_ATTRS as unknown as string[],
-      ALLOWED_TAGS: MATRIX.MESSAGING.ALLOWED_TAGS as unknown as string[],
+      ALLOWED_ATTR: MATRIX__ALLOWED_ATTRS as unknown as string[],
+      ALLOWED_TAGS: MATRIX__ALLOWED_TAGS as unknown as string[],
     })
   } finally {
     DOMPurify.removeHook('uponSanitizeAttribute')
@@ -70,7 +70,7 @@ export function docToMarkdown(doc: Node, clientForMatrixToUrls?: MatrixClient): 
 
       const matrixTo = clientForMatrixToUrls
         ? getMatrixToUrl(clientForMatrixToUrls, type, id, { viaServers: via })
-        : `${MATRIX_TO_URL}/#/${encodeURIComponent(id)}`
+        : `${MATRIX__TO_URL}/#/${encodeURIComponent(id)}`
       const sigil = type === 'userId' ? '@' : '#'
       out += `[${sigil}${label}](${matrixTo})`
 
@@ -84,7 +84,7 @@ export function docToMarkdown(doc: Node, clientForMatrixToUrls?: MatrixClient): 
   return out
 }
 
-const MENTION_PREFIX = 'https://matrix.to/#/'
+const MENTION_PREFIX = `${MATRIX__TO_URL}/#/`
 export type ResolvedMention =
   | {
       type: 'user'

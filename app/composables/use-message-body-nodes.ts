@@ -24,7 +24,7 @@ const BLOCK_TAGS = new Set([
   'ul',
 ])
 
-type AllowedTag = (typeof MATRIX.MESSAGING.ALLOWED_TAGS)[number]
+type AllowedTag = (typeof MATRIX__ALLOWED_TAGS)[number]
 
 interface MessageNodeAttrs {
   href?: string
