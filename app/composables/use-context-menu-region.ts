@@ -23,10 +23,9 @@ export function useContextMenuRegion<T extends ContextMenuName>(name: T) {
   return api as ContextMenuRegionApi<ContextMenuRegions[T]>
 }
 
-const CONTEXT_MENU_OPEN_ATTR = 'data-context-menu-open'
 export function setContextMenuOpenAttr(el: MaybeElement, action: 'add' | 'remove') {
   if (!(el instanceof HTMLElement)) return
 
-  if (action === 'add') el.setAttribute(CONTEXT_MENU_OPEN_ATTR, '')
-  else el.removeAttribute(CONTEXT_MENU_OPEN_ATTR)
+  if (action === 'add') el.setAttribute(ATTR__CONTEXT_MENU_OPEN, '')
+  else el.removeAttribute(ATTR__CONTEXT_MENU_OPEN)
 }
