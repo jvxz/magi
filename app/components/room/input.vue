@@ -177,7 +177,7 @@ const editor = useEditor({
               ])
               .run()
           },
-          shouldOpen: ({ query }) => A_TO_Z_RE.test(query),
+          shouldOpen: ({ query }) => REGEX__A_TO_Z.test(query),
         },
       ),
     }),

@@ -1,7 +1,7 @@
 import { upperFirst, words } from 'es-toolkit/string'
 import { parseFilename } from 'ufo'
 
-import { ALPHANUMERIC_RE } from './regex'
+import { REGEX__ALPHANUMERIC } from '../../app/constants/regex'
 
 export const kebabToSentence = (string: string) => upperFirst(words(string).join(' '))
 
@@ -26,5 +26,5 @@ export function getFileExtension(value: string) {
 
   const extension = filename.slice(dotIndex + 1).toLowerCase()
 
-  return ALPHANUMERIC_RE.test(extension) ? extension : null
+  return REGEX__ALPHANUMERIC.test(extension) ? extension : null
 }

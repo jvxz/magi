@@ -11,7 +11,6 @@ import { markedHighlight } from 'marked-highlight'
 import { Decoration, DecorationSet } from 'prosemirror-view'
 import { highlightText } from 'rangi'
 
-const UNDERLINE_EXT_RE = /^__(?=\S)([\s\S]*?\S)__/
 const underlineExt: TokenizerAndRendererExtension = {
   level: 'inline',
   name: 'underline',
@@ -22,7 +21,7 @@ const underlineExt: TokenizerAndRendererExtension = {
     return src.indexOf('__')
   },
   tokenizer(src) {
-    const match = UNDERLINE_EXT_RE.exec(src)
+    const match = REGEX__UNDERLINE_EXT.exec(src)
     if (!match) return
     return {
       raw: match[0],
@@ -44,8 +43,6 @@ export const MARKED_MESSAGE_INSTANCE = new Marked(
   }),
 )
 
-const SHORTCODE_INPUT_RE = /:([\w+-]+):$/
-const SHORTCODE_PASTE_RE = /(^|\s):([\w+-]+):/g
 
 function findEmojiByShortcode(shortcode: string, emojis: EmojiItem[]) {
   return emojis.find(e => e.name === shortcode || e.shortcodes?.includes(shortcode))
@@ -60,7 +57,7 @@ export const EmojiNode = Emoji.extend({
   addInputRules() {
     return [
       new InputRule({
-        find: SHORTCODE_INPUT_RE,
+        find: REGEX__SHORTCODE_INPUT,
         handler: ({ chain, match, range }) => {
           const item = findEmojiByShortcode(match[1]!, this.options.emojis)
           if (!item?.emoji) return
@@ -74,7 +71,7 @@ export const EmojiNode = Emoji.extend({
   addPasteRules() {
     return [
       new PasteRule({
-        find: SHORTCODE_PASTE_RE,
+        find: REGEX__SHORTCODE_PASTE,
         handler: ({ chain, match, range }) => {
           const item = findEmojiByShortcode(match[2]!, this.options.emojis)
           if (!item?.emoji) return

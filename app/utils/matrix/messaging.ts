@@ -4,7 +4,6 @@ import type { MatrixClient } from 'matrix-js-sdk'
 
 import DOMPurify from 'dompurify'
 
-const DATA_MX_COLOR_RE = /^#[0-9a-f]{6}$/i
 
 type RestrictedTag = keyof typeof MATRIX.MESSAGING.ALLOWED_ATTRS_PER_TAG
 
@@ -20,13 +19,13 @@ const sanitizeAttribute: UponSanitizeAttributeHook = (node, data) => {
   }
 
   if (attrName === 'class' && tag === 'code') {
-    const classes = attrValue.split(WHITESPACE_RE)
+    const classes = attrValue.split(REGEX__WHITESPACE)
     const filteredClasses = classes.filter(c => c.startsWith('language-'))
 
     if (!filteredClasses.length) data.keepAttr = false
 
     data.attrValue = filteredClasses.join(' ')
-  } else if ((attrName === 'data-mx-color' || attrName === 'data-mx-bg-color') && !DATA_MX_COLOR_RE.test(attrValue))
+  } else if ((attrName === 'data-mx-color' || attrName === 'data-mx-bg-color') && !REGEX__DATA_MX_COLOR.test(attrValue))
     data.keepAttr = false
   else if (attrName === 'src' && tag === 'img') {
     if (attrValue.startsWith('mxc://')) data.forceKeepAttr = true
