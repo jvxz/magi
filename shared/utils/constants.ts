@@ -1,9 +1,6 @@
 import { AuthType, EventType } from 'matrix-js-sdk'
 
-import type { ErrorShape } from '../../app/utils/error'
 import type { AvatarImageSize } from '../../app/utils/matrix/types'
-
-import { ErrorCode } from '../../app/utils/error'
 
 export const appMeta = {
   description: 'A familiar Matrix client for humans',
@@ -138,16 +135,3 @@ export const MATRIX = {
     },
   },
 } as const
-
-export const GENERIC_ERROR = {
-  INVALID_HOMESERVER: {
-    code: ErrorCode.InvalidHomeserver,
-    message: 'The provided homeserver is invalid. Please ensure the URL provided is correct with no misspellings.',
-    title: 'Invalid homeserver',
-  },
-  UNKNOWN: {
-    code: ErrorCode.Unknown,
-    message: 'An unexpected error occurred. Please try again later',
-    title: 'Unknown error',
-  },
-} satisfies Record<string, ErrorShape>
