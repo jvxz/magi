@@ -8,7 +8,7 @@ const { renameDialogOpen, deviceRenaming, renameMutation: renameDevice } = injec
 const { devices, refetch: refetchDevices } = useDevices()
 const device = computed(() => (deviceRenaming.value ? devices.value.get(deviceRenaming.value) : undefined))
 
-const { isPending: isRenamingDevice, error: renameError } = renameDevice
+const { error: renameError } = renameDevice
 
 const { r$ } = useRegle(
   {
@@ -42,15 +42,19 @@ watch(device, d => {
   if (!d) renameDialogOpen.value = false
 })
 
-async function handleRename() {
-  if (!device.value || !r$.$value.name.trim()) return
+const { executeImmediate: handleRename, isLoading: isRenamingDevice } = useAsyncState(
+  async () => {
+    if (!device.value || !r$.$value.name.trim() || renameDevice.isPending.value) return
 
-  try {
-    await renameDevice.mutateAsync({ deviceId: device.value.device_id, name: r$.$value.name })
-    await refetchDevices()
-    renameDialogOpen.value = false
-  } catch {}
-}
+    try {
+      await renameDevice.mutateAsync({ deviceId: device.value.device_id, name: r$.$value.name })
+      await refetchDevices()
+      renameDialogOpen.value = false
+    } catch {}
+  },
+  undefined,
+  { immediate: false },
+)
 </script>
 
 <template>
@@ -68,7 +72,7 @@ async function handleRename() {
             {{ renameError }}
           </UAlertDialogAnnotation>
 
-          <UAlertDialogCancel :disabled="renameDevice.isPending.value" variant="ghost"> Cancel </UAlertDialogCancel>
+          <UAlertDialogCancel :disabled="isRenamingDevice" variant="ghost"> Cancel </UAlertDialogCancel>
           <UButton :is-loading="isRenamingDevice" type="submit">
             <span>Rename</span>
           </UButton>
