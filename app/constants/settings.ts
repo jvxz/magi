@@ -27,15 +27,6 @@ export interface Settings {
   devices: object
   general: object
 }
-export const SETTINGS_CATEGORIES = [
-  'general',
-  'appearance',
-  'messaging',
-  'devices',
-  'accessibility',
-  'advanced',
-] as const
-
 export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
   accessibility: {
     uiAnimations: true,
@@ -55,7 +46,14 @@ export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
   },
 }
 
-export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
+export const SETTINGS_CATEGORIES = [
+  'general',
+  'appearance',
+  'messaging',
+  'devices',
+  'accessibility',
+  'advanced',
+] as const
 
 export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
   accessibility: {
@@ -89,6 +87,8 @@ export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
     title: 'Messaging',
   },
 }
+
+export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
 export const SETTINGS_ITEM_METADATA: SettingsItemMetadata = {
   accessibility: {
     uiAnimations: {
