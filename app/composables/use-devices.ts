@@ -53,5 +53,5 @@ export const useDevices = createGlobalState(() => {
   const isFetching = computed(() => cryptoDevices.isFetching.value || sessionDevices.isFetching.value)
   const refetch = () => Promise.all([cryptoDevices.refetch(), sessionDevices.refetch()])
 
-  return { cryptoDevices, devices, error, isFetching, refetch, sessionDevices }
+  return { devices, error, isFetching, refetch }
 })

@@ -1,4 +1,3 @@
-import type { IMyDevice } from 'matrix-js-sdk'
 import type { MaybeRefOrGetter } from 'vue'
 
 import { toRef } from '@vueuse/core'
@@ -11,8 +10,6 @@ const defineKey = <const T extends readonly unknown[]>(...parts: T): T => parts
 export const $qk = {
   authMetadata: () => defineKey('authMetadata'),
   cryptoDevices: (myUserId: MaybeRefOrGetter<string | undefined>) => defineKey('cryptoDevices', toRef(myUserId)),
-  deviceVerificationStatus: (deviceId: MaybeRefOrGetter<IMyDevice['device_id'] | undefined>) =>
-    defineKey('deviceVerificationStatus', toRef(deviceId)),
   homeserverConfig: (homeserverUrl: MaybeRefOrGetter<string | undefined>) =>
     defineKey('homeserverConfig', toRef(homeserverUrl)),
   homeserverLoginFlows: (homeserverUrl: MaybeRefOrGetter<string | undefined>) =>
