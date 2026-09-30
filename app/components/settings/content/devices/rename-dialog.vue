@@ -44,7 +44,7 @@ watch(device, d => {
 
 const { executeImmediate: handleRename, isLoading: isRenamingDevice } = useAsyncState(
   async () => {
-    if (!device.value || !r$.$value.name.trim() || renameDevice.isPending.value) return
+    if (!device.value || !r$.$value.name.trim() || isRenamingDevice.value) return
 
     try {
       await renameDevice.mutateAsync({ deviceId: device.value.device_id, name: r$.$value.name })
