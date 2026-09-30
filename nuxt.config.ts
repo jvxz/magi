@@ -87,7 +87,7 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    dirs: ['~/utils/**/*.ts', '~/config/**/*.ts', '~/composables/**/*.ts', '~/constants/**/*.ts', '~~/shared/**/*.ts'],
+    dirs: ['~/utils/**/*.ts', '~/config/**/*.ts', '~/composables/**/*.ts', '~/constants/**/*.ts'],
     presets: [
       { ignore: ['isEqual'], package: 'es-toolkit' },
       { package: 'ufo' },

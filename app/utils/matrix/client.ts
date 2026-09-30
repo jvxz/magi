@@ -1,4 +1,4 @@
-import type { MatrixClient, TokenRefreshFunction } from 'matrix-js-sdk'
+import type { MatrixClient, TokenRefreshFunction, ICreateClientOpts, Device, IMyDevice } from 'matrix-js-sdk'
 
 import { createClient, IndexedDBCryptoStore, IndexedDBStore, MatrixError, TokenRefreshLogoutError } from 'matrix-js-sdk'
 
@@ -125,4 +125,16 @@ export function getCryptoSafe(client: MatrixClient) {
   assert(crypto, '`crypto` was undefined')
 
   return crypto
+}
+
+export function createTempClient(baseUrl: string, opts?: Omit<ICreateClientOpts, 'baseUrl'>) {
+  return createClient({ baseUrl, ...opts })
+}
+
+export function getUserDevices(client: MatrixClient) {
+  return getCryptoSafe(client).getUserDeviceInfo([client.getSafeUserId()])
+}
+
+export function resolveDeviceName(device: Device | DeviceEntry | IMyDevice) {
+  return 'device_id' in device ? (device.display_name ?? device.device_id) : (device.displayName ?? device.deviceId)
 }

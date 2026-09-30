@@ -4,10 +4,10 @@ import { assert, merge } from 'es-toolkit'
 
 import { MATRIX__AVATAR_IMAGE_SIZE_VALUES } from '~/constants/matrix'
 
-import type { MxcToHttpsOptions } from './mxc-to-https'
+import type { MxcToHttpsOptions } from './general'
 import type { AvatarImageSize, MaybeUserOrId } from './types'
 
-import { mxcToHttps } from './mxc-to-https'
+import { mxcToHttps } from './general'
 
 // adapted from https://github.com/cinnyapp/cinny/blob/098684973ebb28592158efa43e79741ab27afab9/src/app/utils/matrix.ts#L26
 
