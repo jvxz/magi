@@ -43,7 +43,7 @@ const delegated = reactiveOmit(props, ['open', 'lang', 'code'])
         <template #header-buttons>
           <DialogClose as-child>
             <UButton variant="ghost" size="icon-xs">
-              <Icon name="tabler:x" />
+              <Icon :name="ICON__CLOSE" />
             </UButton>
           </DialogClose>
         </template>

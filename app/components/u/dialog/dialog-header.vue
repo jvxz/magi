@@ -32,7 +32,7 @@ const delegated = reactiveOmit(props, ['closeDisabled', 'withClose', 'class', 'u
         "
         :disabled="closeDisabled"
       >
-        <Icon name="tabler:x" class="size-5" />
+        <Icon :name="ICON__CLOSE" class="size-5" />
         <VisuallyHidden>Close</VisuallyHidden>
       </UButton>
     </DialogClose>

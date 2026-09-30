@@ -33,7 +33,7 @@ const founder = useRoomFounder(() => props.space)
 
     <UShowcaseDetails>
       <div>
-        <Icon name="tabler:users" />
+        <Icon :name="ICON__MEMBERS" />
 
         <span v-if="isDefined(joinedMemberCount)">{{ joinedMemberCount }}</span>
         <USkeleton v-else class="h-1em w-4" />
@@ -46,7 +46,7 @@ const founder = useRoomFounder(() => props.space)
       <UTooltipRoot :disabled="isNil(creationTs)">
         <UTooltipTrigger as-child>
           <span>
-            <Icon name="tabler:calendar" />
+            <Icon :name="ICON__DATE" />
             <span>Founded</span>
 
             <NuxtTime v-if="isDefined(creationTs)" :datetime="creationTs" />

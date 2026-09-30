@@ -38,7 +38,7 @@ const { sortState } = useSortRegion('notificationsPopover')
                 class="rounded-md"
                 @click="dismissAll"
               >
-                <Icon name="tabler:checks" />
+                <Icon :name="ICON__DISMISS_ALL" />
               </UButton>
             </span>
           </UTooltipTrigger>
@@ -62,7 +62,7 @@ const { sortState } = useSortRegion('notificationsPopover')
 
       <div v-else class="grid size-full place-items-center">
         <UEmptyRoot>
-          <UEmptyIcon variant="naked" name="tabler:inbox" size="sm" />
+          <UEmptyIcon variant="naked" :name="ICON__INBOX" size="sm" />
 
           <UEmptyDescription> You're all caught up </UEmptyDescription>
         </UEmptyRoot>

@@ -16,7 +16,7 @@ const { editableInput, editableState, isLoading, refreshHomeserverData } = injec
         variant="ghost"
         @click="refreshHomeserverData"
       >
-        <Icon name="tabler:refresh" />
+        <Icon :name="ICON__RELOAD" />
       </UButton>
 
       <UEditableRoot

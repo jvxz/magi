@@ -16,7 +16,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   <DropdownMenuCheckboxItem v-bind="forwarded" :class="cn(popoverItemBase(), props.class)">
     <span class="flex size-3.5 pointer-events-none items-center left-2 justify-center absolute">
       <DropdownMenuItemIndicator>
-        <Icon name="tabler:check" class="size-4" />
+        <Icon :name="ICON__CHECK" class="size-4" />
       </DropdownMenuItemIndicator>
     </span>
     <slot />

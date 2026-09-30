@@ -120,7 +120,7 @@ provideAuthLayoutContext({
       </div>
 
       <UAlertRoot v-if="error" variant="danger">
-        <UAlertIcon name="tabler:exclamation-circle" class="shrink-0" />
+        <UAlertIcon :name="ICON__ERROR" class="shrink-0" />
 
         <UAlertContent>
           <UAlertTitle>{{ error.title }}</UAlertTitle>
@@ -130,7 +130,7 @@ provideAuthLayoutContext({
 
       <template v-else-if="isValid && !isLoading">
         <UAlertRoot v-if="formError" variant="danger">
-          <UAlertIcon name="tabler:exclamation-circle" class="shrink-0" />
+          <UAlertIcon :name="ICON__ERROR" class="shrink-0" />
 
           <UAlertContent>
             <UAlertTitle>{{ formError.title }}</UAlertTitle>

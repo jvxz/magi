@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { icon = 'tabler:hash' } = defineProps<{
+const { icon = ICON__ROOM } = defineProps<{
   icon?: string
 }>()
 </script>

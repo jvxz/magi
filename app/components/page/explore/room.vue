@@ -51,7 +51,7 @@ const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => 
       />
 
       <div class="text-xs text-muted-foreground pt-4 flex gap-2 items-center">
-        <Icon v-if="room" name="tabler:user-filled" class="size-1lh" />
+        <Icon v-if="room" :name="ICON__MEMBER_COUNT" class="size-1lh" />
         <p class="h-1lh">
           <span v-if="room" class="font-medium tabular-nums">{{ room.num_joined_members }}</span>
           {{ room ? 'members' : '' }}

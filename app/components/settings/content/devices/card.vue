@@ -54,7 +54,7 @@ const isRenamingDevice = computed(() => renameMutation.isPending.value && device
     <UCardGroupItem class="w-full" variant="raised">
       <div class="flex gap-3 items-center">
         <div class="rounded-sm bg-surface-top flex shrink-0 size-12 items-center justify-center">
-          <Icon name="tabler:device-desktop" class="size-1/2" />
+          <Icon :name="ICON__DEVICE" class="size-1/2" />
         </div>
 
         <UCardGroupItemHeader class="flex flex-col w-full self-stretch justify-evenly">
@@ -64,8 +64,8 @@ const isRenamingDevice = computed(() => renameMutation.isPending.value && device
             </span>
 
             <UTooltipRegionTrigger region="deviceListVerifiedIcon" :value="{ verified }">
-              <Icon v-if="verified" class="text-muted-foreground" name="tabler:rosette-discount-check" />
-              <Icon v-else class="text-danger" name="tabler:alert-triangle" />
+              <Icon v-if="verified" class="text-muted-foreground" :name="ICON__VERIFIED" />
+              <Icon v-else class="text-danger" :name="ICON__ERROR" />
             </UTooltipRegionTrigger>
           </UCardGroupItemTitle>
           <USkeleton v-else class="rounded-sm h-1em w-1/4" />
@@ -83,7 +83,7 @@ const isRenamingDevice = computed(() => renameMutation.isPending.value && device
                   <UInlineSeparator />
                 </template>
                 <span>{{ timeSinceActiveText }}</span>
-                <Icon name="tabler:chevron-down" class="h-1em group-data-[state=open]:rotate-180" />
+                <Icon :name="ICON__CHEVRON_DOWN" class="h-1em group-data-[state=open]:rotate-180" />
               </UButton>
             </CollapsibleTrigger>
           </UCardGroupItemDescription>
@@ -98,7 +98,7 @@ const isRenamingDevice = computed(() => renameMutation.isPending.value && device
             variant="ghost"
             @click="renameDevice(device.device_id)"
           >
-            <Icon name="tabler:pencil" />
+            <Icon :name="ICON__EDIT" />
           </UButton>
 
           <UButton
@@ -108,7 +108,7 @@ const isRenamingDevice = computed(() => renameMutation.isPending.value && device
             variant="ghost"
             @click="deleteDevice(device.device_id)"
           >
-            <Icon name="tabler:trash" />
+            <Icon :name="ICON__DELETE" />
           </UButton>
         </div>
       </div>

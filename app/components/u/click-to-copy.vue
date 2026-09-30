@@ -75,7 +75,7 @@ defineExpose({ copied, copy: onCopy })
           "
         >
           <span>Copied</span>
-          <Icon name="tabler:check" class="text-foreground size-1em" />
+          <Icon :name="ICON__CHECK" class="text-foreground size-1em" />
         </div>
       </Presence>
     </slot>

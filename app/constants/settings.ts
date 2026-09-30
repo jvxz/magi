@@ -1,5 +1,7 @@
 import type { PublicRuntimeConfig } from 'nuxt/schema'
 
+import { ICON__ACCESSIBILITY, ICON__ADVANCED, ICON__APPEARANCE, ICON__DEVICE, ICON__MESSAGE, ICON__SETTINGS } from './icon'
+
 export const SETTINGS_CATEGORIES = [
   'general',
   'appearance',
@@ -50,32 +52,32 @@ export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
 
 export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
   accessibility: {
-    icon: 'tabler:accessible',
+    icon: ICON__ACCESSIBILITY,
     key: 'accessibility',
     title: 'Accessibility',
   },
   advanced: {
-    icon: 'tabler:code-circle',
+    icon: ICON__ADVANCED,
     key: 'advanced',
     title: 'Advanced',
   },
   appearance: {
-    icon: 'tabler:palette',
+    icon: ICON__APPEARANCE,
     key: 'appearance',
     title: 'Appearance',
   },
   devices: {
-    icon: 'tabler:device-desktop',
+    icon: ICON__DEVICE,
     key: 'devices',
     title: 'Devices',
   },
   general: {
-    icon: 'tabler:settings',
+    icon: ICON__SETTINGS,
     key: 'general',
     title: 'General',
   },
   messaging: {
-    icon: 'tabler:message',
+    icon: ICON__MESSAGE,
     key: 'messaging',
     title: 'Messaging',
   },

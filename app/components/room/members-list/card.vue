@@ -49,7 +49,7 @@ const { user: profilePopoverUser } = useProfilePopover()
 
       <UTooltipRoot>
         <UTooltipTrigger as-child>
-          <Icon v-if="userId === creator" name="tabler:crown" class="text-primary" />
+          <Icon v-if="userId === creator" :name="ICON__CREATOR" class="text-primary" />
         </UTooltipTrigger>
         <UTooltipContent> Owner </UTooltipContent>
       </UTooltipRoot>

@@ -36,12 +36,12 @@ const to = computed<RouteLocationRaw | undefined>(() => {
   <UContextMenuRegionContent v-if="payload?.room.roomId" name="homeRoom" align="start">
     <UContextMenuItem as-child>
       <NuxtLink :to>
-        <Icon name="tabler:door-enter" />
+        <Icon :name="ICON__OPEN_ROOM" />
         <span>Go to room</span>
       </NuxtLink>
     </UContextMenuItem>
     <UContextMenuItem @select="handlePin">
-      <Icon :name="isPinned ? 'tabler:pinned-off' : 'tabler:pin'" />
+      <Icon :name="isPinned ? ICON__UNPIN : ICON__PIN" />
       <span>{{ isPinned ? 'Unpin' : 'Pin' }} room</span>
     </UContextMenuItem>
 
@@ -49,11 +49,11 @@ const to = computed<RouteLocationRaw | undefined>(() => {
       <UContextMenuSeparator />
 
       <UContextMenuItem @select="removeRecentRoom(payload.room.roomId)">
-        <Icon name="tabler:trash" />
+        <Icon :name="ICON__DELETE" />
         <span>Remove from recents</span>
       </UContextMenuItem>
       <UContextMenuItem @select="blacklistRoom(payload.room.roomId)">
-        <Icon name="tabler:circle-x" />
+        <Icon :name="ICON__BLOCK" />
         <span>Never show in recents</span>
       </UContextMenuItem>
     </template>

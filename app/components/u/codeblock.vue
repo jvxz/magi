@@ -76,7 +76,7 @@ const { isYOverflowed } = useElementOverflow(codeRoot)
           variant="ghost"
           @click="openDialog('codeViewer', { code: formattedInput, lang: resolvedLang })"
         >
-          <Icon name="tabler:code" />
+          <Icon :name="ICON__CODE" />
         </UButton>
 
         <UCopyButton v-if="copy" size="icon-xs" :value="formattedInput" />
