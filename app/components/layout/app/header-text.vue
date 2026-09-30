@@ -37,7 +37,7 @@ const motionProps: MotionProps = {
         class="flex gap-2 items-center"
         v-bind="motionProps"
       >
-        <Icon name="tabler:cloud-off" class="text-danger animate-pulse-alt" />
+        <Icon :name="ICON__OFFLINE" class="text-danger animate-pulse-alt" />
         <p class="text-danger">Disconnected</p>
       </motion.div>
 

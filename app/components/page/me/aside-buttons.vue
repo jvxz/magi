@@ -35,13 +35,13 @@ const rooms = useRooms(
     <UToggleGroupRoot v-model:model-value="toggle">
       <UToggleGroupItem value="home" class="flex w-full items-center" as-child>
         <NuxtLink to="/app/me/home">
-          <LazyIcon name="tabler:home" class="size-1lh!" />
+          <LazyIcon :name="ICON__HOME" class="size-1lh!" />
           <span class="font-medium">Home</span>
         </NuxtLink>
       </UToggleGroupItem>
       <UToggleGroupItem value="invites" class="flex w-full items-center" as-child>
         <NuxtLink to="/app/me/invites">
-          <LazyIcon name="tabler:inbox" class="size-1lh!" />
+          <LazyIcon :name="ICON__INBOX" class="size-1lh!" />
           <span class="font-medium">Invites</span>
         </NuxtLink>
       </UToggleGroupItem>

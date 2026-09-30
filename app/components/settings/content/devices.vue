@@ -89,7 +89,7 @@ provideSettingsContentDevicesContext({
 
                 <div class="flex gap-1 items-center">
                   <UButton size="icon-sm" variant="ghost" @click="refetch">
-                    <Icon name="tabler:reload" />
+                    <Icon :name="ICON__RELOAD" />
                   </UButton>
 
                   <USortSelect
@@ -117,7 +117,7 @@ provideSettingsContentDevicesContext({
             </UCardGroupRoot>
 
             <UAlertRoot v-else variant="danger">
-              <UAlertIcon name="tabler:exclamation-circle" />
+              <UAlertIcon :name="ICON__ERROR" />
               <UAlertContent>
                 <UAlertTitle>
                   {{ error.name }}

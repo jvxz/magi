@@ -16,7 +16,7 @@ watch(
 
 <template>
   <LayoutAppSlot name="page-header">
-    <LayoutAppPageHeader icon="tabler:inbox"> Invites </LayoutAppPageHeader>
+    <LayoutAppPageHeader :icon="ICON__INBOX"> Invites </LayoutAppPageHeader>
   </LayoutAppSlot>
 
   <LayoutAppGenericPage class="pb-page-y-padding size-full">
@@ -35,7 +35,7 @@ watch(
         </template>
 
         <UEmptyRoot v-else class="size-full items-center justify-center">
-          <UEmptyIcon variant="naked" name="tabler:inbox" />
+          <UEmptyIcon variant="naked" :name="ICON__INBOX" />
           <UEmptyDescription> No pending invites </UEmptyDescription>
         </UEmptyRoot>
 

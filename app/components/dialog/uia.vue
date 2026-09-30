@@ -16,20 +16,20 @@ const flowMap: Partial<
 > = {
   [AuthType.Email]: {
     description: "Check your inbox to verify your account. If you don't see the email, check your spam folder",
-    icon: 'tabler:mail',
+    icon: ICON__EMAIL,
     name: 'email',
     submittable: false,
     title: 'Email verification pending',
   },
   [AuthType.Password]: {
     component: DialogUiaStagePassword,
-    icon: 'tabler:lock-password',
+    icon: ICON__PASSWORD,
     name: 'password',
   },
   [AuthType.Recaptcha]: {
     component: DialogUiaStageRecaptcha,
     description: 'Solve the reCAPTCHA to verify that you are not a robot',
-    icon: 'tabler:text-scan-2',
+    icon: ICON__RECAPTCHA,
     name: 'recaptcha',
     submittable: false,
     title: 'Verification required',

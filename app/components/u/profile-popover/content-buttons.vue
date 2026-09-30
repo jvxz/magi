@@ -35,19 +35,19 @@ function handleCopyUserId() {
       variant="soft"
       class="rounded-full border-none"
     >
-      <Icon name="tabler:message" />
+      <Icon :name="ICON__MESSAGE" />
     </UButton>
     <UDropdownMenuRoot>
       <UDropdownMenuTrigger as-child>
         <UButton size="icon" variant="soft" class="rounded-full border-none bg-popover">
-          <Icon name="tabler:dots" />
+          <Icon :name="ICON__MORE" />
         </UButton>
       </UDropdownMenuTrigger>
       <UDropdownMenuContent>
         <UDropdownMenuItem :disabled="!isSupported || !props.userId" @click="handleCopyUserId">
-          <Icon name="tabler:tag" /> Copy ID
+          <Icon :name="ICON__COPY_ID" /> Copy ID
         </UDropdownMenuItem>
-        <UDropdownMenuItem @click="viewAvatar"> <Icon name="tabler:photo" /> View avatar</UDropdownMenuItem>
+        <UDropdownMenuItem @click="viewAvatar"> <Icon :name="ICON__VIEW_AVATAR" /> View avatar</UDropdownMenuItem>
       </UDropdownMenuContent>
     </UDropdownMenuRoot>
   </div>

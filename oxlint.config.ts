@@ -131,9 +131,16 @@ export default defineConfig({
     'eslint-plugin-command',
     'eslint-plugin-perfectionist',
     'eslint-plugin-regexp',
+    'eslint-plugin-sort-exports',
     'eslint-plugin-unused-imports',
   ],
   overrides: [
+    {
+      files: ['app/constants/**'],
+      rules: {
+        'sort-exports/sort-exports': ['warn', { ignoreCase: true, sortDir: 'asc' }],
+      },
+    },
     {
       files: ['**/*.config.{js,mjs,cjs,ts,mts,cts}'],
       rules: {

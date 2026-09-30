@@ -47,7 +47,7 @@ onStartTyping(() => inputRef.value?.$el?.focus())
   >
     <UAlertDialogTrigger as-child>
       <UAsideListButton>
-        <UAsideListButtonIcon icon="tabler:plus" />
+        <UAsideListButtonIcon :icon="ICON__ADD" />
         <span class="font-medium">Add server</span>
       </UAsideListButton>
     </UAlertDialogTrigger>

@@ -39,7 +39,7 @@ const forwardedProps = useForwardProps(delegatedProps)
     <slot />
 
     <SelectIcon v-if="withIcon" as-child>
-      <Icon name="tabler:chevron-down" class="size-3.5!" />
+      <Icon :name="ICON__CHEVRON_DOWN" class="size-3.5!" />
     </SelectIcon>
   </SelectTrigger>
 </template>

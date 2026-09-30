@@ -93,7 +93,7 @@ function handlePaginate(dir: 'f' | 'b') {
                 },
               }"
             >
-              <UAsideListButtonIcon icon="tabler:server-2" />
+              <UAsideListButtonIcon :icon="ICON__SERVER" />
 
               <span :title="server" class="truncate">{{ server }}</span>
             </NuxtLink>
@@ -102,7 +102,7 @@ function handlePaginate(dir: 'f' | 'b') {
 
         <UContextMenuContent v-if="contextMenuServer">
           <UContextMenuItem :disabled="contextMenuServer === 'matrix.org'" @select="handleServerRemove()">
-            <Icon name="tabler:trash" />
+            <Icon :name="ICON__DELETE" />
             Delete
           </UContextMenuItem>
         </UContextMenuContent>
@@ -117,7 +117,7 @@ function handlePaginate(dir: 'f' | 'b') {
   <LayoutAppSlot name="page-header">
     <LayoutAppPageHeader class="justify-between">
       <div class="flex gap-2 items-center">
-        <Icon name="tabler:server-2" />
+        <Icon :name="ICON__SERVER" />
         <p class="font-medium">
           {{ baseUrl }}
         </p>
@@ -130,7 +130,7 @@ function handlePaginate(dir: 'f' | 'b') {
           v-model="query"
           class="w-64 justify-self-end"
           placeholder="Search"
-          leading-icon="tabler:search"
+          :leading-icon="ICON__SEARCH"
         />
       </div>
     </LayoutAppPageHeader>
@@ -167,7 +167,7 @@ function handlePaginate(dir: 'f' | 'b') {
     <Transition name="zoom">
       <UCard v-if="error" variant="danger" class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2">
         <UCardTitle class="flex gap-2 items-center">
-          <Icon name="tabler:alert-triangle" />
+          <Icon :name="ICON__ERROR" />
           <span>An error occurred</span>
         </UCardTitle>
 
@@ -179,7 +179,7 @@ function handlePaginate(dir: 'f' | 'b') {
         v-else-if="!currentPage?.chunk.length && !isFetching"
         class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
       >
-        <UCardTitle class="flex gap-2 items-center"> <Icon name="tabler:question-circle" /> No rooms found </UCardTitle>
+        <UCardTitle class="flex gap-2 items-center"> <Icon :name="ICON__UNKNOWN" /> No rooms found </UCardTitle>
 
         <p class="text-pretty">
           <template v-if="!query"> The desired homeserver does not appear to have any public rooms </template>

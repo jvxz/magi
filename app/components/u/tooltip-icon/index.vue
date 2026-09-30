@@ -1,11 +1,11 @@
 <script lang="ts">
 export const TOOLTIP_ICON_META = {
   direct: {
-    icon: 'tabler:send-2',
+    icon: ICON__DIRECT_ROOM,
     text: 'Direct room',
   },
   encrypted: {
-    icon: 'tabler:lock',
+    icon: ICON__ENCRYPTED,
     text: 'Encrypted',
   },
 } as const

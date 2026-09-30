@@ -11,7 +11,7 @@ defineAppLabel({ label: 'Home' })
   <LayoutAppSlot name="page-header">
     <LayoutAppPageHeader>
       <div class="flex gap-2 items-center">
-        <Icon name="tabler:home" />
+        <Icon :name="ICON__HOME" />
         <p>Home</p>
       </div>
     </LayoutAppPageHeader>
