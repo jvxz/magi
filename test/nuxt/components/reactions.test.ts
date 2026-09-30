@@ -11,7 +11,7 @@ import { DEFAULT_MOCK_NAMES, generateFakeHomeserver } from '../utils/matrix/cred
 
 const { useMatrixClient, useMatrixHooks, useSelf } = vi.hoisted(() => {
   return {
-    useMatrixClient: vi.fn(() => ({ client: shallowRef({ getUserId: () => undefined }) })),
+    useMatrixClient: vi.fn(() => ({ client: shallowRef<Record<string, unknown>>({ getUserId: () => undefined }) })),
     useMatrixHooks: vi.fn(),
     useSelf: vi.fn(() => ({ self: shallowRef() })),
   }
