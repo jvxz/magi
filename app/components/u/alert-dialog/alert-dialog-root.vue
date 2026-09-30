@@ -1,12 +1,22 @@
-<script setup lang="ts">
+<script lang="ts">
 import type { AlertDialogEmits, AlertDialogProps } from 'reka-ui'
 
-import { useForwardPropsEmits } from 'reka-ui'
+import { createContext, useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<AlertDialogProps>()
+export const [injectAlertDialogPreventClose, provideAlertDialogPreventClose] = createContext<{
+  preventClose: Ref<boolean>
+}>('UAlertDialogRoot')
+</script>
+
+<script setup lang="ts">
+const props = defineProps<AlertDialogProps & { preventClose?: boolean }>()
 const emits = defineEmits<AlertDialogEmits>()
 
-const forwarded = useForwardPropsEmits(props, emits)
+const preventClose = toRef(props, 'preventClose')
+provideAlertDialogPreventClose({ preventClose: computed(() => !!preventClose?.value) })
+
+const delegated = reactiveOmit(props, 'preventClose')
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

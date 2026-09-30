@@ -6,17 +6,17 @@ export function useRoom(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>) 
   const { client } = useMatrixClient()
   const versions = useRoomVersions()
 
-  const room = computed(() => {
+  const roomState = computed(() => {
     const input = toValue(inputRef)
-    if (!input) return undefined
+    if (!input) return { room: undefined, version: undefined }
 
-    void versions.get(resolveRoomId(input))
+    const version = versions.get(resolveRoomId(input))
 
-    if (input instanceof Room) return markRaw(input)
+    if (input instanceof Room) return { room: markRaw(input), version }
 
     const cachedRoom = getRoom(client.value, input)
-    return cachedRoom ? markRaw(cachedRoom) : undefined
+    return { room: cachedRoom ? markRaw(cachedRoom) : undefined, version }
   })
 
-  return room
+  return toRef(() => roomState.value.room)
 }

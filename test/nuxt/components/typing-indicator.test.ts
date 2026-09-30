@@ -12,7 +12,7 @@ const CURRENT_USER = DEFAULT_MOCK_NAMES[0]!
 const { useCurrentRoom, useMatrixClient, useMatrixHooks, useRoomHooks, useSelf } = vi.hoisted(() => {
   return {
     useCurrentRoom: vi.fn(() => shallowRef()),
-    useMatrixClient: vi.fn(() => ({ client: shallowRef({}) })),
+    useMatrixClient: vi.fn(() => ({ client: shallowRef<Record<string, unknown>>({ getUserId: () => undefined }) })),
     useMatrixHooks: vi.fn(),
     useRoomHooks: vi.fn(),
     useSelf: vi.fn(() => ({ self: shallowRef() })),

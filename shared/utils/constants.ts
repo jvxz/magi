@@ -42,6 +42,15 @@ export const ASIDE_DISPLAY_MODES = {
 
 export const MATRIX = {
   AUTH: {
+    // https://github.com/cinnyapp/cinny/blob/5e00d517ebd6b77663e41bcbe888b37df6d3b3d9/src/app/hooks/useAccountManagement.ts#L6-L11
+    ACCOUNT_MANAGEMENT_ACTIONS: {
+      ACCOUNT_DEACTIVATE: 'org.matrix.account_deactivate',
+      CROSS_SIGNING_RESET: 'org.matrix.cross_signing_reset',
+      PROFILE: 'org.matrix.profile',
+      SESSIONS_LIST: 'org.matrix.sessions_list',
+      SESSION_END: 'org.matrix.session_end',
+      SESSION_VIEW: 'org.matrix.session_view',
+    },
     UIA: {
       SUPPORTED_STAGES: new Set<AuthType | (string & {})>([
         AuthType.Password,

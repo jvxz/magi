@@ -81,6 +81,7 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
+    collections: ['tabler', 'custom'],
     customCollections: [{ dir: './app/assets/icons', prefix: 'custom', provider: 'none' }],
   },
 
