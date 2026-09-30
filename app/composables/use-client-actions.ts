@@ -25,7 +25,7 @@ export const useClientActions = () => {
       if (!(err instanceof UIALegacyUnsupportedError) || !authMetadata.value?.account_management_uri) throw err
 
       const url = new URL(authMetadata.value.account_management_uri)
-      url.searchParams.set('action', 'session_end')
+      url.searchParams.set('action', MATRIX.AUTH.ACCOUNT_MANAGEMENT_ACTIONS.SESSION_END)
       url.searchParams.set('device_id', deviceId)
       await navigateTo(url.href, { external: true, open: { target: '_blank' } })
 
