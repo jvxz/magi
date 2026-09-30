@@ -30,7 +30,7 @@ export const useRoomEventReactions = createProvidableComposable(
     const getDebouncedReactFn = memoize((key: string) =>
       throttle(
         async (shouldReact: boolean) => {
-          if (!event.value || !REACTABLE_EVENT_TYPES.includes(event.value.getType())) return
+          if (!event.value || !MATRIX__REACTABLE_EVENT_TYPES.includes(event.value.getType())) return
 
           if (shouldReact) {
             const reactionEvent = isReactingTo(key)

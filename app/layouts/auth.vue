@@ -56,7 +56,7 @@ const matrixClient = computed(() =>
 )
 
 watch([homeserverConfigStatus, isValid], () => {
-  if (!isFetchingHomeserverConfig.value && !isValid.value) error.value = GENERIC_ERROR.INVALID_HOMESERVER
+  if (!isFetchingHomeserverConfig.value && !isValid.value) error.value = ERROR__INVALID_HOMESERVER
   else error.value = undefined
 })
 

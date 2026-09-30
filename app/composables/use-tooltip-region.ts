@@ -31,10 +31,9 @@ export function useTooltipRegion<T extends TooltipName>(name: T) {
   return api as TooltipRegionApi<TooltipRegions[T]>
 }
 
-export const TOOLTIP_OPEN_ATTR = 'data-tooltip-open'
 export function setTooltipOpenAttr(el: Element, action: 'add' | 'remove') {
   if (!(el instanceof HTMLElement)) return
 
-  if (action === 'add') el.setAttribute(TOOLTIP_OPEN_ATTR, '')
-  else el.removeAttribute(TOOLTIP_OPEN_ATTR)
+  if (action === 'add') el.setAttribute(ATTR__TOOLTIP_OPEN, '')
+  else el.removeAttribute(ATTR__TOOLTIP_OPEN)
 }

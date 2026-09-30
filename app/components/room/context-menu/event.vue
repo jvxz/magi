@@ -49,7 +49,7 @@ const handleDeleteMessage = () => {
 </script>
 
 <template>
-  <template v-if="event && REACTABLE_EVENT_TYPES.includes(event.getType())">
+  <template v-if="event && MATRIX__REACTABLE_EVENT_TYPES.includes(event.getType())">
     <div class="flex items-center justify-around">
       <ContextMenuItem v-for="(reaction, i) in firstFourRecentReactions" :key="i" as-child>
         <UButton

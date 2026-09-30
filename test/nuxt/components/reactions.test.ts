@@ -40,7 +40,7 @@ const setupState = (skipDefaults: boolean = false) => {
 
   if (!skipDefaults) {
     const target = mockRoom.pushMessage({ body: 'hello' })
-    DEFAULT_RECENT_REACTIONS.forEach((v, k) => {
+    GENERAL__DEFAULT_RECENT_REACTIONS.forEach((v, k) => {
       for (let i = 0; i < k + 1; i++) {
         mockRoom.pushReaction(target, v, { sender: DEFAULT_MOCK_NAMES[i] })
       }
@@ -88,7 +88,7 @@ describe('reactions', () => {
 
     // console.log('document.body: ', document.body.outerHTML)
 
-    DEFAULT_RECENT_REACTIONS.forEach(v => {
+    GENERAL__DEFAULT_RECENT_REACTIONS.forEach(v => {
       const reactionItem = new DOMWrapper(document.querySelector(createReactionItemSelector(v)))
       expect(reactionItem.exists()).toBe(true)
     })
@@ -99,7 +99,7 @@ describe('reactions', () => {
     const Wrapper = createWrapper()
     await mountSuspended(Wrapper)
 
-    const reaction = DEFAULT_RECENT_REACTIONS[0]
+    const reaction = GENERAL__DEFAULT_RECENT_REACTIONS[0]
 
     const reactionItem = new DOMWrapper(document.querySelector(createReactionItemSelector(reaction)))
 
@@ -112,7 +112,7 @@ describe('reactions', () => {
     const Wrapper = createWrapper()
     await mountSuspended(Wrapper)
 
-    const reaction = DEFAULT_RECENT_REACTIONS[3]
+    const reaction = GENERAL__DEFAULT_RECENT_REACTIONS[3]
 
     const reactionItem = new DOMWrapper(document.querySelector(createReactionItemSelector(reaction)))
 
@@ -124,7 +124,7 @@ describe('reactions', () => {
   })
 
   it('displays reaction item under message', async () => {
-    const reaction = DEFAULT_RECENT_REACTIONS[0]!
+    const reaction = GENERAL__DEFAULT_RECENT_REACTIONS[0]!
 
     const component = await mountSuspended(Reactions)
 
@@ -144,7 +144,7 @@ describe('reactions', () => {
   })
 
   it('successfully reacts to message', async () => {
-    const reaction = DEFAULT_RECENT_REACTIONS[0]!
+    const reaction = GENERAL__DEFAULT_RECENT_REACTIONS[0]!
 
     const mockRoom = createMockRoom({ id: 'reactions' })
     currentMockRoom = mockRoom

@@ -25,7 +25,7 @@ export function getMatrixToUrl(
 ) {
   const { eventId, viaServers } = opts ?? {}
 
-  const url = parseURL(MATRIX_TO_URL)
+  const url = parseURL(MATRIX__TO_URL)
 
   if (type === 'unknown') return url.toString()
 

@@ -25,4 +25,4 @@ export type EmitsToProps<T> = {
   [K in keyof T as `on${Capitalize<string & K>}`]: T[K] extends [...args: infer Args] ? (...args: Args) => void : never
 }
 
-export type AsideDisplayMode = keyof typeof ASIDE_DISPLAY_MODES
+export type AsideDisplayMode = keyof typeof GENERAL__ASIDE_DISPLAY_MODES

@@ -402,7 +402,7 @@ export function resolveJoinRuleLabel(joinRule: JoinRule) {
 }
 
 export function parseRoomId(roomId: string) {
-  const match = roomId.match(ROOM_ID_RE)
+  const match = roomId.match(REGEX__ROOM_ID)
   if (!match) return undefined
 
   return {

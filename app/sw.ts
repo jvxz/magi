@@ -8,7 +8,7 @@ import { ExpirationPlugin } from 'workbox-expiration'
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
 import { CacheFirst } from 'workbox-strategies'
 
-import { SwMessageSchema } from './constants/sw-messages'
+import { SW_MESSAGES__SCHEMA } from './constants/sw-messages'
 
 declare let self: ServiceWorkerGlobalScope
 
@@ -55,7 +55,7 @@ const matrixMediaStrategy = new CacheFirst({
 })
 
 self.addEventListener('message', async e => {
-  const res = v.safeParse(SwMessageSchema, e.data)
+  const res = v.safeParse(SW_MESSAGES__SCHEMA, e.data)
   if (!res.success) return console.warn('Unknown message sent to service worker: ', e.data)
 
   const { payload, type } = res.output

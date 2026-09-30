@@ -18,8 +18,6 @@ interface Options<T> {
   followTail?: boolean
 }
 
-const ROW_ATTR = 'data-item-id'
-
 const ARM_VIEWPORTS = 0.5
 const FILL_VIEWPORTS = 3
 const PREFETCH_PAGES = 3
@@ -60,7 +58,7 @@ export function useTimelinePagination<T>(container: Ref<HTMLElement | null | und
   })
 
   function getRow(key: string): HTMLElement | null {
-    return container.value?.querySelector(`[${ROW_ATTR}="${CSS.escape(key)}"]`) ?? null
+    return container.value?.querySelector(`[${ATTR__TIMELINE_ROW}="${CSS.escape(key)}"]`) ?? null
   }
 
   function viewportPx(): number {

@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async route => {
       },
     })
 
-  const storedBaseUrl = await idb.get<string>(SSO_BASE_URL_KEY)
+  const storedBaseUrl = await idb.get<string>(AUTH__SSO_BASE_URL_KEY)
   if (!isString(storedBaseUrl))
     return navigateTo({
       name: 'login',

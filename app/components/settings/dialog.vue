@@ -5,7 +5,7 @@ const visited = reactive(new Set<SettingsCategory>())
 watchImmediate(tab, t => visited.add(t))
 
 onUnmounted(() => {
-  tab.value = SETTINGS_DEFAULT_TAB
+  tab.value = SETTINGS__DEFAULT_TAB
   searchQuery.value = ''
 })
 </script>
@@ -29,16 +29,16 @@ onUnmounted(() => {
               }"
             >
               <DialogTitle class="font-medium">
-                {{ SETTINGS_CATEGORY_METADATA[tab].title }}
+                {{ SETTINGS__CATEGORY_METADATA[tab].title }}
               </DialogTitle>
 
               <VisuallyHidden>
-                <DialogDescription> {{ SETTINGS_CATEGORY_METADATA[tab].title }} settings </DialogDescription>
+                <DialogDescription> {{ SETTINGS__CATEGORY_METADATA[tab].title }} settings </DialogDescription>
               </VisuallyHidden>
             </UDialogHeader>
 
             <TabsContent
-              v-for="setting in SETTINGS_CATEGORY_METADATA"
+              v-for="setting in SETTINGS__CATEGORY_METADATA"
               :key="setting.key"
               :value="setting.key"
               :force-mount="visited.has(setting.key)"

@@ -40,7 +40,7 @@ const { openDialog } = useGlobalDialog()
 
 const delegated = reactiveOmit(props, 'class')
 
-const formattedInput = computed(() => props.input.trim().replace(TRAILING_NEWLINE_RE, ''))
+const formattedInput = computed(() => props.input.trim().replace(REGEX__TRAILING_NEWLINE, ''))
 const code = computed(() => highlight(formattedInput.value, props.lang))
 
 const codeContainer = useTemplateRef('code')

@@ -1,6 +1,6 @@
 import { getHttpUriForMxc } from 'matrix-js-sdk'
 
-import { MATRIX_BASE_URL } from '#shared/utils/constants'
+import { MATRIX__BASE_URL } from '~/constants/matrix'
 
 export interface MxcToHttpsOptions {
   baseUrl?: string | undefined
@@ -16,7 +16,7 @@ export interface MxcToHttpsOptions {
 export function mxcToHttps(mxc: string | undefined, opts?: MxcToHttpsOptions) {
   try {
     return getHttpUriForMxc(
-      opts?.baseUrl ?? MATRIX_BASE_URL,
+      opts?.baseUrl ?? MATRIX__BASE_URL,
       mxc,
       opts?.width,
       opts?.height,

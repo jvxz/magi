@@ -1,7 +1,7 @@
 import type { NuxtPage } from 'nuxt/schema'
 
 import { pwa } from './app/config/pwa'
-import { DEFAULT_COLOR_MODE } from './shared/constants/color-mode'
+import { COLOR_MODE__DEFAULT } from './app/constants/color-mode'
 
 export default defineNuxtConfig({
   app: {
@@ -14,8 +14,8 @@ export default defineNuxtConfig({
   },
 
   colorMode: {
-    fallback: DEFAULT_COLOR_MODE,
-    preference: DEFAULT_COLOR_MODE,
+    fallback: COLOR_MODE__DEFAULT,
+    preference: COLOR_MODE__DEFAULT,
     storage: 'cookie',
     storageKey: 'theme',
   },

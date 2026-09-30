@@ -19,7 +19,7 @@ const isEmpty = computed(() => props.error || !props.currentPage || !props.curre
     </template>
     <template v-else-if="isEmpty">
       <PageExploreRoom
-        v-for="(_, i) in Array.from({ length: PUBLIC_ROOM_PAGINATION_LIMIT })"
+        v-for="(_, i) in Array.from({ length: GENERAL__PUBLIC_ROOM_PAGINATION_LIMIT })"
         :key="i"
         :room="undefined"
       />

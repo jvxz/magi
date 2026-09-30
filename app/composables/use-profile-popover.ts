@@ -69,11 +69,10 @@ export const useProfilePopover = createSharedComposable(() => {
   }
 })
 
-const POPOVER_OPEN_ATTRIBUTE_NAME = 'data-popover-open'
 function setPopoverOpenAttribute(el: MaybeElement | VirtualElement, action: 'remove' | 'add') {
   if (!(el instanceof HTMLElement)) return
 
   if (action === 'add') {
-    el.setAttribute(POPOVER_OPEN_ATTRIBUTE_NAME, '')
-  } else el.removeAttribute(POPOVER_OPEN_ATTRIBUTE_NAME)
+    el.setAttribute(ATTR__POPOVER_OPEN, '')
+  } else el.removeAttribute(ATTR__POPOVER_OPEN)
 }
