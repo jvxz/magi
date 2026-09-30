@@ -6,8 +6,8 @@ const settings = useSettings()
   <SettingsContentLayout>
     <SettingsFormSwitch
       v-model:model-value="settings.accessibility.uiAnimations"
-      :label="SETTINGS_ITEM_METADATA.accessibility.uiAnimations.title"
-      :description="SETTINGS_ITEM_METADATA.accessibility.uiAnimations.description"
+      :label="SETTINGS__ITEM_METADATA.accessibility.uiAnimations.title"
+      :description="SETTINGS__ITEM_METADATA.accessibility.uiAnimations.description"
     >
     </SettingsFormSwitch>
   </SettingsContentLayout>
