@@ -1,6 +1,13 @@
 import type { PublicRuntimeConfig } from 'nuxt/schema'
 
-import { ICON__ACCESSIBILITY, ICON__ADVANCED, ICON__APPEARANCE, ICON__DEVICE, ICON__MESSAGE, ICON__SETTINGS } from './icon'
+import {
+  ICON__ACCESSIBILITY,
+  ICON__ADVANCED,
+  ICON__APPEARANCE,
+  ICON__DEVICE,
+  ICON__MESSAGE,
+  ICON__SETTINGS,
+} from './icon'
 
 export const SETTINGS_CATEGORIES = [
   'general',
@@ -10,8 +17,6 @@ export const SETTINGS_CATEGORIES = [
   'accessibility',
   'advanced',
 ] as const
-export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
-
 export interface Settings {
   appearance: {
     font: 'Inter' | 'System'
@@ -30,6 +35,8 @@ export interface Settings {
   devices: object
   general: object
 }
+
+export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
 
 export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
   accessibility: {
