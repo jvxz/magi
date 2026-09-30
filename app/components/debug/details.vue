@@ -2,7 +2,7 @@
 import { breakpointsTailwind } from '@vueuse/core'
 
 const fps = useFps({
-  every: 4,
+  every: 40,
 })
 
 const { active } = useBreakpoints(breakpointsTailwind)
