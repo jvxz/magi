@@ -131,13 +131,14 @@ export default defineConfig({
     'eslint-plugin-command',
     'eslint-plugin-perfectionist',
     'eslint-plugin-regexp',
+    'eslint-plugin-sort-exports',
     'eslint-plugin-unused-imports',
   ],
   overrides: [
     {
-      files: ['app/constants/icon.ts'],
+      files: ['app/constants/**'],
       rules: {
-        'perfectionist/sort-variable-declarations': ['warn', { type: 'natural' }],
+        'sort-exports/sort-exports': ['warn', { ignoreCase: true, sortDir: 'asc' }],
       },
     },
     {

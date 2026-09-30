@@ -231,6 +231,9 @@ importers:
       eslint-plugin-regexp:
         specifier: 3.1.1
         version: 3.1.1(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))
+      eslint-plugin-sort-exports:
+        specifier: ^0.9.1
+        version: 0.9.1(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))
       eslint-plugin-unused-imports:
         specifier: 4.4.1
         version: 4.4.1(@typescript-eslint/eslint-plugin@8.67.0(@typescript-eslint/parser@8.67.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript-native-bridge@6.0.3-bridge.16.tsgo.7.0.2))(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))
@@ -5706,6 +5709,11 @@ packages:
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: '>=9.38.0'
+
+  eslint-plugin-sort-exports@0.9.1:
+    resolution: {integrity: sha512-2w6jHusdF2K60bcGKpa9HEinETwNzVrvplZipVculCfu3ZDd5IW3xL54XVEnVkGIPJnp/LitFCg7owL4DOtuHg==}
+    peerDependencies:
+      eslint: '>=5.0.0'
 
   eslint-plugin-toml@1.4.0:
     resolution: {integrity: sha512-3ErTnfUjXq/23f72XeyRcE0Y4Sd/ME1lsZeezczqpn2R4tE7+Sgco/NUKDXm0xAMz15tzcRz/9RfJRm6AqRO+A==}
@@ -15103,6 +15111,11 @@ snapshots:
       refa: 0.12.1
       regexp-ast-analysis: 0.7.1
       scslre: 0.3.0
+
+  eslint-plugin-sort-exports@0.9.1(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2)):
+    dependencies:
+      eslint: 10.9.1(jiti@2.7.0)(supports-color@10.2.2)
+      minimatch: 9.0.9
 
   eslint-plugin-toml@1.4.0(eslint@10.9.1(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2):
     dependencies:
