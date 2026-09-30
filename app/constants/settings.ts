@@ -9,14 +9,6 @@ import {
   ICON__SETTINGS,
 } from './icon'
 
-export const SETTINGS_CATEGORIES = [
-  'general',
-  'appearance',
-  'messaging',
-  'devices',
-  'accessibility',
-  'advanced',
-] as const
 export interface Settings {
   appearance: {
     font: 'Inter' | 'System'
@@ -35,8 +27,14 @@ export interface Settings {
   devices: object
   general: object
 }
-
-export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
+export const SETTINGS_CATEGORIES = [
+  'general',
+  'appearance',
+  'messaging',
+  'devices',
+  'accessibility',
+  'advanced',
+] as const
 
 export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
   accessibility: {
@@ -56,6 +54,8 @@ export const DEFAULT_SETTINGS: EnforcedSettingsKeys<Settings> = {
     typingEvents: true,
   },
 }
+
+export const SETTINGS_DEFAULT_TAB: SettingsCategory = 'accessibility'
 
 export const SETTINGS_CATEGORY_METADATA: SettingsCategoryMetadata = {
   accessibility: {
