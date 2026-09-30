@@ -1,17 +1,6 @@
 <script lang="ts">
-export const TOOLTIP_ICON_META = {
-  direct: {
-    icon: ICON__DIRECT_ROOM,
-    text: 'Direct room',
-  },
-  encrypted: {
-    icon: ICON__ENCRYPTED,
-    text: 'Encrypted',
-  },
-} as const
-
-export type TooltipIcons = keyof typeof TOOLTIP_ICON_META
-export type TooltipIconMeta<T extends TooltipIcons> = (typeof TOOLTIP_ICON_META)[T]
+export type TooltipIcons = keyof typeof GENERAL__TOOLTIP_ICON_META
+export type TooltipIconMeta<T extends TooltipIcons> = (typeof GENERAL__TOOLTIP_ICON_META)[T]
 </script>
 
 <script lang="ts" setup>
@@ -29,10 +18,10 @@ const forwarded = useForwardPropsEmits(delegated, emits)
 <template>
   <UTooltipRoot v-bind="forwarded">
     <UTooltipTrigger as-child>
-      <Icon :name="TOOLTIP_ICON_META[name].icon" :class="props.class" />
+      <Icon :name="GENERAL__TOOLTIP_ICON_META[name].icon" :class="props.class" />
     </UTooltipTrigger>
     <UTooltipContent>
-      <slot>{{ TOOLTIP_ICON_META[name].text }}</slot>
+      <slot>{{ GENERAL__TOOLTIP_ICON_META[name].text }}</slot>
     </UTooltipContent>
   </UTooltipRoot>
 </template>

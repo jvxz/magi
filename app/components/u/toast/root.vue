@@ -1,7 +1,3 @@
-<script lang="ts">
-export const TOAST_EXIT_MS = 150
-</script>
-
 <script lang="ts" setup>
 import type { ToastRootEmits, ToastRootProps } from 'reka-ui'
 

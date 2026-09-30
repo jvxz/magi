@@ -4,7 +4,7 @@ import type { ModuleOptions } from '@vite-pwa/nuxt'
 
 import process from 'node:process'
 
-import { appMeta } from '../../shared/utils/constants'
+import { GENERAL__APP_META } from '../constants/general'
 
 const scope = '/'
 
@@ -18,11 +18,11 @@ export const pwa: ModuleOptions = {
   },
   filename: 'sw.ts',
   manifest: {
-    description: appMeta.description,
+    description: GENERAL__APP_META.description,
     id: scope,
-    name: appMeta.name,
+    name: GENERAL__APP_META.name,
     scope,
-    short_name: appMeta.name,
+    short_name: GENERAL__APP_META.name,
     theme_color: '#5865F2',
   },
   registerType: 'autoUpdate',

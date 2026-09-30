@@ -5,7 +5,6 @@ import { toRef } from '@vueuse/core'
 
 export type IPublicRoomsResponse = Awaited<ReturnType<MatrixClient['publicRooms']>>
 
-export const PUBLIC_ROOM_PAGINATION_LIMIT = 36
 
 export function usePublicRooms(
   server: MaybeRefOrGetter<string>,
@@ -26,7 +25,7 @@ export function usePublicRooms(
     queryFn: async ({ pageParam }) =>
       client.value.publicRooms({
         filter: debouncedQuery.value ? { generic_search_term: debouncedQuery.value } : undefined,
-        limit: PUBLIC_ROOM_PAGINATION_LIMIT,
+        limit: GENERAL__PUBLIC_ROOM_PAGINATION_LIMIT,
         server: serverResolved.value,
         since: pageParam,
       }),

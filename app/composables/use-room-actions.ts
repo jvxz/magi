@@ -83,7 +83,7 @@ export function useRoomActions(
       if (!room.value || (params.isTyping && !settings.value.messaging.typingEvents)) return false
 
       try {
-        await client.value.sendTyping(room.value.roomId, params.isTyping, TYPING_TIMEOUT_MS)
+        await client.value.sendTyping(room.value.roomId, params.isTyping, GENERAL__TYPING_TIMEOUT_MS)
         return true
       } catch {
         return false

@@ -5,7 +5,7 @@ interface RecentReaction {
 
 type RecentReactionState = Map<string, RecentReaction>
 
-const initialValue = new Map(DEFAULT_RECENT_REACTIONS.map(e => [e, { lastUsed: 0, reaction: e, uses: 0 }]))
+const initialValue = new Map(GENERAL__DEFAULT_RECENT_REACTIONS.map(e => [e, { lastUsed: 0, reaction: e, uses: 0 }]))
 
 export const useRecentReactions = createGlobalState(() => {
   const recentReactions = useLocalStorage<RecentReactionState>('recentReactions', initialValue, {
