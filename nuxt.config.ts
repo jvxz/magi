@@ -168,6 +168,8 @@ export default defineNuxtConfig({
     tsConfig: {
       compilerOptions: {
         allowImportingTsExtensions: true,
+        // vue-router support for golar
+        rootDir: '..',
         types: ['grecaptcha'],
       },
     },
