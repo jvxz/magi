@@ -1,10 +1,20 @@
 import type { Node } from '@tiptap/pm/model'
-import type { UponSanitizeAttributeHook } from 'dompurify'
+import type { Config, UponSanitizeAttributeHook } from 'dompurify'
 import type { MatrixClient } from 'matrix-js-sdk'
 
 import DOMPurify from 'dompurify'
 
+import {
+  MATRIX__ALLOWED_ATTRS,
+  MATRIX__ALLOWED_ATTRS_PER_TAG,
+  MATRIX__ALLOWED_TAGS,
+  MATRIX__TO_URL,
+} from '~/constants/matrix'
+import { REGEX__DATA_MX_COLOR, REGEX__WHITESPACE } from '~/constants/regex'
+
 type RestrictedTag = keyof typeof MATRIX__ALLOWED_ATTRS_PER_TAG
+
+type DomOptions = Pick<Config, 'ADD_FORBID_CONTENTS'> & { RETURN_DOM: true }
 
 const sanitizeAttribute: UponSanitizeAttributeHook = (node, data) => {
   const tag = node.tagName.toLowerCase()
@@ -32,12 +42,16 @@ const sanitizeAttribute: UponSanitizeAttributeHook = (node, data) => {
   }
 }
 
-export function sanitizeFormattedBody(formattedBody: string) {
+export function sanitizeFormattedBody(formattedBody: string): string
+export function sanitizeFormattedBody(formattedBody: string, options: DomOptions): HTMLElement
+export function sanitizeFormattedBody(formattedBody: string, options?: DomOptions): string | HTMLElement {
   DOMPurify.addHook('uponSanitizeAttribute', sanitizeAttribute)
   try {
     return DOMPurify.sanitize(formattedBody, {
+      ADD_FORBID_CONTENTS: options?.ADD_FORBID_CONTENTS,
       ALLOWED_ATTR: MATRIX__ALLOWED_ATTRS as unknown as string[],
       ALLOWED_TAGS: MATRIX__ALLOWED_TAGS as unknown as string[],
+      RETURN_DOM: options?.RETURN_DOM,
     })
   } finally {
     DOMPurify.removeHook('uponSanitizeAttribute')
