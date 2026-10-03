@@ -31,5 +31,5 @@ defineAppLabel({ label: resolvedName })
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
-  <RoomInstance :room="route.params.directRoomId" :with-members-list="false" />
+  <RoomInstance :room="route.params.directRoomId" />
 </template>

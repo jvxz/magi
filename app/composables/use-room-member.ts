@@ -1,108 +1,19 @@
-import type { MatrixEvent, RoomMember, RoomState } from 'matrix-js-sdk'
-import type { EffectScope, ShallowRef } from 'vue'
-
-import { toRef } from '@vueuse/core'
-
-type Value = RoomMember | undefined
-type Key = `${string}:${string}`
-
-interface Entry {
-  scope: EffectScope
-  ref: ShallowRef<Value>
-  subs: number
-}
-
-const cache = new Map<string, Entry>()
-
-function createKey(roomId: string, userId: string) {
-  return `${roomId}:${userId}` as const
-}
-
-function acquire(roomId: string, userId: string) {
-  const key = createKey(roomId, userId)
-
-  let entry = cache.get(key)
-  if (!entry) {
-    const scope = effectScope(true)
-
-    const ref = scope.run(() => {
-      const room = useRoom(roomId)
-
-      const rawMember = room.value?.getMember(userId)
-      const member = shallowRef<Value>(rawMember ? markRaw(rawMember) : undefined)
-
-      useRoomHooks(room, {
-        onMemberUpdate: handleUpdate,
-      })
-
-      function handleUpdate(_event: MatrixEvent, _state: RoomState, newMember: RoomMember) {
-        if (newMember.userId === userId) {
-          member.value = markRaw(newMember)
-          triggerRef(member)
-        }
-      }
-
-      return member
-    })!
-
-    entry = { ref, scope, subs: 0 }
-
-    cache.set(key, entry)
-  }
-  entry.subs++
-  return entry
-}
-
-function release(key: Key) {
-  const entry = cache.get(key)
-  if (!entry) return
-
-  entry.subs--
-
-  if (entry.subs <= 0) {
-    entry.scope.stop()
-    cache.delete(key)
-  }
-}
-
 export function useRoomMember(
-  roomId: MaybeRefOrGetter<MaybeRoomOrId | undefined>,
-  userId: MaybeRefOrGetter<MaybeUserOrId | undefined>,
+  roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>,
+  userInput: MaybeRefOrGetter<MaybeUserOrId | undefined>,
 ) {
-  const roomIdRef = toRef(roomId)
-  const userIdRef = toRef(userId)
+  const { client } = useMatrixClient()
+  const versions = useRoomStateVersions()
 
-  const member = shallowRef<Value>()
+  return toRef(() => {
+    const roomOrId = toValue(roomInput)
+    const userOrId = toValue(userInput)
+    if (!roomOrId || !userOrId) return undefined
 
-  watch(
-    [roomIdRef, userIdRef],
-    (_arr, _prev, onCleanup) => {
-      const roomId = roomIdRef.value && resolveRoomId(roomIdRef.value)
-      const userId = userIdRef.value && resolveUserId(userIdRef.value)
+    const roomId = resolveRoomId(roomOrId)
+    void versions.get(roomId)
 
-      if (!roomId || !userId) {
-        member.value = undefined
-        return
-      }
-
-      const entry = acquire(roomId, userId)
-
-      const { stop } = watch(
-        entry.ref,
-        value => {
-          member.value = value
-          triggerRef(member)
-        },
-        { immediate: true },
-      )
-
-      onCleanup(() => {
-        stop()
-        release(createKey(roomId, userId))
-      })
-    },
-    { immediate: true },
-  )
-
-  return member
+    const member = getRoom(client.value, roomId)?.getMember(resolveUserId(userOrId))
+    return member ? markRaw(member) : undefined
+  })
 }

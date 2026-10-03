@@ -10,7 +10,8 @@ interface MemberHeader {
   type: 'header'
   title: PowerLevelName
 }
-interface MemberCachePayload {
+
+export interface MemberCachePayload {
   members: Prettify<Member | MemberHeader>[]
   groupTotals: Record<PowerLevelName, number>
   memberCount: number

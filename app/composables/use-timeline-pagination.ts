@@ -5,6 +5,7 @@ export type PaginateDirection = 'backward' | 'forward'
 export interface TimelineScrollState {
   anchorKey: string
   anchorOffset: number
+  atTail: boolean
   endKey: string
   startKey: string
 }
@@ -16,6 +17,7 @@ interface Options<T> {
   onBeforePaginate: (dir: PaginateDirection) => Promise<void> | void
   pageSize?: number
   followTail?: boolean
+  initialState?: () => TimelineScrollState | undefined
 }
 
 const ARM_VIEWPORTS = 0.5
@@ -392,17 +394,20 @@ export function useTimelinePagination<T>(container: Ref<HTMLElement | null | und
     if (!el || startKey.value === null || endKey.value === null) return null
 
     const view = el.getBoundingClientRect()
-    const visible = window.value
-      .map(item => ({ key: getKey(item), row: getRow(getKey(item)) }))
-      .find(({ row }) => row && row.getBoundingClientRect().bottom > view.top)
-    if (!visible?.row) return null
+    for (const row of el.querySelectorAll<HTMLElement>(`[${ATTR__TIMELINE_ROW}]`)) {
+      const rect = row.getBoundingClientRect()
+      if (rect.bottom <= view.top) continue
 
-    return {
-      anchorKey: visible.key,
-      anchorOffset: visible.row.getBoundingClientRect().top - view.top,
-      endKey: endKey.value,
-      startKey: startKey.value,
+      return {
+        anchorKey: row.getAttribute(ATTR__TIMELINE_ROW)!,
+        anchorOffset: rect.top - view.top,
+        atTail: isAtTail(),
+        endKey: endKey.value,
+        startKey: startKey.value,
+      }
     }
+
+    return null
   }
 
   async function restoreState(state: TimelineScrollState): Promise<boolean> {
@@ -410,7 +415,7 @@ export function useTimelinePagination<T>(container: Ref<HTMLElement | null | und
 
     const gen = ++generation
     startKey.value = state.startKey
-    endKey.value = state.endKey
+    endKey.value = state.atTail ? getKey(source.value.at(-1)!) : state.endKey
     await nextTick()
 
     if (gen !== generation) return true
@@ -419,34 +424,32 @@ export function useTimelinePagination<T>(container: Ref<HTMLElement | null | und
     const row = getRow(state.anchorKey)
     if (!el || !row) return false
 
-    writeScrollTop(el, row.offsetTop - state.anchorOffset)
+    writeScrollTop(el, state.atTail ? el.scrollHeight : row.offsetTop - state.anchorOffset)
     watchScroll()
     return true
   }
 
-  watch(
-    () => source.value.length,
-    async () => {
-      if (startKey.value === null) {
-        await reset()
-        return
-      }
-      const atTail = isAtTail()
-      if (followTail && atTail && bounds.value) {
-        const gen = generation
-        endKey.value = getKey(source.value.at(-1)!)
-        await nextTick()
-        if (gen !== generation) return
-        const el = container.value
-        if (el) {
-          writeScrollTop(el, el.scrollHeight)
-        }
-      }
-    },
-  )
+  watch(source, async (items, prev) => {
+    if (!bounds.value) {
+      await reset()
+      return
+    }
+    if (!followTail || items.length === prev.length || !isAtTail()) return
+
+    const gen = generation
+    endKey.value = getKey(items.at(-1)!)
+    await nextTick()
+    if (gen !== generation) return
+    const el = container.value
+    if (el) {
+      writeScrollTop(el, el.scrollHeight)
+    }
+  })
 
   onMounted(async () => {
     await nextTick()
+    const state = opts.initialState?.()
+    if (state && (await restoreState(state))) return
     await reset()
   })
 

@@ -48,6 +48,8 @@ export type MessageNode =
   | { type: 'math'; latex: string; fallback: MessageNode[] }
   | { type: 'image'; mxcUrl: string; alt?: string; width?: number; height?: number }
 
+const cache = new WeakMap<object, MessageNode[]>()
+
 export function useMessageBodyNodes(event: MaybeRefOrGetter<MatrixEvent>) {
   const eventRef = toRef(event)
 
@@ -59,18 +61,17 @@ export function useMessageBodyNodes(event: MaybeRefOrGetter<MatrixEvent>) {
       `invalid event type when formatting message body. was \`\${eventRef.value.getType()}\``,
     )
 
-    const { body, format, formatted_body } = eventRef.value.getContent<RoomMessageTextEventContent>()
+    const content = eventRef.value.getContent<RoomMessageTextEventContent>()
+    const { body, format, formatted_body } = content
     if (format !== 'org.matrix.custom.html' || !formatted_body) return [{ type: 'text', value: body }]
 
-    const raw = new DOMParser().parseFromString(formatted_body, 'text/html')
+    let nodes = cache.get(content)
+    if (!nodes) {
+      nodes = walkNodes(sanitizeFormattedBody(formatted_body, { ADD_FORBID_CONTENTS: ['mx-reply'], RETURN_DOM: true }))
+      cache.set(content, nodes)
+    }
 
-    const firstElement = raw.body.firstElementChild
-    if (firstElement?.localName === 'mx-reply') firstElement.remove()
-
-    const safeHtml = sanitizeFormattedBody(raw.body.innerHTML)
-    const safe = new DOMParser().parseFromString(safeHtml, 'text/html')
-
-    return walkNodes(safe.body)
+    return nodes
   })
 
   return {
