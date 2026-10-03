@@ -52,7 +52,7 @@ jobs:
             ${{ runner.os }}-playwright-browsers-
 
       - name: install playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright-core install --with-deps chromium
 
       - name: test
         run: pnpm test

@@ -1,52 +1,37 @@
-import type { Page } from '@playwright/test'
+import type { Locator, Page } from 'playwright-core'
 
-import { expect, test } from '@nuxt/test-utils/playwright'
 import { assert } from 'es-toolkit'
 import { randomInt } from 'es-toolkit/math'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
-import { setFlag } from './utils'
+import { mockLogin, newPage, setFlag } from './utils'
 
 type Direction = 'backwards' | 'forwards'
-type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
 
 let sharedPage: Page | undefined
 
-test.describe.configure({ mode: 'serial' })
+beforeAll(async () => {
+  sharedPage = await newPage({ serviceWorkers: 'block' })
 
-test.beforeAll(async ({ browser }) => {
-  const context = await browser.newContext({ serviceWorkers: 'block' })
-  sharedPage = await context.newPage()
-
-  await setFlag(context, 'skip-auth-middleware', true)
-
-  await sharedPage.addInitScript(() => {
-    window.localStorage.setItem(
-      'magi:test:auth',
-      JSON.stringify({
-        accessToken: 'fake-token',
-        deviceId: 'TEST_DEVICE',
-        userId: '@test:localhost',
-      }),
-    )
-  })
+  await setFlag(sharedPage.context(), 'skip-auth-middleware', true)
+  await mockLogin(sharedPage)
 
   await sharedPage.goto('/app/space/test/test', { waitUntil: 'domcontentloaded' })
-  await expect(sharedPage).not.toHaveURL('/login')
-  await expect(sharedPage.getByText('Testing')).toBeVisible()
+  expect(sharedPage.url()).not.toContain('/login')
+  await sharedPage.getByText('Testing').waitFor()
 })
 
-test.afterAll(async () => {
-  await sharedPage?.context().close()
+afterAll(async () => {
+  await sharedPage?.close()
 })
 
-test.describe('Event list', () => {
-  test('does not paginate from layout changes', async () => {
-    test.setTimeout(15_000)
+describe('event list', () => {
+  it('does not paginate from layout changes', { timeout: 15_000 }, async () => {
     assert(sharedPage, 'sharedPage was undefined on access')
 
     await sharedPage.goto('/app/space/test/303', { waitUntil: 'domcontentloaded' })
     const container = getScrollContainer(sharedPage)
-    await expect(container).toBeVisible({ timeout: 15_000 })
+    await container.waitFor({ timeout: 15_000 })
 
     const style = await sharedPage.addStyleTag({
       content: `
@@ -73,24 +58,24 @@ test.describe('Event list', () => {
     const forwardSamples = await sampleWindow(container)
     expect(new Set(forwardSamples.map(({ first, last }) => `${first}:${last}`)).size).toBe(1)
 
-    await style.evaluate(el => el.remove())
+    await style.evaluate(el => (el as Element).remove())
     await sharedPage.goto('/app/space/test/test', { waitUntil: 'domcontentloaded' })
-    await expect(getScrollContainer(sharedPage)).toBeVisible({ timeout: 15_000 })
+    await getScrollContainer(sharedPage).waitFor({ timeout: 15_000 })
   })
 
-  test('paginates backwards', async () => {
+  it('paginates backwards', async () => {
     assert(sharedPage, 'sharedPage was undefined on access')
 
     await paginateUntilBoundary('backwards', sharedPage, 'oldest-event')
   })
 
-  test('paginates forwards from the end', async () => {
+  it('paginates forwards from the end', async () => {
     assert(sharedPage, 'sharedPage was undefined on access')
 
     await paginateUntilBoundary('forwards', sharedPage, 'newest-event')
   })
 
-  test('restore scroll on page load', async () => {
+  it('restore scroll on page load', async () => {
     assert(sharedPage, 'sharedPage was undefined on access')
 
     await navToRoom(sharedPage, '750')
@@ -106,7 +91,7 @@ test.describe('Event list', () => {
     await navToRoom(sharedPage, '750')
 
     const newContainer = getScrollContainer(sharedPage)
-    await expect(newContainer).toBeVisible({ timeout: 15_000 })
+    await newContainer.waitFor({ timeout: 15_000 })
     await expect
       .poll(() => newContainer.evaluate((el: HTMLElement) => el.scrollTop), { timeout: 10_000 })
       .toBe(scrollTopVal)
@@ -115,7 +100,7 @@ test.describe('Event list', () => {
 
 async function paginateUntilBoundary(
   dir: Direction,
-  page: TestArgs['page'],
+  page: Page,
   boundaryId: 'oldest-event' | 'newest-event',
   maxSteps = 200,
 ) {
@@ -143,20 +128,20 @@ async function paginateUntilBoundary(
   throw new Error(`Did not reach ${boundaryId} within ${maxSteps} steps`)
 }
 
-async function navToRoom(page: TestArgs['page'], roomId: string) {
+async function navToRoom(page: Page, roomId: string) {
   const tab = page.getByTestId(`mock-room-${roomId}`)
-  await expect(tab).toBeVisible()
+  await tab.waitFor()
 
   await tab.click()
   await page.waitForURL(`**/${roomId}`)
-  await expect(page.getByTestId('scroll-container')).toBeVisible({ timeout: 15_000 })
+  await page.getByTestId('scroll-container').waitFor({ timeout: 15_000 })
 }
 
-function getScrollContainer(page: TestArgs['page']) {
+function getScrollContainer(page: Page) {
   return page.getByTestId('scroll-container')
 }
 
-async function sampleWindow(container: ReturnType<typeof getScrollContainer>) {
+async function sampleWindow(container: Locator) {
   return container.evaluate(async el => {
     const samples: { first?: string; last?: string }[] = []
 
@@ -173,12 +158,12 @@ async function sampleWindow(container: ReturnType<typeof getScrollContainer>) {
   })
 }
 
-async function getScrollContainerEvents(page: TestArgs['page']) {
+async function getScrollContainerEvents(page: Page) {
   const wrapper = page.getByTestId('scroll-container-wrapper')
   return wrapper.locator('[data-index]')
 }
 
-async function getPaginatedEvent(dir: Direction, page: TestArgs['page']) {
+async function getPaginatedEvent(dir: Direction, page: Page) {
   const events = await getScrollContainerEvents(page)
 
   const el = dir === 'backwards' ? events.first() : events.last()
