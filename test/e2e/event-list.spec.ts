@@ -98,7 +98,7 @@ test.describe('Event list', () => {
     const oldContainer = getScrollContainer(sharedPage)
 
     const maxScroll = await oldContainer.evaluate(el => el.scrollHeight - el.clientHeight)
-    const scrollTopVal = randomInt(maxScroll * 0.25, maxScroll)
+    const scrollTopVal = randomInt(maxScroll * 0.25, maxScroll * 0.9)
 
     await oldContainer.evaluate((el, value) => (el.scrollTop = value), scrollTopVal)
 

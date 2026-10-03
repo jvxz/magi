@@ -18,6 +18,8 @@ export function useRoomReplyEvent(event: MatrixEvent, room: Room) {
       () => event.replyEventId,
       () => room.roomId,
     ),
+    retry: (count, err) => !(isMatrixError(err) && err.errcode === MatrixErrorCode.M_NOT_FOUND) && count < 3,
+    retryOnMount: false,
     shallow: true,
   })
 

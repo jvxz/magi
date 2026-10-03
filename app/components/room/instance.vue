@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { KnownMembership } from 'matrix-js-sdk'
 
-const props = withDefaults(defineProps<{ withMembersList?: boolean; room: MaybeRoomOrId | undefined }>(), {
-  withMembersList: true,
-})
+const props = defineProps<{ room: MaybeRoomOrId | undefined }>()
 
 const matrixStatus = useMatrixStatus()
 const roomId = useResolveRoomId(() => props.room)
@@ -18,11 +16,13 @@ const membership = useRoomMembership(roomId, () => self.value?.userId)
   <template v-else-if="room">
     <div v-if="membership === KnownMembership.Join" class="flex flex-1 size-full">
       <div class="flex flex-col size-full relative">
-        <RoomEventList :room />
+        <KeepAlive :max="5">
+          <RoomEventList :key="room.roomId" :room />
+        </KeepAlive>
         <RoomInput />
       </div>
 
-      <RoomMembersList v-if="withMembersList" :room />
+      <RoomMembersList :room />
       <RoomEventReactionsViewer />
     </div>
 

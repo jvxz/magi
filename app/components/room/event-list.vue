@@ -52,6 +52,7 @@ const {
   followTail: true,
   getKey: i => i.getId()!,
   hasMore: dir => dir === 'backward' && !isFullyLoaded.value,
+  initialState: () => props.room && scrollStates.get(props.room.roomId),
   onBeforePaginate: async dir => {
     if (dir === 'backward') await loadOlder()
   },
@@ -65,10 +66,11 @@ watchEffect(() => {
 
 const roomId = computed(() => props.room?.roomId)
 
+const currentRoomId = useCurrentRoomId()
 watch(
-  roomId,
-  (_next, prev) => {
-    if (!prev) return
+  currentRoomId,
+  (_, prev) => {
+    if (!prev || prev !== roomId.value) return
 
     const state = captureState()
     if (!state) return
@@ -80,27 +82,11 @@ watch(
   { flush: 'sync' },
 )
 
-let settledRoomId = roomId.value
-
-watch(
-  [roomId, events],
-  async ([id]) => {
-    if (!id) return
-
-    const needsBootstrap = paginationWindow.value.length === 0 && events.value.length > 0
-    if (id === settledRoomId && !needsBootstrap) return
-
-    settledRoomId = id
-
-    const saved = scrollStates.get(id)
-    if (saved && (await restoreState(saved))) return
-
-    if (roomId.value !== id) return
-
-    await reset()
-  },
-  { flush: 'post' },
-)
+const alive = useAlive()
+whenever(alive, async () => {
+  const saved = roomId.value && scrollStates.get(roomId.value)
+  if (!saved || !(await restoreState(saved))) await reset()
+})
 
 const groupedEvents = useEventGrouping({
   events,
