@@ -1,10 +1,14 @@
-import type { test } from '@nuxt/test-utils/playwright'
+import type { BrowserContext, BrowserContextOptions, Page } from 'playwright-core'
 
-export type TestArgs = Parameters<Parameters<typeof test.beforeAll>[1]>[0]
+import { createPage, url } from '@nuxt/test-utils/e2e'
 
 const MOCK_AUTH_KEY = 'magi:test:auth'
 
-export async function mockLogin(page: TestArgs['page']) {
+export function newPage(options?: BrowserContextOptions) {
+  return createPage(undefined, { baseURL: url('/'), ...options })
+}
+
+export async function mockLogin(page: Page) {
   return page.addInitScript(k => {
     window.localStorage.setItem(
       k,
@@ -17,16 +21,16 @@ export async function mockLogin(page: TestArgs['page']) {
   }, MOCK_AUTH_KEY)
 }
 
-async function _mockLogout(page: TestArgs['page'], reload = true) {
+async function _mockLogout(page: Page, reload = true) {
   await page.addInitScript(k => window.localStorage.removeItem(k), MOCK_AUTH_KEY)
   if (reload) await page.reload()
 }
 
-export function setFlag(context: TestArgs['context'], flag: string, value: any) {
+export function setFlag(context: BrowserContext, flag: string, value: any) {
   return context.addCookies([
     {
       name: `test-flag:${flag}`,
-      url: 'http://localhost:5678',
+      url: url('/'),
       value: JSON.stringify(value),
     },
   ])

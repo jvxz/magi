@@ -165,6 +165,9 @@ export default defineNuxtConfig({
   ssr: false,
 
   typescript: {
+    nodeTsConfig: {
+      include: ['../test/e2e/**/*'],
+    },
     tsConfig: {
       compilerOptions: {
         allowImportingTsExtensions: true,
@@ -172,6 +175,7 @@ export default defineNuxtConfig({
         rootDir: '..',
         types: ['grecaptcha'],
       },
+      include: ['../test/browser/**/*'],
     },
   },
 
