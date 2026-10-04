@@ -7,9 +7,7 @@ import { Extension, InputRule, mergeAttributes, PasteRule } from '@tiptap/core'
 import { Emoji } from '@tiptap/extension-emoji'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 import { Marked } from 'marked'
-import { markedHighlight } from 'marked-highlight'
 import { Decoration, DecorationSet } from 'prosemirror-view'
-import { highlightText } from 'rangi'
 
 const underlineExt: TokenizerAndRendererExtension = {
   level: 'inline',
@@ -34,14 +32,7 @@ const underlineExt: TokenizerAndRendererExtension = {
 
 export const MARKED_INSTANCE = new Marked({ async: false, extensions: [underlineExt] })
 
-export const MARKED_MESSAGE_INSTANCE = new Marked(
-  { async: false, extensions: [underlineExt] },
-  markedHighlight({
-    async: false,
-    highlight: (code, lang) => highlightText(code, { classes: true, lang }),
-    langPrefix: 'language-',
-  }),
-)
+export const MARKED_MESSAGE_INSTANCE = new Marked({ async: false, extensions: [underlineExt] })
 
 function findEmojiByShortcode(shortcode: string, emojis: EmojiItem[]) {
   return emojis.find(e => e.name === shortcode || e.shortcodes?.includes(shortcode))
