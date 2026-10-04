@@ -32,10 +32,27 @@ export async function joinRoom(client: MatrixClient, roomId: string, via?: strin
   return client.joinRoom(roomId, { inviteSignUrl, viaServers: via && via.length ? via : undefined })
 }
 
-export function getRoom(client: MatrixClient, roomId: Room['roomId'], allowedIds?: MaybeReadonlySet<Room['roomId']>) {
-  if (!allowedIds) return client.getRoom(roomId)
+const mockRoomModule = shallowRef<typeof import('~/utils/test/mock-room')>()
+if (isTestMode()) void import('~/utils/test/mock-room').then(m => (mockRoomModule.value = m))
 
-  if (allowedIds.has(roomId)) return client.getRoom(roomId)
+const mockRooms = new Map<string, Room>()
+
+function getRoomOrMock(client: MatrixClient, roomId: Room['roomId']) {
+  const room = client.getRoom(roomId)
+  if (room || !mockRoomModule.value) return room
+
+  let mock = mockRooms.get(roomId)
+  if (!mock) {
+    mock = mockRoomModule.value.createMockRoom({ id: roomId, seedMessages: Number(roomId) || 500 }).room
+    mockRooms.set(roomId, mock)
+  }
+  return mock
+}
+
+export function getRoom(client: MatrixClient, roomId: Room['roomId'], allowedIds?: MaybeReadonlySet<Room['roomId']>) {
+  if (!allowedIds) return getRoomOrMock(client, roomId)
+
+  if (allowedIds.has(roomId)) return getRoomOrMock(client, roomId)
 
   return undefined
 }
