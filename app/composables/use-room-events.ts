@@ -135,6 +135,7 @@ export function useRoomEvents(
 
   async function scrollBack() {
     if (isFullyLoaded.value || !room.value) return false
+    if (isTestMode() && !client.value.getRoom(room.value.roomId)) return false
 
     const tl = room.value.getLiveTimeline()
 
