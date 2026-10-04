@@ -23,17 +23,9 @@ const delegated = reactiveOmit(props, ['open', 'lang', 'code'])
         }
       "
     >
-      <!-- <UDialogHeader>
-        <UDialogTitle> {{ label }} </UDialogTitle>
-        <VisuallyHidden>
-          <UDialogDescription> {{ label }}'s avatar </UDialogDescription>
-        </VisuallyHidden>
-      </UDialogHeader> -->
-
       <UCodeblock
         :header="true"
         :dialog="false"
-        :padding="4"
         :input="props.code"
         :lang="props.lang"
         :ui="{
