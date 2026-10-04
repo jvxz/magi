@@ -87,7 +87,7 @@ export function useSpaceHierarchy(
   const subspacesQueries = useQueries({
     queries: computed(() =>
       subspaceList.value.map(space => {
-        const localRoom = getRoom(client.value, space.room_id)
+        const localRoom = client.value.getRoom(space.room_id)
         let localCount: number | undefined
 
         if (localRoom) {
@@ -97,7 +97,7 @@ export function useSpaceHierarchy(
             const childId = e.getStateKey()
             if (!childId || !e.getContent().via?.length) continue
 
-            const childRoom = getRoom(client.value, childId, joinedRooms.value)
+            const childRoom = joinedRooms.value.has(childId) ? client.value.getRoom(childId) : undefined
             if (!childRoom) {
               allKnown = false
               break
