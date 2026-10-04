@@ -80,7 +80,7 @@ const { isYOverflowed } = useElementOverflow(microlighterRoot)
         "
       />
 
-      <micro-lighter :language="lang" line-numbers ref="microlighter" class="overflow-y-auto scrollbar-fancy">
+      <micro-lighter ref="microlighter" :language="lang" line-numbers class="overflow-y-auto scrollbar-fancy">
         <pre class="p-2"><code v-text="code"/></pre>
       </micro-lighter>
     </div>
