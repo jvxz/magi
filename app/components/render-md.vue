@@ -15,14 +15,7 @@ const segments = useMarked(() => props.content, { inline: props.inline })
 
 <template>
   <template v-for="(s, i) in segments" :key="i">
-    <UCodeblock
-      v-if="s.type === 'code'"
-      :ui="codeblockUi"
-      :input="s.code"
-      :lang="s.lang"
-      :numbers="false"
-      :header="true"
-    />
+    <UCodeblock v-if="s.type === 'code'" :ui="codeblockUi" :input="s.code" :lang="s.lang" :header="true" />
 
     <div v-else-if="s.type === 'html'" :class="cn('md', props.class)" v-html="s.html" />
   </template>
