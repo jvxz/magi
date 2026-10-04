@@ -74,6 +74,7 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
     getLiveTimeline: () => ({
       getEvents: () => events,
       getPaginationToken: () => 'token',
+      getState: () => ({ getStateEvents: () => [] }),
     }),
     getMember: (userId: string) => {
       const member = members.get(userId)
