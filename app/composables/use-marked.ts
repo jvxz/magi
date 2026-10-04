@@ -1,5 +1,4 @@
 import type { Token, Tokens } from 'marked'
-import type { ShjLanguage } from 'rangi'
 
 import { toRef } from '@vueuse/core'
 import DOMPurify from 'dompurify'
@@ -12,7 +11,7 @@ export type MdSegment =
     }
   | {
       type: 'code'
-      lang: ShjLanguage | (string & {})
+      lang: string
       code: string
     }
 

@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-07-15',
 
-  css: ['~/assets/css/globals.css', '~/assets/css/transitions.css'],
+  css: ['~/assets/css/globals.css', '~/assets/css/transitions.css', '~/assets/css/highlight.css'],
 
   devtools: { enabled: true },
 
@@ -180,7 +180,12 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    build: {
+      // microlighter lazy loads grammars via dynamic import in node modules
+      dynamicImportVarsOptions: { exclude: [] },
+    },
     optimizeDeps: {
+      exclude: ['microlighter', 'microlighter/microlighter.min.js'],
       include: [
         '@regle/core',
         '@regle/rules',
@@ -194,8 +199,6 @@ export default defineNuxtConfig({
         'matrix-js-sdk',
         'mime/lite',
         'quick-lru',
-        'rangi',
-        'rangi/themes',
         'tailwind-variants',
         'temporal-polyfill',
         'workbox-window',
@@ -209,7 +212,6 @@ export default defineNuxtConfig({
         '@tiptap/pm/state',
         'dompurify',
         'es-toolkit/set',
-        'marked-highlight',
         'marked',
         'virtua/vue',
         '@faker-js/faker',

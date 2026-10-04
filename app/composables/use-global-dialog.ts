@@ -1,5 +1,4 @@
 import type { Room, RoomMember } from 'matrix-js-sdk'
-import type { ShjLanguage } from 'rangi'
 
 export interface GlobalDialogMap {
   invite: { room: string }
@@ -12,7 +11,7 @@ export interface GlobalDialogMap {
     | { label: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
   codeViewer: {
     code: string
-    lang?: ShjLanguage | (string & {})
+    lang?: string
   }
   deleteMessage: {
     roomId: string
