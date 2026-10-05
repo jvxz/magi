@@ -27,6 +27,7 @@ export const useUserProfileVersions = createSharedComposable(() => {
     const userId = event.getStateKey()
     if (!userId) return
 
+    cache.delete(userId)
     bump(userId)
   })
 
@@ -50,18 +51,21 @@ export function useUserProfile(userInput: MaybeRefOrGetter<MaybeUserOrId | undef
     return versions.get(resolveUserId(u)) ?? 0
   })
 
-  watchImmediate([() => toValue(userInput), version], async ([userOrId]) => {
-    if (!userOrId) return
+  watchImmediate([() => toValue(userInput), version], async ([userOrId], [prevUserOrId]) => {
+    if (!userOrId) return (userProfile.value = {})
     const userId = resolveUserId(userOrId)
+    const fallback = { displayname: getDisplayNameFallback(userId) }
 
     const user = userOrId instanceof User ? userOrId : client.value.getUser(userId)
     if (user) return (userProfile.value = { avatar_url: user.avatarUrl, displayname: resolveUserName(user) })
+
+    if (!prevUserOrId || resolveUserId(prevUserOrId) !== userId) userProfile.value = fallback
 
     let stale = false
     onWatcherCleanup(() => (stale = true))
 
     const profile = await fetchProfile(userId)
-    if (!stale) userProfile.value = profile ?? {}
+    if (!stale) userProfile.value = profile ?? fallback
   })
 
   return userProfile
