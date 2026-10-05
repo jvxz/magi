@@ -118,6 +118,10 @@ export class EmailRateLimitedError extends Error {
   }
 }
 
+export class NoRefreshTokenError extends Error {
+  override name = 'NoRefreshTokenError'
+}
+
 export class RegistrationDisabledError extends Error {
   override name = 'RegistrationDisabledError'
 }

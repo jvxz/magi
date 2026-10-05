@@ -1,4 +1,11 @@
-import type { MatrixClient, TokenRefreshFunction, ICreateClientOpts, Device, IMyDevice } from 'matrix-js-sdk'
+import type {
+  MatrixClient,
+  TokenRefreshCallback,
+  ICreateClientOpts,
+  Device,
+  IMyDevice,
+  AccessTokens,
+} from 'matrix-js-sdk'
 
 import { createClient, IndexedDBCryptoStore, IndexedDBStore, MatrixError, TokenRefreshLogoutError } from 'matrix-js-sdk'
 
@@ -22,10 +29,10 @@ export async function createAuthedClient(auth: AuthPayload) {
     baseUrl: auth.baseUrl,
     cryptoStore: idbLegacyCryptoStore,
     deviceId: auth.deviceId,
+    onTokenRefresh: createTokenRefreshFunction(),
     refreshToken: auth.refreshToken,
     store: idbStore,
     timelineSupport: true,
-    tokenRefreshFunction: createTokenRefreshFunction(),
     userId: auth.userId,
   })
 
@@ -42,9 +49,11 @@ export async function createAuthedClient(auth: AuthPayload) {
   return client
 }
 
-function createTokenRefreshFunction(): TokenRefreshFunction {
-  return async (refreshToken: string) => {
+function createTokenRefreshFunction(): TokenRefreshCallback {
+  return async ({ refreshToken }: AccessTokens) => {
     try {
+      if (!refreshToken) throw new NoRefreshTokenError()
+
       const auth = await idb.getItem<AuthPayload>('auth')
       if (!auth) throw new TokenRefreshLogoutError()
 
