@@ -48,7 +48,6 @@ function viewAvatar() {
       v-bind="contentProps"
       as-child
       data-slot="profile-popover"
-      disable-outside-pointer-events
       :reference="referenceElement ?? undefined"
       :class="cn('z-popover', $props.class)"
     >
@@ -57,10 +56,9 @@ function viewAvatar() {
       >
         <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
           <div class="rounded-t flex h-full justify-end relative">
-            <MatrixAvatar
+            <MatrixUserAvatar
               v-if="avatarUrl"
-              :src="avatarUrl"
-              :alt="displayName"
+              :user
               class="rounded-t size-full scale-150 absolute object-cover blur-xl -z-1"
             />
 
@@ -83,6 +81,7 @@ function viewAvatar() {
               image-size="small"
             />
             <MatrixUserAvatar v-else :user class="size-20 ring-6 ring-popover" image-size="small" />
+
             <div
               class="rounded-full size-20 cursor-pointer content-[''] inset-0 absolute z-2 group-hover:bg-hover/25"
             />

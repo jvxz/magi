@@ -1,16 +1,19 @@
 <script lang="ts" setup>
 import type { Room } from 'matrix-js-sdk'
-import type { PopoverContentProps, PopoverTriggerProps } from 'reka-ui'
+import type { PopoverContentProps, PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<
-  PopoverTriggerProps & {
-    user?: MaybeUserOrId | undefined
-    contentProps?: PopoverContentProps
-    freezeReference?: boolean
-    manualRoom?: Room | undefined
-    context?: ProfilePopoverContext
-  }
->()
+const props = withDefaults(
+  defineProps<
+    PrimitiveProps & {
+      user?: MaybeUserOrId | undefined
+      contentProps?: PopoverContentProps
+      freezeReference?: boolean
+      manualRoom?: Room | undefined
+      context?: ProfilePopoverContext
+    }
+  >(),
+  { as: 'button' },
+)
 const { openProfilePopover } = useProfilePopover()
 
 function handleOpen(e: Event) {
@@ -27,7 +30,7 @@ function handleOpen(e: Event) {
 </script>
 
 <template>
-  <PopoverTrigger v-bind="$props" @click="handleOpen">
+  <Primitive :as :as-child :type="as === 'button' ? 'button' : undefined" aria-haspopup="dialog" @click="handleOpen">
     <slot />
-  </PopoverTrigger>
+  </Primitive>
 </template>
