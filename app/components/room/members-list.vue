@@ -18,7 +18,7 @@ const listRef = useTemplateRef('list')
 const virtualizer = useListVirtualizer(virtualizerList, listRef, {
   estimateSize: memberOrHeader => {
     if (memberOrHeader.type === 'header') return 32
-    else return 40
+    else return 41
   },
   getItemKey: memberOrHeader => (memberOrHeader.type === 'header' ? memberOrHeader.title : memberOrHeader.userId),
 })
@@ -39,7 +39,7 @@ const virtualItems = computed(() =>
 
 <template>
   <div class="border-l border-border shrink-0 h-full w-72">
-    <div v-if="membersGrouped && isLoaded" ref="list" class="size-full overflow-auto">
+    <div v-if="membersGrouped && isLoaded" ref="list" class="px-1 size-full overflow-auto">
       <div class="min-h-fit w-full relative" :style="{ height: `${virtualizer.getTotalSize()}px` }">
         <div
           v-for="{ item, ...virtualRow } in virtualItems"
