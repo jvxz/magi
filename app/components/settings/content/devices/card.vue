@@ -23,16 +23,7 @@ const { deleteDevice, isDeletingAnyDevice, renameDevice, deviceRenaming, deviceD
   injectSettingsContentDevicesContext()
 
 const details = computed(() =>
-  device
-    ? pick(omitBy(device, isNil), [
-        'device_id',
-        'display_name',
-        'last_seen_ts',
-        'last_seen_ip',
-        'last_seen_user_agent',
-        'org.matrix.msc3852.last_seen_user_agent',
-      ])
-    : undefined,
+  device ? pick(omitBy(device, isNil), ['device_id', 'display_name', 'last_seen_ts', 'last_seen_ip']) : undefined,
 )
 
 const { query } = useAuthMetadata()
