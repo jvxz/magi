@@ -33,7 +33,7 @@ onMounted(() => {
   >
     <UButton
       ref="trigger"
-      class="text-foreground mb-px font-normal gap-2 h-10 w-full justify-start data-[popover-open]:bg-selected!"
+      class="text-foreground font-normal mb-px gap-2 h-10 w-full justify-start data-[popover-open]:bg-selected!"
       variant="ghost"
     >
       <div class="shrink-0 size-6 [&>svg]:size-full!">

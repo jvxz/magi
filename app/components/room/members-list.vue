@@ -39,7 +39,7 @@ const virtualItems = computed(() =>
 
 <template>
   <div class="border-l border-border shrink-0 h-full w-72">
-    <div v-if="membersGrouped && isLoaded" ref="list" class="size-full overflow-auto px-1">
+    <div v-if="membersGrouped && isLoaded" ref="list" class="px-1 size-full overflow-auto">
       <div class="min-h-fit w-full relative" :style="{ height: `${virtualizer.getTotalSize()}px` }">
         <div
           v-for="{ item, ...virtualRow } in virtualItems"
