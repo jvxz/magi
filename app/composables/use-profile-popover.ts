@@ -8,6 +8,7 @@ export interface ProfilePopoverContext {
 export const useProfilePopover = createSharedComposable(() => {
   const open = shallowRef(false)
   const referenceElement = shallowRef<MaybeElement | VirtualElement>()
+  const triggerElement = shallowRef<HTMLElement>()
   const userIdRef = shallowRef<string>()
   const contentProps = shallowRef<PopoverContentProps>()
   const manualRoom = shallowRef<Room>()
@@ -22,6 +23,7 @@ export const useProfilePopover = createSharedComposable(() => {
 
       setPopoverOpenAttribute(referenceElement.value, 'remove')
       referenceElement.value = undefined
+      triggerElement.value = undefined
 
       contentProps.value = undefined
       userIdRef.value = undefined
@@ -50,6 +52,7 @@ export const useProfilePopover = createSharedComposable(() => {
     currentRoot = root
 
     referenceElement.value = options.freezeReference ? createFrozenReference(trigger) : trigger
+    triggerElement.value = trigger
 
     contentProps.value = nextContentProps
     userIdRef.value = userId
@@ -65,6 +68,7 @@ export const useProfilePopover = createSharedComposable(() => {
     open,
     openProfilePopover,
     referenceElement,
+    triggerElement,
     user,
   }
 })
