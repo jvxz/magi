@@ -56,9 +56,10 @@ function viewAvatar() {
       >
         <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
           <div class="rounded-t flex h-full justify-end relative">
-            <MatrixUserAvatar
-              v-if="avatarUrl"
-              :user
+            <MatrixRoomMemberAvatar
+              v-if="avatarUrl && room && userId"
+              :room
+              :member="userId"
               class="rounded-t size-full scale-150 absolute object-cover blur-xl -z-1"
             />
 
