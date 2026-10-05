@@ -1,146 +1,72 @@
-import type { IMatrixProfile, User, UserEventHandlerMap } from 'matrix-js-sdk'
-import type { EffectScope, ShallowRef } from 'vue'
+import type { IMatrixProfile } from 'matrix-js-sdk'
 
-import { UserEvent } from 'matrix-js-sdk'
+import { User } from 'matrix-js-sdk'
 
-interface Entry {
-  scope: EffectScope
-  ref: ShallowRef<IMatrixProfile | undefined>
-  subs: number
-}
+export const useUserProfileVersions = createSharedComposable(() => {
+  const { client } = useMatrixClient()
+  const versions = shallowReactive(new Map<string, number>())
+  const cache = new Map<string, Promise<IMatrixProfile | undefined>>()
+  const { onEvent, onUserProfile } = useMatrixHooks()
 
-const cache = new Map<string, Entry>()
-
-function acquire(key: string) {
-  let entry = cache.get(key)
-  if (!entry) {
-    const scope = effectScope(true)
-
-    const ref = scope.run(() => {
-      const userId = key
-      const { client } = useMatrixClient()
-      const { onEvent, onUserProfile } = useMatrixHooks()
-
-      const user = shallowRef<User | undefined>(client.value.getUser(userId) ?? undefined)
-
-      const profile = shallowRef<IMatrixProfile | undefined>({
-        avatar_url: user.value?.avatarUrl,
-        displayname: user.value?.rawDisplayName ?? getDisplayNameFallback(userId),
+  const bump = (id: string) => versions.set(id, (versions.get(id) ?? 0) + 1)
+  const fetchProfile = (id: string) => {
+    let profile: Promise<IMatrixProfile | undefined> | undefined = cache.get(id)
+    if (!profile) {
+      profile = client.value.getProfileInfo(id).catch(() => {
+        cache.delete(id)
+        return undefined
       })
-
-      let writes = 0
-      function setProfile(next: IMatrixProfile) {
-        writes++
-        profile.value = next
-      }
-
-      function fetchProfile() {
-        const at = ++writes
-        client.value
-          .getProfileInfo(userId)
-          .then(result => {
-            if (result && writes === at) profile.value = result
-          })
-          .catch(() => {})
-      }
-
-      const refetchProfile = useDebounceFn(fetchProfile, 500)
-
-      if (!user.value) fetchProfile()
-
-      const updateProfile: UserEventHandlerMap[UserEvent.AvatarUrl | UserEvent.DisplayName] = (_, user) => {
-        setProfile({
-          avatar_url: user.avatarUrl,
-          displayname: user.rawDisplayName ?? getDisplayNameFallback(userId),
-        })
-      }
-
-      onEvent(event => {
-        if (user.value) return
-        if (event.getType() !== 'm.room.member') return
-        if (event.getStateKey() !== userId) return
-
-        const resolved = client.value.getUser(userId)
-
-        if (!resolved) {
-          refetchProfile()
-          return
-        }
-
-        user.value = resolved
-
-        setProfile({
-          avatar_url: resolved.avatarUrl,
-          displayname: resolved.rawDisplayName ?? getDisplayNameFallback(userId),
-        })
-
-        resolved.on(UserEvent.AvatarUrl, updateProfile)
-        resolved.on(UserEvent.DisplayName, updateProfile)
-      })
-
-      onUserProfile((updatedUserId, updatedProfile) => {
-        if (updatedUserId !== userId) return
-
-        setProfile({
-          ...profile.value,
-          avatar_url: updatedProfile?.avatar_url as string | undefined,
-          displayname: (updatedProfile?.displayname as string | undefined) ?? getDisplayNameFallback(userId),
-        })
-      })
-
-      user.value?.on(UserEvent.AvatarUrl, updateProfile)
-      user.value?.on(UserEvent.DisplayName, updateProfile)
-
-      onScopeDispose(() => {
-        user.value?.off(UserEvent.AvatarUrl, updateProfile)
-        user.value?.off(UserEvent.DisplayName, updateProfile)
-      })
-
-      return profile
-    })!
-
-    entry = { ref, scope, subs: 0 }
-
-    cache.set(key, entry)
+      cache.set(id, profile)
+    }
+    return profile
   }
-  entry.subs++
-  return entry
-}
 
-function release(key: string) {
-  const entry = cache.get(key)
-  if (!entry) return
+  onEvent(event => {
+    if (event.getType() !== 'm.room.member') return
 
-  entry.subs--
+    const userId = event.getStateKey()
+    if (!userId) return
 
-  if (entry.subs <= 0) {
-    entry.scope.stop()
-    cache.delete(key)
-  }
-}
-
-export function useUserProfile(user: MaybeRefOrGetter<MaybeUserOrId | undefined>) {
-  const userRef = computed(() => {
-    const u = toValue(user)
-    if (u) return resolveUserId(u)
+    cache.delete(userId)
+    bump(userId)
   })
-  const current = shallowRef<Entry | undefined>(undefined)
 
-  watch(
-    userRef,
-    (key, _, onCleanup) => {
-      if (!key) {
-        current.value = undefined
-        return
-      }
+  onUserProfile(userId => {
+    cache.delete(userId)
+    bump(userId)
+  })
 
-      const entry = acquire(key)
-      current.value = entry
+  return { fetchProfile, versions }
+})
 
-      onCleanup(() => release(key))
-    },
-    { immediate: true },
-  )
+export function useUserProfile(userInput: MaybeRefOrGetter<MaybeUserOrId | undefined>) {
+  const { versions, fetchProfile } = useUserProfileVersions()
+  const { client } = useMatrixClient()
 
-  return computed(() => current.value?.ref.value)
+  const userProfile = shallowRef<IMatrixProfile>({})
+
+  const version = computed(() => {
+    const u = toValue(userInput)
+    if (!u) return 0
+    return versions.get(resolveUserId(u)) ?? 0
+  })
+
+  watchImmediate([() => toValue(userInput), version], async ([userOrId], [prevUserOrId]) => {
+    if (!userOrId) return (userProfile.value = {})
+    const userId = resolveUserId(userOrId)
+    const fallback = { displayname: getDisplayNameFallback(userId) }
+
+    const user = userOrId instanceof User ? userOrId : client.value.getUser(userId)
+    if (user) return (userProfile.value = { avatar_url: user.avatarUrl, displayname: resolveUserName(user) })
+
+    if (!prevUserOrId || resolveUserId(prevUserOrId) !== userId) userProfile.value = fallback
+
+    let stale = false
+    onWatcherCleanup(() => (stale = true))
+
+    const profile = await fetchProfile(userId)
+    if (!stale) userProfile.value = profile ?? fallback
+  })
+
+  return userProfile
 }
