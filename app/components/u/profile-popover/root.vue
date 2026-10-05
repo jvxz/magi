@@ -3,7 +3,7 @@ const { open } = useProfilePopover()
 </script>
 
 <template>
-  <PopoverRoot v-model:open="open" modal>
+  <PopoverRoot v-model:open="open">
     <VisuallyHidden>
       <PopoverAnchor />
     </VisuallyHidden>
