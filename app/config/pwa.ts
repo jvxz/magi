@@ -4,7 +4,7 @@ import type { ModuleOptions } from '@vite-pwa/nuxt'
 
 import process from 'node:process'
 
-import { GENERAL__APP_META } from '../constants/general'
+import { GENERAL__APP_META } from '../constants/general.ts'
 
 const scope = '/'
 

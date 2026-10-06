@@ -1,7 +1,7 @@
 import type { NuxtPage } from 'nuxt/schema'
 
-import { pwa } from './app/config/pwa'
-import { COLOR_MODE__DEFAULT } from './app/constants/color-mode'
+import { pwa } from './app/config/pwa.ts'
+import { COLOR_MODE__DEFAULT } from './app/constants/color-mode.ts'
 
 export default defineNuxtConfig({
   app: {
@@ -187,6 +187,7 @@ export default defineNuxtConfig({
     optimizeDeps: {
       exclude: ['microlighter', 'microlighter/microlighter.min.js'],
       include: [
+        'matrix-js-sdk/lib/crypto-api',
         '@regle/core',
         '@regle/rules',
         '@tanstack/vue-hotkeys',

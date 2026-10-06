@@ -1,4 +1,4 @@
-import { ICON__DIRECT_ROOM, ICON__ENCRYPTED } from './icon'
+import { ICON__DIRECT_ROOM, ICON__ENCRYPTED } from './icon.ts'
 
 export type AppLayoutSlotName = (typeof GENERAL__APP_LAYOUT_SLOT_NAMES)[number]
 
