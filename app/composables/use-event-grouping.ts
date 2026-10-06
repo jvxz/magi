@@ -1,4 +1,5 @@
 import type { MatrixEvent } from 'matrix-js-sdk'
+import type { EventType } from 'matrix-js-sdk'
 
 interface GroupedEvent {
   events: MatrixEvent[]
@@ -27,14 +28,14 @@ export function useEventGrouping(opts: Opts) {
     const GROUP_WINDOW_MS = 15 * 60 * 1000
 
     for (let i = 0; i < rawEvents.value.length; i++) {
-      const event = rawEvents.value[i]
-      assert(event, '`event` was undefined when looping over events to group')
+      const event = rawEvents.value[i]!
 
       const sameSender = prevEvent && event.getSender() === prevEvent.getSender()
       const sameEventType = prevEvent && event.getType() === prevEvent.getType()
       const isReply = checkReplyEvent(event)
+      const isMessage = MATRIX__REACTABLE_EVENT_TYPES.includes(event.getType() as EventType)
       const withinWindow = currentGroupTsCutoff !== -1 && event.getTs() < currentGroupTsCutoff
-      const shouldGroup = !!(sameSender && sameEventType && withinWindow && !isReply)
+      const shouldGroup = !!(sameSender && isMessage && sameEventType && withinWindow && !isReply)
 
       if (!shouldGroup) currentGroupTsCutoff = event.getTs() + GROUP_WINDOW_MS
 
