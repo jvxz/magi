@@ -28,7 +28,6 @@ const {
     EventType.Reaction,
     EventType.RoomRedaction,
     EventType.RoomPowerLevels,
-    e => isBadEncrypted(e),
     e => e.isRedacted(),
     e => isEditEvent(e),
   ],
@@ -50,7 +49,7 @@ const {
   window: paginationWindow,
 } = useTimelinePagination(containerRef, {
   followTail: true,
-  getKey: i => i.getId()!,
+  getKey: e => e.getTxnId() ?? e.getId()!,
   hasMore: dir => dir === 'backward' && !isFullyLoaded.value,
   initialState: () => props.room && scrollStates.get(props.room.roomId),
   onBeforePaginate: async dir => {
@@ -114,7 +113,7 @@ const groupedEvents = useEventGrouping({
             v-for="(event, idx) in groupedEvents.events"
             :key="event.getId() ?? idx"
             :data-index="idx"
-            :data-item-id="event.getId()"
+            :data-item-id="event.getTxnId() ?? event.getId()"
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
             <RoomEventGeneric
