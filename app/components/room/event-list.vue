@@ -113,7 +113,7 @@ const groupedEvents = useEventGrouping({
             v-for="(event, idx) in groupedEvents.events"
             :key="event.getId() ?? idx"
             :data-index="idx"
-            :data-item-id="event.getId()"
+            :data-item-id="event.getTxnId() ?? event.getId()"
             :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
           >
             <RoomEventGeneric
