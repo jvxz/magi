@@ -10,7 +10,7 @@ const { event, grouped, room } = injectEventListItemContext()
 const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(event.value, room.value)
 
 const userId = computed(() => event.value.getSender())
-const { content: eventContent, isDecrypting } = useEventContent(event)
+const { content: eventContent, state: eventState } = useEventContent(event)
 const eventProfile = useUserProfile(userId)
 const eventMember = useRoomMember(() => room.value.roomId, userId)
 
@@ -29,7 +29,7 @@ const shouldRender = computed(() => {
   const isMsg = type === MsgType.Text || type === 'm.bad.encrypted'
   const isEdit = isEditEvent(event.value)
 
-  return (isMsg || isDecrypting.value) && !isEdit
+  return (isMsg || eventState.value === 'decrypting') && !isEdit
 })
 
 const contentProps: PopoverContentProps = {
@@ -104,8 +104,21 @@ const contentProps: PopoverContentProps = {
               <RoomEventMessageTimestamp :datetime="event.getTs()" />
             </template>
 
-            <RoomEventMessageBody v-if="!isDecrypting" :event />
-            <p v-else class="italic">Decrypting message...</p>
+            <div
+              v-if="eventState === 'decrypting'"
+              class="text-muted-foreground flex items-center gap-1 italic text-base"
+            >
+              <USpinner class="size-0.75lh" />
+              <span class="text-muted-foreground">Decrypting event...</span>
+            </div>
+            <div
+              v-else-if="eventState === 'decryptionFailure'"
+              class="text-muted-foreground flex items-center gap-1 italic"
+            >
+              <Icon :name="ICON__ENCRYPTED" />
+              <span>Failed to decrypt event</span>
+            </div>
+            <RoomEventMessageBody v-else :event />
           </RoomEventMessageContent>
 
           <RoomEventMessageReactions v-if="hasReactions" />

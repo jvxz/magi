@@ -28,7 +28,6 @@ const {
     EventType.Reaction,
     EventType.RoomRedaction,
     EventType.RoomPowerLevels,
-    e => isBadEncrypted(e),
     e => e.isRedacted(),
     e => isEditEvent(e),
   ],
@@ -50,7 +49,7 @@ const {
   window: paginationWindow,
 } = useTimelinePagination(containerRef, {
   followTail: true,
-  getKey: i => i.getId()!,
+  getKey: e => e.getTxnId() ?? e.getId()!,
   hasMore: dir => dir === 'backward' && !isFullyLoaded.value,
   initialState: () => props.room && scrollStates.get(props.room.roomId),
   onBeforePaginate: async dir => {
