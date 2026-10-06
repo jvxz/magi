@@ -4,7 +4,7 @@ import type { ResourceMeta } from 'vue-bundle-renderer'
 
 import { defineNuxtModule, useLogger } from 'nuxt/kit'
 
-import { REGEX__CSS_FILE, REGEX__QUERY_STRING } from '../constants/regex'
+import { REGEX__CSS_FILE, REGEX__QUERY_STRING } from '../constants/regex.ts'
 
 export default defineNuxtModule({
   defaults: {
