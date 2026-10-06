@@ -65,7 +65,7 @@ function viewAvatar() {
 
             <div
               v-else
-              class="border border-b-0 border-border-strong rounded-t bg-surface-top size-full absolute -z-1"
+              class="border border-border-strong border-b-0 rounded-t bg-surface-top size-full absolute -z-1"
             />
 
             <UProfilePopoverContentButtons :user-id="user?.userId" />
