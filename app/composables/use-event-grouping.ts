@@ -1,6 +1,5 @@
 import type { MatrixEvent } from 'matrix-js-sdk'
-
-import { EventType } from 'matrix-js-sdk'
+import type { EventType } from 'matrix-js-sdk'
 
 interface GroupedEvent {
   events: MatrixEvent[]
