@@ -1,13 +1,16 @@
 <script lang="ts" setup>
-import type { PrimitiveProps } from 'reka-ui'
+import type { UCardGroupItemHeaderProps } from '../card-group/item-header.vue'
 
-const props = defineProps<PrimitiveProps & { class?: string }>()
+const props = defineProps<UCardGroupItemHeaderProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <Primitive v-bind="delegated" :class="cn('flex flex-col shrink-0 justify-around tabular-nums', $props.class)">
+  <UCardGroupItemHeader
+    v-bind="delegated"
+    :class="cn('flex flex-col shrink-0 justify-around tabular-nums', props.class)"
+  >
     <slot />
-  </Primitive>
+  </UCardGroupItemHeader>
 </template>
