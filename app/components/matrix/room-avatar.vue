@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import type { MatrixAvatarProps } from './avatar.vue'
+import { useEmitAsProps } from 'reka-ui'
+
+import type { MatrixAvatarEmits, MatrixAvatarProps } from './avatar.vue'
 
 export interface MatrixRoomAvatarProps extends Omit<MatrixAvatarProps, 'alt' | 'src'> {
   room: MaybeRoomOrId | undefined | null
   direct?: boolean
 }
+export interface MatrixRoomAvatarEmits extends MatrixAvatarEmits {}
 
 const props = defineProps<MatrixRoomAvatarProps>()
+const emits = defineEmits<MatrixRoomAvatarEmits>()
+const emitsAsProps = useEmitAsProps(emits)
 const { client } = useMatrixClient()
 
 const src = useRoomComputed(
@@ -29,5 +34,5 @@ const delegated = reactiveOmit(props, ['room', 'direct'])
 </script>
 
 <template>
-  <MatrixAvatar v-bind="delegated" :alt :src data-slot="room-avatar" />
+  <MatrixAvatar v-bind="{ ...delegated, ...emitsAsProps }" :alt :src data-slot="room-avatar" />
 </template>
