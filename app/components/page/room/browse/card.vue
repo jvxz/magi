@@ -24,9 +24,9 @@ const manualAvatarSrc = useResolveAvatarUrl(() => props.room.avatar_url)
       <URoomShowcaseCardContent>
         <URoomShowcaseCardHeader class="shrink">
           <URoomShowcaseCardTitle class="flex gap-2 max-h-1em items-center">
-            <span>{{ room.name ?? room.room_id }}</span>
+            <span class="truncate">{{ room.name ?? room.room_id }}</span>
 
-            <UBadge v-if="suggested" size="sm"> Suggested </UBadge>
+            <UBadge v-if="suggested" size="sm" class="shrink-0"> Suggested </UBadge>
           </URoomShowcaseCardTitle>
 
           <URoomShowcaseCardDescription>
