@@ -391,6 +391,19 @@ export function getInSpaceRoomIds(client: MatrixClient) {
   return ids
 }
 
+export function sortMembersByPowerlevel(members: RoomMember[]) {
+  return members.toSorted((a, b) => {
+    if (a.powerLevel === b.powerLevel) {
+      const aName = resolveUserName(a)
+      const bName = resolveUserName(b)
+
+      return aName.localeCompare(bName)
+    }
+
+    return a.powerLevel > b.powerLevel ? -1 : 1
+  })
+}
+
 export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
   if (maybeRoomOrId instanceof Room) return maybeRoomOrId.roomId
 
