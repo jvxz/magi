@@ -7,6 +7,7 @@ definePageMeta({
 const currentSpaceId = useCurrentSpaceId()
 const currentSpace = useCurrentSpace()
 const { conversationRooms, isLoading, isSuccess, subspaces, suggestedRooms } = useSpaceHierarchy(currentSpaceId, true)
+const rooms = computed(() => [...conversationRooms.value.values()])
 
 const conversationCachedCount = useCachedCount(
   () => `${currentSpaceId.value}-conversations`,
@@ -19,8 +20,7 @@ const subspaceCachedCount = useCachedCount(
   4,
 )
 
-const scrollEl = useTemplateRef('scrollEl')
-provideIntersectionObserver(scrollEl)
+const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
 </script>
 
 <template>
@@ -41,18 +41,28 @@ provideIntersectionObserver(scrollEl)
         <UShowcaseContent>
           <!-- conversations -->
           <PageRoomBrowseSection title="Rooms" :default-open="true" class="h-fit">
-            <template v-if="!isLoading">
-              <VisibleLazy v-for="room in conversationRooms.values()" :key="room.room_id" :height="72" use-injection>
-                <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
-              </VisibleLazy>
-            </template>
+            <VirtualList
+              v-if="!isLoading"
+              v-slot="{ item: room, index }"
+              :items="rooms"
+              :scroll-el="scrollEl"
+              :estimate-size="(_, i) => (i ? 57 : 40)"
+              :get-item-key="room => room.room_id"
+              :gap="16"
+              row-class="flex flex-col gap-4"
+            >
+              <UCardGroupSeparator v-if="index" />
+              <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
+            </VirtualList>
 
             <!-- conversation skeletons -->
-            <template v-else>
-              <VisibleLazy v-for="i in conversationCachedCount" :key="i" :height="72" use-injection>
-                <USkeleton class="h-18 w-full" />
-              </VisibleLazy>
-            </template>
+            <div v-else class="flex flex-col gap-4">
+              <template v-for="i in conversationCachedCount" :key="i">
+                <UCardGroupSeparator v-if="i - 1" />
+
+                <USkeleton class="h-10 w-full" />
+              </template>
+            </div>
           </PageRoomBrowseSection>
 
           <!-- subspaces -->
@@ -68,7 +78,7 @@ provideIntersectionObserver(scrollEl)
               :member-count="space.num_joined_members"
               avatar-placeholder
             >
-              <PageRoomBrowseSubspace :space="space" :open :count="space.roomCount" />
+              <PageRoomBrowseSubspace :space="space" :open :count="space.roomCount" :scroll-el="scrollEl" />
             </PageRoomBrowseSection>
           </template>
 
