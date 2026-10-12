@@ -56,7 +56,7 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
             </VirtualList>
 
             <!-- conversation skeletons -->
-            <div class="flex flex-col gap-4" v-else>
+            <div v-else class="flex flex-col gap-4">
               <template v-for="i in conversationCachedCount" :key="i">
                 <UCardGroupSeparator v-if="i - 1" />
 
