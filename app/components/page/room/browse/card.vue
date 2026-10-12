@@ -14,11 +14,7 @@ const manualAvatarSrc = useResolveAvatarUrl(() => props.room.avatar_url)
 
 <template>
   <UContextMenuRegionTrigger as-child region="browseRoom" :value="{ room }">
-    <URoomShowcaseCardRoot
-      class="border-0 flex gap-2 h-fit shadow-none items-center"
-      :room="room.room_id"
-      group
-    >
+    <URoomShowcaseCardRoot class="border-0 flex gap-2 h-fit shadow-none items-center" :room="room.room_id" group>
       <URoomShowcaseCardAvatar :manual-avatar-src :room="room.room_id" class="shrink-0 h-10 aspect-square" />
 
       <URoomShowcaseCardContent>

@@ -86,8 +86,8 @@ const isQueryEmpty = computed(
 
         <div class="self-end">
           <UInput
-            v-model:model-value="inputQuery.q"
             ref="input"
+            v-model:model-value="inputQuery.q"
             variant="raised"
             class="w-64"
             placeholder="Search..."
@@ -115,6 +115,7 @@ const isQueryEmpty = computed(
             <UCardGroupItem variant="raised">
               <div class="flex gap-2 items-center">
                 <button
+                  class="p-0 shrink-0 cursor-pointer relative of-clip"
                   @click="
                     openDialog('avatar', {
                       type: 'roomMember',
@@ -123,7 +124,6 @@ const isQueryEmpty = computed(
                       room: spaceId!,
                     })
                   "
-                  class="p-0 relative of-clip cursor-pointer shrink-0"
                 >
                   <MatrixRoomMemberAvatar
                     class="rounded-sm size-10"
@@ -133,11 +133,11 @@ const isQueryEmpty = computed(
                     image-size="small"
                   />
 
-                  <div aria-hidden="true" class="hover:bg-hover-overlay absolute inset-0 size-full" />
+                  <div aria-hidden="true" class="size-full inset-0 absolute hover:bg-hover-overlay" />
                 </button>
 
                 <UCardGroupItemHeader class="gap-1 justify-center">
-                  <UCardGroupItemTitle as="div" :title="resolveUserName(member)" class="flex items-center gap-2">
+                  <UCardGroupItemTitle as="div" :title="resolveUserName(member)" class="flex gap-2 items-center">
                     <p class="truncate">{{ resolveUserName(member) }}</p>
 
                     <UTooltipRoot>
@@ -150,13 +150,13 @@ const isQueryEmpty = computed(
 
                   <UCardGroupItemDescription :title="member.userId" class="flex items-center">
                     <UClickToCopy side="right" as-child :with-title="false">
-                      <UButton variant="ghost-inline" class="shrink text-xs font-normal">
+                      <UButton variant="ghost-inline" class="text-xs font-normal shrink">
                         <span class="truncate">{{ member.userId }}</span>
                       </UButton>
                     </UClickToCopy>
 
                     <!-- spacer for copy indicator -->
-                    <span aria-hidden="true" class="w-4 shrink-0" />
+                    <span aria-hidden="true" class="shrink-0 w-4" />
                   </UCardGroupItemDescription>
                 </UCardGroupItemHeader>
               </div>
@@ -168,12 +168,12 @@ const isQueryEmpty = computed(
               <UCardGroupSeparator v-if="i > 1" />
 
               <UCardGroupItem variant="raised" class="h-2.5rem">
-                <USkeleton class="size-full rounded-sm" />
+                <USkeleton class="rounded-sm size-full" />
               </UCardGroupItem>
             </template>
           </template>
 
-          <UEmptyRoot v-if="isQueryEmpty" class="h-full flex items-center justify-center pt-12">
+          <UEmptyRoot v-if="isQueryEmpty" class="pt-12 flex h-full items-center justify-center">
             <UEmptyIcon variant="naked" :name="ICON__EMPTY" />
             <UEmptyTitle>No members found</UEmptyTitle>
             <UEmptyDescription>Try adjusting your search query</UEmptyDescription>
