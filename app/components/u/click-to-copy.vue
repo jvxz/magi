@@ -19,8 +19,8 @@ const props = withDefaults(defineProps<ClickToCopyProps>(), {
   as: 'button',
   copiedDuration: 1000,
   side: 'top',
-  withTitle: true,
   sideOffset: 4,
+  withTitle: true,
 })
 
 const emit = defineEmits<{ copy: [text: string] }>()

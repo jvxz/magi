@@ -127,8 +127,8 @@ function handlePaginate(dir: 'f' | 'b') {
       <div>
         <UInput
           ref="inputRef"
-          variant="raised"
           v-model="query"
+          variant="raised"
           class="w-64 justify-self-end"
           placeholder="Search"
           :leading-icon="ICON__SEARCH"
