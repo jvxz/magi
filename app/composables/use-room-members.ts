@@ -1,4 +1,11 @@
-export function useRoomMembers(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
+export function useRoomMembers(
+  roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>,
+  opts?: {
+    sortByPowerlevel?: MaybeRefOrGetter<boolean>
+  },
+) {
+  const { sortByPowerlevel = false } = opts ?? {}
+
   const room = useRoom(roomInput)
 
   watchImmediate(room, r => void r?.loadMembersIfNeeded())
@@ -6,7 +13,8 @@ export function useRoomMembers(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undef
   const isLoaded = computed(() => room.value?.membersLoaded() ?? false)
   const members = computed(() => {
     const r = room.value
-    return r?.membersLoaded() ? r.getJoinedMembers() : []
+    if (!r?.membersLoaded()) return []
+    return toValue(sortByPowerlevel) ? sortMembersByPowerlevel(r.getJoinedMembers()) : r.getJoinedMembers()
   })
 
   return { isLoaded, members }

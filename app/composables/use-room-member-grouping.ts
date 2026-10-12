@@ -53,18 +53,9 @@ export function useRoomMemberGrouping(
 }
 
 function createMembersList(members: RoomMember[]) {
-  members.sort((a, b) => {
-    if (a.powerLevel === b.powerLevel) {
-      const aName = resolveUserName(a)
-      const bName = resolveUserName(b)
+  const membersSorted = sortMembersByPowerlevel(members)
 
-      return aName.localeCompare(bName)
-    }
-
-    return a.powerLevel > b.powerLevel ? -1 : 1
-  })
-
-  const membersGrouped = groupBy(members, m => getPowerLevelName(m.powerLevel, true))
+  const membersGrouped = groupBy(membersSorted, m => getPowerLevelName(m.powerLevel, true))
   const membersWithHeaders: Prettify<Member | MemberHeader>[] = []
   const groupTotals: MemberCachePayload['groupTotals'] = {
     admin: 0,

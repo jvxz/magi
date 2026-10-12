@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(to => {
 
   if (to.name === 'space' && lastRoute) return navigateTo(lastRoute)
 
-  if (to.name !== 'space-browse' && !('roomId' in to.params)) {
+  if (!['space-browse', 'space-members'].includes(to.name) && !('roomId' in to.params)) {
     return navigateTo({
       name: 'space-browse',
       params: {

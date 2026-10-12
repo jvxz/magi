@@ -8,6 +8,7 @@ const props = defineProps<{
 }>()
 
 const topic = useRoomTopic(() => props.space)
+const spaceId = useCurrentSpaceId()
 const joinedMemberCount = useRoomMemberCount(() => props.space)
 const creationTs = useRoomCreationTs(() => props.space)
 const founder = useRoomFounder(() => props.space)
@@ -32,14 +33,21 @@ const founder = useRoomFounder(() => props.space)
     </UShowcaseDescription>
 
     <UShowcaseDetails>
-      <div>
-        <Icon :name="ICON__MEMBERS" />
+      <UShowcaseDetailsItem as-child type="button">
+        <NuxtLink
+          :to="{
+            name: 'space-members',
+            params: {
+              spaceId: spaceId!,
+            },
+          }"
+        >
+          <Icon :name="ICON__MEMBERS" />
 
-        <span v-if="isDefined(joinedMemberCount)">{{ joinedMemberCount }}</span>
-        <USkeleton v-else class="h-1em w-4" />
-
-        <span>members</span>
-      </div>
+          <p v-if="isDefined(joinedMemberCount)">{{ joinedMemberCount }} members</p>
+          <USkeleton v-else class="h-1em w-4" />
+        </NuxtLink>
+      </UShowcaseDetailsItem>
 
       <UInlineSeparator />
 

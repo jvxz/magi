@@ -35,6 +35,7 @@ const roomTopic = useRoomTopic(roomId)
       dynamic-styles
       class="cursor-pointer group-data-[context-menu-open]:(border-border-strong bg-hover)"
     >
+      <URoomShowcaseCardAvatar :room="payload.roomId" />
       <URoomShowcaseCardContent>
         <URoomShowcaseCardHeader>
           <URoomShowcaseCardTitle

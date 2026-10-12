@@ -5,6 +5,7 @@ export interface UShowcaseCardAvatarProps {
   class?: HTMLAttributes['class']
   room: MaybeRoomOrId | undefined
   manualAvatarSrc?: string | undefined
+  alwaysShowAvatar?: boolean
 }
 
 const props = defineProps<UShowcaseCardAvatarProps>()
@@ -37,7 +38,7 @@ const isDirectInvite = useIsDirectInvite(room)
       @error="isImageError = true"
     />
     <MatrixRoomAvatar
-      v-else-if="!isImageError && (isJoined || isDirectInvite)"
+      v-else-if="!isImageError && (isJoined || isDirectInvite || alwaysShowAvatar)"
       :class="props.class"
       :room
       :direct="isDirectInvite"

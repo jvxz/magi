@@ -45,7 +45,8 @@ async function handleJoin() {
 
 <template>
   <UContextMenuRegionTrigger as-child region="invite" :value="{ roomId: inviteRoom.roomId }">
-    <URoomShowcaseCardRoot :key="inviteRoom.roomId" always-show-avatar :room="inviteRoom">
+    <URoomShowcaseCardRoot :key="inviteRoom.roomId" :room="inviteRoom">
+      <URoomShowcaseCardAvatar always-show-avatar :room="inviteRoom" />
       <URoomShowcaseCardContent>
         <URoomShowcaseCardHeader>
           <URoomShowcaseCardTitle class="shrink-0 gap-1">

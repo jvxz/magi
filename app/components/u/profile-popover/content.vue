@@ -32,7 +32,6 @@ function viewAvatar() {
   const id = userId.value
   if (!id) return
 
-  // the popover renders the room-scoped avatar, so open the dialog on the same identity
   const payload: GlobalDialogMap['avatar'] = room.value
     ? { label: displayName.value, member: id, room: room.value, type: 'roomMember' }
     : { label: displayName.value, type: 'user', user: id }

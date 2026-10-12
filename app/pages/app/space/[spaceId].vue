@@ -39,9 +39,19 @@ const isPaginating = shallowRef(false)
           <span>Browse Rooms</span>
         </NuxtLink>
       </UAsideListButton>
-      <UAsideListButton>
-        <UAsideListButtonIcon :icon="ICON__MEMBERS" />
-        Members
+
+      <UAsideListButton as-child>
+        <NuxtLink
+          :to="{
+            name: 'space-members',
+            params: {
+              spaceId: $route.params.spaceId,
+            },
+          }"
+        >
+          <UAsideListButtonIcon :icon="ICON__MEMBERS" />
+          <span>Members</span>
+        </NuxtLink>
       </UAsideListButton>
 
       <UAsideListSeparator />
