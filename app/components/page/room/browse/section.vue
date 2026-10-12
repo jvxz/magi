@@ -36,7 +36,7 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
         </p>
         <div
           v-if="isDefined(roomCount) || isDefined(memberCount) || description"
-          class="text-xs text-muted-foreground *:text-clip font-normal flex gap-1 w-full items-center"
+          class="text-xs text-muted-foreground font-normal flex gap-1 w-full items-center *:text-clip"
         >
           <span v-if="isDefined(roomCount)" class="shrink-0"> {{ roomCount }} rooms </span>
 

@@ -18,8 +18,8 @@ const as = computed(() => (props.as ? props.as : props.type === 'button' ? 'butt
     v-bind="delegated"
     :as
     :class="cn('font-normal gap-0', props.type === 'text' && 'hover:no-underline cursor-text select-text', props.class)"
-    @click="onClick"
     data-slot="showcase-details-item"
+    @click="onClick"
   >
     <slot />
   </UButton>

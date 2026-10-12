@@ -38,11 +38,11 @@ const isDirectInvite = useIsDirectInvite(room)
     />
     <MatrixRoomAvatar
       v-else-if="!isImageError && (isJoined || isDirectInvite)"
-      @error="isImageError = true"
       :class="props.class"
       :room
       :direct="isDirectInvite"
       v-bind="avatarProps"
+      @error="isImageError = true"
     />
     <AvatarPlaceholder
       v-else
