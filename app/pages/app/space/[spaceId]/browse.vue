@@ -84,7 +84,9 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
 
           <!-- subspace skeletons -->
           <template v-else>
-            <USkeleton v-for="key in subspaceCachedCount" :key class="h-12" />
+            <UCardGroupItem v-for="key in subspaceCachedCount" :key class="h-12">
+              <USkeleton class="size-full" />
+            </UCardGroupItem>
           </template>
         </UShowcaseContent>
 

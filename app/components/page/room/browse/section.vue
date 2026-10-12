@@ -30,19 +30,19 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
         class="rounded-sm shrink-0 h-full w-fit aspect-square object-contain"
       />
 
-      <div class="flex flex-col gap-1 h-full items-start justify-around">
+      <div class="flex flex-col gap-2 h-full items-start justify-center">
         <p class="text-clip">
           {{ title }}
         </p>
         <div
           v-if="isDefined(roomCount) || isDefined(memberCount) || description"
-          class="text-xs text-muted-foreground font-normal flex gap-1 w-full items-center"
+          class="text-xs text-muted-foreground *:text-clip font-normal flex gap-1 w-full items-center"
         >
-          <span v-if="isDefined(roomCount)" class="shrink-0 text-clip"> {{ roomCount }} rooms </span>
+          <span v-if="isDefined(roomCount)" class="shrink-0"> {{ roomCount }} rooms </span>
 
           <template v-if="isDefined(memberCount)">
             <UInlineSeparator />
-            <span class="shrink-0 text-clip"> {{ memberCount }} members </span>
+            <span class="shrink-0"> {{ memberCount }} members </span>
           </template>
 
           <template v-if="description">
@@ -63,9 +63,9 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
         <div class="rounded-full bg-border h-full w-px group-hover:bg-border-strong" />
       </button>
 
-      <div class="flex flex-col gap-2 w-full">
+      <UCardGroupRoot variant="raised" class="flex flex-col gap-2 w-full">
         <slot :open="openModel" />
-      </div>
+      </UCardGroupRoot>
     </UCollapsibleContent>
   </UCollapsibleRoot>
 </template>
