@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import type { PrimitiveProps } from 'reka-ui'
+import type { UCardGroupItemTitleProps } from '../card-group/item-title.vue'
 
-defineProps<PrimitiveProps>()
+const props = withDefaults(defineProps<UCardGroupItemTitleProps>(), { as: 'p' })
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <Primitive v-bind="$props" :class="cn('flex gap-2 max-h-1em items-center truncate', $attrs.class)">
+  <UCardGroupItemTitle v-bind="delegated" :class="cn('flex gap-2 max-h-1em items-center', props.class)">
     <slot />
-  </Primitive>
+  </UCardGroupItemTitle>
 </template>

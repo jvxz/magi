@@ -71,13 +71,10 @@ const founder = useRoomFounder(() => props.space)
           sideOffset: 12,
         }"
       >
-        <UButton
-          variant="link"
-          class="font-normal no-underline flex gap-2 items-center data-[state=open]:underline hover:underline h-1em!"
-        >
+        <UShowcaseDetailsItem type="button">
           <MatrixRoomMemberAvatar :room="space" :member="founder.userId" class="size-4" />
           <span>{{ resolveUserName(founder) }}</span>
-        </UButton>
+        </UShowcaseDetailsItem>
       </UProfilePopoverTrigger>
 
       <div v-else class="flex gap-2 items-center">

@@ -7,10 +7,15 @@ export interface UCardGroupItemDescriptionProps extends PrimitiveProps {
 }
 
 const props = defineProps<UCardGroupItemDescriptionProps>()
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <UCardDescription v-bind="props" data-slot="card-group-item-description">
+  <UCardDescription
+    v-bind="delegated"
+    :class="cn('text-xs text-muted-foreground', props.class)"
+    data-slot="card-group-item-description"
+  >
     <slot />
   </UCardDescription>
 </template>
