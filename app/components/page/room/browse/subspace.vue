@@ -5,26 +5,38 @@ const props = defineProps<{
   space: HierarchyRoom
   open: boolean
   count: number | undefined
+  scrollEl: HTMLElement | null
 }>()
 
 const { conversationRooms, error, isLoading, suggestedRooms } = useSpaceHierarchy(
   () => props.space.room_id,
   () => props.open,
 )
+const rooms = computed(() => [...conversationRooms.value.values()])
+
+const noRoomsAvailable = computed(() => !isLoading.value && !error.value && !conversationRooms.value.size)
 </script>
 
 <template>
-  <template v-if="!isLoading && !error && conversationRooms.size">
-    <VisibleLazy v-for="room in conversationRooms.values()" :key="room.room_id" :height="72" use-injection>
-      <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
-    </VisibleLazy>
-  </template>
+  <VirtualList
+    v-if="!isLoading && !error && conversationRooms.size"
+    v-slot="{ item: room, index }"
+    :items="rooms"
+    :scroll-el="scrollEl"
+    :estimate-size="(_, i) => (i ? 57 : 40)"
+    :get-item-key="room => room.room_id"
+    :gap="16"
+    row-class="flex flex-col gap-4"
+  >
+    <UCardGroupSeparator v-if="index" />
+    <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
+  </VirtualList>
 
   <div
-    v-else-if="!isLoading && !error && !conversationRooms.size"
-    :class="cn('w-full relative text-sm flex items-center gap-2 text-muted-foreground px-3.5 ', $attrs.class)"
+    v-else-if="noRoomsAvailable"
+    :class="cn('w-full relative text-sm flex items-center gap-2 text-muted-foreground ', $attrs.class)"
   >
-    <Icon name="tabler-ghost-3" class="h-1lh" />
+    <Icon name="tabler-ghost-3" class="size-1lh" />
     <span>No rooms available</span>
   </div>
 
