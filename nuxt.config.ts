@@ -133,8 +133,10 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/_nuxt/**': {
-      headers: {
-        'Cross-Origin-Embedder-Policy': 'require-corp',
+      security: {
+        headers: {
+          crossOriginEmbedderPolicy: 'require-corp',
+        },
       },
     },
     '/app': { appMiddleware: 'home-redirect' },
