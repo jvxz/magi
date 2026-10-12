@@ -14,10 +14,12 @@ export const useListVirtualizer = <T>(
   {
     estimateSize,
     getItemKey,
+    scrollMargin,
     ...opts
-  }: Omit<ListVirtualizerOptions, 'count' | 'getScrollElement' | 'estimateSize' | 'getItemKey'> & {
-    estimateSize: (item: T) => number
+  }: Omit<ListVirtualizerOptions, 'count' | 'getScrollElement' | 'estimateSize' | 'getItemKey' | 'scrollMargin'> & {
+    estimateSize: (item: T, index: number) => number
     getItemKey: (item: T) => number | string
+    scrollMargin?: MaybeRefOrGetter<number>
   },
 ) =>
   useVirtualizer(
@@ -27,10 +29,11 @@ export const useListVirtualizer = <T>(
 
       return {
         count: listValue.length,
-        estimateSize: i => estimateSize(listValue[i]!),
+        estimateSize: i => estimateSize(listValue[i]!, i),
         getItemKey: i => getItemKey(listValue[i]!),
         getScrollElement: () => scrollElementValue,
         overscan: 5,
+        scrollMargin: toValue(scrollMargin),
         ...opts,
       }
     }),
