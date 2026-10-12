@@ -8,6 +8,7 @@ export interface ClickToCopyProps extends PrimitiveProps {
   withTitle?: boolean
   copiedDuration?: number
   side?: 'top' | 'bottom' | 'left' | 'right'
+  sideOffset?: number
 }
 </script>
 
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<ClickToCopyProps>(), {
   copiedDuration: 1000,
   side: 'top',
   withTitle: true,
+  sideOffset: 4,
 })
 
 const emit = defineEmits<{ copy: [text: string] }>()
@@ -41,43 +43,47 @@ defineExpose({ copied, copy: onCopy })
 </script>
 
 <template>
-  <span class="inline-flex size-fit relative">
-    <Primitive
-      ref="el"
-      v-bind="$attrs"
-      :as
-      :as-child
-      :data-copied="copied ? '' : undefined"
-      class="cursor-pointer"
-      :title="withTitle ? 'Click to copy' : undefined"
-      @click="onCopy"
-    >
-      <slot :copied :copy="onCopy" />
-    </Primitive>
+  <PopoverRoot :open="copied">
+    <PopoverAnchor as-child>
+      <Primitive
+        ref="el"
+        v-bind="$attrs"
+        :as
+        :as-child
+        data-slot="click-to-copy"
+        :data-copied="copied ? '' : undefined"
+        class="cursor-pointer"
+        :title="withTitle ? 'Click to copy' : undefined"
+        @click="onCopy"
+      >
+        <slot :copied :copy="onCopy" />
+      </Primitive>
+    </PopoverAnchor>
 
-    <slot name="overlay" :copied :copy="onCopy">
-      <Presence v-slot="{ present }" :present="copied">
-        <div
-          v-show="present"
-          :data-state="copied ? 'open' : 'closed'"
-          :data-side="side"
-          :class="
-            cn(
-              'absolute text-sm pointer-events-none flex items-center gap-1 inset-0 size-fit',
-              'data-[state=open]:(animate-in fade-in)',
-              'data-[state=closed]:(animate-out fade-out)',
-              'data-[side=top]:(-top-1.5em data-[state=open]:slide-in-b-1 data-[state=closed]:slide-out-t-1)',
-              'data-[side=bottom]:(top-2em data-[state=open]:slide-in-t-1 data-[state=closed]:slide-out-b-1)',
-              'data-[side=left]:(top-1/2 -translate-y-1/2 -left-150% data-[state=open]:slide-in-r-1 data-[state=closed]:slide-out-l-1)',
-              'data-[side=right]:(top-1/2 -translate-y-1/2 left-110% data-[state=open]:slide-in-l-1 data-[state=closed]:slide-out-r-1)',
-              props.class,
-            )
-          "
-        >
-          <span>Copied</span>
-          <Icon :name="ICON__CHECK" class="text-foreground size-1em" />
-        </div>
-      </Presence>
-    </slot>
-  </span>
+    <PopoverPortal>
+      <PopoverContent
+        :side
+        :side-offset
+        aria-hidden="true"
+        :class="
+          cn(
+            'z-tooltip text-xs font-medium pointer-events-none flex items-center gap-1',
+            'data-[state=open]:(animate-in fade-in)',
+            'data-[state=closed]:(animate-out fade-out)',
+            'data-[side=top]:(data-[state=open]:slide-in-b-1 data-[state=closed]:slide-out-t-1)',
+            'data-[side=bottom]:(data-[state=open]:slide-in-t-1 data-[state=closed]:slide-out-b-1)',
+            'data-[side=left]:(data-[state=open]:slide-in-r-1 data-[state=closed]:slide-out-l-1)',
+            'data-[side=right]:(data-[state=open]:slide-in-l-1 data-[state=closed]:slide-out-r-1)',
+            props.class,
+          )
+        "
+        @open-auto-focus.prevent
+        @close-auto-focus.prevent
+      >
+        <slot name="overlay" :copied :copy="onCopy">
+          <Icon :name="ICON__CHECK" class="size-1em" />
+        </slot>
+      </PopoverContent>
+    </PopoverPortal>
+  </PopoverRoot>
 </template>
