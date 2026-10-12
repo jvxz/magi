@@ -84,7 +84,7 @@ function viewAvatar() {
             <MatrixUserAvatar v-else :user class="size-20 ring-6 ring-popover" image-size="small" />
 
             <div
-              class="rounded-full size-20 cursor-pointer content-[''] inset-0 absolute z-2 group-hover:bg-hover/25"
+              class="rounded-full size-20 cursor-pointer content-[''] inset-0 absolute z-2 group-hover:bg-hover-overlay"
             />
           </button>
 
@@ -136,11 +136,7 @@ function viewAvatar() {
             </UBadge>
           </div>
 
-          <UInput
-            v-if="!isSelf"
-            :placeholder="`Message ${displayName}`"
-            :classes="{ input: 'text-xs bg-transparent' }"
-          />
+          <UInput v-if="!isSelf" :placeholder="`Message ${displayName}`" :ui="{ input: 'text-xs bg-transparent' }" />
         </div>
       </UCard>
     </PopoverContent>

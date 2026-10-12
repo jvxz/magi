@@ -3,7 +3,7 @@ import { useForwardPropsEmits } from 'reka-ui'
 
 import type { ImgEmits, ImgProps } from '~/components/img.vue'
 
-export type MatrixAvatarProps = Omit<ImgProps, 'src'> & {
+export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'size'> & {
   square?: boolean
   imageSize?: AvatarImageSize
   isLoading?: boolean

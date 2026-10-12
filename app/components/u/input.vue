@@ -13,9 +13,10 @@ export type UInputProps = PrimitiveProps & {
   defaultValue?: string | number
   modelValue?: string | number
   class?: HTMLAttributes['class']
-  classes?: DefineClasses<'root' | 'input' | 'leadingIcon' | 'trailingIcon'>
+  ui?: DefineClasses<'root' | 'input' | 'leadingIcon' | 'trailingIcon'>
   leadingIcon?: string
   disabled?: boolean
+  variant?: InputVariants['variant']
   trailingIcon?: string
   type?: InputTypeHTMLAttribute
   disablePw?: boolean
@@ -41,12 +42,12 @@ const { forwardRef } = useForwardExpose()
 </script>
 
 <template>
-  <Primitive v-bind="{ as, asChild }" :class="cn('relative', $props.class, $props.classes?.root)">
+  <Primitive v-bind="{ as, asChild }" :class="cn('relative', props.class, props.ui?.root)">
     <Icon
       v-if="props.leadingIcon"
       :name="props.leadingIcon"
       data-slot="leadingIcon"
-      :class="cn(iconClass, 'left-2', classes?.leadingIcon)"
+      :class="cn(iconClass, 'left-2', ui?.leadingIcon)"
     />
 
     <input
@@ -55,14 +56,14 @@ const { forwardRef } = useForwardExpose()
       v-model="modelValue"
       v-disable-pw="disablePw"
       :type="$props.type"
-      :class="cn(inputStyles(), props.leadingIcon && 'ps-7', props.trailingIcon && 'pe-7', $props.classes?.input)"
+      :class="cn(inputStyles({ variant }), props.leadingIcon && 'ps-7', props.trailingIcon && 'pe-7', $props.ui?.input)"
     />
 
     <Icon
       v-if="props.trailingIcon"
       :name="props.trailingIcon"
       data-slot="trailingIcon"
-      :class="cn(iconClass, 'right-2', classes?.trailingIcon)"
+      :class="cn(iconClass, 'right-2', ui?.trailingIcon)"
     />
   </Primitive>
 </template>

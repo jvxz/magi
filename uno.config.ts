@@ -116,6 +116,7 @@ export default defineConfig({
       'danger-press': 'var(--danger-press)',
       foreground: 'var(--foreground)',
       hover: 'var(--hover)',
+      'hover-overlay': 'var(--hover-overlay)',
       input: 'var(--input)',
       muted: 'var(--muted)',
       'muted-foreground': 'var(--muted-foreground)',

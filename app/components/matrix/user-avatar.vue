@@ -1,11 +1,16 @@
 <script lang="ts" setup>
-import type { MatrixAvatarProps } from './avatar.vue'
+import { useEmitAsProps } from 'reka-ui'
+
+import type { MatrixAvatarEmits, MatrixAvatarProps } from './avatar.vue'
 
 export interface UserAvatarProps extends Omit<MatrixAvatarProps, 'alt' | 'src'> {
   user: MaybeUserOrId | undefined | null
 }
+export interface UserAvatarEmits extends MatrixAvatarEmits {}
 
 const props = defineProps<UserAvatarProps>()
+const emits = defineEmits<UserAvatarEmits>()
+const emitsAsProps = useEmitAsProps(emits)
 const profile = useUserProfile(() => props.user ?? undefined)
 
 const alt = computed(() =>
@@ -16,5 +21,5 @@ const delegated = reactiveOmit(props, 'user')
 </script>
 
 <template>
-  <MatrixAvatar v-bind="delegated" :alt :src="profile?.avatar_url" data-slot="user-avatar" />
+  <MatrixAvatar v-bind="{ ...delegated, ...emitsAsProps }" :alt :src="profile?.avatar_url" data-slot="user-avatar" />
 </template>

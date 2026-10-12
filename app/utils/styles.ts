@@ -110,7 +110,14 @@ export const inputStyles = tv({
     interactiveBase({ size: 'default' }),
     'w-full cursor-text border-border font-normal truncate placeholder:text-muted-foreground focus-visible:(border-border-strong ring-0) text-sm',
   ],
+  variants: {
+    variant: {
+      default: 'bg-surface',
+      raised: 'bg-surface-raised',
+    },
+  },
 })
+export type InputVariants = VariantProps<typeof inputStyles>
 
 export const dialogStyles = tv({
   base: 'fixed top-[50%] left-[50%] z-dialog flex flex-col gap-2 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) sm:max-w-lg data-[state=closed]:(animate-out fade-out-0)',
