@@ -4,7 +4,7 @@ import { assert } from 'es-toolkit'
 import { randomInt } from 'es-toolkit/math'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
-import { mockLogin, newPage, setFlag } from './utils'
+import { mockLogin, newPage, setFlag } from './utils.ts'
 
 type Direction = 'backwards' | 'forwards'
 
@@ -13,12 +13,12 @@ let sharedPage: Page | undefined
 beforeAll(async () => {
   sharedPage = await newPage({ serviceWorkers: 'block' })
 
-  await setFlag(sharedPage.context(), 'skip-auth-middleware', true)
+  await setFlag(sharedPage?.context(), 'skip-auth-middleware', true)
   await mockLogin(sharedPage)
 
-  await sharedPage.goto('/app/space/test/test', { waitUntil: 'domcontentloaded' })
-  expect(sharedPage.url()).not.toContain('/login')
-  await sharedPage.getByText('Testing').waitFor()
+  await sharedPage?.goto('/app/space/test/test', { waitUntil: 'domcontentloaded' })
+  expect(sharedPage?.url()).not.toContain('/login')
+  await sharedPage?.getByText('Testing').waitFor()
 })
 
 afterAll(async () => {

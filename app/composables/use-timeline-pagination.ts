@@ -60,7 +60,12 @@ export function useTimelinePagination<T>(container: Ref<HTMLElement | null | und
   })
 
   function getRow(key: string): HTMLElement | null {
-    return container.value?.querySelector(`[${ATTR__TIMELINE_ROW}="${CSS.escape(key)}"]`) ?? null
+    return (
+      container.value?.querySelector(
+        `[${ATTR__TIMELINE_ROW}="${(CSS as any) /* CSS namespace flaky in type checks */
+          .escape(key)}"]`,
+      ) ?? null
+    )
   }
 
   function viewportPx(): number {

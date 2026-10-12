@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { mockLogin, newPage } from './utils'
+import { mockLogin, newPage } from './utils.ts'
 
 describe('middleware', () => {
   it('redirect to login when unauthenticated', async () => {
