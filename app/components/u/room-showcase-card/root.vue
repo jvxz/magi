@@ -9,23 +9,19 @@ const props = withDefaults(
   defineProps<
     PrimitiveProps & {
       room?: MaybeRoomOrId | undefined
-      withAvatar?: boolean
-      manualAvatarSrc?: string | undefined
       class?: string
-      alwaysShowAvatar?: boolean
       dynamicStyles?: boolean
       group?: boolean
     }
   >(),
   {
     dynamicStyles: false,
-    withAvatar: true,
   },
 )
 
 const room = useRoom(() => props.room)
 
-const delegated = reactiveOmit(props, 'class', 'room', 'withAvatar', 'manualAvatarSrc')
+const delegated = reactiveOmit(props, 'class', 'room')
 const forwarded = useForwardProps(delegated)
 </script>
 
