@@ -45,7 +45,7 @@ const saveAvatarImage = () => {
 
 <template>
   <UDialogRoot v-bind="delegated" v-model:open="open">
-    <UDialogContent>
+    <UDialogContent class="max-h-90%">
       <UDialogHeader>
         <UDialogTitle> {{ label }} </UDialogTitle>
         <VisuallyHidden>
