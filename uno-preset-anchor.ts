@@ -1,3 +1,5 @@
+import { definePreset } from 'unocss'
+
 export const presetAnchor = definePreset(() => {
   return {
     name: 'unocss-anchor-positioning-preset',
