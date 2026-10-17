@@ -3,7 +3,7 @@ import type { Variant } from 'unocss'
 import { definePreset } from 'unocss'
 
 const REKA_ATTRS: Record<string, string> = {
-  active: ':is([data-active],[data-state=on])',
+  active: ':is([data-active],[data-state=on],[data-state=active])',
   checked: '[data-state=checked]',
   closed: '[data-state=closed]',
   'delayed-open': '[data-state=delayed-open]',
