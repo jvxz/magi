@@ -2,14 +2,13 @@
 import type { RoomMember } from 'matrix-js-sdk'
 import type { DialogRootProps } from 'reka-ui'
 
-// widened from GlobalDialogMap['avatar']: defineProps merges union branches but keeps a
-// branch-only key required, so declaring the union directly warns on every other variant
 export type AvatarDialogProps = DialogRootProps & {
   label: string
-  type: 'room' | 'user' | 'roomMember'
+  type: GlobalDialogMap['avatar']['type']
   room?: MaybeRoomOrId
   user?: MaybeUserOrId
   member?: RoomMember | string
+  src?: string
 }
 
 const props = withDefaults(defineProps<AvatarDialogProps>(), { modal: true })
@@ -29,6 +28,7 @@ const shared = {
 } as const
 
 const resolvedId = computed(() => {
+  if (props.type === 'image') return props.label
   if (props.type === 'room') return props.room && resolveRoomId(props.room)
   if (props.type === 'user') return props.user && resolveUserId(props.user)
   if (!props.member) return undefined
@@ -53,7 +53,8 @@ const saveAvatarImage = () => {
         </VisuallyHidden>
       </UDialogHeader>
 
-      <MatrixRoomAvatar v-if="type === 'room' && room" v-bind="shared" :room />
+      <Img v-if="type === 'image'" v-bind="shared" :src :alt="label" />
+      <MatrixRoomAvatar v-else-if="type === 'room' && room" v-bind="shared" :room />
       <MatrixUserAvatar v-else-if="type === 'user' && user" v-bind="shared" :user />
       <MatrixRoomMemberAvatar v-else-if="room && member" v-bind="shared" :room :member />
 
