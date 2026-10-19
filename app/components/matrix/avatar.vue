@@ -17,15 +17,25 @@ const props = withDefaults(defineProps<MatrixAvatarProps>(), {
 })
 const emits = defineEmits<ImgEmits>()
 
+const useFull = ref(false)
 const src = useResolveAvatarUrl(
   () => props.src ?? undefined,
   () => ({
-    size: props.imageSize,
+    size: useFull.value ? 'full' : props.imageSize,
   }),
 )
 
 const failed = ref(false)
+watch(
+  () => props.src,
+  () => (useFull.value = false),
+)
 watch(src, () => (failed.value = false))
+
+function onError() {
+  if (!useFull.value && props.imageSize !== 'full') useFull.value = true
+  else failed.value = true
+}
 
 const delegated = reactiveOmit(props, ['doPlaceholder', 'square', 'fallbackAlt', 'alt'])
 const forwarded = useForwardPropsEmits(delegated, emits)
@@ -41,7 +51,7 @@ const id = useId()
     :src
     :class="cn('object-cover', !square && 'rounded-full', props.class)"
     :do-placeholder="false"
-    @error="failed = true"
+    @error="onError"
   />
   <AvatarPlaceholder
     v-else
