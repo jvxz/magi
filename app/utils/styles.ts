@@ -23,8 +23,7 @@ export const interactiveBase = tv({
       sm: 'h-7 px-2.5 py-1 text-xs',
     },
     variant: {
-      danger:
-        'bg-danger border border-transparent hover:(bg-danger-hover) text-danger-foreground',
+      danger: 'bg-danger border border-transparent hover:(bg-danger-hover) text-danger-foreground',
       default: 'bg-primary text-primary-foreground border border-transparent',
       ghost:
         'text-muted-foreground border border-transparent hover:(bg-secondary text-foreground) data-[highlighted]:(bg-secondary text-foreground) data-[state=open]:(bg-secondary text-foreground)',
