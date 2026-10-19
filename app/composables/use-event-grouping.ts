@@ -19,7 +19,7 @@ export function useEventGrouping(opts: Opts) {
   const groupedAll = computed<GroupedEvent>(() => {
     let prevEvent: MatrixEvent | undefined
     let currentGroupTsCutoff = -1
-    let latestDateSeen: Temporal.ZonedDateTime | undefined
+    let nextDayMs = -Infinity
 
     const events: MatrixEvent[] = []
     const grouped: GroupedEvent['grouped'] = []
@@ -42,15 +42,13 @@ export function useEventGrouping(opts: Opts) {
       grouped.push(shouldGroup)
       events.push(event)
 
-      let isDateDiffed = false
-      const eventInstant = Temporal.Instant.fromEpochMilliseconds(event.getTs()).toZonedDateTimeISO(timezone)
-
-      if (!latestDateSeen) {
-        latestDateSeen = eventInstant
-        isDateDiffed = true
-      } else {
-        isDateDiffed = Temporal.PlainDate.compare(eventInstant.toPlainDate(), latestDateSeen.toPlainDate()) > 0
-        if (isDateDiffed) latestDateSeen = eventInstant
+      const isDateDiffed = event.getTs() >= nextDayMs
+      if (isDateDiffed) {
+        nextDayMs = Temporal.Instant.fromEpochMilliseconds(event.getTs())
+          .toZonedDateTimeISO(timezone)
+          .toPlainDate()
+          .add({ days: 1 })
+          .toZonedDateTime(timezone).epochMilliseconds
       }
 
       dateDiffed.push(isDateDiffed)
