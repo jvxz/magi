@@ -17,7 +17,7 @@ const delegated = reactiveOmit(props, 'class')
 <template>
   <Primitive
     v-bind="delegated"
-    :class="cn(staticBase({ variant, spacing }), 'flex flex-col shadow-lg', props.class)"
+    :class="cn(staticBase({ variant, spacing }), 'flex flex-col', props.class)"
     data-slot="card"
   >
     <slot />
