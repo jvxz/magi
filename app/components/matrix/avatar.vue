@@ -32,9 +32,14 @@ watch(
 )
 watch(src, () => (failed.value = false))
 
-function onError() {
-  if (!useFull.value && props.imageSize !== 'full') useFull.value = true
-  else failed.value = true
+async function onError() {
+  if (useFull.value || props.imageSize === 'full') return (failed.value = true)
+
+  const before = src.value
+  useFull.value = true
+
+  await nextTick()
+  if (src.value === before) failed.value = true
 }
 
 const delegated = reactiveOmit(props, ['doPlaceholder', 'square', 'fallbackAlt', 'alt'])
