@@ -40,15 +40,15 @@ const collapsiblesState = useLocalStorage<{ recents: boolean; pinned: boolean }>
   <UContextMenuRegionRoot name="homeRoom" class="shrink-0">
     <div class="p-3 flex flex-col gap-2 overflow-y-auto">
       <PageMeRoomList
+        v-model:model-value="collapsiblesState.pinned"
         :cached-count="pinnedRoomEntriesCachedCount"
         label="Pinned"
-        v-model:model-value="collapsiblesState.pinned"
         :entries="pinnedRoomEntries"
       />
       <PageMeRoomList
+        v-model:model-value="collapsiblesState.recents"
         :cached-count="sortedRecentRoomsCachedCount"
         label="Recent"
-        v-model:model-value="collapsiblesState.recents"
         :entries="sortedRecentRooms"
       />
     </div>

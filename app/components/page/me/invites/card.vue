@@ -45,7 +45,7 @@ async function handleJoin() {
 
 <template>
   <UContextMenuRegionTrigger as-child region="invite" :value="{ roomId: inviteRoom.roomId }">
-    <URoomShowcaseCardRoot class="border-none" group :key="inviteRoom.roomId">
+    <URoomShowcaseCardRoot :key="inviteRoom.roomId" class="border-none" group>
       <URoomShowcaseCardImage
         as-child
         square

@@ -59,7 +59,7 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
                 <UCardGroupSeparator v-if="i - 1" />
 
                 <UCardGroupItem variant="raised" class="h-18">
-                  <USkeleton class="size-full rounded-sm" />
+                  <USkeleton class="rounded-sm size-full" />
                 </UCardGroupItem>
               </template>
             </div>

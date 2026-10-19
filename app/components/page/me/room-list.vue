@@ -39,7 +39,7 @@ const state = computed(() => {
 
             <URoomShowcaseCardRoot group variant="raised">
               <URoomShowcaseCardContent>
-                <USkeleton class="size-full rounded-sm h-10" />
+                <USkeleton class="rounded-sm size-full h-10" />
               </URoomShowcaseCardContent>
             </URoomShowcaseCardRoot>
           </template>

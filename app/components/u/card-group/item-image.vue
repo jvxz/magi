@@ -4,13 +4,13 @@ import type { HTMLAttributes } from 'vue'
 
 defineOptions({ inheritAttrs: false })
 
+const props = withDefaults(defineProps<UCardGroupItemImageProps>(), { as: 'img' })
+
 export interface UCardGroupItemImageProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
   dialog?: GlobalDialogMap['avatar']
   prevent?: boolean
 }
-
-const props = withDefaults(defineProps<UCardGroupItemImageProps>(), { as: 'img' })
 
 const { openDialog } = useGlobalDialog()
 const box = 'size-10 rounded-sm aspect-square shrink-0'
@@ -32,7 +32,7 @@ const handleClick = (e: Event) => {
     <Primitive :as :as-child class="size-full object-cover" v-bind="$attrs">
       <slot />
     </Primitive>
-    <div class="absolute inset-0 hover:bg-hover-overlay" />
+    <div class="inset-0 absolute hover:bg-hover-overlay" />
   </button>
 
   <Primitive

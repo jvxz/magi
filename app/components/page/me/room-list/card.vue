@@ -51,14 +51,14 @@ const to = computed<RouteLocationRaw | undefined>(() =>
           <URoomShowcaseCardHeader>
             <URoomShowcaseCardTitle>
               <span v-if="title">{{ title }}</span>
-              <USkeleton v-else class="h-1em w-12 rounded-sm" />
+              <USkeleton v-else class="rounded-sm h-1em w-12" />
             </URoomShowcaseCardTitle>
 
             <URoomShowcaseCardDescription>
               <span v-if="isDefined(memberCount)">
                 {{ memberCount }} {{ handlePlural(memberCount, 'members', 'member') }}
               </span>
-              <USkeleton v-else class="h-1lh w-16 rounded-sm" />
+              <USkeleton v-else class="rounded-sm h-1lh w-16" />
 
               <template v-if="topic">
                 <UInlineSeparator />
