@@ -6,11 +6,23 @@ definePageMeta({
 
 defineAppLabel({ label: 'Home' })
 
+const matrixStatus = useMatrixStatus()
 const { sortedRecentRooms } = useRecentRooms()
 const { pinnedRoomEntries } = usePinnedRooms()
 
-const collapsiblesState = useScopedLocalStorage<{ recents: boolean; pinned: boolean }>('homeRoomListCollapsibles', {
-  pinned: false,
+const sortedRecentRoomsCachedCount = useCachedCount(
+  'sortedRecentRooms',
+  () => (matrixStatus.value.isDataSynced ? sortedRecentRooms.value.length : undefined),
+  4,
+)
+const pinnedRoomEntriesCachedCount = useCachedCount(
+  'pinnedRoomEntries',
+  () => (matrixStatus.value.isDataSynced ? pinnedRoomEntries.value.length : undefined),
+  2,
+)
+
+const collapsiblesState = useLocalStorage<{ recents: boolean; pinned: boolean }>('homeRoomListCollapsibles', {
+  pinned: true,
   recents: true,
 })
 </script>
@@ -25,10 +37,20 @@ const collapsiblesState = useScopedLocalStorage<{ recents: boolean; pinned: bool
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
-  <UContextMenuRegionRoot name="homeRoom">
-    <div class="p-3 flex flex-col *:shrink-0 gap-2 overflow-auto">
-      <PageMeRoomList label="Pinned" v-model:model-value="collapsiblesState.pinned" :entries="pinnedRoomEntries" />
-      <PageMeRoomList label="Recent" v-model:model-value="collapsiblesState.recents" :entries="sortedRecentRooms" />
+  <UContextMenuRegionRoot name="homeRoom" class="shrink-0">
+    <div class="p-3 flex flex-col gap-2 overflow-y-auto">
+      <PageMeRoomList
+        :cached-count="pinnedRoomEntriesCachedCount"
+        label="Pinned"
+        v-model:model-value="collapsiblesState.pinned"
+        :entries="pinnedRoomEntries"
+      />
+      <PageMeRoomList
+        :cached-count="sortedRecentRoomsCachedCount"
+        label="Recent"
+        v-model:model-value="collapsiblesState.recents"
+        :entries="sortedRecentRooms"
+      />
     </div>
 
     <PageMeRoomListContextMenu />
