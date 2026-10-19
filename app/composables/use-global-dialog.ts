@@ -9,6 +9,7 @@ export interface GlobalDialogMap {
     | { label: string; type: 'room'; room: MaybeRoomOrId }
     | { label: string; type: 'user'; user: MaybeUserOrId }
     | { label: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
+    | { label: string; type: 'image'; src: string }
   codeViewer: {
     code: string
     lang?: string
