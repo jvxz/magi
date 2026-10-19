@@ -26,6 +26,11 @@ export function useContextMenuRegion<T extends ContextMenuName>(name: T) {
 export function setContextMenuOpenAttr(el: MaybeElement, action: 'add' | 'remove') {
   if (!(el instanceof HTMLElement)) return
 
-  if (action === 'add') el.setAttribute(ATTR__CONTEXT_MENU_OPEN, '')
-  else el.removeAttribute(ATTR__CONTEXT_MENU_OPEN)
+  if (action === 'add') {
+    el.setAttribute(ATTR__CONTEXT_MENU_OPEN, '')
+    el.setAttribute(ATTR_STATE, 'open')
+  } else {
+    el.removeAttribute(ATTR__CONTEXT_MENU_OPEN)
+    el.setAttribute(ATTR_STATE, 'closed')
+  }
 }
