@@ -1,3 +1,4 @@
 {
-  "recommendations": ["dbaeumer.vscode-eslint", "vue.volar", "oxc.oxc-vscode"]
+  "recommendations": ["dbaeumer.vscode-eslint", "vue.volar", "oxc.oxc-vscode"],
+  "unwantedRecommendations": ["typescriptteam.native-preview", "ubugeeei.vize"]
 }
