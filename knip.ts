@@ -6,6 +6,7 @@ const config: KnipConfig = {
     '@iconify-json/*',
     '@types/grecaptcha',
     'temporal-polyfill',
+    'vue-tsc',
     '@regle/core',
     '@regle/rules',
     '@tiptap/vue-3',

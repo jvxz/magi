@@ -79,7 +79,6 @@
     "@e18e/eslint-plugin": "^0.5.1",
     "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
     "@faker-js/faker": "^10.6.0",
-    "@golar/vue": "^0.1.10",
     "@iconify-json/tabler": "^1.2.41",
     "@nuxt/eslint": "1.17.0",
     "@nuxt/eslint-plugin": "1.17.0",
@@ -101,7 +100,6 @@
     "eslint-plugin-regexp": "3.3.1",
     "eslint-plugin-sort-exports": "^0.9.1",
     "eslint-plugin-unused-imports": "4.4.1",
-    "golar": "^0.1.10",
     "happy-dom": "^20.14.5",
     "knip": "^6.39.0",
     "oxfmt": "^0.54.0",
@@ -109,11 +107,12 @@
     "pathe": "^2.0.3",
     "playwright-core": "^1.63.0",
     "taze": "^19.17.2",
-    "typescript": "^6.0.3",
+    "typescript": "npm:typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2",
     "unocss": "^66.10.5",
     "unocss-preset-animations": "^1.3.0",
     "vite": "^8.3.2",
     "vitest": "^4.1.11",
-    "vue-bundle-renderer": "^2.4.0"
+    "vue-bundle-renderer": "^2.4.0",
+    "vue-tsc": "3.3.13"
   }
 }
