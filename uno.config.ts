@@ -41,7 +41,7 @@ export default defineConfig({
       },
     ],
     [
-      /^(bg|text|border)-(.+)-(hover|press)$/,
+      /^(bg|text|border)-(.+)-hover$/,
       ([, prop, name, state], { theme }) => {
         const omit = ['danger']
         const color = (theme.colors as Record<string, any>)[name]
@@ -53,9 +53,6 @@ export default defineConfig({
   ],
   safelist: ['group'],
   shortcuts: [
-    {
-      squish: 'motion-safe:active:scale-96.5 duration-100 ease-out',
-    },
     {
       'resize-handle':
         'bg-muted-foreground opacity-75 h-full w-1.5 pointer-events-none transition-all duration-75 delay-150 ease-in-out inset-0 absolute z-10 z-100 group-data-[state=inactive]:opacity-0 group-data-[state=inactive]:w-0.5 -translate-x-1/2 group-data-[state=inactive]:delay-0',
@@ -81,7 +78,6 @@ export default defineConfig({
       danger: 'var(--danger)',
       'danger-foreground': 'var(--danger-foreground)',
       'danger-hover': 'var(--danger-hover)',
-      'danger-press': 'var(--danger-press)',
       foreground: 'var(--foreground)',
       hover: 'var(--hover)',
       'hover-overlay': 'var(--hover-overlay)',

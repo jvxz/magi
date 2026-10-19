@@ -301,7 +301,7 @@ watchDebounced(
               tabindex="-1"
               type="button"
               :data-active="activeEmoji?.hexcode === emoji.hexcode ? '' : undefined"
-              class="text-base rounded grid size-8 aspect-square transition-transform place-items-center active:bg-[var(--active-color)] data-[active]:bg-[var(--active-color)]"
+              class="text-base rounded grid size-8 aspect-square transition-transform place-items-center data-[active]:bg-[var(--active-color)]"
               @click="handleSelect(emoji)"
               @mouseover="activeEmojiIdx = getEmojiFlatIdx(emoji)"
             >
