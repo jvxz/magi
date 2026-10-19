@@ -9,13 +9,18 @@ const props = defineProps<
   }
 >()
 
-const manualAvatarSrc = useResolveAvatarUrl(() => props.room.avatar_url)
+const dialogSrc = useResolveAvatarUrl(() => props.room.avatar_url, { size: 'full' })
 </script>
 
 <template>
   <UContextMenuRegionTrigger as-child region="browseRoom" :value="{ room }">
     <URoomShowcaseCardRoot class="border-0 flex gap-2 h-fit shadow-none items-center" :room="room.room_id" group>
-      <URoomShowcaseCardAvatar :manual-avatar-src :room="room.room_id" class="shrink-0 h-10 aspect-square" />
+      <URoomShowcaseCardImage
+        as-child
+        :dialog="dialogSrc ? { type: 'image', src: dialogSrc, label: room.name ?? room.room_id } : undefined"
+      >
+        <MatrixAvatar square :src="props.room.avatar_url" :alt="room.name ?? room.room_id" />
+      </URoomShowcaseCardImage>
 
       <URoomShowcaseCardContent>
         <URoomShowcaseCardHeader class="shrink">

@@ -23,10 +23,8 @@ const noRoomsAvailable = computed(() => !isLoading.value && !error.value && !con
     v-slot="{ item: room, index }"
     :items="rooms"
     :scroll-el="scrollEl"
-    :estimate-size="(_, i) => (i ? 57 : 40)"
+    :estimate-size="() => 72"
     :get-item-key="room => room.room_id"
-    :gap="16"
-    row-class="flex flex-col gap-4"
   >
     <UCardGroupSeparator v-if="index" />
     <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />

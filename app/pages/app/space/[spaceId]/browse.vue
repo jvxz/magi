@@ -46,21 +46,21 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
               v-slot="{ item: room, index }"
               :items="rooms"
               :scroll-el="scrollEl"
-              :estimate-size="(_, i) => (i ? 57 : 40)"
+              :estimate-size="() => 72"
               :get-item-key="room => room.room_id"
-              :gap="16"
-              row-class="flex flex-col gap-4"
             >
               <UCardGroupSeparator v-if="index" />
               <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
             </VirtualList>
 
             <!-- conversation skeletons -->
-            <div v-else class="flex flex-col gap-4">
+            <div v-else>
               <template v-for="i in conversationCachedCount" :key="i">
                 <UCardGroupSeparator v-if="i - 1" />
 
-                <USkeleton class="h-10 w-full" />
+                <UCardGroupItem variant="raised" class="h-18">
+                  <USkeleton class="size-full rounded-sm" />
+                </UCardGroupItem>
               </template>
             </div>
           </PageRoomBrowseSection>
