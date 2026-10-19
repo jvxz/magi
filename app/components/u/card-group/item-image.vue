@@ -7,12 +7,18 @@ defineOptions({ inheritAttrs: false })
 export interface UCardGroupItemImageProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
   dialog?: GlobalDialogMap['avatar']
+  prevent?: boolean
 }
 
 const props = withDefaults(defineProps<UCardGroupItemImageProps>(), { as: 'img' })
 
 const { openDialog } = useGlobalDialog()
 const box = 'size-10 rounded-sm aspect-square shrink-0'
+
+const handleClick = (e: Event) => {
+  if (props.prevent) e.preventDefault()
+  if (props.dialog) openDialog('avatar', props.dialog)
+}
 </script>
 
 <template>
@@ -21,7 +27,7 @@ const box = 'size-10 rounded-sm aspect-square shrink-0'
     type="button"
     :class="cn(box, 'relative of-clip cursor-pointer', props.class)"
     data-slot="card-group-image"
-    @click="openDialog('avatar', dialog)"
+    @click="handleClick"
   >
     <Primitive :as :as-child class="size-full object-cover" v-bind="$attrs">
       <slot />

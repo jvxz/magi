@@ -5,7 +5,7 @@ const { entry } = defineProps<{ entry: PinnedRoomEntry | RecentRoomEntry }>()
 
 const roomId = toRef(() => entry.roomId)
 
-const title = useRoomComputed(roomId, r => (r ? resolveRoomName(r) : 'Unknown room'))
+const title = useRoomComputed(roomId, r => (r ? resolveRoomName(r) : undefined))
 const topic = useRoomComputed(roomId, r => getRoomTopic(r))
 const memberCount = useRoomMemberCount(roomId)
 
@@ -38,21 +38,27 @@ const to = computed<RouteLocationRaw | undefined>(() =>
   <UContextMenuRegionTrigger as-child region="homeRoom" :value="payload">
     <URoomShowcaseCardRoot interactive group variant="raised" as-child>
       <NuxtLink :to>
-        <URoomShowcaseCardImage as-child square :dialog="{ type: 'room', label: title, room: roomId }">
+        <URoomShowcaseCardImage
+          as-child
+          square
+          :dialog="title ? { type: 'room', label: title, room: roomId } : undefined"
+          prevent
+        >
           <MatrixRoomAvatar :room="roomId" />
         </URoomShowcaseCardImage>
 
         <URoomShowcaseCardContent>
           <URoomShowcaseCardHeader>
             <URoomShowcaseCardTitle>
-              {{ title }}
+              <span v-if="title">{{ title }}</span>
+              <USkeleton v-else class="h-1em w-12 rounded-sm" />
             </URoomShowcaseCardTitle>
 
             <URoomShowcaseCardDescription>
               <span v-if="isDefined(memberCount)">
                 {{ memberCount }} {{ handlePlural(memberCount, 'members', 'member') }}
               </span>
-              <USkeleton v-else class="h-1lh w-8" />
+              <USkeleton v-else class="h-1lh w-16 rounded-sm" />
 
               <template v-if="topic">
                 <UInlineSeparator />
