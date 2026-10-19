@@ -5,6 +5,14 @@ definePageMeta({
 })
 
 defineAppLabel({ label: 'Home' })
+
+const { sortedRecentRooms } = useRecentRooms()
+const { pinnedRoomEntries } = usePinnedRooms()
+
+const collapsiblesState = useScopedLocalStorage<{ recents: boolean; pinned: boolean }>('homeRoomListCollapsibles', {
+  pinned: false,
+  recents: true,
+})
 </script>
 
 <template>
@@ -18,11 +26,11 @@ defineAppLabel({ label: 'Home' })
   </LayoutAppSlot>
 
   <UContextMenuRegionRoot name="homeRoom">
-    <div class="p-3 flex flex-col gap-2">
-      <PageMePinnedRoomsList />
-      <PageMeRecentRoomsList />
+    <div class="p-3 flex flex-col *:shrink-0 gap-2 overflow-auto">
+      <PageMeRoomList label="Pinned" v-model:model-value="collapsiblesState.pinned" :entries="pinnedRoomEntries" />
+      <PageMeRoomList label="Recent" v-model:model-value="collapsiblesState.recents" :entries="sortedRecentRooms" />
     </div>
 
-    <PageMeContextMenu />
+    <PageMeRoomListContextMenu />
   </UContextMenuRegionRoot>
 </template>

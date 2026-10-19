@@ -16,25 +16,24 @@ const collapsiblesState = useHomeRoomListCollapsibles()
         </h3>
       </UCollapsibleTrigger>
 
-      <UCollapsibleContent>
-        <template v-if="!sortedRecentRooms.length">
-          <div class="text-sm text-muted-foreground pl-3 flex gap-1 items-center">
-            <Icon :name="ICON__EMPTY" />
-            <span>You have no recent rooms</span>
-          </div>
-        </template>
+      <UCollapsibleContent as-child>
+        <UCardGroupRoot variant="raised">
+          <template v-if="!sortedRecentRooms.length">
+            <div class="text-sm text-muted-foreground pl-3 flex gap-1 items-center">
+              <Icon :name="ICON__EMPTY" />
+              <span>You have no recent rooms</span>
+            </div>
+          </template>
 
-        <div v-else class="flex flex-col gap-2">
-          <UContextMenuRegionTrigger
-            v-for="recentRoom in sortedRecentRooms"
-            :key="recentRoom.key"
-            region="homeRoom"
-            :value="{ room: recentRoom, type: 'recent' }"
-            as-child
-          >
-            <PageMeListCard :payload="recentRoom" />
-          </UContextMenuRegionTrigger>
-        </div>
+          <div v-else class="flex flex-col gap-2">
+            <template v-for="(recentRoom, i) in sortedRecentRooms" :key="recentRoom.key">
+              <UCardGroupSeparator v-if="i" />
+              <UContextMenuRegionTrigger region="homeRoom" :value="{ room: recentRoom, type: 'recent' }" as-child>
+                <PageMeListCard :payload="recentRoom" />
+              </UContextMenuRegionTrigger>
+            </template>
+          </div>
+        </UCardGroupRoot>
       </UCollapsibleContent>
     </UCollapsibleRoot>
   </div>

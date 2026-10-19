@@ -1,4 +1,4 @@
-type RecentRoomEntry = ContextMenuRegions['homeRoom']['room'] & {
+export type RecentRoomEntry = ContextMenuRegions['homeRoom']['room'] & {
   lastVisited: number
 }
 

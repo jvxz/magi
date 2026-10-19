@@ -1,4 +1,5 @@
-type PinnedRoomsState = Map<string, ContextMenuRegions['homeRoom']['room']>
+export type PinnedRoomEntry = ContextMenuRegions['homeRoom']['room']
+type PinnedRoomsState = Map<string, PinnedRoomEntry>
 
 export const usePinnedRooms = createGlobalState(() => {
   const pinnedRooms = useScopedLocalStorage<PinnedRoomsState>('pinnedRooms', new Map(), {
@@ -12,12 +13,12 @@ export const usePinnedRooms = createGlobalState(() => {
     })),
   )
 
-  const pinRoom = (payload: ContextMenuRegions['homeRoom']['room']) => {
+  const pinRoom = (payload: PinnedRoomEntry) => {
     pinnedRooms.value.set(payload.roomId, payload)
     triggerRef(pinnedRooms)
   }
 
-  const unpinRoom = (payload: ContextMenuRegions['homeRoom']['room']) => {
+  const unpinRoom = (payload: PinnedRoomEntry) => {
     pinnedRooms.value.delete(payload.roomId)
     triggerRef(pinnedRooms)
   }
