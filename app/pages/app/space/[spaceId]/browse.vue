@@ -46,7 +46,7 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
               v-slot="{ item: room, index }"
               :items="rooms"
               :scroll-el="scrollEl"
-              :estimate-size="() => 72"
+              :estimate-size="(_, i) => (i ? 73 : 72)"
               :get-item-key="room => room.room_id"
             >
               <UCardGroupSeparator v-if="index" />
