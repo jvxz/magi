@@ -1,19 +1,30 @@
 <script lang="ts" setup>
 import type { CollapsibleTriggerProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
 
-defineProps<CollapsibleTriggerProps>()
+export type UCollapsibleTriggerProps = CollapsibleTriggerProps & {
+  class?: HTMLAttributes['class']
+  variant?: CollapsibleTriggerVariants['variant'] | 'room'
+  size?: CollapsibleTriggerVariants['size']
+}
+
+const props = defineProps<UCollapsibleTriggerProps>()
+
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
   <CollapsibleTrigger
-    v-bind="$props"
+    v-bind="delegated"
     :class="
       cn(
-        buttonVariants({ variant: 'ghost' }),
-        'group py-2 flex-row gap-2 w-full justify-start data-[state=open]:(bg-selected hover:bg-selected) text-foreground',
-        $attrs.class,
+        'group',
+        collapsibleTriggerVariants({ variant: variant === 'room' ? undefined : variant, size }),
+        variant === 'room' && 'py-2',
+        props.class,
       )
     "
+    data-slot="collapsible-trigger"
   >
     <slot />
   </CollapsibleTrigger>
