@@ -1,17 +1,19 @@
 <script lang="ts" setup>
 import type { RouteLocationRaw } from 'vue-router'
 
-const { entry } = defineProps<{ entry: PinnedRoomEntry | RecentRoomEntry }>()
+const { entry, type } = defineProps<{ entry: PinnedRoomEntry | RecentRoomEntry; type: 'pinned' | 'recent' }>()
 
 const roomId = toRef(() => entry.roomId)
 
 const title = useRoomComputed(roomId, r => (r ? resolveRoomName(r) : undefined))
 const topic = useRoomComputed(roomId, r => getRoomTopic(r))
 const memberCount = useRoomMemberCount(roomId)
+const matrixStatus = useMatrixStatus()
+const isSynced = computed(() => matrixStatus.value.isDataSynced)
 
 const payload = computed<ContextMenuRegions['homeRoom']>(() => ({
   room: entry,
-  type: 'lastVisited' in entry ? 'recent' : 'pinned',
+  type,
 }))
 
 const to = computed<RouteLocationRaw | undefined>(() =>
@@ -51,6 +53,7 @@ const to = computed<RouteLocationRaw | undefined>(() =>
           <URoomShowcaseCardHeader>
             <URoomShowcaseCardTitle>
               <span v-if="title">{{ title }}</span>
+              <span v-else-if="isSynced" class="text-muted-foreground">Unknown room</span>
               <USkeleton v-else class="rounded-sm h-1em w-12" />
             </URoomShowcaseCardTitle>
 
@@ -58,6 +61,7 @@ const to = computed<RouteLocationRaw | undefined>(() =>
               <span v-if="isDefined(memberCount)">
                 {{ memberCount }} {{ handlePlural(memberCount, 'members', 'member') }}
               </span>
+              <span v-else-if="isSynced" class="italic">Not joined</span>
               <USkeleton v-else class="rounded-sm h-1lh w-16" />
 
               <template v-if="topic">

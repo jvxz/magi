@@ -43,12 +43,14 @@ const collapsiblesState = useLocalStorage<{ recents: boolean; pinned: boolean }>
         v-model:model-value="collapsiblesState.pinned"
         :cached-count="pinnedRoomEntriesCachedCount"
         label="Pinned"
+        type="pinned"
         :entries="pinnedRoomEntries"
       />
       <PageMeRoomList
         v-model:model-value="collapsiblesState.recents"
         :cached-count="sortedRecentRoomsCachedCount"
         label="Recent"
+        type="recent"
         :entries="sortedRecentRooms"
       />
     </div>
