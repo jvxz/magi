@@ -42,12 +42,12 @@ export default defineConfig({
     ],
     [
       /^(bg|text|border)-(.+)-hover$/,
-      ([, prop, name, state], { theme }) => {
+      ([, prop, name], { theme }) => {
         const omit = ['danger']
         const color = (theme.colors as Record<string, any>)[name]
         if (typeof color !== 'string' || omit.includes(name)) return
         const cssProp = prop === 'bg' ? 'background-color' : prop === 'text' ? 'color' : 'border-color'
-        return { [cssProp]: `oklch(from ${color} calc(l + var(--shift-${state})) c h)` }
+        return { [cssProp]: `oklch(from ${color} calc(l + var(--shift-hover)) c h)` }
       },
     ],
   ],
