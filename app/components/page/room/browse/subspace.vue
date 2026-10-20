@@ -44,7 +44,7 @@ const noRoomsAvailable = computed(() => !isLoading.value && !error.value && !con
 
   <UCardRoot
     v-else-if="error"
-    v-bind="$props"
+    v-bind="props"
     variant="danger"
     :class="cn('w-full relative p-3.5 border flex-row gap-3.5 ', $attrs.class)"
   >

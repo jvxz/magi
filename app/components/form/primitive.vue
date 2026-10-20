@@ -22,10 +22,10 @@ const errorMessage = computed(() => {
 </script>
 
 <template>
-  <Primitive v-bind="$props" :class="cn('space-y-1.5', $props.ui?.container)">
+  <Primitive v-bind="props" :class="cn('space-y-1.5', props.ui?.container)">
     <template v-if="!$slots.label && !$slots.error">
       <div class="flex size-fit w-full items-center justify-between">
-        <ULabel v-if="label" :for="id" :class="cn('text-sm font-medium gap-1', $props.ui?.label)">
+        <ULabel v-if="label" :for="id" :class="cn('text-sm font-medium gap-1', props.ui?.label)">
           {{ label }}
           <span v-if="required" class="text-danger">*</span>
         </ULabel>
@@ -33,7 +33,7 @@ const errorMessage = computed(() => {
         <p
           v-else-if="errorMessage"
           :title="errorMessage"
-          :class="cn('text-xs text-danger text-end max-w-2/3 truncate', $props.ui?.error)"
+          :class="cn('text-xs text-danger text-end max-w-2/3 truncate', props.ui?.error)"
         >
           {{ errorMessage }}
         </p>
@@ -47,7 +47,7 @@ const errorMessage = computed(() => {
       <slot />
     </Slot>
 
-    <div v-if="$slots.footer" :class="cn('text-xs text-muted-foreground text-end', $props.ui?.footer)">
+    <div v-if="$slots.footer" :class="cn('text-xs text-muted-foreground text-end', props.ui?.footer)">
       <slot name="footer" />
     </div>
   </Primitive>

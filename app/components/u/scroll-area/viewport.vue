@@ -7,7 +7,7 @@ const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <ScrollAreaViewport v-bind="delegated" :class="cn('size-full', $props.class)" data-slot="scroll-area-viewport">
+  <ScrollAreaViewport v-bind="delegated" :class="cn('size-full', props.class)" data-slot="scroll-area-viewport">
     <slot />
   </ScrollAreaViewport>
 </template>

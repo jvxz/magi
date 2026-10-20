@@ -14,7 +14,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
   <ContextMenuPortal>
     <ContextMenuContent
       v-bind="forwarded"
-      :class="cn(popoverContentBase(), $props.class)"
+      :class="cn(popoverContentBase(), props.class)"
       data-slot="context-menu-content"
     >
       <slot />

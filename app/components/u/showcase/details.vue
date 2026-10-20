@@ -9,7 +9,7 @@ const delegated = reactiveOmit(props, 'class')
 <template>
   <Primitive
     v-bind="delegated"
-    :class="cn('text-sm flex gap-2 items-center tabular-nums *:flex *:gap-1 *:items-center', $props.class)"
+    :class="cn('text-sm flex gap-2 items-center tabular-nums *:flex *:gap-1 *:items-center', props.class)"
   >
     <slot />
   </Primitive>

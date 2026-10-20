@@ -14,7 +14,7 @@ const delegated = reactiveOmit(props, 'class')
         'flex select-none touch-none group',
         'data-[orientation=vertical]:(w-2.5)',
         'data-[orientation=horizontal]:(h-2.5)',
-        $props.class,
+        props.class,
       )
     "
     data-slot="scroll-area-scrollbar"

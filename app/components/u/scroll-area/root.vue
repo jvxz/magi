@@ -9,7 +9,7 @@ const delegated = reactiveOmit(props, 'class')
 <template>
   <ScrollAreaRoot
     v-bind="delegated"
-    :class="cn('relative overflow-hidden h-full flex-1', $props.class)"
+    :class="cn('relative overflow-hidden h-full flex-1', props.class)"
     data-slot="scroll-area-root"
   >
     <slot />

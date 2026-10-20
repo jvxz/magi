@@ -17,7 +17,7 @@ const prevCount = refDefault(usePrevious(count), 0)
 <template>
   <Primitive
     data-slot="reaction-item"
-    v-bind="$props"
+    v-bind="props"
     :class="
       cn(
         'text-sm text-foreground p-1 px-2 border-px rounded flex gap-2 min-w-12 select-none items-center overflow-clip aria-[pressed=false]:(border-transparent bg-secondary) aria-[pressed=true]:(border-primary bg-primary/50 hover:bg-primary/50) aria-[selected=false]:(border-transparent bg-secondary) aria-[selected=true]:(border-primary bg-primary/50 hover:bg-primary/50)',

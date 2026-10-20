@@ -35,7 +35,7 @@ const forwarded = useForwardPropsEmits(picked, emits)
           'flex flex-row gap-2 toast-anim p-4 w-full relative',
           'data-[swipe=move]:translate-x-(--reka-toast-swipe-move-x)',
           'data-[swipe=cancel]:(translate-x-0 transition-transform)',
-          $props.class,
+          props.class,
         )
       "
       :variant

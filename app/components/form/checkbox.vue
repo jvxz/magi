@@ -16,7 +16,7 @@ const delegated = reactiveOmit(props, 'class')
     <UCheckbox class="" />
 
     <template #label="{ id }">
-      <ULabel v-if="label" :for="id" :class="cn('text-xs gap-1', $props.ui?.label)">
+      <ULabel v-if="label" :for="id" :class="cn('text-xs gap-1', props.ui?.label)">
         <span>{{ label }}</span>
         <span v-if="required" class="text-danger">*</span>
       </ULabel>

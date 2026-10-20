@@ -12,7 +12,7 @@ const delegated = reactiveOmit(props, 'class')
   <Primitive
     v-bind="delegated"
     :class="
-      cn(checkboxVariants(), 'pointer-events-none group-hover:border-border-strong! border shrink-0 ml-2', $props.class)
+      cn(checkboxVariants(), 'pointer-events-none group-hover:border-border-strong! border shrink-0 ml-2', props.class)
     "
   >
     <CheckboxIndicator

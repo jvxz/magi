@@ -55,8 +55,8 @@ const { forwardRef } = useForwardExpose()
       :ref="forwardRef"
       v-model="modelValue"
       v-disable-pw="disablePw"
-      :type="$props.type"
-      :class="cn(inputStyles({ variant }), props.leadingIcon && 'ps-7', props.trailingIcon && 'pe-7', $props.ui?.input)"
+      :type="props.type"
+      :class="cn(inputStyles({ variant }), props.leadingIcon && 'ps-7', props.trailingIcon && 'pe-7', props.ui?.input)"
     />
 
     <Icon
