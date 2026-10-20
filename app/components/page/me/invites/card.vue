@@ -51,7 +51,7 @@ async function handleJoin() {
         square
         :dialog="{ type: 'room', room: inviteRoom, label: resolveRoomName(inviteRoom) }"
       >
-        <MatrixRoomAvatar :room="inviteRoom" />
+        <MatrixRoomAvatar :room="inviteRoom" :direct="isDirectInvite" />
       </URoomShowcaseCardImage>
 
       <URoomShowcaseCardContent>
