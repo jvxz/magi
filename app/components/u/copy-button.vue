@@ -39,7 +39,7 @@ const delegated = reactiveOmit(props, ['class', 'value'])
 <template>
   <UButton
     v-bind="delegated"
-    :title="$attrs.title ?? 'Click to copy'"
+    title="Click to copy"
     :aria-label="copied ? 'Copied' : 'Copy'"
     :disabled="copied"
     data-slot="copy-button"

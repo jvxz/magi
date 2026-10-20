@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-withDefaults(defineProps<PrimitiveProps>(), {
+const props = withDefaults(defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>(), {
   as: 'span',
 })
+
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <Primitive v-bind="$props" :class="cn('inline text-muted-foreground', $attrs.class)">
+  <Primitive v-bind="delegated" :class="cn('inline text-muted-foreground', props.class)">
     <slot> – </slot>
   </Primitive>
 </template>

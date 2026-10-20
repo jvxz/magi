@@ -10,6 +10,8 @@ export type UChipProps = PrimitiveProps & {
   size?: 'lg' | 'default' | 'sm'
 }
 
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<UChipProps>(), {
   show: true,
   size: 'default',
@@ -46,7 +48,7 @@ const sizeClass = computed(() => {
 
 <template>
   <Primitive :class="cn('relative inline-flex items-center justify-center shrink-0', ui?.root)" data-slot="chip-root">
-    <Slot v-bind="{ ...$attrs }">
+    <Slot v-bind="$attrs">
       <slot />
     </Slot>
 

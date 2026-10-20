@@ -2,11 +2,14 @@
 import type { HierarchyRoom } from 'matrix-js-sdk'
 
 const props = defineProps<{
+  class?: HTMLAttributes['class']
   space: HierarchyRoom
   open: boolean
   count: number | undefined
   scrollEl: HTMLElement | null
 }>()
+
+const delegated = reactiveOmit(props, 'class')
 
 const { conversationRooms, error, isLoading, suggestedRooms } = useSpaceHierarchy(
   () => props.space.room_id,
@@ -32,7 +35,7 @@ const noRoomsAvailable = computed(() => !isLoading.value && !error.value && !con
 
   <div
     v-else-if="noRoomsAvailable"
-    :class="cn('w-full relative text-sm flex items-center gap-2 text-muted-foreground ', $attrs.class)"
+    :class="cn('w-full relative text-sm flex items-center gap-2 text-muted-foreground ', props.class)"
   >
     <Icon name="tabler-ghost-3" class="size-1lh" />
     <span>No rooms available</span>
@@ -44,9 +47,9 @@ const noRoomsAvailable = computed(() => !isLoading.value && !error.value && !con
 
   <UCardRoot
     v-else-if="error"
-    v-bind="props"
+    v-bind="delegated"
     variant="danger"
-    :class="cn('w-full relative p-3.5 border flex-row gap-3.5 ', $attrs.class)"
+    :class="cn('w-full relative p-3.5 border flex-row gap-3.5 ', props.class)"
   >
     Unable to get rooms. Please try again later
   </UCardRoot>
