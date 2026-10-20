@@ -36,9 +36,9 @@ export const useRecentRooms = createGlobalState(() => {
       lastVisited: Date.now(),
     })
 
-    for (const key of recentRooms.value.keys()) {
-      if (recentRooms.value.size <= MAX_RECENT_ROOMS) break
-      recentRooms.value.delete(key)
+    if (recentRooms.value.size > MAX_RECENT_ROOMS) {
+      const ordered = orderBy([...recentRooms.value], [([, v]) => v.lastVisited], ['desc']).slice(MAX_RECENT_ROOMS)
+      for (const [key] of ordered) recentRooms.value.delete(key)
     }
 
     triggerRef(recentRooms)
