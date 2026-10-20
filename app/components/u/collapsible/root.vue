@@ -10,7 +10,7 @@ const forwardedProps = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <CollapsibleRoot v-bind="forwardedProps" :class="cn('flex flex-col gap-2', $attrs.class)">
-    <slot />
+  <CollapsibleRoot v-slot="slotProps" v-bind="forwardedProps">
+    <slot v-bind="slotProps" />
   </CollapsibleRoot>
 </template>

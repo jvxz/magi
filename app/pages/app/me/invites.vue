@@ -31,7 +31,12 @@ watch(
     <UShowcaseContent class="size-full">
       <UContextMenuRegionRoot v-model:open="contextMenuOpen" name="invite">
         <template v-if="invites.size">
-          <PageMeInvitesCard v-for="inviteRoom in invites" :key="inviteRoom.roomId" :invite-room />
+          <UCardGroupRoot variant="raised">
+            <template v-for="(inviteRoom, i) in invites" :key="inviteRoom.roomId">
+              <UCardGroupSeparator v-if="i" />
+              <PageMeInvitesCard :invite-room />
+            </template>
+          </UCardGroupRoot>
         </template>
 
         <UEmptyRoot v-else class="size-full items-center justify-center">

@@ -1,39 +1,37 @@
 <script lang="ts" setup>
 import type { RouteLocationRaw } from 'vue-router'
 
-const { isRoomPinned, pinRoom, unpinRoom } = usePinnedRooms()
-const { blacklistRoom, removeRecentRoom } = useRecentRooms()
 const { payload } = useContextMenuRegion('homeRoom')
 
-const isPinned = computed(() => (payload.value?.room.roomId ? isRoomPinned(payload.value?.room.roomId) : false))
+const { isRoomPinned, pinRoom, unpinRoom } = usePinnedRooms()
+const { blacklistRoom, removeRecentRoom } = useRecentRooms()
 
-function handlePin() {
-  if (!payload.value) return
+const isPinned = computed(() => (payload.value ? isRoomPinned(payload.value.room.roomId) : false))
 
-  ;(!isPinned.value ? pinRoom : unpinRoom)(payload.value.room)
-}
+const handlePin = () => (payload.value ? (!isPinned.value ? pinRoom : unpinRoom)(payload.value?.room) : noop)
 
-const to = computed<RouteLocationRaw | undefined>(() => {
-  if (payload.value)
-    return payload.value?.room.kind === 'direct'
+const to = computed<RouteLocationRaw | undefined>(() =>
+  payload.value
+    ? payload.value?.room.kind === 'direct'
       ? {
           name: 'direct-room',
           params: {
-            directRoomId: payload.value.room.roomId,
+            directRoomId: payload.value?.room.roomId,
           },
         }
       : {
           name: 'space-room',
           params: {
-            roomId: payload.value.room.roomId,
-            spaceId: payload.value.room.spaceId,
+            roomId: payload.value?.room.roomId,
+            spaceId: payload.value?.room.spaceId,
           },
         }
-})
+    : undefined,
+)
 </script>
 
 <template>
-  <UContextMenuRegionContent v-if="payload?.room.roomId" name="homeRoom" align="start">
+  <UContextMenuRegionContent v-if="payload" name="homeRoom" align="start">
     <UContextMenuItem as-child>
       <NuxtLink :to>
         <Icon :name="ICON__OPEN_ROOM" />
@@ -47,7 +45,6 @@ const to = computed<RouteLocationRaw | undefined>(() => {
 
     <template v-if="payload.type === 'recent'">
       <UContextMenuSeparator />
-
       <UContextMenuItem @select="removeRecentRoom(payload.room.roomId)">
         <Icon :name="ICON__DELETE" />
         <span>Remove from recents</span>

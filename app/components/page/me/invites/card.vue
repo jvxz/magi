@@ -45,8 +45,15 @@ async function handleJoin() {
 
 <template>
   <UContextMenuRegionTrigger as-child region="invite" :value="{ roomId: inviteRoom.roomId }">
-    <URoomShowcaseCardRoot :key="inviteRoom.roomId" :room="inviteRoom">
-      <URoomShowcaseCardAvatar always-show-avatar :room="inviteRoom" />
+    <URoomShowcaseCardRoot :key="inviteRoom.roomId" class="border-none" group>
+      <URoomShowcaseCardImage
+        as-child
+        square
+        :dialog="{ type: 'room', room: inviteRoom, label: resolveRoomName(inviteRoom) }"
+      >
+        <MatrixRoomAvatar :room="inviteRoom" :direct="isDirectInvite" />
+      </URoomShowcaseCardImage>
+
       <URoomShowcaseCardContent>
         <URoomShowcaseCardHeader>
           <URoomShowcaseCardTitle class="shrink-0 gap-1">
@@ -62,7 +69,7 @@ async function handleJoin() {
           </URoomShowcaseCardDescription>
         </URoomShowcaseCardHeader>
 
-        <div class="flex flex-1 h-full items-start justify-end">
+        <div class="flex flex-1 h-full items-center justify-end">
           <div class="flex gap-2 items-center">
             <UButton
               :disabled="isAccepting"

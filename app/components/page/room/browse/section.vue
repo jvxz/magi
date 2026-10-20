@@ -18,8 +18,8 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
 </script>
 
 <template>
-  <UCollapsibleRoot v-model:open="openModel" class="gap-0" :default-open>
-    <UCollapsibleTrigger :class="title !== 'Rooms' && 'h-12'">
+  <UCollapsibleRoot v-model:open="openModel" :default-open>
+    <UCollapsibleTrigger :class="title !== 'Rooms' && 'h-12'" variant="room">
       <UCollapsibleTriggerIcon />
 
       <MatrixAvatar
@@ -54,14 +54,9 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
         </div>
       </div>
     </UCollapsibleTrigger>
-    <UCollapsibleContent class="pl-2.5 pt-2 flex flex-row gap-0">
-      <button
-        type="button"
-        class="group flex shrink-0 w-4 cursor-pointer items-center justify-center"
-        @click="openModel = !openModel"
-      >
-        <div class="rounded-full bg-border h-full w-px group-hover:bg-border-strong" />
-      </button>
+
+    <UCollapsibleContent bar>
+      <UCollapsibleContentBar />
 
       <UCardGroupRoot variant="raised" class="flex flex-col gap-2 w-full">
         <slot :open="openModel" />
