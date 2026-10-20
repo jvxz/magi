@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ToastTitleProps } from 'reka-ui'
 
-import type { AlertTitleProps } from '../alert/alert-title.vue'
+import type { AlertTitleProps } from '../alert/title.vue'
 
 const props = defineProps<ToastTitleProps & AlertTitleProps & { class?: string }>()
 

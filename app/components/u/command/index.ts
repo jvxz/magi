@@ -1,13 +1,13 @@
 import type { Ref } from 'vue'
 
-export { default as CommandDialog } from './command-dialog.vue'
-export { default as CommandEmpty } from './command-empty.vue'
-export { default as CommandGroup } from './command-group.vue'
-export { default as CommandInput } from './command-input.vue'
-export { default as CommandItem } from './command-item.vue'
-export { default as CommandList } from './command-list.vue'
-export { default as CommandRoot } from './command-root.vue'
-export { default as CommandShortcut } from './command-shortcut.vue'
+export { default as CommandDialog } from './dialog.vue'
+export { default as CommandEmpty } from './empty.vue'
+export { default as CommandGroup } from './group.vue'
+export { default as CommandInput } from './input.vue'
+export { default as CommandItem } from './item.vue'
+export { default as CommandList } from './list.vue'
+export { default as CommandRoot } from './root.vue'
+export { default as CommandShortcut } from './shortcut.vue'
 
 export const [useCommand, provideCommandContext] = createContext<{
   allItems: Ref<Map<string, string>>
