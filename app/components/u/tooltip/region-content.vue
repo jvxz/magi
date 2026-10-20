@@ -1,6 +1,5 @@
 <script lang="ts" setup generic="TName extends TooltipName">
 import type { PopoverContentEmits, PopoverContentProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { PopoverContent, useForwardPropsEmits } from 'reka-ui'
 

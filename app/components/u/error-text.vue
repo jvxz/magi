@@ -2,7 +2,7 @@
 import type { PrimitiveProps } from 'reka-ui'
 
 export interface ErrorTextProps extends PrimitiveProps {
-  class?: string
+  class?: HTMLAttributes['class']
   withTooltip?: boolean
   error: Error | undefined | null | (Error | undefined | null)[]
 }

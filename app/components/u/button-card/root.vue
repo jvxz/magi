@@ -21,8 +21,6 @@ export type ButtonCardVariants = VariantProps<typeof buttonCardVariants>
 </script>
 
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 import type { ButtonProps } from '../button.vue'
 
 export interface UButtonCardRootProps extends Omit<ButtonProps, 'size' | 'variant'> {

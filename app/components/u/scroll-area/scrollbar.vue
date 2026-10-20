@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ScrollAreaScrollbarProps } from 'reka-ui'
 
-const props = defineProps<ScrollAreaScrollbarProps & { class?: string }>()
+const props = defineProps<ScrollAreaScrollbarProps & { class?: HTMLAttributes['class'] }>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

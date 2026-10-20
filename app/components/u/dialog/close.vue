@@ -5,7 +5,7 @@ import type { ButtonProps } from '../button.vue'
 
 import { buttonVariants } from '../button.vue'
 
-const props = defineProps<DialogCloseProps & ButtonProps & { class?: string }>()
+const props = defineProps<DialogCloseProps & ButtonProps & { class?: HTMLAttributes['class'] }>()
 
 const delegated = reactiveOmit(props, ['class', 'variant', 'size'])
 </script>

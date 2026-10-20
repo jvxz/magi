@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { MatrixRoomAvatarProps } from '~/components/matrix/room-avatar.vue'
 
-const props = withDefaults(defineProps<MatrixRoomAvatarProps & { class?: string }>(), { square: true })
+const props = withDefaults(defineProps<MatrixRoomAvatarProps & { class?: HTMLAttributes['class'] }>(), { square: true })
 
 const delegated = reactiveOmit(props, 'class')
 </script>

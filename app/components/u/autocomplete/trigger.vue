@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComboboxTriggerProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { AutocompleteTrigger, useForwardProps } from 'reka-ui'
 

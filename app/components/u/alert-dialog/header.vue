@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = withDefaults(defineProps<PrimitiveProps & { class?: string }>(), { as: 'header', withClose: true })
+const props = withDefaults(defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>(), {
+  as: 'header',
+  withClose: true,
+})
 
 const delegated = reactiveOmit(props, ['class'])
 </script>

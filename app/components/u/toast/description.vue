@@ -3,7 +3,7 @@ import type { ToastDescriptionProps } from 'reka-ui'
 
 import type { AlertDescriptionProps } from '../alert/description.vue'
 
-defineProps<ToastDescriptionProps & AlertDescriptionProps & { class?: string }>()
+defineProps<ToastDescriptionProps & AlertDescriptionProps & { class?: HTMLAttributes['class'] }>()
 </script>
 
 <template>

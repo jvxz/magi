@@ -14,7 +14,7 @@ import type { CheckboxRootEmits, CheckboxRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<CheckboxRootProps & { class?: string }>()
+const props = defineProps<CheckboxRootProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<CheckboxRootEmits>()
 
 const delegated = reactiveOmit(props, 'class')

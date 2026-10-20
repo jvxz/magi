@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComboboxCancelProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { AutocompleteCancel, useForwardProps } from 'reka-ui'
 

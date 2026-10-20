@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { EditableInputProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { injectEditableRootContext } from 'reka-ui'
 

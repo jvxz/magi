@@ -25,7 +25,7 @@ export type ButtonVariants = VariantProps<typeof buttonVariants>
 
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
-import type { ButtonHTMLAttributes, HTMLAttributes } from 'vue'
+import type { ButtonHTMLAttributes } from 'vue'
 
 export interface ButtonProps extends PrimitiveProps {
   disabled?: MaybeRefOrGetter<boolean>

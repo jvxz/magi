@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComboboxSeparatorProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { AutocompleteSeparator } from 'reka-ui'
 

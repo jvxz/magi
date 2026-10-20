@@ -3,7 +3,7 @@ import type { ToastTitleProps } from 'reka-ui'
 
 import type { AlertTitleProps } from '../alert/title.vue'
 
-const props = defineProps<ToastTitleProps & AlertTitleProps & { class?: string }>()
+const props = defineProps<ToastTitleProps & AlertTitleProps & { class?: HTMLAttributes['class'] }>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

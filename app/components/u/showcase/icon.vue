@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 import type { Icon } from '#components'
 
 const props = defineProps<{ class?: HTMLAttributes['class']; name: string }>()

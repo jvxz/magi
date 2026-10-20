@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComboboxEmptyProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { AutocompleteEmpty } from 'reka-ui'
 

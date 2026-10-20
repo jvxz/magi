@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComboboxGroupProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { AutocompleteGroup, AutocompleteLabel } from 'reka-ui'
 

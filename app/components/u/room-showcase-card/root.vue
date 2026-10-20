@@ -9,7 +9,7 @@ import type { UCardGroupItemProps } from '../card-group/item.vue'
 
 export interface URoomShowcaseCardRootProps extends PrimitiveProps, UCardGroupItemProps {
   room?: MaybeRoomOrId | undefined
-  class?: string
+  class?: HTMLAttributes['class']
   group?: boolean
 }
 

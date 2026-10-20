@@ -2,7 +2,7 @@
 import type { PrimitiveProps } from 'reka-ui'
 
 export interface AlertDescriptionProps extends PrimitiveProps {
-  class?: string
+  class?: HTMLAttributes['class']
 }
 
 const props = defineProps<AlertDescriptionProps>()

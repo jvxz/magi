@@ -39,8 +39,6 @@ export interface AvatarPlaceholderProps {
 </script>
 
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<AvatarPlaceholderProps>(), {

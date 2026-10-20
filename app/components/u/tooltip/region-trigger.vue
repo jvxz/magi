@@ -4,7 +4,7 @@ import type { PrimitiveProps } from 'reka-ui'
 import { Primitive, useForwardExpose, useForwardProps } from 'reka-ui'
 
 const props = withDefaults(
-  defineProps<PrimitiveProps & { class?: string; region: TName; value: TooltipRegions[TName] }>(),
+  defineProps<PrimitiveProps & { class?: HTMLAttributes['class']; region: TName; value: TooltipRegions[TName] }>(),
   { as: 'div' },
 )
 

@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 import type { UCodeblockRootProps } from './u/codeblock.vue'
 
 const props = defineProps<{

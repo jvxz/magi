@@ -6,7 +6,7 @@ import { injectEditableRootContext } from 'reka-ui'
 import { buttonVariants } from '../button.vue'
 import { editableAreaLeadingIconInjectionKey } from './area.vue'
 
-export type UEditablePreviewProps = EditablePreviewProps & { class?: string }
+export type UEditablePreviewProps = EditablePreviewProps & { class?: HTMLAttributes['class'] }
 
 const props = defineProps<UEditablePreviewProps>()
 

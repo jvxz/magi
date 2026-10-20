@@ -17,7 +17,6 @@ export const [useCommandGroup, provideCommandGroupContext] = createContext<{
 
 <script setup lang="ts">
 import type { ListboxRootEmits, ListboxRootProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { useFilter, useForwardPropsEmits } from 'reka-ui'
 

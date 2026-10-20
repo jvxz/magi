@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
-import type { ButtonHTMLAttributes, HTMLAttributes } from 'vue'
+import type { ButtonHTMLAttributes } from 'vue'
 
 import type { ButtonProps } from './button.vue'
 

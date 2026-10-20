@@ -7,7 +7,7 @@ import type { AlertVariants } from '../alert/root.vue'
 import type { ButtonProps } from '../button.vue'
 
 export type UToastProps = ToastRootProps & {
-  class?: string
+  class?: HTMLAttributes['class']
   title?: MaybeRefOrGetter<string>
   description?: MaybeRefOrGetter<string>
   icon?: string

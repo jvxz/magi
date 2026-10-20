@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 import { injectCollapsibleRootContext } from 'reka-ui'
 
 const props = defineProps<{ class?: HTMLAttributes['class'] }>()

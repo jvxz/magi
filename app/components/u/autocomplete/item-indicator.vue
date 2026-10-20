@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComboboxItemIndicatorProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { AutocompleteItemIndicator, useForwardProps } from 'reka-ui'
 

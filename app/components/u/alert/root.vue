@@ -31,7 +31,9 @@ export type AlertVariants = VariantProps<typeof alertVariants>
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<PrimitiveProps & { class?: string; variant?: AlertVariants['variant']; icon?: string }>()
+const props = defineProps<
+  PrimitiveProps & { class?: HTMLAttributes['class']; variant?: AlertVariants['variant']; icon?: string }
+>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

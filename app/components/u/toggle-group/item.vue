@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ToggleGroupItemProps } from 'reka-ui'
 import type { VariantProps } from 'tailwind-variants'
-import type { HTMLAttributes } from 'vue'
 
 import { ToggleGroupItem, useForwardProps } from 'reka-ui'
 

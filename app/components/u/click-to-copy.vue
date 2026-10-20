@@ -1,6 +1,5 @@
 <script lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 export interface ClickToCopyProps extends PrimitiveProps {
   text?: string

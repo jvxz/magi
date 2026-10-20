@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { SelectTriggerProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import type { ButtonProps } from '../button.vue'
 

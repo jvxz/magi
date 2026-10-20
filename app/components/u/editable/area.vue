@@ -9,7 +9,7 @@ import type { InjectionKey } from 'vue'
 
 import { useForwardProps } from 'reka-ui'
 
-export type UEditableAreaProps = EditableAreaProps & { class?: string; leadingIcon?: string }
+export type UEditableAreaProps = EditableAreaProps & { class?: HTMLAttributes['class']; leadingIcon?: string }
 
 const props = defineProps<UEditableAreaProps>()
 

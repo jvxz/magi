@@ -3,7 +3,7 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import { Icon } from '#components'
 
-const props = defineProps<PrimitiveProps & { name: string; class?: string }>()
+const props = defineProps<PrimitiveProps & { name: string; class?: HTMLAttributes['class'] }>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

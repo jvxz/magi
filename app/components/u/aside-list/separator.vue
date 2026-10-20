@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>()
 </script>

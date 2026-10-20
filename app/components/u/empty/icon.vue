@@ -5,7 +5,7 @@ const props = withDefaults(
   defineProps<
     Omit<PrimitiveProps, 'asChild'> & {
       name: string
-      class?: string
+      class?: HTMLAttributes['class']
       ui?: DefineClasses<'wrapper' | 'icon'>
       variant?: 'naked' | 'circle'
       size?: 'sm' | 'default' | 'lg'

@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes, InputTypeHTMLAttribute } from 'vue'
+import type { InputTypeHTMLAttribute } from 'vue'
 
 import { useVModel } from '@vueuse/core'
 import { useForwardExpose } from 'reka-ui'

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { Transition } from 'motion-v'
-import type { HTMLAttributes } from 'vue'
 
 import { motion } from 'motion-v'
 

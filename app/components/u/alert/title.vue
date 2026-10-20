@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-export type AlertTitleProps = PrimitiveProps & { class?: string }
+export type AlertTitleProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
 
 const props = defineProps<AlertTitleProps>()
 

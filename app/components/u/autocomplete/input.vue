@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { AutocompleteInputEmits, AutocompleteInputProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { AutocompleteInput, useForwardPropsEmits } from 'reka-ui'
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const props = defineProps<{
-  class?: string
+  class?: HTMLAttributes['class']
   icon?: string
 }>()
 </script>

@@ -21,7 +21,6 @@ export type CollapsibleTriggerVariants = VariantProps<typeof collapsibleTriggerV
 
 <script lang="ts" setup>
 import type { CollapsibleTriggerProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 export type UCollapsibleTriggerProps = CollapsibleTriggerProps & {
   class?: HTMLAttributes['class']

@@ -4,7 +4,7 @@ import type { PrimitiveProps } from 'reka-ui'
 const props = withDefaults(
   defineProps<
     PrimitiveProps & {
-      class?: string
+      class?: HTMLAttributes['class']
       withClose?: boolean
       closeDisabled?: boolean
       ui?: DefineClasses<'container' | 'closeButton'>

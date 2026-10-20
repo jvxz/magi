@@ -22,7 +22,6 @@ export type BadgeVariants = VariantProps<typeof badgeVariants>
 
 <script setup lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 export interface UBadgeProps extends PrimitiveProps {
   size?: BadgeVariants['size']

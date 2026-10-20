@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 import { KnownMembership } from 'matrix-js-sdk'
 
 defineProps<{ class?: HTMLAttributes['class'] }>()

@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 import type { FormPrimitiveProps } from '~/components/form/primitive.vue'
 
 export interface SettingsFormPrimitiveProps extends FormPrimitiveProps {

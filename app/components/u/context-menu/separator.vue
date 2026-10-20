@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ContextMenuSeparatorProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { reactiveOmit } from '@vueuse/core'
 

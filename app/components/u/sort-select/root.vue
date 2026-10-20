@@ -1,6 +1,4 @@
 <script lang="ts">
-import type { HTMLAttributes } from 'vue'
-
 export type SortSelectOption = (typeof GENERAL__SORT_SELECT_OPTIONS)[number]
 export type SortSelectDir = (typeof GENERAL__SORT_SELECT_DIRS)[number]
 

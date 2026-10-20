@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ListboxItemEmits, ListboxItemProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { useForwardPropsEmits } from 'reka-ui'
 

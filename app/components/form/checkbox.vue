@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormPrimitiveProps } from './primitive.vue'
 
-const props = defineProps<FormPrimitiveProps & { class?: string }>()
+const props = defineProps<FormPrimitiveProps & { class?: HTMLAttributes['class'] }>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

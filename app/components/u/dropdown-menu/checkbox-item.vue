@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { DropdownMenuCheckboxItemEmits, DropdownMenuCheckboxItemProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { useForwardPropsEmits } from 'reka-ui'
 

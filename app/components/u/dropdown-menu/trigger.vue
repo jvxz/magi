@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { DropdownMenuTriggerProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { useForwardProps } from 'reka-ui'
 

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { CollapsibleContentEmits, CollapsibleContentProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 const props = defineProps<CollapsibleContentProps & { class?: HTMLAttributes['class']; bar?: boolean }>()
 const emits = defineEmits<CollapsibleContentEmits>()
