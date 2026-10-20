@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ContextMenuCheckboxItemEmits, ContextMenuCheckboxItemProps } from 'reka-ui'
 
-import { reactiveOmit } from '@vueuse/core'
 import { useForwardPropsEmits } from 'reka-ui'
 
 export type UContextMenuCheckboxItemProps = ContextMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }

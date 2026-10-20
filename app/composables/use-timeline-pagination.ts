@@ -1,5 +1,3 @@
-import type { Ref } from 'vue'
-
 export type PaginateDirection = 'backward' | 'forward'
 
 export interface TimelineScrollState {

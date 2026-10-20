@@ -8,7 +8,6 @@ export const INJECTION_KEY__TOGGLE_GROUP: InjectionKey<ToggleVariants & { spacin
 import type { ToggleGroupRootEmits, ToggleGroupRootProps } from 'reka-ui'
 
 import { ToggleGroupRoot, useForwardPropsEmits } from 'reka-ui'
-import { provide } from 'vue'
 
 export type UToggleGroupRootProps = ToggleGroupRootProps & {
   class?: HTMLAttributes['class']

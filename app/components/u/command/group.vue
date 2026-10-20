@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ListboxGroupProps } from 'reka-ui'
 
-import { computed, onMounted, onUnmounted, useId } from 'vue'
-
 import { provideCommandGroupContext, useCommand } from './root.vue'
 
 export type UCommandGroupProps = ListboxGroupProps & {

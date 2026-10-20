@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ContextMenuRadioItemEmits, ContextMenuRadioItemProps } from 'reka-ui'
 
-import { reactiveOmit } from '@vueuse/core'
 import { useForwardPropsEmits } from 'reka-ui'
 
 export type UContextMenuRadioItemProps = ContextMenuRadioItemProps & { class?: HTMLAttributes['class'] }

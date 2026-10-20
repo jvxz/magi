@@ -1,6 +1,4 @@
 <script lang="ts">
-import type { Ref } from 'vue'
-
 export const [useCommand, provideCommandContext] = createContext<{
   allItems: Ref<Map<string, string>>
   allGroups: Ref<Map<string, Set<string>>>

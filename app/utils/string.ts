@@ -1,5 +1,4 @@
 import { upperFirst, words } from 'es-toolkit/string'
-import { parseFilename } from 'ufo'
 
 import { REGEX__ALPHANUMERIC } from '../constants/regex'
 

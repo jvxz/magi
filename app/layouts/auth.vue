@@ -1,7 +1,6 @@
 <script lang="ts">
 import type { MatrixClient } from 'matrix-js-sdk'
 import type { EditableRootEmits } from 'reka-ui'
-import type { ShallowRef } from 'vue'
 
 export interface AuthLayoutContext {
   editableInput: Ref<string>

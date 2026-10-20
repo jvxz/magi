@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ContextMenuLabelProps } from 'reka-ui'
 
-import { reactiveOmit } from '@vueuse/core'
-
 export type UContextMenuLabelProps = ContextMenuLabelProps & { class?: HTMLAttributes['class']; inset?: boolean }
 
 const props = defineProps<UContextMenuLabelProps>()

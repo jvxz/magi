@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { DropdownMenuSubContentEmits, DropdownMenuSubContentProps } from 'reka-ui'
 
-import { reactiveOmit } from '@vueuse/core'
 import { useForwardPropsEmits } from 'reka-ui'
 
 export type UContextMenuSubContentProps = DropdownMenuSubContentProps & { class?: HTMLAttributes['class'] }

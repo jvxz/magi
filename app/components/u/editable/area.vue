@@ -5,7 +5,6 @@ export const INJECTION_KEY__EDITABLE_AREA_LEADING_ICON: InjectionKey<Ref<string 
 
 <script lang="ts" setup>
 import type { EditableAreaProps } from 'reka-ui'
-import type { InjectionKey } from 'vue'
 
 import { useForwardProps } from 'reka-ui'
 
