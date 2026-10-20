@@ -6,9 +6,9 @@ import { useForwardPropsEmits } from 'reka-ui'
 const props = defineProps<DropdownMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<DropdownMenuCheckboxItemEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

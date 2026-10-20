@@ -5,13 +5,13 @@ import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<ContextMenuSubTriggerProps & { class?: HTMLAttributes['class']; inset?: boolean }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
-  <ContextMenuSubTrigger v-bind="forwardedProps" :class="cn(popoverItemBase(), props.class)">
+  <ContextMenuSubTrigger v-bind="forwarded" :class="cn(popoverItemBase(), props.class)">
     <slot />
     <Icon :name="ICON__CHEVRON_RIGHT" class="ml-auto !size-4" />
   </ContextMenuSubTrigger>

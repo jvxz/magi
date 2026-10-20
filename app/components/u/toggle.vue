@@ -44,8 +44,8 @@ const props = withDefaults(
 
 const emits = defineEmits<ToggleEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class', 'size', 'variant')
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const delegated = reactiveOmit(props, 'class', 'size', 'variant')
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

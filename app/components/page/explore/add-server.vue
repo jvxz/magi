@@ -7,7 +7,7 @@ const props = defineProps<{
   servers: string[]
 }>()
 
-const emit = defineEmits<{
+const emits = defineEmits<{
   serverSubmit: [value: string]
 }>()
 
@@ -29,7 +29,7 @@ function handleSubmit() {
   if (!r$.homeserver.$value || r$.$error) return
 
   open.value = false
-  emit('serverSubmit', r$.homeserver.$value)
+  emits('serverSubmit', r$.homeserver.$value)
 }
 
 const inputRef = useTemplateRef<UInputRef>('input')

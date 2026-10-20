@@ -8,8 +8,8 @@ const props = withDefaults(
   { size: 'default' },
 )
 
-const delegatedProps = reactiveOmit(props, 'class', 'size')
-const forwarded = useForwardProps(delegatedProps)
+const delegated = reactiveOmit(props, 'class', 'size')
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>

@@ -5,14 +5,14 @@ import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<TabsTriggerProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
   <TabsTrigger
-    v-bind="forwardedProps"
+    v-bind="forwarded"
     :class="
       cn(
         interactiveBase({ variant: 'ghost' }),

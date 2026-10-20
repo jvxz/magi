@@ -5,9 +5,9 @@ import { reactiveOmit } from '@vueuse/core'
 
 const props = defineProps<ContextMenuSeparatorProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <ContextMenuSeparator v-bind="delegatedProps" :class="cn('-mx-1 my-1 h-px bg-border-strong', props.class)" />
+  <ContextMenuSeparator v-bind="delegated" :class="cn('-mx-1 my-1 h-px bg-border-strong', props.class)" />
 </template>

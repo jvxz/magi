@@ -5,15 +5,15 @@ import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<SelectScrollDownButtonProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
   <SelectScrollDownButton
     data-slot="select-scroll-down-button"
-    v-bind="forwardedProps"
+    v-bind="forwarded"
     :class="cn('flex cursor-default items-center justify-center py-1', props.class)"
   >
     <slot>

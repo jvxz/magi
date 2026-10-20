@@ -9,9 +9,9 @@ const props = withDefaults(defineProps<DropdownMenuContentProps & { class?: HTML
 })
 const emits = defineEmits<DropdownMenuContentEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

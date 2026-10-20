@@ -15,9 +15,9 @@ const props = defineProps<
   }
 >()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 
 const { filterState } = useCommand()
 </script>
@@ -26,7 +26,7 @@ const { filterState } = useCommand()
   <div class="px-4 border-b flex gap-2 h-12 items-center" cmdk-input-wrapper>
     <Icon :name="ICON__SEARCH" class="opacity-50 shrink-0 size-4 subpixel-antialiased" />
     <ListboxFilter
-      v-bind="{ ...forwardedProps, ...$attrs }"
+      v-bind="{ ...forwarded, ...$attrs }"
       v-model="filterState.search"
       auto-focus
       :class="

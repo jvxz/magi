@@ -12,12 +12,12 @@ const props = withDefaults(defineProps<AlertDialogCancelProps & ButtonProps & { 
 
 const { preventClose } = injectAlertDialogPreventClose()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
   <AlertDialogCancel
-    v-bind="delegatedProps"
+    v-bind="delegated"
     :disabled="preventClose || props.disabled"
     :class="
       cn(

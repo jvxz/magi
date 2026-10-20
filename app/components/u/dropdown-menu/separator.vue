@@ -7,9 +7,9 @@ const props = defineProps<
   }
 >()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <DropdownMenuSeparator v-bind="delegatedProps" :class="cn('-mx-1 my-1 h-px bg-border-strong', props.class)" />
+  <DropdownMenuSeparator v-bind="delegated" :class="cn('-mx-1 my-1 h-px bg-border-strong', props.class)" />
 </template>

@@ -5,13 +5,13 @@ import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<DropdownMenuSubTriggerProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
-  <DropdownMenuSubTrigger v-bind="forwardedProps" :class="cn(popoverItemBase(), props.class)">
+  <DropdownMenuSubTrigger v-bind="forwarded" :class="cn(popoverItemBase(), props.class)">
     <slot />
     <Icon :name="ICON__CHEVRON_RIGHT" class="ml-auto size-4" />
   </DropdownMenuSubTrigger>

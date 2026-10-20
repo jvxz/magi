@@ -6,16 +6,13 @@ import { DropdownMenuLabel, useForwardProps } from 'reka-ui'
 
 const props = defineProps<DropdownMenuLabelProps & { class?: HTMLAttributes['class']; inset?: boolean }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
-  <DropdownMenuLabel
-    v-bind="forwardedProps"
-    :class="cn('px-2 py-1 text-sm font-medium data-[inset]:pl-8', props.class)"
-  >
+  <DropdownMenuLabel v-bind="forwarded" :class="cn('px-2 py-1 text-sm font-medium data-[inset]:pl-8', props.class)">
     <slot />
   </DropdownMenuLabel>
 </template>

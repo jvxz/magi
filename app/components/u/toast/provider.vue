@@ -21,7 +21,7 @@ const { remove, toasts } = useToast()
 provide(toastMaxInjectionKey, toRef(props, 'max'))
 provide('isToast', true)
 
-const providerProps = useForwardProps(reactivePick(props, ['duration', 'label', 'swipeThreshold', 'disableSwipe']))
+const forwarded = useForwardProps(reactivePick(props, ['duration', 'label', 'swipeThreshold', 'disableSwipe']))
 
 function onUpdateOpen(value: boolean, id: string | number) {
   if (!value) remove(id)
@@ -29,7 +29,7 @@ function onUpdateOpen(value: boolean, id: string | number) {
 </script>
 
 <template>
-  <ToastProvider swipe-direction="right" v-bind="providerProps">
+  <ToastProvider swipe-direction="right" v-bind="forwarded">
     <slot />
 
     <ToastPortal>

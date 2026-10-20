@@ -5,9 +5,9 @@ import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<ListboxContentProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwarded = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>

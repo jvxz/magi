@@ -5,13 +5,13 @@ import { AutocompleteEmpty } from 'reka-ui'
 
 const props = defineProps<ComboboxEmptyProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
   <AutocompleteEmpty
     data-slot="autocomplete-empty"
-    v-bind="delegatedProps"
+    v-bind="delegated"
     :class="cn('py-6 text-center text-sm text-muted-foreground', props.class)"
   >
     <slot />

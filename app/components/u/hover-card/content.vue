@@ -7,14 +7,14 @@ const props = withDefaults(defineProps<HoverCardContentProps & { class?: HTMLAtt
   sideOffset: 8,
 })
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
   <HoverCardPortal>
-    <HoverCardContent v-bind="forwardedProps" :class="cn(popoverContentBase(), 'w-64 p-4 text-sm', props.class)">
+    <HoverCardContent v-bind="forwarded" :class="cn(popoverContentBase(), 'w-64 p-4 text-sm', props.class)">
       <slot />
     </HoverCardContent>
   </HoverCardPortal>

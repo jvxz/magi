@@ -7,11 +7,11 @@ import { buttonVariants } from '../button.vue'
 
 const props = defineProps<AlertDialogActionProps & ButtonProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <AlertDialogAction v-bind="delegatedProps" :class="cn(buttonVariants({ variant, size }), props.class)">
+  <AlertDialogAction v-bind="delegated" :class="cn(buttonVariants({ variant, size }), props.class)">
     <slot />
   </AlertDialogAction>
 </template>

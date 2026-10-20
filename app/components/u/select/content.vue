@@ -15,9 +15,9 @@ const props = withDefaults(defineProps<SelectContentProps & { class?: HTMLAttrib
 })
 const emits = defineEmits<SelectContentEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

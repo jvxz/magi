@@ -5,15 +5,15 @@ import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<SelectItemProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
   <SelectItem
     data-slot="select-item"
-    v-bind="forwardedProps"
+    v-bind="forwarded"
     :class="
       cn(
         popoverItemBase(),

@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<ClickToCopyProps>(), {
   withTitle: true,
 })
 
-const emit = defineEmits<{ copy: [text: string] }>()
+const emits = defineEmits<{ copy: [text: string] }>()
 
 const { polite } = useAnnouncer()
 
@@ -34,7 +34,7 @@ async function onCopy() {
   if (!text) return
 
   await copy(text)
-  emit('copy', text)
+  emits('copy', text)
   polite('Copied text')
 }
 

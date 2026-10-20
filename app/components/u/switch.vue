@@ -7,9 +7,9 @@ const props = defineProps<SwitchRootProps & { class?: HTMLAttributes['class'] }>
 
 const emits = defineEmits<SwitchRootEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

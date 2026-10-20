@@ -5,7 +5,7 @@ import { useCommand } from './root.vue'
 
 const props = defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
 const { filterState } = useCommand()
 const isRender = computed(() => !!filterState.search && filterState.filtered.count === 0)
@@ -14,7 +14,7 @@ const isRender = computed(() => !!filterState.search && filterState.filtered.cou
 <template>
   <Primitive
     v-if="isRender"
-    v-bind="delegatedProps"
+    v-bind="delegated"
     :class="cn('peer py-5 text-center text-sm text-muted-foreground', props.class)"
   >
     <slot />

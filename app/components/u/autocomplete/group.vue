@@ -10,13 +10,13 @@ const props = defineProps<
   }
 >()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
   <AutocompleteGroup
     data-slot="autocomplete-group"
-    v-bind="delegatedProps"
+    v-bind="delegated"
     :class="cn('overflow-hidden text-foreground', props.class)"
   >
     <AutocompleteLabel v-if="heading" class="text-xs text-muted-foreground font-medium px-2 py-1.5">

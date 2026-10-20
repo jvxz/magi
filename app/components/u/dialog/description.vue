@@ -5,13 +5,13 @@ import { useForwardProps } from 'reka-ui'
 
 const props = defineProps<DialogDescriptionProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
-  <DialogDescription v-bind="forwardedProps" :class="cn('text-sm text-muted-foreground', props.class)">
+  <DialogDescription v-bind="forwarded" :class="cn('text-sm text-muted-foreground', props.class)">
     <slot />
   </DialogDescription>
 </template>

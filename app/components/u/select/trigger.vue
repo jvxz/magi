@@ -17,15 +17,15 @@ const props = withDefaults(
   { size: 'default', variant: 'soft', withIcon: true },
 )
 
-const delegatedProps = reactiveOmit(props, 'class', 'size')
-const forwardedProps = useForwardProps(delegatedProps)
+const delegated = reactiveOmit(props, 'class', 'size')
+const forwarded = useForwardProps(delegated)
 </script>
 
 <template>
   <SelectTrigger
     data-slot="select-trigger"
     :data-size="size"
-    v-bind="forwardedProps"
+    v-bind="forwarded"
     :class="
       cn(
         interactiveBase({ variant: props.variant, size: props.size }),

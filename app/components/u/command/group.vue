@@ -13,7 +13,7 @@ const props = defineProps<
   }
 >()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
 const { allGroups, filterState } = useCommand()
 const id = useId()
@@ -31,7 +31,7 @@ onUnmounted(() => {
 
 <template>
   <ListboxGroup
-    v-bind="delegatedProps"
+    v-bind="delegated"
     :id="id"
     :class="
       cn(

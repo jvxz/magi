@@ -3,12 +3,12 @@ import type { TabsListProps } from 'reka-ui'
 
 const props = defineProps<TabsListProps & { class?: HTMLAttributes['class'] }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
   <TabsList
-    v-bind="delegatedProps"
+    v-bind="delegated"
     :class="
       cn(
         staticBase({ variant: 'default' }),

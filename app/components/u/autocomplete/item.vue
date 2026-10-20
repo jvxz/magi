@@ -8,9 +8,9 @@ import { cn } from '#imports'
 const props = defineProps<ComboboxItemProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<ComboboxItemEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

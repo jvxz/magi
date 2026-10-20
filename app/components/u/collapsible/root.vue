@@ -6,11 +6,11 @@ import { useForwardPropsEmits } from 'reka-ui'
 const props = defineProps<CollapsibleRootProps>()
 const emits = defineEmits<CollapsibleRootEmits>()
 
-const forwardedProps = useForwardPropsEmits(props, emits)
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <CollapsibleRoot v-slot="slotProps" v-bind="forwardedProps">
+  <CollapsibleRoot v-slot="slotProps" v-bind="forwarded">
     <slot v-bind="slotProps" />
   </CollapsibleRoot>
 </template>

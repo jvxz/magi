@@ -26,9 +26,9 @@ const props = withDefaults(defineProps<ListboxRootProps & { class?: HTMLAttribut
 
 const emits = defineEmits<ListboxRootEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegated = reactiveOmit(props, 'class')
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegated, emits)
 
 const allItems = ref<Map<string, string>>(new Map())
 const allGroups = ref<Map<string, Set<string>>>(new Map())
