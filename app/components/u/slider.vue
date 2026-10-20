@@ -3,8 +3,11 @@ import type { SliderRootEmits, SliderRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<SliderRootProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<SliderRootEmits>()
+export type USliderProps = SliderRootProps & { class?: HTMLAttributes['class'] }
+export type USliderEmits = SliderRootEmits
+
+const props = defineProps<USliderProps>()
+const emits = defineEmits<USliderEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

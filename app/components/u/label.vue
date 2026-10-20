@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { LabelProps } from 'reka-ui'
 
-const props = defineProps<LabelProps & { class?: HTMLAttributes['class'] }>()
+export type ULabelProps = LabelProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<ULabelProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

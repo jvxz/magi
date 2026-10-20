@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = withDefaults(defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>(), {
+export type UEmptyDescriptionProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = withDefaults(defineProps<UEmptyDescriptionProps>(), {
   as: 'p',
 })
 

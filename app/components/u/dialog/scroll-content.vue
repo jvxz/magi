@@ -3,8 +3,11 @@ import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<DialogContentProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<DialogContentEmits>()
+export type UDialogScrollContentProps = DialogContentProps & { class?: HTMLAttributes['class'] }
+export type UDialogScrollContentEmits = DialogContentEmits
+
+const props = defineProps<UDialogScrollContentProps>()
+const emits = defineEmits<UDialogScrollContentEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

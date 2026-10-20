@@ -3,8 +3,11 @@ import type { ContextMenuContentEmits, ContextMenuContentProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<ContextMenuContentProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<ContextMenuContentEmits>()
+export type UContextMenuContentProps = ContextMenuContentProps & { class?: HTMLAttributes['class'] }
+export type UContextMenuContentEmits = ContextMenuContentEmits
+
+const props = defineProps<UContextMenuContentProps>()
+const emits = defineEmits<UContextMenuContentEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 const forwarded = useForwardPropsEmits(delegated, emits)

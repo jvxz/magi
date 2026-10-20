@@ -1,17 +1,14 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<
-    PrimitiveProps & {
-      class?: HTMLAttributes['class']
-      withClose?: boolean
-      closeDisabled?: boolean
-      ui?: DefineClasses<'container' | 'closeButton'>
-    }
-  >(),
-  { as: 'header', withClose: true },
-)
+export type UDialogHeaderProps = PrimitiveProps & {
+  class?: HTMLAttributes['class']
+  withClose?: boolean
+  closeDisabled?: boolean
+  ui?: DefineClasses<'container' | 'closeButton'>
+}
+
+const props = withDefaults(defineProps<UDialogHeaderProps>(), { as: 'header', withClose: true })
 
 const delegated = reactiveOmit(props, ['closeDisabled', 'withClose', 'class', 'ui'])
 </script>

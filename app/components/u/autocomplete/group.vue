@@ -3,12 +3,12 @@ import type { ComboboxGroupProps } from 'reka-ui'
 
 import { AutocompleteGroup, AutocompleteLabel } from 'reka-ui'
 
-const props = defineProps<
-  ComboboxGroupProps & {
-    class?: HTMLAttributes['class']
-    heading?: string
-  }
->()
+export type UAutocompleteGroupProps = ComboboxGroupProps & {
+  class?: HTMLAttributes['class']
+  heading?: string
+}
+
+const props = defineProps<UAutocompleteGroupProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

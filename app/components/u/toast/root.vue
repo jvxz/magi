@@ -4,24 +4,24 @@ import type { ToastRootEmits, ToastRootProps } from 'reka-ui'
 import { useForwardPropsEmits } from 'reka-ui'
 
 import type { AlertVariants } from '../alert/root.vue'
-import type { ButtonProps } from '../button.vue'
+import type { UButtonProps } from '../button.vue'
 
-export type UToastProps = ToastRootProps & {
+export type UToastRootProps = ToastRootProps & {
   class?: HTMLAttributes['class']
   title?: MaybeRefOrGetter<string>
   description?: MaybeRefOrGetter<string>
   icon?: string
   variant?: AlertVariants['variant']
-  actions?: (ButtonProps & { label: string })[]
+  actions?: (UButtonProps & { label: string })[]
   withClose?: boolean
 }
-export type UToastEmits = ToastRootEmits
+export type UToastRootEmits = ToastRootEmits
 
-const props = withDefaults(defineProps<UToastProps>(), {
+const props = withDefaults(defineProps<UToastRootProps>(), {
   variant: 'default',
   withClose: true,
 })
-const emits = defineEmits<UToastEmits>()
+const emits = defineEmits<UToastRootEmits>()
 
 const picked = reactivePick(props, ['as', 'defaultOpen', 'open', 'duration', 'type'])
 const forwarded = useForwardPropsEmits(picked, emits)

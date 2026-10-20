@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { UCardProps } from '~/components/u/card/root.vue'
+import type { UCardRootProps } from '~/components/u/card/root.vue'
 
 import type { SettingsFormPrimitiveProps } from '../form/primitive.vue'
 
-export interface SettingsItemPrimitiveProps extends Omit<SettingsFormPrimitiveProps, 'ui'>, UCardProps {}
+export interface SettingsItemPrimitiveProps extends Omit<SettingsFormPrimitiveProps, 'ui'>, UCardRootProps {}
 
 const props = defineProps<SettingsItemPrimitiveProps>()
 

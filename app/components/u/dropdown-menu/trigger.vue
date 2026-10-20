@@ -3,7 +3,9 @@ import type { DropdownMenuTriggerProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-const props = defineProps<DropdownMenuTriggerProps & { class?: HTMLAttributes['class'] }>()
+export type UDropdownMenuTriggerProps = DropdownMenuTriggerProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UDropdownMenuTriggerProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

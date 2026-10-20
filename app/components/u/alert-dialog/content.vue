@@ -3,8 +3,11 @@ import type { AlertDialogContentEmits, AlertDialogContentProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<AlertDialogContentProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<AlertDialogContentEmits>()
+export type UAlertDialogContentProps = AlertDialogContentProps & { class?: HTMLAttributes['class'] }
+export type UAlertDialogContentEmits = AlertDialogContentEmits
+
+const props = defineProps<UAlertDialogContentProps>()
+const emits = defineEmits<UAlertDialogContentEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

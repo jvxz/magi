@@ -2,11 +2,11 @@
 import type { PrimitiveProps } from 'reka-ui'
 import type { ButtonHTMLAttributes } from 'vue'
 
-import type { ButtonProps } from './button.vue'
+import type { UButtonProps } from './button.vue'
 
 export interface UMentionProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
-  size?: ButtonProps['size']
+  size?: UButtonProps['size']
   onClick?: ButtonHTMLAttributes['onClick']
 }
 

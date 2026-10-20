@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import type { SelectTriggerProps } from 'reka-ui'
 
-import type { ButtonProps } from '../button.vue'
+import type { UButtonProps } from '../button.vue'
 
-export interface SortSelectTriggerProps extends SelectTriggerProps {
+export interface USortSelectTriggerProps extends SelectTriggerProps {
   class?: HTMLAttributes['class']
   size?: 'sm' | 'default'
-  variant?: ButtonProps['variant']
+  variant?: UButtonProps['variant']
 }
 
-const props = withDefaults(defineProps<SortSelectTriggerProps>(), {
+const props = withDefaults(defineProps<USortSelectTriggerProps>(), {
   size: 'sm',
   variant: 'outline',
 })

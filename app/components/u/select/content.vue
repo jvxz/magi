@@ -6,14 +6,17 @@ import { useForwardPropsEmits } from 'reka-ui'
 import SelectScrollDownButton from './scroll-down-button.vue'
 import SelectScrollUpButton from './scroll-up-button.vue'
 
+export type USelectContentProps = SelectContentProps & { class?: HTMLAttributes['class'] }
+export type USelectContentEmits = SelectContentEmits
+
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<SelectContentProps & { class?: HTMLAttributes['class'] }>(), {
+const props = withDefaults(defineProps<USelectContentProps>(), {
   position: 'popper',
 })
-const emits = defineEmits<SelectContentEmits>()
+const emits = defineEmits<USelectContentEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

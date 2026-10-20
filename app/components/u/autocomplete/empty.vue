@@ -3,7 +3,9 @@ import type { ComboboxEmptyProps } from 'reka-ui'
 
 import { AutocompleteEmpty } from 'reka-ui'
 
-const props = defineProps<ComboboxEmptyProps & { class?: HTMLAttributes['class'] }>()
+export type UAutocompleteEmptyProps = ComboboxEmptyProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAutocompleteEmptyProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

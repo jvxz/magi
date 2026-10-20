@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-const props = defineProps<{
+export interface UKbdProps {
   class?: HTMLAttributes['class']
   icon?: string
-}>()
+}
+
+const props = defineProps<UKbdProps>()
 </script>
 
 <template>

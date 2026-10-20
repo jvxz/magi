@@ -3,8 +3,11 @@ import type { DropdownMenuSubEmits, DropdownMenuSubProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<DropdownMenuSubProps>()
-const emits = defineEmits<DropdownMenuSubEmits>()
+export type UDropdownMenuSubProps = DropdownMenuSubProps
+export type UDropdownMenuSubEmits = DropdownMenuSubEmits
+
+const props = defineProps<UDropdownMenuSubProps>()
+const emits = defineEmits<UDropdownMenuSubEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 </script>

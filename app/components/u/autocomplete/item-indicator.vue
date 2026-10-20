@@ -3,7 +3,9 @@ import type { ComboboxItemIndicatorProps } from 'reka-ui'
 
 import { AutocompleteItemIndicator, useForwardProps } from 'reka-ui'
 
-const props = defineProps<ComboboxItemIndicatorProps & { class?: HTMLAttributes['class'] }>()
+export type UAutocompleteItemIndicatorProps = ComboboxItemIndicatorProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAutocompleteItemIndicatorProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = withDefaults(defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>(), { as: 'p' })
+export type UShowcaseDescriptionProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = withDefaults(defineProps<UShowcaseDescriptionProps>(), { as: 'p' })
 
 const delegated = reactiveOmit(props, 'class')
 </script>

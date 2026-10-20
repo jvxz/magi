@@ -3,10 +3,13 @@ import type { DropdownMenuContentEmits, DropdownMenuContentProps } from 'reka-ui
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = withDefaults(defineProps<DropdownMenuContentProps & { name: TName }>(), {
+export type UContextMenuRegionContentProps<TName extends ContextMenuName> = DropdownMenuContentProps & { name: TName }
+export type UContextMenuRegionContentEmits = DropdownMenuContentEmits
+
+const props = withDefaults(defineProps<UContextMenuRegionContentProps<TName>>(), {
   align: 'start',
 })
-const emits = defineEmits<DropdownMenuContentEmits>()
+const emits = defineEmits<UContextMenuRegionContentEmits>()
 
 const { close, payload, reference } = useContextMenuRegion(props.name)
 

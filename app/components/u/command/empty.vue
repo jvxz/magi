@@ -3,7 +3,9 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import { useCommand } from './root.vue'
 
-const props = defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>()
+export type UCommandEmptyProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UCommandEmptyProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

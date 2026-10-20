@@ -1,7 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
+export interface UAlertDialogFooterProps {
   class?: HTMLAttributes['class']
-}>()
+}
+
+const props = defineProps<UAlertDialogFooterProps>()
 </script>
 
 <template>

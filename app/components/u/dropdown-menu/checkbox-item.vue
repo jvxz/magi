@@ -3,8 +3,11 @@ import type { DropdownMenuCheckboxItemEmits, DropdownMenuCheckboxItemProps } fro
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<DropdownMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<DropdownMenuCheckboxItemEmits>()
+export type UDropdownMenuCheckboxItemProps = DropdownMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }
+export type UDropdownMenuCheckboxItemEmits = DropdownMenuCheckboxItemEmits
+
+const props = defineProps<UDropdownMenuCheckboxItemProps>()
+const emits = defineEmits<UDropdownMenuCheckboxItemEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

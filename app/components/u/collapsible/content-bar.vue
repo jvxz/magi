@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import { injectCollapsibleRootContext } from 'reka-ui'
 
-const props = defineProps<{ class?: HTMLAttributes['class'] }>()
+export interface UCollapsibleContentBarProps {
+  class?: HTMLAttributes['class']
+}
+
+const props = defineProps<UCollapsibleContentBarProps>()
 
 const { open } = injectCollapsibleRootContext()
 </script>

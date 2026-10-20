@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { AlertDialogTitleProps } from 'reka-ui'
 
-const props = defineProps<AlertDialogTitleProps & { class?: HTMLAttributes['class'] }>()
+export type UAlertDialogTitleProps = AlertDialogTitleProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAlertDialogTitleProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

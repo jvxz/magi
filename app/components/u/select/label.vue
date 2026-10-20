@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { SelectLabelProps } from 'reka-ui'
 
-const props = defineProps<SelectLabelProps & { class?: HTMLAttributes['class'] }>()
+export type USelectLabelProps = SelectLabelProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<USelectLabelProps>()
 </script>
 
 <template>

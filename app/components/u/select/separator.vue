@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { SelectSeparatorProps } from 'reka-ui'
 
-const props = defineProps<SelectSeparatorProps & { class?: HTMLAttributes['class'] }>()
+export type USelectSeparatorProps = SelectSeparatorProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<USelectSeparatorProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

@@ -3,10 +3,13 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import { Primitive, useForwardExpose, useForwardProps } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<PrimitiveProps & { class?: HTMLAttributes['class']; region: TName; value: TooltipRegions[TName] }>(),
-  { as: 'div' },
-)
+export type UTooltipRegionTriggerProps<TName extends TooltipName> = PrimitiveProps & {
+  class?: HTMLAttributes['class']
+  region: TName
+  value: TooltipRegions[TName]
+}
+
+const props = withDefaults(defineProps<UTooltipRegionTriggerProps<TName>>(), { as: 'div' })
 
 const { close, contentId, currentTarget, disableClosingTrigger, disabled, openAt } = useTooltipRegion(props.region)
 const { currentElement, forwardRef } = useForwardExpose()

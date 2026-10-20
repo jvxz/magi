@@ -3,7 +3,9 @@ import type { ComboboxAnchorProps } from 'reka-ui'
 
 import { AutocompleteAnchor, useForwardProps } from 'reka-ui'
 
-const props = defineProps<ComboboxAnchorProps & { class?: HTMLAttributes['class'] }>()
+export type UAutocompleteAnchorProps = ComboboxAnchorProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAutocompleteAnchorProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

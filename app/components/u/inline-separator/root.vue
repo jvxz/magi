@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = withDefaults(defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>(), {
+export type UInlineSeparatorRootProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = withDefaults(defineProps<UInlineSeparatorRootProps>(), {
   as: 'span',
 })
 

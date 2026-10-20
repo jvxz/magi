@@ -3,8 +3,11 @@ import type { ContextMenuRadioGroupEmits, ContextMenuRadioGroupProps } from 'rek
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<ContextMenuRadioGroupProps>()
-const emits = defineEmits<ContextMenuRadioGroupEmits>()
+export type UContextMenuRadioGroupProps = ContextMenuRadioGroupProps
+export type UContextMenuRadioGroupEmits = ContextMenuRadioGroupEmits
+
+const props = defineProps<UContextMenuRadioGroupProps>()
+const emits = defineEmits<UContextMenuRadioGroupEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 </script>

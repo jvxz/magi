@@ -3,8 +3,11 @@ import type { AcceptableValue, SelectRootEmits, SelectRootProps } from 'reka-ui'
 
 import { SelectRoot, useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<SelectRootProps<T>>()
-const emits = defineEmits<SelectRootEmits<T>>()
+export type USelectRootProps<T extends AcceptableValue = AcceptableValue> = SelectRootProps<T>
+export type USelectRootEmits<T extends AcceptableValue = AcceptableValue> = SelectRootEmits<T>
+
+const props = defineProps<USelectRootProps<T>>()
+const emits = defineEmits<USelectRootEmits<T>>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 </script>

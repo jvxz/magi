@@ -3,14 +3,17 @@ import type { ComboboxContentEmits, ComboboxContentProps } from 'reka-ui'
 
 import { AutocompleteContent, useForwardPropsEmits } from 'reka-ui'
 
+export type UAutocompleteListProps = ComboboxContentProps & { class?: HTMLAttributes['class'] }
+export type UAutocompleteListEmits = ComboboxContentEmits
+
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<ComboboxContentProps & { class?: HTMLAttributes['class'] }>(), {
+const props = withDefaults(defineProps<UAutocompleteListProps>(), {
   sideOffset: 6,
 })
-const emits = defineEmits<ComboboxContentEmits>()
+const emits = defineEmits<UAutocompleteListEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 const forwarded = useForwardPropsEmits(delegated, emits)

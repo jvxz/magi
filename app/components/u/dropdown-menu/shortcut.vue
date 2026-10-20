@@ -1,7 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
+export interface UDropdownMenuShortcutProps {
   class?: HTMLAttributes['class']
-}>()
+}
+
+const props = defineProps<UDropdownMenuShortcutProps>()
 </script>
 
 <template>

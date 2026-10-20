@@ -3,7 +3,9 @@ import type { SelectValueProps } from 'reka-ui'
 
 import { SelectValue } from 'reka-ui'
 
-const props = defineProps<SelectValueProps>()
+export type USelectValueProps = SelectValueProps
+
+const props = defineProps<USelectValueProps>()
 </script>
 
 <template>

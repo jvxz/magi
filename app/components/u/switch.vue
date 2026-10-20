@@ -3,9 +3,12 @@ import type { SwitchRootEmits, SwitchRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<SwitchRootProps & { class?: HTMLAttributes['class'] }>()
+export type USwitchProps = SwitchRootProps & { class?: HTMLAttributes['class'] }
+export type USwitchEmits = SwitchRootEmits
 
-const emits = defineEmits<SwitchRootEmits>()
+const props = defineProps<USwitchProps>()
+
+const emits = defineEmits<USwitchEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

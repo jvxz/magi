@@ -8,8 +8,11 @@ import type { TooltipRootEmits, TooltipRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<TooltipRootProps & { class?: HTMLAttributes['class']; name: TooltipIcons }>()
-const emits = defineEmits<TooltipRootEmits>()
+export type UTooltipIconRootProps = TooltipRootProps & { class?: HTMLAttributes['class']; name: TooltipIcons }
+export type UTooltipIconRootEmits = TooltipRootEmits
+
+const props = defineProps<UTooltipIconRootProps>()
+const emits = defineEmits<UTooltipIconRootEmits>()
 
 const delegated = reactiveOmit(props, ['class', 'name'])
 const forwarded = useForwardPropsEmits(delegated, emits)

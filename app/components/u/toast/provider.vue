@@ -6,12 +6,12 @@ import { ToastPortal, ToastProvider, ToastViewport, useForwardProps } from 'reka
 
 import UToast from '../toast/root.vue'
 
-export interface ToasterProps extends Omit<ToastProviderProps, 'swipeDirection'> {
+export interface UToastProviderProps extends Omit<ToastProviderProps, 'swipeDirection'> {
   position?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
   max?: number
 }
 
-const props = withDefaults(defineProps<ToasterProps>(), {
+const props = withDefaults(defineProps<UToastProviderProps>(), {
   duration: 5000,
   max: 5,
   portal: true,

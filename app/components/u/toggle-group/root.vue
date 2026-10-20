@@ -6,21 +6,19 @@ import { provide } from 'vue'
 
 import type { ToggleVariants } from '../toggle.vue'
 
-const props = withDefaults(
-  defineProps<
-    ToggleGroupRootProps & {
-      class?: HTMLAttributes['class']
-      variant?: ToggleVariants['variant']
-      size?: ToggleVariants['size']
-      spacing?: number
-    }
-  >(),
-  {
-    spacing: 0,
-  },
-)
+export type UToggleGroupRootProps = ToggleGroupRootProps & {
+  class?: HTMLAttributes['class']
+  variant?: ToggleVariants['variant']
+  size?: ToggleVariants['size']
+  spacing?: number
+}
+export type UToggleGroupRootEmits = ToggleGroupRootEmits
 
-const emits = defineEmits<ToggleGroupRootEmits>()
+const props = withDefaults(defineProps<UToggleGroupRootProps>(), {
+  spacing: 0,
+})
+
+const emits = defineEmits<UToggleGroupRootEmits>()
 
 provide('toggleGroup', {
   size: props.size,

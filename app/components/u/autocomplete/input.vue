@@ -3,24 +3,22 @@ import type { AutocompleteInputEmits, AutocompleteInputProps } from 'reka-ui'
 
 import { AutocompleteInput, useForwardPropsEmits } from 'reka-ui'
 
+export type UAutocompleteInputProps = AutocompleteInputProps & {
+  class?: HTMLAttributes['class']
+  showIcon?: boolean
+}
+export type UAutocompleteInputEmits = AutocompleteInputEmits
+
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(
-  defineProps<
-    AutocompleteInputProps & {
-      class?: HTMLAttributes['class']
-      showIcon?: boolean
-    }
-  >(),
-  {
-    class: '',
-    showIcon: true,
-  },
-)
+const props = withDefaults(defineProps<UAutocompleteInputProps>(), {
+  class: '',
+  showIcon: true,
+})
 
-const emits = defineEmits<AutocompleteInputEmits>()
+const emits = defineEmits<UAutocompleteInputEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

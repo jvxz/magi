@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { AlertDialogCancelProps } from 'reka-ui'
 
-import type { ButtonProps } from '../button.vue'
+import type { UButtonProps } from '../button.vue'
 
 import { buttonVariants } from '../button.vue'
 import { injectAlertDialogPreventClose } from './root.vue'
 
-const props = withDefaults(defineProps<AlertDialogCancelProps & ButtonProps & { class?: HTMLAttributes['class'] }>(), {
+export type UAlertDialogCancelProps = AlertDialogCancelProps & UButtonProps & { class?: HTMLAttributes['class'] }
+
+const props = withDefaults(defineProps<UAlertDialogCancelProps>(), {
   variant: 'ghost',
 })
 

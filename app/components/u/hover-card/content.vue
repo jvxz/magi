@@ -3,7 +3,9 @@ import type { HoverCardContentProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-const props = withDefaults(defineProps<HoverCardContentProps & { class?: HTMLAttributes['class'] }>(), {
+export type UHoverCardContentProps = HoverCardContentProps & { class?: HTMLAttributes['class'] }
+
+const props = withDefaults(defineProps<UHoverCardContentProps>(), {
   sideOffset: 8,
 })
 

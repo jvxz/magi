@@ -3,10 +3,12 @@ import type { ComboboxCancelProps } from 'reka-ui'
 
 import { AutocompleteCancel, useForwardProps } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<ComboboxCancelProps & { class?: HTMLAttributes['class']; size?: 'sm' | 'default' }>(),
-  { size: 'default' },
-)
+export type UAutocompleteCancelProps = ComboboxCancelProps & {
+  class?: HTMLAttributes['class']
+  size?: 'sm' | 'default'
+}
+
+const props = withDefaults(defineProps<UAutocompleteCancelProps>(), { size: 'default' })
 
 const delegated = reactiveOmit(props, 'class', 'size')
 const forwarded = useForwardProps(delegated)

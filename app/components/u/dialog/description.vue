@@ -3,7 +3,9 @@ import type { DialogDescriptionProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-const props = defineProps<DialogDescriptionProps & { class?: HTMLAttributes['class'] }>()
+export type UDialogDescriptionProps = DialogDescriptionProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UDialogDescriptionProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

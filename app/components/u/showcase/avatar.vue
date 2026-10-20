@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { MatrixRoomAvatarProps } from '~/components/matrix/room-avatar.vue'
 
-const props = withDefaults(defineProps<MatrixRoomAvatarProps & { class?: HTMLAttributes['class'] }>(), { square: true })
+export type UShowcaseAvatarProps = MatrixRoomAvatarProps & { class?: HTMLAttributes['class'] }
+
+const props = withDefaults(defineProps<UShowcaseAvatarProps>(), { square: true })
 
 const delegated = reactiveOmit(props, 'class')
 </script>

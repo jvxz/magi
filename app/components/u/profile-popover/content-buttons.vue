@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-const props = defineProps<{ userId: string | undefined }>()
+export interface UProfilePopoverContentButtonsProps {
+  userId: string | undefined
+}
+
+const props = defineProps<UProfilePopoverContentButtonsProps>()
 
 const { context, open } = useProfilePopover()
 

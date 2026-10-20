@@ -9,13 +9,14 @@ export type UTooltipRegionRootProps<TName extends TooltipName> = PopoverRootProp
     disabled?: boolean
     delayDuration?: number
   }
+export type UTooltipRegionRootEmits = PopoverRootEmits
 
 const props = withDefaults(defineProps<UTooltipRegionRootProps<TName>>(), {
   delayDuration: undefined,
   disableClosingTrigger: false,
   disabled: false,
 })
-const emits = defineEmits<PopoverRootEmits>()
+const emits = defineEmits<UTooltipRegionRootEmits>()
 type T = TooltipRegions[TName]
 
 const providerContext = injectTooltipProviderContext()

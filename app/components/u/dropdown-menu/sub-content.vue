@@ -3,8 +3,11 @@ import type { DropdownMenuSubContentEmits, DropdownMenuSubContentProps } from 'r
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<DropdownMenuSubContentProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<DropdownMenuSubContentEmits>()
+export type UDropdownMenuSubContentProps = DropdownMenuSubContentProps & { class?: HTMLAttributes['class'] }
+export type UDropdownMenuSubContentEmits = DropdownMenuSubContentEmits
+
+const props = defineProps<UDropdownMenuSubContentProps>()
+const emits = defineEmits<UDropdownMenuSubContentEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

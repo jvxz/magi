@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>()
+export type UAsideListSeparatorProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+defineProps<UAsideListSeparatorProps>()
 </script>
 
 <template>

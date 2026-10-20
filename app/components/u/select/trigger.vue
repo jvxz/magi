@@ -3,19 +3,16 @@ import type { SelectTriggerProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-import type { ButtonProps } from '../button.vue'
+import type { UButtonProps } from '../button.vue'
 
-const props = withDefaults(
-  defineProps<
-    SelectTriggerProps & {
-      class?: HTMLAttributes['class']
-      size?: 'sm' | 'default'
-      variant?: ButtonProps['variant']
-      withIcon?: boolean
-    }
-  >(),
-  { size: 'default', variant: 'soft', withIcon: true },
-)
+export type USelectTriggerProps = SelectTriggerProps & {
+  class?: HTMLAttributes['class']
+  size?: 'sm' | 'default'
+  variant?: UButtonProps['variant']
+  withIcon?: boolean
+}
+
+const props = withDefaults(defineProps<USelectTriggerProps>(), { size: 'default', variant: 'soft', withIcon: true })
 
 const delegated = reactiveOmit(props, 'class', 'size')
 const forwarded = useForwardProps(delegated)

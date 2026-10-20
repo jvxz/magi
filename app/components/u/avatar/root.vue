@@ -20,17 +20,16 @@ export type AvatarVariants = VariantProps<typeof avatarVariants>
 </script>
 
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<{
-    class?: HTMLAttributes['class']
-    size?: AvatarVariants['size']
-    shape?: AvatarVariants['shape']
-  }>(),
-  {
-    shape: 'circle',
-    size: 'sm',
-  },
-)
+export interface UAvatarRootProps {
+  class?: HTMLAttributes['class']
+  size?: AvatarVariants['size']
+  shape?: AvatarVariants['shape']
+}
+
+const props = withDefaults(defineProps<UAvatarRootProps>(), {
+  shape: 'circle',
+  size: 'sm',
+})
 </script>
 
 <template>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { ContextMenuPortalProps } from 'reka-ui'
 
-const props = defineProps<ContextMenuPortalProps>()
+export type UContextMenuPortalProps = ContextMenuPortalProps
+
+const props = defineProps<UContextMenuPortalProps>()
 </script>
 
 <template>

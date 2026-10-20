@@ -10,13 +10,13 @@ type ToggleGroupVariants = VariantProps<typeof toggleVariants> & {
   spacing?: number
 }
 
-const props = defineProps<
-  ToggleGroupItemProps & {
-    class?: HTMLAttributes['class']
-    variant?: ToggleGroupVariants['variant']
-    size?: ToggleGroupVariants['size']
-  }
->()
+export type UToggleGroupItemProps = ToggleGroupItemProps & {
+  class?: HTMLAttributes['class']
+  variant?: ToggleGroupVariants['variant']
+  size?: ToggleGroupVariants['size']
+}
+
+const props = defineProps<UToggleGroupItemProps>()
 
 const context = inject<ToggleGroupVariants>('toggleGroup')
 

@@ -3,11 +3,14 @@ import type { HoverCardRootEmits, HoverCardRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = withDefaults(defineProps<HoverCardRootProps>(), {
+export type UHoverCardRootProps = HoverCardRootProps
+export type UHoverCardRootEmits = HoverCardRootEmits
+
+const props = withDefaults(defineProps<UHoverCardRootProps>(), {
   openDelay: 0,
 })
 
-const emits = defineEmits<HoverCardRootEmits>()
+const emits = defineEmits<UHoverCardRootEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 </script>

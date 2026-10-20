@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { UCardProps } from '../card/root.vue'
+import type { UCardRootProps } from '../card/root.vue'
 
-export interface UCardGroupRootProps extends UCardProps {
+export interface UCardGroupRootProps extends UCardRootProps {
   ghost?: boolean
 }
 

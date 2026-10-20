@@ -3,7 +3,9 @@ import type { ListboxContentProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-const props = defineProps<ListboxContentProps & { class?: HTMLAttributes['class'] }>()
+export type UCommandListProps = ListboxContentProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UCommandListProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

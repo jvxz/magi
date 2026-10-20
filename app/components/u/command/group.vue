@@ -5,13 +5,13 @@ import { computed, onMounted, onUnmounted, useId } from 'vue'
 
 import { provideCommandGroupContext, useCommand } from './root.vue'
 
-const props = defineProps<
-  ListboxGroupProps & {
-    class?: HTMLAttributes['class']
-    heading?: string
-    icon?: string
-  }
->()
+export type UCommandGroupProps = ListboxGroupProps & {
+  class?: HTMLAttributes['class']
+  heading?: string
+  icon?: string
+}
+
+const props = defineProps<UCommandGroupProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

@@ -3,18 +3,15 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import { Primitive } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<
-    PrimitiveProps & {
-      region: TName
-      value: ContextMenuRegions[TName]
-      disabled?: boolean
-    }
-  >(),
-  {
-    as: 'div',
-  },
-)
+export type UContextMenuRegionTriggerProps<TName extends ContextMenuName> = PrimitiveProps & {
+  region: TName
+  value: ContextMenuRegions[TName]
+  disabled?: boolean
+}
+
+const props = withDefaults(defineProps<UContextMenuRegionTriggerProps<TName>>(), {
+  as: 'div',
+})
 
 const { openAt } = useContextMenuRegion(props.region)
 

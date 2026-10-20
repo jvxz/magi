@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { AvatarFallbackProps } from 'reka-ui'
 
-const props = defineProps<AvatarFallbackProps>()
+export type UAvatarFallbackProps = AvatarFallbackProps
+
+const props = defineProps<UAvatarFallbackProps>()
 </script>
 
 <template>

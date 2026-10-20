@@ -9,8 +9,11 @@ export const [injectAlertDialogPreventClose, provideAlertDialogPreventClose] = c
 </script>
 
 <script setup lang="ts">
-const props = defineProps<AlertDialogProps & { preventClose?: boolean }>()
-const emits = defineEmits<AlertDialogEmits>()
+export type UAlertDialogRootProps = AlertDialogProps & { preventClose?: boolean }
+export type UAlertDialogRootEmits = AlertDialogEmits
+
+const props = defineProps<UAlertDialogRootProps>()
+const emits = defineEmits<UAlertDialogRootEmits>()
 
 const preventClose = toRef(props, 'preventClose')
 provideAlertDialogPreventClose({ preventClose: computed(() => !!preventClose?.value) })

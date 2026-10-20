@@ -3,7 +3,9 @@ import type { ComboboxViewportProps } from 'reka-ui'
 
 import { AutocompleteViewport, useForwardProps } from 'reka-ui'
 
-const props = defineProps<ComboboxViewportProps & { class?: HTMLAttributes['class'] }>()
+export type UAutocompleteViewportProps = ComboboxViewportProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAutocompleteViewportProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

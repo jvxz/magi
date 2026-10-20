@@ -3,10 +3,12 @@ import type { ComboboxTriggerProps } from 'reka-ui'
 
 import { AutocompleteTrigger, useForwardProps } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<ComboboxTriggerProps & { class?: HTMLAttributes['class']; size?: 'sm' | 'default' }>(),
-  { size: 'default' },
-)
+export type UAutocompleteTriggerProps = ComboboxTriggerProps & {
+  class?: HTMLAttributes['class']
+  size?: 'sm' | 'default'
+}
+
+const props = withDefaults(defineProps<UAutocompleteTriggerProps>(), { size: 'default' })
 
 const delegated = reactiveOmit(props, 'class', 'size')
 const forwarded = useForwardProps(delegated)

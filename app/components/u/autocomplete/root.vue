@@ -3,8 +3,11 @@ import type { AutocompleteRootEmits, AutocompleteRootProps } from 'reka-ui'
 
 import { AutocompleteRoot, useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<AutocompleteRootProps>()
-const emits = defineEmits<AutocompleteRootEmits>()
+export type UAutocompleteRootProps = AutocompleteRootProps
+export type UAutocompleteRootEmits = AutocompleteRootEmits
+
+const props = defineProps<UAutocompleteRootProps>()
+const emits = defineEmits<UAutocompleteRootEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 </script>

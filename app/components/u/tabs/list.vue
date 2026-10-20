@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { TabsListProps } from 'reka-ui'
 
-const props = defineProps<TabsListProps & { class?: HTMLAttributes['class'] }>()
+export type UTabsListProps = TabsListProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UTabsListProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

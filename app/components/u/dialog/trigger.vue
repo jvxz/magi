@@ -3,7 +3,9 @@ import type { DialogTriggerProps } from 'reka-ui'
 
 import { DialogTrigger } from 'reka-ui'
 
-const props = defineProps<DialogTriggerProps>()
+export type UDialogTriggerProps = DialogTriggerProps
+
+const props = defineProps<UDialogTriggerProps>()
 </script>
 
 <template>

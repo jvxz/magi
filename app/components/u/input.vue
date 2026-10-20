@@ -24,12 +24,15 @@ export type UInputProps = PrimitiveProps & {
 </script>
 
 <script lang="ts" setup>
+export interface UInputEmits {
+  (e: 'update:modelValue', payload: string | number): void
+}
+
 defineOptions({ inheritAttrs: false })
 
 const props = defineProps<UInputProps>()
-const emits = defineEmits<{
-  (e: 'update:modelValue', payload: string | number): void
-}>()
+
+const emits = defineEmits<UInputEmits>()
 
 const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,

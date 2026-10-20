@@ -3,15 +3,18 @@ import type { TooltipContentEmits, TooltipContentProps } from 'reka-ui'
 
 import { TooltipArrow, useForwardPropsEmits } from 'reka-ui'
 
+export type UTooltipContentProps = TooltipContentProps & { class?: HTMLAttributes['class'] }
+export type UTooltipContentEmits = TooltipContentEmits
+
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<TooltipContentProps & { class?: HTMLAttributes['class'] }>(), {
+const props = withDefaults(defineProps<UTooltipContentProps>(), {
   sideOffset: 6,
 })
 
-const emits = defineEmits<TooltipContentEmits>()
+const emits = defineEmits<UTooltipContentEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

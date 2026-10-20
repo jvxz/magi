@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { ButtonProps } from '../button.vue'
+import type { UButtonProps } from '../button.vue'
 
 import { injectSortSelectContext } from './root.vue'
 
-export type SortSelectDirToggleProps = ButtonProps
+export type USortSelectDirToggleProps = UButtonProps
 
-const props = withDefaults(defineProps<SortSelectDirToggleProps>(), {
+const props = withDefaults(defineProps<USortSelectDirToggleProps>(), {
   size: 'icon-sm',
   variant: 'outline',
 })

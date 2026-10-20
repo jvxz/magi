@@ -1,7 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
+export interface UContextMenuShortcutProps {
   class?: HTMLAttributes['class']
-}>()
+}
+
+const props = defineProps<UContextMenuShortcutProps>()
 </script>
 
 <template>

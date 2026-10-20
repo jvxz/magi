@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-defineOptions({ inheritAttrs: false })
-
-const props = defineProps<{
+export interface UEmojiPickerSearchProps {
   class?: HTMLAttributes['class']
   ui?: DefineClasses<'wrapper' | 'input'>
-}>()
+}
+
+defineOptions({ inheritAttrs: false })
+
+const props = defineProps<UEmojiPickerSearchProps>()
 
 const modelValue = defineModel<string | number>()
 </script>

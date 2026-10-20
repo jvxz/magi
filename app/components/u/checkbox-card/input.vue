@@ -3,7 +3,9 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import { checkboxVariants } from '../checkbox.vue'
 
-const props = defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>()
+export type UCheckboxCardInputProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UCheckboxCardInputProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

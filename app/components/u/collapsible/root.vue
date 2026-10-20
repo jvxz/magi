@@ -3,8 +3,11 @@ import type { CollapsibleRootEmits, CollapsibleRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<CollapsibleRootProps>()
-const emits = defineEmits<CollapsibleRootEmits>()
+export type UCollapsibleRootProps = CollapsibleRootProps
+export type UCollapsibleRootEmits = CollapsibleRootEmits
+
+const props = defineProps<UCollapsibleRootProps>()
+const emits = defineEmits<UCollapsibleRootEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 </script>

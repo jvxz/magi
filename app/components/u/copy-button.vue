@@ -3,9 +3,9 @@ import type { Transition } from 'motion-v'
 
 import { motion } from 'motion-v'
 
-import type { ButtonProps } from './button.vue'
+import type { UButtonProps } from './button.vue'
 
-export interface UCopyButtonProps extends ButtonProps {
+export interface UCopyButtonProps extends UButtonProps {
   class?: HTMLAttributes['class']
   value: MaybeRefOrGetter<string | undefined>
 }

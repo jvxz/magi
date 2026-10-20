@@ -3,8 +3,11 @@ import { useForwardPropsEmits } from 'reka-ui'
 
 import type { EmojiPickerRootEmits, EmojiPickerRootProps } from '~/components/emoji-picker/root.vue'
 
-const props = defineProps<EmojiPickerRootProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<EmojiPickerRootEmits>()
+export type UEmojiPickerRootProps = EmojiPickerRootProps & { class?: HTMLAttributes['class'] }
+export type UEmojiPickerRootEmits = EmojiPickerRootEmits
+
+const props = defineProps<UEmojiPickerRootProps>()
+const emits = defineEmits<UEmojiPickerRootEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 const forwarded = useForwardPropsEmits(delegated, emits)

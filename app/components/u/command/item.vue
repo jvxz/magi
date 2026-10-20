@@ -5,8 +5,11 @@ import { useForwardPropsEmits } from 'reka-ui'
 
 import { useCommand, useCommandGroup } from './root.vue'
 
-const props = defineProps<ListboxItemProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<ListboxItemEmits>()
+export type UCommandItemProps = ListboxItemProps & { class?: HTMLAttributes['class'] }
+export type UCommandItemEmits = ListboxItemEmits
+
+const props = defineProps<UCommandItemProps>()
+const emits = defineEmits<UCommandItemEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

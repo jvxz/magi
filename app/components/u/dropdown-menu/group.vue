@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { DropdownMenuGroupProps } from 'reka-ui'
 
-const props = defineProps<DropdownMenuGroupProps>()
+export type UDropdownMenuGroupProps = DropdownMenuGroupProps
+
+const props = defineProps<UDropdownMenuGroupProps>()
 </script>
 
 <template>

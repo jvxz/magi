@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<PrimitiveProps & { class?: HTMLAttributes['class'] }>()
+export type UDialogFooterProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UDialogFooterProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

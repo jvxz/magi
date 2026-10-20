@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { DropdownMenuSeparatorProps } from 'reka-ui'
 
-const props = defineProps<
-  DropdownMenuSeparatorProps & {
-    class?: HTMLAttributes['class']
-  }
->()
+export type UDropdownMenuSeparatorProps = DropdownMenuSeparatorProps & {
+  class?: HTMLAttributes['class']
+}
+
+const props = defineProps<UDropdownMenuSeparatorProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

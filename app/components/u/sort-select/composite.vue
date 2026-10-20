@@ -3,19 +3,20 @@ import type { SelectContentProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-import type { SortSelectModelValue, SortSelectRootProps } from './root.vue'
-import type { SortSelectTriggerProps } from './trigger.vue'
+import type { SortSelectModelValue, USortSelectRootProps } from './root.vue'
+import type { USortSelectTriggerProps } from './trigger.vue'
 
-const props = defineProps<
-  SortSelectRootProps &
-    SortSelectTriggerProps &
-    Pick<SelectContentProps, 'collisionPadding' | 'sideOffset' | 'alignOffset'> & {
-      ui?: DefineClasses<'trigger' | 'toggle' | 'content' | 'root'>
-    }
->()
-const emits = defineEmits<{
+export interface USortSelectCompositeEmits {
   'update:modelValue': [value: SortSelectModelValue]
-}>()
+}
+export type USortSelectCompositeProps = USortSelectRootProps &
+  USortSelectTriggerProps &
+  Pick<SelectContentProps, 'collisionPadding' | 'sideOffset' | 'alignOffset'> & {
+    ui?: DefineClasses<'trigger' | 'toggle' | 'content' | 'root'>
+  }
+
+const props = defineProps<USortSelectCompositeProps>()
+const emits = defineEmits<USortSelectCompositeEmits>()
 
 const delegated = reactiveOmit(props, [
   'size',

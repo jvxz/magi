@@ -3,7 +3,9 @@ import type { TabsTriggerProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-const props = defineProps<TabsTriggerProps & { class?: HTMLAttributes['class'] }>()
+export type UTabsTriggerProps = TabsTriggerProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UTabsTriggerProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

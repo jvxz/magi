@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-const props = defineProps<{ class?: HTMLAttributes['class'] }>()
+export interface USpinnerProps {
+  class?: HTMLAttributes['class']
+}
+
+const props = defineProps<USpinnerProps>()
 </script>
 
 <template>

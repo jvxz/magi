@@ -27,7 +27,7 @@ export type ButtonVariants = VariantProps<typeof buttonVariants>
 import type { PrimitiveProps } from 'reka-ui'
 import type { ButtonHTMLAttributes } from 'vue'
 
-export interface ButtonProps extends PrimitiveProps {
+export interface UButtonProps extends PrimitiveProps {
   disabled?: MaybeRefOrGetter<boolean>
   size?: ButtonVariants['size']
   variant?: ButtonVariants['variant']
@@ -36,7 +36,7 @@ export interface ButtonProps extends PrimitiveProps {
   onClick?: ButtonHTMLAttributes['onClick']
 }
 
-withDefaults(defineProps<ButtonProps>(), { as: 'button' })
+withDefaults(defineProps<UButtonProps>(), { as: 'button' })
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { UToastProps } from '~/components/u/toast/root.vue'
+import type { UToastRootProps } from '~/components/u/toast/root.vue'
 
-export type NotiCardProps = Pick<UToastProps, 'description' | 'title' | 'actions' | 'icon'> &
+export type NotiCardProps = Pick<UToastRootProps, 'description' | 'title' | 'actions' | 'icon'> &
   Pick<AppNotification, 'id'>
 
 const props = defineProps<NotiCardProps>()

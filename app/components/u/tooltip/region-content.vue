@@ -7,6 +7,7 @@ export type UTooltipRegionContentProps<TName extends TooltipName> = PopoverConte
   name: TName
   class?: HTMLAttributes['class']
 }
+export type UTooltipRegionContentEmits = PopoverContentEmits
 
 const props = withDefaults(defineProps<UTooltipRegionContentProps<TName>>(), {
   align: 'center',
@@ -14,7 +15,7 @@ const props = withDefaults(defineProps<UTooltipRegionContentProps<TName>>(), {
   side: 'top',
   sideOffset: 4,
 })
-const emits = defineEmits<PopoverContentEmits>()
+const emits = defineEmits<UTooltipRegionContentEmits>()
 
 const { close, payload, reference } = useTooltipRegion(props.name)
 

@@ -3,7 +3,9 @@ import type { SelectScrollDownButtonProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-const props = defineProps<SelectScrollDownButtonProps & { class?: HTMLAttributes['class'] }>()
+export type USelectScrollDownButtonProps = SelectScrollDownButtonProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<USelectScrollDownButtonProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

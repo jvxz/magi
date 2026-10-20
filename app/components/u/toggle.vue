@@ -27,22 +27,20 @@ import type { ToggleEmits, ToggleProps } from 'reka-ui'
 
 import { Toggle, useForwardPropsEmits } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<
-    ToggleProps & {
-      class?: HTMLAttributes['class']
-      variant?: ToggleVariants['variant']
-      size?: ToggleVariants['size']
-    }
-  >(),
-  {
-    disabled: false,
-    size: 'default',
-    variant: 'ghost',
-  },
-)
+export type UToggleProps = ToggleProps & {
+  class?: HTMLAttributes['class']
+  variant?: ToggleVariants['variant']
+  size?: ToggleVariants['size']
+}
+export type UToggleEmits = ToggleEmits
 
-const emits = defineEmits<ToggleEmits>()
+const props = withDefaults(defineProps<UToggleProps>(), {
+  disabled: false,
+  size: 'default',
+  variant: 'ghost',
+})
+
+const emits = defineEmits<UToggleEmits>()
 
 const delegated = reactiveOmit(props, 'class', 'size', 'variant')
 const forwarded = useForwardPropsEmits(delegated, emits)

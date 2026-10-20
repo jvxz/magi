@@ -5,15 +5,15 @@ import { useForwardProps } from 'reka-ui'
 
 import { useCommand } from './root.vue'
 
+export type UCommandInputProps = ListboxFilterProps & {
+  class?: HTMLAttributes['class']
+}
+
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<
-  ListboxFilterProps & {
-    class?: HTMLAttributes['class']
-  }
->()
+const props = defineProps<UCommandInputProps>()
 
 const delegated = reactiveOmit(props, 'class')
 

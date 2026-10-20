@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import { KnownMembership } from 'matrix-js-sdk'
 
-defineProps<{ class?: HTMLAttributes['class'] }>()
+export interface UProfilePopoverContentProps {
+  class?: HTMLAttributes['class']
+}
+
+defineProps<UProfilePopoverContentProps>()
 const { contentProps, manualRoom, open, referenceElement, user } = useProfilePopover()
 
 const { self } = useSelf()

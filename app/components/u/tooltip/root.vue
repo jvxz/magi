@@ -3,8 +3,11 @@ import type { TooltipRootEmits, TooltipRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<TooltipRootProps>()
-const emits = defineEmits<TooltipRootEmits>()
+export type UTooltipRootProps = TooltipRootProps
+export type UTooltipRootEmits = TooltipRootEmits
+
+const props = defineProps<UTooltipRootProps>()
+const emits = defineEmits<UTooltipRootEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 </script>

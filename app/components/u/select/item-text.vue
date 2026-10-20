@@ -3,7 +3,9 @@ import type { SelectItemTextProps } from 'reka-ui'
 
 import { SelectItemText } from 'reka-ui'
 
-const props = defineProps<SelectItemTextProps>()
+export type USelectItemTextProps = SelectItemTextProps
+
+const props = defineProps<USelectItemTextProps>()
 </script>
 
 <template>

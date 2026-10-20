@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import type { DialogCloseProps } from 'reka-ui'
 
-import type { ButtonProps } from '../button.vue'
+import type { UButtonProps } from '../button.vue'
 
 import { buttonVariants } from '../button.vue'
 
-const props = defineProps<DialogCloseProps & ButtonProps & { class?: HTMLAttributes['class'] }>()
+export type UDialogCloseProps = DialogCloseProps & UButtonProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UDialogCloseProps>()
 
 const delegated = reactiveOmit(props, ['class', 'variant', 'size'])
 </script>

@@ -2,13 +2,13 @@
 import type { PrimitiveProps } from 'reka-ui'
 import type { VariantProps } from 'tailwind-variants'
 
-export interface UCardProps extends PrimitiveProps {
+export interface UCardRootProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
   variant?: VariantProps<typeof staticBase>['variant']
   spacing?: VariantProps<typeof staticBase>['spacing']
 }
 
-const props = defineProps<UCardProps>()
+const props = defineProps<UCardRootProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

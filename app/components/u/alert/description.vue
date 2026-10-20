@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-export interface AlertDescriptionProps extends PrimitiveProps {
+export interface UAlertDescriptionProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
 }
 
-const props = defineProps<AlertDescriptionProps>()
+const props = defineProps<UAlertDescriptionProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

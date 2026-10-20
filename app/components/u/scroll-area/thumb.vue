@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { ScrollAreaThumbProps } from 'reka-ui'
 
-const props = defineProps<ScrollAreaThumbProps & { class?: HTMLAttributes['class'] }>()
+export type UScrollAreaThumbProps = ScrollAreaThumbProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UScrollAreaThumbProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

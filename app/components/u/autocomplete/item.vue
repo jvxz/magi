@@ -5,8 +5,11 @@ import { AutocompleteItem, useForwardPropsEmits } from 'reka-ui'
 
 import { cn } from '#imports'
 
-const props = defineProps<ComboboxItemProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<ComboboxItemEmits>()
+export type UAutocompleteItemProps = ComboboxItemProps & { class?: HTMLAttributes['class'] }
+export type UAutocompleteItemEmits = ComboboxItemEmits
+
+const props = defineProps<UAutocompleteItemProps>()
+const emits = defineEmits<UAutocompleteItemEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

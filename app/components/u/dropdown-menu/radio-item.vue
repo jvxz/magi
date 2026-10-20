@@ -3,9 +3,12 @@ import type { DropdownMenuRadioItemEmits, DropdownMenuRadioItemProps } from 'rek
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<DropdownMenuRadioItemProps & { class?: HTMLAttributes['class'] }>()
+export type UDropdownMenuRadioItemProps = DropdownMenuRadioItemProps & { class?: HTMLAttributes['class'] }
+export type UDropdownMenuRadioItemEmits = DropdownMenuRadioItemEmits
 
-const emits = defineEmits<DropdownMenuRadioItemEmits>()
+const props = defineProps<UDropdownMenuRadioItemProps>()
+
+const emits = defineEmits<UDropdownMenuRadioItemEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { UCardProps } from './card/root.vue'
+import type { UCardRootProps } from './card/root.vue'
 
-export interface UCodespanProps extends Omit<UCardProps, 'variant'> {}
+export interface UCodespanProps extends Omit<UCardRootProps, 'variant'> {}
 
 const props = withDefaults(defineProps<UCodespanProps>(), {
   as: 'code',

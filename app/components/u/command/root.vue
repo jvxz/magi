@@ -20,11 +20,14 @@ import type { ListboxRootEmits, ListboxRootProps } from 'reka-ui'
 
 import { useFilter, useForwardPropsEmits } from 'reka-ui'
 
-const props = withDefaults(defineProps<ListboxRootProps & { class?: HTMLAttributes['class'] }>(), {
+export type UCommandRootProps = ListboxRootProps & { class?: HTMLAttributes['class'] }
+export type UCommandRootEmits = ListboxRootEmits
+
+const props = withDefaults(defineProps<UCommandRootProps>(), {
   modelValue: '',
 })
 
-const emits = defineEmits<ListboxRootEmits>()
+const emits = defineEmits<UCommandRootEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

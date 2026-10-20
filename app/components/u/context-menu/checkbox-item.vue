@@ -4,8 +4,11 @@ import type { ContextMenuCheckboxItemEmits, ContextMenuCheckboxItemProps } from 
 import { reactiveOmit } from '@vueuse/core'
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<ContextMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<ContextMenuCheckboxItemEmits>()
+export type UContextMenuCheckboxItemProps = ContextMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }
+export type UContextMenuCheckboxItemEmits = ContextMenuCheckboxItemEmits
+
+const props = defineProps<UContextMenuCheckboxItemProps>()
+const emits = defineEmits<UContextMenuCheckboxItemEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

@@ -3,7 +3,9 @@ import type { ComboboxSeparatorProps } from 'reka-ui'
 
 import { AutocompleteSeparator } from 'reka-ui'
 
-const props = defineProps<ComboboxSeparatorProps & { class?: HTMLAttributes['class'] }>()
+export type UAutocompleteSeparatorProps = ComboboxSeparatorProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAutocompleteSeparatorProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

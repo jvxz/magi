@@ -4,8 +4,11 @@ import type { ContextMenuRadioItemEmits, ContextMenuRadioItemProps } from 'reka-
 import { reactiveOmit } from '@vueuse/core'
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<ContextMenuRadioItemProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<ContextMenuRadioItemEmits>()
+export type UContextMenuRadioItemProps = ContextMenuRadioItemProps & { class?: HTMLAttributes['class'] }
+export type UContextMenuRadioItemEmits = ContextMenuRadioItemEmits
+
+const props = defineProps<UContextMenuRadioItemProps>()
+const emits = defineEmits<UContextMenuRadioItemEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 

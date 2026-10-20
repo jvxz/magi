@@ -1,7 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
+export interface UCommandShortcutProps {
   class?: HTMLAttributes['class']
-}>()
+}
+
+const props = defineProps<UCommandShortcutProps>()
 </script>
 
 <template>
