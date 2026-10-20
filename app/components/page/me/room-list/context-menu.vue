@@ -31,28 +31,27 @@ const to = computed<RouteLocationRaw | undefined>(() =>
 </script>
 
 <template>
-  <UContextMenuRegionContent name="homeRoom" align="start">
-    <template v-if="payload?.type === 'recent'">
-      <UContextMenuItem @select="removeRecentRoom(payload?.room.roomId)">
+  <UContextMenuRegionContent v-if="payload" name="homeRoom" align="start">
+    <UContextMenuItem as-child>
+      <NuxtLink :to>
+        <Icon :name="ICON__OPEN_ROOM" />
+        <span>Go to room</span>
+      </NuxtLink>
+    </UContextMenuItem>
+    <UContextMenuItem @select="handlePin">
+      <Icon :name="isPinned ? ICON__UNPIN : ICON__PIN" />
+      <span>{{ isPinned ? 'Unpin' : 'Pin' }} room</span>
+    </UContextMenuItem>
+
+    <template v-if="payload.type === 'recent'">
+      <UContextMenuSeparator />
+      <UContextMenuItem @select="removeRecentRoom(payload.room.roomId)">
         <Icon :name="ICON__DELETE" />
         <span>Remove from recents</span>
       </UContextMenuItem>
-      <UContextMenuItem @select="blacklistRoom(payload?.room.roomId)">
+      <UContextMenuItem @select="blacklistRoom(payload.room.roomId)">
         <Icon :name="ICON__BLOCK" />
         <span>Never show in recents</span>
-      </UContextMenuItem>
-    </template>
-
-    <template v-else-if="payload?.type === 'pinned'">
-      <UContextMenuItem as-child>
-        <NuxtLink :to>
-          <Icon :name="ICON__OPEN_ROOM" />
-          <span>Go to room</span>
-        </NuxtLink>
-      </UContextMenuItem>
-      <UContextMenuItem @select="handlePin">
-        <Icon :name="isPinned ? ICON__UNPIN : ICON__PIN" />
-        <span>{{ isPinned ? 'Unpin' : 'Pin' }} room</span>
       </UContextMenuItem>
     </template>
   </UContextMenuRegionContent>
