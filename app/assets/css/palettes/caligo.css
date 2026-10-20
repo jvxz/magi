@@ -2,7 +2,6 @@
 
 .caligo {
   --shift-hover: 0.02;
-  --shift-press: -0.008;
 
   --neutral-50: oklch(96% 0 0);
   --neutral-100: oklch(82.8% 0 0);

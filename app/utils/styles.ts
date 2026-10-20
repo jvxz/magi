@@ -23,16 +23,15 @@ export const interactiveBase = tv({
       sm: 'h-7 px-2.5 py-1 text-xs',
     },
     variant: {
-      danger:
-        'bg-danger border border-transparent hover:(bg-danger-hover) text-danger-foreground active:(bg-danger-press) ',
-      default: 'bg-primary text-primary-foreground border border-transparent active:(bg-primary-press) ',
+      danger: 'bg-danger border border-transparent hover:(bg-danger-hover) text-danger-foreground',
+      default: 'bg-primary text-primary-foreground border border-transparent',
       ghost:
-        'text-muted-foreground border border-transparent hover:(bg-secondary text-foreground) data-[highlighted]:(bg-secondary text-foreground) data-[state=open]:(bg-secondary text-foreground) active:(bg-secondary-press)',
+        'text-muted-foreground border border-transparent hover:(bg-secondary text-foreground) data-[highlighted]:(bg-secondary text-foreground) data-[state=open]:(bg-secondary text-foreground)',
       'ghost-inline': 'text-muted-foreground hover:text-foreground data-[state=open]:text-foreground',
       link: 'text-foreground px-2.5 -mx-2.5 underline-offset-4 hover:underline data-[state=open]:underline',
       outline:
-        'text-muted-foreground border-border/90 hover:(text-foreground bg-secondary not-active:border-border-strong) focus-visible:(text-foreground bg-secondary not-active:border-border-strong) data-[state=open]:(text-foreground bg-secondary not-active:border-border-strong) active:(border-border bg-secondary-press) border bg-transparent',
-      soft: 'bg-secondary border-border text-muted-foreground border hover:(text-foreground not-active:border-border-strong) focus-visible:(text-foreground border-border-strong not-active:border-border-strong) data-[state=open]:(text-foreground border-border-strong not-active:border-border-strong) active:(border-border bg-secondary-press)',
+        'text-muted-foreground border-border/90 hover:(text-foreground bg-secondary border-border-strong) focus-visible:(text-foreground bg-secondary border-border-strong) data-[state=open]:(text-foreground bg-secondary border-border-strong) border bg-transparent',
+      soft: 'bg-secondary border-border text-muted-foreground border hover:(text-foreground border-border-strong) focus-visible:(text-foreground border-border-strong) data-[state=open]:(text-foreground border-border-strong)',
     },
   },
 })
@@ -87,8 +86,8 @@ export const popoverItemBase = tv({
       default: 'p-1 px-2',
     },
     variant: {
-      danger: 'text-danger bg-transparent hover:bg-transparent focus:bg-danger-hover active:bg-danger-press',
-      ghost: 'text-foreground focus:bg-secondary-raised active:bg-secondary-raised-press',
+      danger: 'text-danger bg-transparent hover:bg-transparent focus:bg-danger-hover',
+      ghost: 'text-foreground focus:bg-secondary-raised',
     },
   },
 })

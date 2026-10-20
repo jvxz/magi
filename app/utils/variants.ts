@@ -94,7 +94,7 @@ export const toggleVariants = tv({
     variant: {
       ghost: interactiveBase({ variant: 'ghost' }),
       outline: interactiveBase({
-        class: 'data-[state=on]:(border-border-strong) active:(border-border-strong)',
+        class: 'data-[state=on]:(border-border-strong)',
         variant: 'outline',
       }),
     },

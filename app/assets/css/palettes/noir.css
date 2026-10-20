@@ -2,7 +2,6 @@
 
 .noir {
   --shift-hover: 0.02;
-  --shift-press: -0.008;
 
   --neutral-50: oklch(95% 0.007 285);
   --neutral-100: oklch(84.5% 0.007 285);
