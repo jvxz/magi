@@ -3,7 +3,7 @@ import type { EditableRootEmits, EditableRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-export type UEditableRootProps = EditableRootProps & { class?: string }
+export type UEditableRootProps = EditableRootProps & { class?: HTMLAttributes['class'] }
 export type UEditableRootEmits = EditableRootEmits
 
 const props = withDefaults(defineProps<UEditableRootProps>(), {

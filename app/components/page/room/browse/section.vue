@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-defineOptions({ inheritAttrs: false })
-
 const props = defineProps<{
   defaultOpen?: boolean
   title: string
@@ -41,12 +39,12 @@ const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
           <span v-if="isDefined(roomCount)" class="shrink-0"> {{ roomCount }} rooms </span>
 
           <template v-if="isDefined(memberCount)">
-            <UInlineSeparator />
+            <UInlineSeparatorRoot />
             <span class="shrink-0"> {{ memberCount }} members </span>
           </template>
 
           <template v-if="description">
-            <UInlineSeparator />
+            <UInlineSeparatorRoot />
             <span class="truncate">
               {{ description }}
             </span>

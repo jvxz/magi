@@ -166,7 +166,11 @@ function handlePaginate(dir: 'f' | 'b') {
     </div>
 
     <Transition name="zoom">
-      <UCard v-if="error" variant="danger" class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2">
+      <UCardRoot
+        v-if="error"
+        variant="danger"
+        class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
+      >
         <UCardTitle class="flex gap-2 items-center">
           <Icon :name="ICON__ERROR" />
           <span>An error occurred</span>
@@ -175,8 +179,8 @@ function handlePaginate(dir: 'f' | 'b') {
         <p class="text-pretty">
           The desired homeserver's public rooms could not be loaded. Make sure you have inputted the correct URL
         </p>
-      </UCard>
-      <UCard
+      </UCardRoot>
+      <UCardRoot
         v-else-if="!currentPage?.chunk.length && !isFetching"
         class="max-w-md left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2"
       >
@@ -186,7 +190,7 @@ function handlePaginate(dir: 'f' | 'b') {
           <template v-if="!query"> The desired homeserver does not appear to have any public rooms </template>
           <template v-else> The search query yielded no results. Try another one </template>
         </p>
-      </UCard>
+      </UCardRoot>
     </Transition>
   </div>
 </template>

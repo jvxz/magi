@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-const displayMode = inject<Ref<AsideDisplayMode>>('displayMode')
+import { INJECTION_KEY__DISPLAY_MODE } from '../aside-buttons.vue'
+
+const displayMode = inject(INJECTION_KEY__DISPLAY_MODE)
 </script>
 
 <template>

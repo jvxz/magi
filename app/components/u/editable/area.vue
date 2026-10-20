@@ -1,19 +1,18 @@
 <script lang="ts">
-export const editableAreaLeadingIconInjectionKey: InjectionKey<Ref<string | undefined>> =
+export const INJECTION_KEY__EDITABLE_AREA_LEADING_ICON: InjectionKey<Ref<string | undefined>> =
   Symbol('editableAreaLeadingIcon')
 </script>
 
 <script lang="ts" setup>
 import type { EditableAreaProps } from 'reka-ui'
-import type { InjectionKey } from 'vue'
 
 import { useForwardProps } from 'reka-ui'
 
-export type UEditableAreaProps = EditableAreaProps & { class?: string; leadingIcon?: string }
+export type UEditableAreaProps = EditableAreaProps & { class?: HTMLAttributes['class']; leadingIcon?: string }
 
 const props = defineProps<UEditableAreaProps>()
 
-provide(editableAreaLeadingIconInjectionKey, toRef(props, 'leadingIcon'))
+provide(INJECTION_KEY__EDITABLE_AREA_LEADING_ICON, toRef(props, 'leadingIcon'))
 
 const delegated = reactiveOmit(props, ['class', 'leadingIcon'])
 const forwarded = useForwardProps(delegated)

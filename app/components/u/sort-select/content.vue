@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import type { SelectContentEmits, SelectContentProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
 import { injectSortSelectContext } from './root.vue'
 
-const props = defineProps<SelectContentProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<SelectContentEmits>()
+export type USortSelectContentProps = SelectContentProps & { class?: HTMLAttributes['class'] }
+export type USortSelectContentEmits = SelectContentEmits
+
+const props = defineProps<USortSelectContentProps>()
+const emits = defineEmits<USortSelectContentEmits>()
 
 const forwarded = useForwardPropsEmits(props, emits)
 

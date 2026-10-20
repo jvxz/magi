@@ -1,0 +1,23 @@
+<script setup lang="ts">
+import type { ComboboxViewportProps } from 'reka-ui'
+
+import { AutocompleteViewport, useForwardProps } from 'reka-ui'
+
+export type UAutocompleteViewportProps = ComboboxViewportProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAutocompleteViewportProps>()
+
+const delegated = reactiveOmit(props, 'class')
+
+const forwarded = useForwardProps(delegated)
+</script>
+
+<template>
+  <AutocompleteViewport
+    data-slot="autocomplete-viewport"
+    v-bind="forwarded"
+    :class="cn('max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto', props.class)"
+  >
+    <slot />
+  </AutocompleteViewport>
+</template>

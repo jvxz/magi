@@ -1,0 +1,39 @@
+<script setup lang="ts">
+import type { SelectItemProps } from 'reka-ui'
+
+import { useForwardProps } from 'reka-ui'
+
+export type USelectItemProps = SelectItemProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<USelectItemProps>()
+
+const delegated = reactiveOmit(props, 'class')
+
+const forwarded = useForwardProps(delegated)
+</script>
+
+<template>
+  <SelectItem
+    data-slot="select-item"
+    v-bind="forwarded"
+    :class="
+      cn(
+        popoverItemBase(),
+        'relative flex w-full cursor-default items-center gap-2 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2',
+        props.class,
+      )
+    "
+  >
+    <span class="size-4 right-2 top-1/2 absolute -translate-y-1/2">
+      <SelectItemIndicator class="size-full">
+        <slot name="indicator-icon">
+          <Icon :name="ICON__CHECK" />
+        </slot>
+      </SelectItemIndicator>
+    </span>
+
+    <SelectItemText>
+      <slot />
+    </SelectItemText>
+  </SelectItem>
+</template>

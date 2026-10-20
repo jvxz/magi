@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 export type UButtonCardIconProps = PrimitiveProps & {
   class?: HTMLAttributes['class']

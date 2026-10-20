@@ -1,0 +1,55 @@
+<script setup lang="ts">
+import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
+
+import { useForwardPropsEmits } from 'reka-ui'
+
+export type UDialogScrollContentProps = DialogContentProps & { class?: HTMLAttributes['class'] }
+export type UDialogScrollContentEmits = DialogContentEmits
+
+const props = defineProps<UDialogScrollContentProps>()
+const emits = defineEmits<UDialogScrollContentEmits>()
+
+const delegated = reactiveOmit(props, 'class')
+
+const forwarded = useForwardPropsEmits(delegated, emits)
+</script>
+
+<template>
+  <DialogPortal>
+    <DialogOverlay :class="cn(overlayStyles)">
+      <DialogContent
+        :class="
+          cn(
+            staticBase({ variant: 'default' }),
+            'fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-2 sm:max-w-xl',
+            props.class,
+          )
+        "
+        v-bind="forwarded"
+        @pointer-down-outside="
+          event => {
+            const originalEvent = event.detail.originalEvent
+            const target = originalEvent.target as HTMLElement
+            if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
+              event.preventDefault()
+            }
+          }
+        "
+      >
+        <slot />
+
+        <DialogClose
+          :class="
+            cn(
+              interactiveBase({ variant: 'ghost', size: 'icon' }),
+              'absolute top-3 right-3 inline-flex size-6 items-center justify-center opacity-70',
+            )
+          "
+        >
+          <Icon :name="ICON__CLOSE" class="size-4" />
+          <span class="sr-only">Close</span>
+        </DialogClose>
+      </DialogContent>
+    </DialogOverlay>
+  </DialogPortal>
+</template>

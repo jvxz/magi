@@ -2,18 +2,15 @@
 import type { Room } from 'matrix-js-sdk'
 import type { PopoverContentProps, PrimitiveProps } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<
-    PrimitiveProps & {
-      user?: MaybeUserOrId | undefined
-      contentProps?: PopoverContentProps
-      freezeReference?: boolean
-      manualRoom?: Room | undefined
-      context?: ProfilePopoverContext
-    }
-  >(),
-  { as: 'button' },
-)
+export type UProfilePopoverTriggerProps = PrimitiveProps & {
+  user?: MaybeUserOrId | undefined
+  contentProps?: PopoverContentProps
+  freezeReference?: boolean
+  manualRoom?: Room | undefined
+  context?: ProfilePopoverContext
+}
+
+const props = withDefaults(defineProps<UProfilePopoverTriggerProps>(), { as: 'button' })
 const { openProfilePopover, triggerElement } = useProfilePopover()
 
 let el: HTMLElement | undefined

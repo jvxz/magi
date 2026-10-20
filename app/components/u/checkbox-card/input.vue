@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<PrimitiveProps & { class?: string }>()
+import { checkboxVariants } from '../checkbox.vue'
+
+export type UCheckboxCardInputProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UCheckboxCardInputProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>
@@ -10,7 +14,7 @@ const delegated = reactiveOmit(props, 'class')
   <Primitive
     v-bind="delegated"
     :class="
-      cn(checkboxVariants(), 'pointer-events-none group-hover:border-border-strong! border shrink-0 ml-2', $props.class)
+      cn(checkboxVariants(), 'pointer-events-none group-hover:border-border-strong! border shrink-0 ml-2', props.class)
     "
   >
     <CheckboxIndicator

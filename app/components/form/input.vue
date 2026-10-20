@@ -25,7 +25,7 @@ const { forwardRef } = useForwardExpose()
 </script>
 
 <template>
-  <FormPrimitive v-bind="delegated" :class="$props.ui?.container">
+  <FormPrimitive v-bind="delegated" :class="props.ui?.container">
     <component
       :is="textarea ? UTextarea : UInput"
       :ref="forwardRef"
@@ -33,8 +33,8 @@ const { forwardRef } = useForwardExpose()
       :disabled
       :disable-pw
       :placeholder
-      :type="$props.type"
-      :class="cn(hasError && 'border-danger ring-danger', $props.ui?.input)"
+      :type="props.type"
+      :class="cn(hasError && 'border-danger ring-danger', props.ui?.input)"
     />
   </FormPrimitive>
 </template>

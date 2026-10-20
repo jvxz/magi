@@ -20,7 +20,7 @@ const invitedMemberCount = useRoomComputed(spaceId, r => r?.getInvitedMemberCoun
       </UShowcaseDetailsItem>
 
       <template v-if="!hasQuery">
-        <UInlineSeparator />
+        <UInlineSeparatorRoot />
         <UShowcaseDetailsItem>
           <Icon :name="ICON__INVITE" />
           <span>{{ invitedMemberCount }} invited</span>

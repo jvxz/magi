@@ -1,0 +1,28 @@
+<script setup lang="ts">
+import type { ComboboxTriggerProps } from 'reka-ui'
+
+import { AutocompleteTrigger, useForwardProps } from 'reka-ui'
+
+export type UAutocompleteTriggerProps = ComboboxTriggerProps & {
+  class?: HTMLAttributes['class']
+  size?: 'sm' | 'default'
+}
+
+const props = withDefaults(defineProps<UAutocompleteTriggerProps>(), { size: 'default' })
+
+const delegated = reactiveOmit(props, 'class', 'size')
+const forwarded = useForwardProps(delegated)
+</script>
+
+<template>
+  <AutocompleteTrigger
+    data-slot="autocomplete-trigger"
+    :data-size="size"
+    v-bind="forwarded"
+    :class="cn(interactiveBase({ size: 'icon', variant: 'ghost' }), 'size-6', props.class)"
+  >
+    <slot>
+      <Icon :name="ICON__CHEVRON_DOWN" class="text-muted-foreground translate-y-0.5 size-3!" />
+    </slot>
+  </AutocompleteTrigger>
+</template>

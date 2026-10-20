@@ -2,8 +2,6 @@ import type { MentionNodeAttrs } from '@tiptap/extension-mention'
 import type { Node } from '@tiptap/pm/model'
 import type { Token } from 'marked'
 
-import { escape } from 'es-toolkit'
-
 export function nodeToPlainBody(node: Node): string {
   if (node.isText) return inlineMarkdownToText(node.text ?? '')
 

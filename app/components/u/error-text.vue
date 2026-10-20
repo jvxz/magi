@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-export interface ErrorTextProps extends PrimitiveProps {
-  class?: string
+export interface UErrorTextProps extends PrimitiveProps {
+  class?: HTMLAttributes['class']
   withTooltip?: boolean
   error: Error | undefined | null | (Error | undefined | null)[]
 }
 
-const props = withDefaults(defineProps<ErrorTextProps>(), {
+const props = withDefaults(defineProps<UErrorTextProps>(), {
   as: 'p',
   withTooltip: true,
 })

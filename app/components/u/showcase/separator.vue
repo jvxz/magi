@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { SeparatorProps } from 'reka-ui'
 
-defineProps<SeparatorProps>()
+export type UShowcaseSeparatorProps = SeparatorProps
+
+defineProps<UShowcaseSeparatorProps>()
 </script>
 
 <template>

@@ -1,6 +1,4 @@
 <script lang="ts">
-import type { HTMLAttributes } from 'vue'
-
 export type SortSelectOption = (typeof GENERAL__SORT_SELECT_OPTIONS)[number]
 export type SortSelectDir = (typeof GENERAL__SORT_SELECT_DIRS)[number]
 
@@ -9,7 +7,7 @@ export interface SortSelectModelValue {
   dir: SortSelectDir
 }
 
-export interface SortSelectRootProps {
+export interface USortSelectRootProps {
   class?: HTMLAttributes['class']
   options?: SortSelectOption[]
   modelValue?: SortSelectModelValue
@@ -26,13 +24,16 @@ export const [injectSortSelectContext, provideSortSelectContext] = createContext
 </script>
 
 <script lang="ts" setup>
-const props = withDefaults(defineProps<SortSelectRootProps>(), {
+export interface USortSelectRootEmits {
+  'update:modelValue': [value: SortSelectModelValue]
+}
+
+const props = withDefaults(defineProps<USortSelectRootProps>(), {
   defaultValue: () => ({ dir: 'asc', option: 'name' }),
   options: () => ['name', 'date-created'],
 })
-const emits = defineEmits<{
-  'update:modelValue': [value: SortSelectModelValue]
-}>()
+
+const emits = defineEmits<USortSelectRootEmits>()
 
 const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,

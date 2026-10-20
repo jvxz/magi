@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<PrimitiveProps & { class?: string }>()
+export type UShowcaseDetailsProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UShowcaseDetailsProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>
@@ -9,7 +11,7 @@ const delegated = reactiveOmit(props, 'class')
 <template>
   <Primitive
     v-bind="delegated"
-    :class="cn('text-sm flex gap-2 items-center tabular-nums *:flex *:gap-1 *:items-center', $props.class)"
+    :class="cn('text-sm flex gap-2 items-center tabular-nums *:flex *:gap-1 *:items-center', props.class)"
   >
     <slot />
   </Primitive>

@@ -1,5 +1,3 @@
-import type { InjectionKey } from 'vue'
-
 type Composable<Args extends any[], R> = (...args: Args) => R
 
 interface ProvidableComposable<Args extends any[], R> {

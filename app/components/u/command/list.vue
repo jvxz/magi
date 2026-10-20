@@ -1,0 +1,24 @@
+<script setup lang="ts">
+import type { ListboxContentProps } from 'reka-ui'
+
+import { useForwardProps } from 'reka-ui'
+
+export type UCommandListProps = ListboxContentProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UCommandListProps>()
+
+const delegated = reactiveOmit(props, 'class')
+
+const forwarded = useForwardProps(delegated)
+</script>
+
+<template>
+  <ListboxContent
+    v-bind="forwarded"
+    :class="cn('max-h-108 overflow-x-hidden overflow-y-auto scrollbar-fancy', props.class)"
+  >
+    <div role="presentation">
+      <slot />
+    </div>
+  </ListboxContent>
+</template>

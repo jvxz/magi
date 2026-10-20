@@ -1,4 +1,4 @@
-import type { HTMLAttributes, UnwrapRef } from 'vue'
+import type { UnwrapRef } from 'vue'
 
 export type { RemovableRef } from '@vueuse/core'
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { ButtonProps } from '../button.vue'
+import type { UButtonProps } from '../button.vue'
 
-export interface UShowcaseDetailsItemProps extends ButtonProps {
+export interface UShowcaseDetailsItemProps extends UButtonProps {
   type?: 'button' | 'text'
 }
 

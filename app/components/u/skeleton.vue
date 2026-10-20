@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 export interface USkeletonProps {
   delay?: number
   shimmer?: boolean

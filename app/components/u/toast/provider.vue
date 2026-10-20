@@ -1,3 +1,7 @@
+<script lang="ts">
+export const INJECTION_KEY__IS_TOAST: InjectionKey<true> = Symbol('is-toast')
+</script>
+
 <script setup lang="ts">
 import type { ToastProviderProps } from 'reka-ui'
 
@@ -6,22 +10,22 @@ import { ToastPortal, ToastProvider, ToastViewport, useForwardProps } from 'reka
 
 import UToast from '../toast/root.vue'
 
-export interface ToasterProps extends Omit<ToastProviderProps, 'swipeDirection'> {
+export interface UToastProviderProps extends Omit<ToastProviderProps, 'swipeDirection'> {
   position?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
   max?: number
 }
 
-const props = withDefaults(defineProps<ToasterProps>(), {
+const props = withDefaults(defineProps<UToastProviderProps>(), {
   duration: 5000,
   max: 5,
   portal: true,
 })
 
 const { remove, toasts } = useToast()
-provide(toastMaxInjectionKey, toRef(props, 'max'))
-provide('isToast', true)
+provide(INJECTION_KEY__TOAST_MAX, toRef(props, 'max'))
+provide(INJECTION_KEY__IS_TOAST, true)
 
-const providerProps = useForwardProps(reactivePick(props, ['duration', 'label', 'swipeThreshold', 'disableSwipe']))
+const forwarded = useForwardProps(reactivePick(props, ['duration', 'label', 'swipeThreshold', 'disableSwipe']))
 
 function onUpdateOpen(value: boolean, id: string | number) {
   if (!value) remove(id)
@@ -29,7 +33,7 @@ function onUpdateOpen(value: boolean, id: string | number) {
 </script>
 
 <template>
-  <ToastProvider swipe-direction="right" v-bind="providerProps">
+  <ToastProvider swipe-direction="right" v-bind="forwarded">
     <slot />
 
     <ToastPortal>

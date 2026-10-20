@@ -1,7 +1,6 @@
 <script lang="ts">
 import type { AuthDict } from 'matrix-js-sdk'
 import type { DialogRootEmits, DialogRootProps } from 'reka-ui'
-import type { Component } from 'vue'
 
 import { AuthType } from 'matrix-js-sdk'
 import { useForwardPropsEmits } from 'reka-ui'

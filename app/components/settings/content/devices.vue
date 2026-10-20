@@ -1,6 +1,4 @@
 <script lang="ts">
-import { createContext } from 'reka-ui'
-
 export interface SettingsContentDevicesContext {
   deleteDevice: (deviceId: string) => void
   renameDevice: (deviceId: string) => void
@@ -92,7 +90,7 @@ provideSettingsContentDevicesContext({
                     <Icon :name="ICON__RELOAD" />
                   </UButton>
 
-                  <USortSelect
+                  <USortSelectComposite
                     v-model:model-value="sortState"
                     :disabled="!!error"
                     :default-value="{ dir: 'asc', option: 'last-active' }"

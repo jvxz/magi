@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import type { UToastProps } from '~/components/u/toast/root.vue'
+import type { UToastRootProps } from '~/components/u/toast/root.vue'
 
-export type NotiCardProps = Pick<UToastProps, 'description' | 'title' | 'actions' | 'icon'> &
+import { INJECTION_KEY__IS_TOAST } from '~/components/u/toast/provider.vue'
+
+export type NotiCardProps = Pick<UToastRootProps, 'description' | 'title' | 'actions' | 'icon'> &
   Pick<AppNotification, 'id'>
 
 const props = defineProps<NotiCardProps>()
@@ -18,7 +20,7 @@ function handleDismiss() {
 const { remove: _removeToast } = useToast()
 const removeToast = () => _removeToast(props.id)
 
-const isToast = inject<true>('isToast')
+const isToast = inject(INJECTION_KEY__IS_TOAST)
 </script>
 
 <template>

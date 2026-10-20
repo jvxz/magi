@@ -80,7 +80,7 @@ const isRenamingDevice = computed(() => renameMutation.isPending.value && device
                 <template v-if="isCurrent">
                   <div class="rounded-full bg-success size-0.5em" />
                   <span class="text-success">Current device</span>
-                  <UInlineSeparator />
+                  <UInlineSeparatorRoot />
                 </template>
                 <span>{{ timeSinceActiveText }}</span>
                 <Icon :name="ICON__CHEVRON_DOWN" class="h-1em group-data-[state=open]:rotate-180" />

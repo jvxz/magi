@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import type { Transition } from 'motion-v'
-import type { HTMLAttributes } from 'vue'
 
 import { motion } from 'motion-v'
 
-import type { ButtonProps } from './button.vue'
+import type { UButtonProps } from './button.vue'
 
-export interface UCopyButtonProps extends ButtonProps {
+export interface UCopyButtonProps extends UButtonProps {
   class?: HTMLAttributes['class']
   value: MaybeRefOrGetter<string | undefined>
 }
@@ -40,7 +39,7 @@ const delegated = reactiveOmit(props, ['class', 'value'])
 <template>
   <UButton
     v-bind="delegated"
-    :title="$attrs.title ?? 'Click to copy'"
+    title="Click to copy"
     :aria-label="copied ? 'Copied' : 'Copy'"
     :disabled="copied"
     data-slot="copy-button"

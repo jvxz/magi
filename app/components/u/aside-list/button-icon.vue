@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-const { icon = ICON__ROOM } = defineProps<{
+export interface UAsideListButtonIconProps {
   icon?: string
-}>()
+}
+
+const { icon = ICON__ROOM } = defineProps<UAsideListButtonIconProps>()
 </script>
 
 <template>

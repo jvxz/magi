@@ -1,7 +1,5 @@
 import type { RoomMember, User } from 'matrix-js-sdk'
 
-import { assert, merge } from 'es-toolkit'
-
 import { MATRIX__AVATAR_IMAGE_SIZE_VALUES } from '~/constants/matrix'
 
 import type { MxcToHttpsOptions } from './general'

@@ -1,0 +1,23 @@
+<script lang="ts" setup>
+import type { DropdownMenuTriggerProps } from 'reka-ui'
+
+import { useForwardProps } from 'reka-ui'
+
+export type UDropdownMenuTriggerProps = DropdownMenuTriggerProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UDropdownMenuTriggerProps>()
+
+const delegated = reactiveOmit(props, 'class')
+
+const forwarded = useForwardProps(delegated)
+</script>
+
+<template>
+  <DropdownMenuTrigger
+    v-bind="forwarded"
+    :class="cn('outline-none data-[state=open]:text-foreground', props.class)"
+    data-slot="dropdown-menu-trigger"
+  >
+    <slot />
+  </DropdownMenuTrigger>
+</template>
