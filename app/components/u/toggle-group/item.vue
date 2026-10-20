@@ -5,6 +5,7 @@ import type { VariantProps } from 'tailwind-variants'
 import { ToggleGroupItem, useForwardProps } from 'reka-ui'
 
 import { toggleVariants } from '../toggle.vue'
+import { INJECTION_KEY__TOGGLE_GROUP } from './root.vue'
 
 type ToggleGroupVariants = VariantProps<typeof toggleVariants> & {
   spacing?: number
@@ -18,7 +19,7 @@ export type UToggleGroupItemProps = ToggleGroupItemProps & {
 
 const props = defineProps<UToggleGroupItemProps>()
 
-const context = inject<ToggleGroupVariants>('toggleGroup')
+const context = inject(INJECTION_KEY__TOGGLE_GROUP)
 
 const delegated = reactiveOmit(props, 'class', 'size', 'variant')
 const forwarded = useForwardProps(delegated)

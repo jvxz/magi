@@ -1,10 +1,14 @@
+<script lang="ts">
+import type { ToggleVariants } from '../toggle.vue'
+
+export const INJECTION_KEY__TOGGLE_GROUP: InjectionKey<ToggleVariants & { spacing?: number }> = Symbol('toggle-group')
+</script>
+
 <script setup lang="ts">
 import type { ToggleGroupRootEmits, ToggleGroupRootProps } from 'reka-ui'
 
 import { ToggleGroupRoot, useForwardPropsEmits } from 'reka-ui'
 import { provide } from 'vue'
-
-import type { ToggleVariants } from '../toggle.vue'
 
 export type UToggleGroupRootProps = ToggleGroupRootProps & {
   class?: HTMLAttributes['class']
@@ -20,7 +24,7 @@ const props = withDefaults(defineProps<UToggleGroupRootProps>(), {
 
 const emits = defineEmits<UToggleGroupRootEmits>()
 
-provide('toggleGroup', {
+provide(INJECTION_KEY__TOGGLE_GROUP, {
   size: props.size,
   spacing: props.spacing,
   variant: props.variant,

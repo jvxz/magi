@@ -3,14 +3,14 @@ import type { EditableInputProps } from 'reka-ui'
 
 import { injectEditableRootContext } from 'reka-ui'
 
-import { editableAreaLeadingIconInjectionKey } from './area.vue'
+import { INJECTION_KEY__EDITABLE_AREA_LEADING_ICON } from './area.vue'
 
 export type UEditableInputProps = EditableInputProps & { class?: HTMLAttributes['class'] }
 
 const props = defineProps<UEditableInputProps>()
 
 const { inputValue, isEditing } = injectEditableRootContext()
-const leadingIcon = inject(editableAreaLeadingIconInjectionKey)
+const leadingIcon = inject(INJECTION_KEY__EDITABLE_AREA_LEADING_ICON)
 
 const delegated = reactiveOmit(props, 'class')
 </script>

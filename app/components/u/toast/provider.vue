@@ -1,3 +1,7 @@
+<script lang="ts">
+export const INJECTION_KEY__IS_TOAST: InjectionKey<true> = Symbol('is-toast')
+</script>
+
 <script setup lang="ts">
 import type { ToastProviderProps } from 'reka-ui'
 
@@ -18,8 +22,8 @@ const props = withDefaults(defineProps<UToastProviderProps>(), {
 })
 
 const { remove, toasts } = useToast()
-provide(toastMaxInjectionKey, toRef(props, 'max'))
-provide('isToast', true)
+provide(INJECTION_KEY__TOAST_MAX, toRef(props, 'max'))
+provide(INJECTION_KEY__IS_TOAST, true)
 
 const forwarded = useForwardProps(reactivePick(props, ['duration', 'label', 'swipeThreshold', 'disableSwipe']))
 

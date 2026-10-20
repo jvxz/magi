@@ -1,5 +1,5 @@
 <script lang="ts">
-export const editableAreaLeadingIconInjectionKey: InjectionKey<Ref<string | undefined>> =
+export const INJECTION_KEY__EDITABLE_AREA_LEADING_ICON: InjectionKey<Ref<string | undefined>> =
   Symbol('editableAreaLeadingIcon')
 </script>
 
@@ -13,7 +13,7 @@ export type UEditableAreaProps = EditableAreaProps & { class?: HTMLAttributes['c
 
 const props = defineProps<UEditableAreaProps>()
 
-provide(editableAreaLeadingIconInjectionKey, toRef(props, 'leadingIcon'))
+provide(INJECTION_KEY__EDITABLE_AREA_LEADING_ICON, toRef(props, 'leadingIcon'))
 
 const delegated = reactiveOmit(props, ['class', 'leadingIcon'])
 const forwarded = useForwardProps(delegated)

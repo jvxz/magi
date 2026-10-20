@@ -3,7 +3,7 @@ import type { EmitsToProps, InjectionKey, Ref } from 'vue'
 
 import type { UToastRootEmits, UToastRootProps } from '~/components/u/toast/root.vue'
 
-export const toastMaxInjectionKey: InjectionKey<Ref<number | undefined>> = Symbol('toast-max')
+export const INJECTION_KEY__TOAST_MAX: InjectionKey<Ref<number | undefined>> = Symbol('toast-max')
 
 export interface Toast extends Omit<UToastRootProps, 'defaultOpen'>, EmitsToProps<UToastRootEmits>, AppNotification {
   onClick?: (toast: Toast) => void
@@ -14,7 +14,7 @@ export interface Toast extends Omit<UToastRootProps, 'defaultOpen'>, EmitsToProp
 const toasts = shallowRef<Toast[]>([])
 
 export function useToast() {
-  const max = inject(toastMaxInjectionKey, undefined)
+  const max = inject(INJECTION_KEY__TOAST_MAX, undefined)
 
   const running = ref(false)
   const queue: Toast[] = []
