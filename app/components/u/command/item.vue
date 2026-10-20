@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-import { useCommand, useCommandGroup } from '.'
+import { useCommand, useCommandGroup } from './root.vue'
 
 const props = defineProps<ListboxItemProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<ListboxItemEmits>()

@@ -1,10 +1,25 @@
+<script lang="ts">
+import type { Ref } from 'vue'
+
+export const [useCommand, provideCommandContext] = createContext<{
+  allItems: Ref<Map<string, string>>
+  allGroups: Ref<Map<string, Set<string>>>
+  filterState: {
+    search: string
+    filtered: { count: number; items: Map<string, number>; groups: Set<string> }
+  }
+}>('Command')
+
+export const [useCommandGroup, provideCommandGroupContext] = createContext<{
+  id?: string
+}>('CommandGroup')
+</script>
+
 <script setup lang="ts">
 import type { ListboxRootEmits, ListboxRootProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 
 import { useFilter, useForwardPropsEmits } from 'reka-ui'
-
-import { provideCommandContext } from '.'
 
 const props = withDefaults(defineProps<ListboxRootProps & { class?: HTMLAttributes['class'] }>(), {
   modelValue: '',

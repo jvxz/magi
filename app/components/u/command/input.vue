@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 
 import { useForwardProps } from 'reka-ui'
 
-import { useCommand } from '.'
+import { useCommand } from './root.vue'
 
 defineOptions({
   inheritAttrs: false,

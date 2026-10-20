@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 
 import { computed, onMounted, onUnmounted, useId } from 'vue'
 
-import { provideCommandGroupContext, useCommand } from '.'
+import { provideCommandGroupContext, useCommand } from './root.vue'
 
 const props = defineProps<
   ListboxGroupProps & {
