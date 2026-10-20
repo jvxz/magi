@@ -5,6 +5,7 @@ const { entry, type } = defineProps<{ entry: PinnedRoomEntry | RecentRoomEntry; 
 
 const roomId = toRef(() => entry.roomId)
 
+const hasRoomData = useRoomComputed(roomId, r => !!r?.roomId)
 const title = useRoomComputed(roomId, r => (r ? resolveRoomName(r) : undefined))
 const topic = useRoomComputed(roomId, r => getRoomTopic(r))
 const memberCount = useRoomMemberCount(roomId)
@@ -46,14 +47,14 @@ const to = computed<RouteLocationRaw | undefined>(() =>
           :dialog="title ? { type: 'room', label: title, room: roomId } : undefined"
           prevent
         >
-          <MatrixRoomAvatar :room="roomId" />
+          <MatrixRoomAvatar :room="roomId" :placeholder-variant="hasRoomData ? 'default' : 'empty-strong'" />
         </URoomShowcaseCardImage>
 
         <URoomShowcaseCardContent>
           <URoomShowcaseCardHeader>
             <URoomShowcaseCardTitle>
-              <span v-if="title">{{ title }}</span>
-              <span v-else-if="isSynced" class="text-muted-foreground">Unknown room</span>
+              <span v-if="hasRoomData">{{ title }}</span>
+              <span v-else-if="isSynced" class="text-muted-foreground">{{ roomId }}</span>
               <USkeleton v-else class="rounded-sm h-1em w-12" />
             </URoomShowcaseCardTitle>
 

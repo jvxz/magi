@@ -3,7 +3,10 @@ import { useForwardPropsEmits } from 'reka-ui'
 
 import type { ImgEmits, ImgProps } from '~/components/img.vue'
 
-export type MatrixAvatarProps = Omit<ImgProps, 'src' | 'size'> & {
+import type { AvatarPlaceholderProps } from '../avatar-placeholder.vue'
+
+export interface MatrixAvatarProps
+  extends Omit<ImgProps, 'src' | 'size'>, Pick<AvatarPlaceholderProps, 'placeholderVariant'> {
   square?: boolean
   imageSize?: AvatarImageSize
   isLoading?: boolean
@@ -42,7 +45,7 @@ async function onError() {
   if (src.value === before) failed.value = true
 }
 
-const delegated = reactiveOmit(props, ['doPlaceholder', 'square', 'fallbackAlt', 'alt'])
+const delegated = reactiveOmit(props, ['doPlaceholder', 'square', 'fallbackAlt', 'alt', 'placeholderVariant'])
 const forwarded = useForwardPropsEmits(delegated, emits)
 
 const id = useId()
@@ -62,6 +65,7 @@ const id = useId()
     v-else
     :is-loading
     :name="alt ?? id"
+    :placeholder-variant
     :square
     :class="cn(!square && 'rounded-full', 'size-full', props.class)"
   />

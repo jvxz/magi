@@ -33,10 +33,14 @@ export interface AvatarPlaceholderProps {
   square?: boolean
   size?: number | string
   isLoading?: boolean
+  placeholderVariant?: 'default' | 'empty' | 'empty-strong'
+  class?: HTMLAttributes['class']
 }
 </script>
 
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue'
+
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<AvatarPlaceholderProps>(), {
@@ -45,6 +49,7 @@ const props = withDefaults(defineProps<AvatarPlaceholderProps>(), {
     'oklch(from var(--primary) calc(l + 0.12) c h)',
     'oklch(from var(--primary) calc(l + 0.24) c h)',
   ],
+  placeholderVariant: 'default',
   square: true,
 })
 
@@ -88,7 +93,8 @@ function generateColors(name: string, colors: string[]) {
     :class="square ? 'rounded' : 'rounded-full'"
   />
   <svg
-    v-else
+    v-else-if="placeholderVariant === 'default'"
+    :class="props.class"
     v-bind="$attrs"
     :viewBox="`0 0 ${SIZE} ${SIZE}`"
     fill="none"
@@ -124,4 +130,14 @@ function generateColors(name: string, colors: string[]) {
       </filter>
     </defs>
   </svg>
+  <div
+    v-else
+    :class="
+      cn(
+        'rounded-sm border border-dashed bg-transparent',
+        placeholderVariant === 'empty' ? 'border-border' : 'border-border-strong',
+        props.class,
+      )
+    "
+  />
 </template>
