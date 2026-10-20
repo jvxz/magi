@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<SortSelectTriggerProps>(), {
     v-bind="props"
     :class="
       cn(
-        'relative -right-px peer rounded-r-0 border-r-transparent hover:border-r-border-strong not-active:data-[state=open]:border-r-border-strong z-1',
+        'relative -right-px peer rounded-r-0 border-r-transparent hover:border-r-border-strong data-[state=open]:border-r-border-strong z-1',
         props.class,
       )
     "

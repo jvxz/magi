@@ -65,7 +65,7 @@ const filteredCategories = computed(() =>
       >
         <UButton
           variant="ghost"
-          class="justify-start data-[active]:text-foreground active:bg-selected data-[active]:bg-selected hover:bg-hover data-[active]:anchor-name-item"
+          class="justify-start data-[active]:text-foreground data-[active]:bg-selected hover:bg-hover data-[active]:anchor-name-item"
         >
           <Icon :name="entry.icon" class="size-4" />
           {{ upperFirst(entry.title) }}
