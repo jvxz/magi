@@ -3,13 +3,13 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-import { UCard, UCardGroupItem } from '#components'
+import { UCardGroupItem, UCardRoot } from '#components'
 
 import type { UCardGroupItemProps } from '../card-group/item.vue'
 
 export interface URoomShowcaseCardRootProps extends PrimitiveProps, UCardGroupItemProps {
   room?: MaybeRoomOrId | undefined
-  class?: string
+  class?: HTMLAttributes['class']
   group?: boolean
 }
 
@@ -23,7 +23,7 @@ const forwarded = useForwardProps(delegated)
 
 <template>
   <component
-    :is="group ? UCardGroupItem : UCard"
+    :is="group ? UCardGroupItem : UCardRoot"
     v-bind="forwarded"
     variant="raised"
     :class="cn('flex-row', props.class)"

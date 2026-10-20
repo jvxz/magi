@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { EventType } from 'matrix-js-sdk'
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { injectEventListItemContext } from './event/generic.vue'
 

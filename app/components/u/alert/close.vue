@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { useForwardProps } from 'reka-ui'
 
-import type { ButtonProps } from '../button.vue'
+import type { UButtonProps } from '../button.vue'
 
-export interface UToastCloseProps extends ButtonProps {}
+export interface UAlertCloseProps extends UButtonProps {}
 
-const props = withDefaults(defineProps<UToastCloseProps>(), {
+const props = withDefaults(defineProps<UAlertCloseProps>(), {
   as: 'button',
 })
 

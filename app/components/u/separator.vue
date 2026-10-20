@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { SeparatorProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { useForwardPropsEmits } from 'reka-ui'
 

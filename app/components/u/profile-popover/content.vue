@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
 import { KnownMembership } from 'matrix-js-sdk'
 
-defineProps<{ class?: HTMLAttributes['class'] }>()
+export interface UProfilePopoverContentProps {
+  class?: HTMLAttributes['class']
+}
+
+defineProps<UProfilePopoverContentProps>()
 const { contentProps, manualRoom, open, referenceElement, user } = useProfilePopover()
 
 const { self } = useSelf()
@@ -50,7 +52,7 @@ function viewAvatar() {
       :reference="referenceElement ?? undefined"
       :class="cn('z-popover', $props.class)"
     >
-      <UCard
+      <UCardRoot
         class="p-0 border-none bg-popover gap-0 w-74 shadow-popover transition-transform duration-100 relative overflow-clip animate-in animate-ease-out data-[state=open]:slide-in-from-r-3"
       >
         <div class="rounded-t shrink-0 h-24 inset-0 absolute overflow-clip isolate">
@@ -137,7 +139,7 @@ function viewAvatar() {
 
           <UInput v-if="!isSelf" :placeholder="`Message ${displayName}`" :ui="{ input: 'text-xs bg-transparent' }" />
         </div>
-      </UCard>
+      </UCardRoot>
     </PopoverContent>
   </PopoverPortal>
 </template>

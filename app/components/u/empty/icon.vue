@@ -1,18 +1,15 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = withDefaults(
-  defineProps<
-    Omit<PrimitiveProps, 'asChild'> & {
-      name: string
-      class?: string
-      ui?: DefineClasses<'wrapper' | 'icon'>
-      variant?: 'naked' | 'circle'
-      size?: 'sm' | 'default' | 'lg'
-    }
-  >(),
-  { size: 'default', variant: 'circle' },
-)
+export type UEmptyIconProps = Omit<PrimitiveProps, 'asChild'> & {
+  name: string
+  class?: HTMLAttributes['class']
+  ui?: DefineClasses<'wrapper' | 'icon'>
+  variant?: 'naked' | 'circle'
+  size?: 'sm' | 'default' | 'lg'
+}
+
+const props = withDefaults(defineProps<UEmptyIconProps>(), { size: 'default', variant: 'circle' })
 
 const delegated = reactiveOmit(props, ['class', 'name', 'variant', 'size', 'ui'])
 </script>

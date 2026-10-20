@@ -1,7 +1,9 @@
+import type { AlertVariants } from '~/components/u/alert/root.vue'
+
 interface AppNotificationOptions {
   emitToast?: boolean
   persist?: boolean
-  variant?: AlertVariants
+  variant?: AlertVariants['variant']
 }
 
 export const useNotifications = createSharedComposable(() => {

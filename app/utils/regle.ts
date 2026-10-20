@@ -1,7 +1,6 @@
 import type { Maybe } from '@regle/core'
 
 import { required, withAsync, withMessage } from '@regle/rules'
-import { useQueryClient } from '@tanstack/vue-query'
 
 export const regleUserIdDefs = {
   required: withMessage(required, 'User ID is required'),

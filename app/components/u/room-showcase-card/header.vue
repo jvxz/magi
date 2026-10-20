@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { UCardGroupItemHeaderProps } from '../card-group/item-header.vue'
 
-const props = defineProps<UCardGroupItemHeaderProps>()
+export type URoomShowcaseCardHeaderProps = UCardGroupItemHeaderProps
+
+const props = defineProps<URoomShowcaseCardHeaderProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

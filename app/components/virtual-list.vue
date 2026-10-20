@@ -1,6 +1,4 @@
 <script lang="ts" setup generic="T">
-import type { HTMLAttributes } from 'vue'
-
 const props = defineProps<{
   items: T[]
   estimateSize: (item: T, index: number) => number

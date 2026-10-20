@@ -1,0 +1,51 @@
+<script setup lang="ts">
+import type { ListboxGroupProps } from 'reka-ui'
+
+import { provideCommandGroupContext, useCommand } from './root.vue'
+
+export type UCommandGroupProps = ListboxGroupProps & {
+  class?: HTMLAttributes['class']
+  heading?: string
+  icon?: string
+}
+
+const props = defineProps<UCommandGroupProps>()
+
+const delegated = reactiveOmit(props, 'class')
+
+const { allGroups, filterState } = useCommand()
+const id = useId()
+
+const isRender = computed(() => (!filterState.search ? true : filterState.filtered.groups.has(id)))
+
+provideCommandGroupContext({ id })
+onMounted(() => {
+  if (!allGroups.value.has(id)) allGroups.value.set(id, new Set())
+})
+onUnmounted(() => {
+  allGroups.value.delete(id)
+})
+</script>
+
+<template>
+  <ListboxGroup
+    v-bind="delegated"
+    :id="id"
+    :class="
+      cn(
+        'mb-1 overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-0 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-items]]:space-y-1',
+        props.class,
+      )
+    "
+    :hidden="isRender ? undefined : true"
+  >
+    <ListboxGroupLabel
+      v-if="heading"
+      class="text-xs text-muted-foreground font-medium my-0.5 px-2 py-1.5 flex gap-1 items-center"
+    >
+      <Icon v-if="icon" :name="icon" />
+      {{ heading }}
+    </ListboxGroupLabel>
+    <slot />
+  </ListboxGroup>
+</template>

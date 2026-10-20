@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { Component } from 'vue'
-
 import { DialogAvatar, DialogCodeViewer, DialogDeleteMessage, DialogInvite, DialogLeave } from '#components'
 
 const { dialogKey, open, state } = useGlobalDialog()

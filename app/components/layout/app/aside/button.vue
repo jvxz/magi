@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { ButtonProps } from '~/components/u/button.vue'
+import type { UButtonProps } from '~/components/u/button.vue'
 
-defineProps<ButtonProps & { tooltip?: string }>()
+defineProps<UButtonProps & { tooltip?: string }>()
 
 const [DefineButton, Button] = createReusableTemplate()
 </script>

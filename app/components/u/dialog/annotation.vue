@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = withDefaults(defineProps<PrimitiveProps & { class?: string }>(), {
+export type UDialogAnnotationProps = PrimitiveProps & { class?: HTMLAttributes['class'] }
+
+const props = withDefaults(defineProps<UDialogAnnotationProps>(), {
   as: 'p',
 })
 

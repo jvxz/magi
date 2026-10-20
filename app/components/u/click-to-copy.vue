@@ -1,8 +1,7 @@
 <script lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
-export interface ClickToCopyProps extends PrimitiveProps {
+export interface UClickToCopyProps extends PrimitiveProps {
   text?: string
   class?: HTMLAttributes['class']
   withTitle?: boolean
@@ -13,9 +12,13 @@ export interface ClickToCopyProps extends PrimitiveProps {
 </script>
 
 <script lang="ts" setup>
+export interface UClickToCopyEmits {
+  copy: [text: string]
+}
+
 defineOptions({ inheritAttrs: false })
 
-const props = withDefaults(defineProps<ClickToCopyProps>(), {
+const props = withDefaults(defineProps<UClickToCopyProps>(), {
   as: 'button',
   copiedDuration: 1000,
   side: 'top',
@@ -23,7 +26,7 @@ const props = withDefaults(defineProps<ClickToCopyProps>(), {
   withTitle: true,
 })
 
-const emit = defineEmits<{ copy: [text: string] }>()
+const emits = defineEmits<UClickToCopyEmits>()
 
 const { polite } = useAnnouncer()
 
@@ -35,7 +38,7 @@ async function onCopy() {
   if (!text) return
 
   await copy(text)
-  emit('copy', text)
+  emits('copy', text)
   polite('Copied text')
 }
 

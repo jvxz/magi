@@ -105,6 +105,11 @@ export default defineNuxtConfig({
         from: '@tanstack/vue-query',
         imports: ['useMutation', 'useQueryClient'],
       },
+      {
+        from: 'vue',
+        imports: ['HTMLAttributes'],
+        type: true,
+      },
     ],
   },
 

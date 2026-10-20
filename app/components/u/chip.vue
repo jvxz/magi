@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 export type UChipProps = PrimitiveProps & {
   show?: boolean
@@ -10,6 +9,8 @@ export type UChipProps = PrimitiveProps & {
   variant?: 'notification' | 'success' | 'warn' | 'danger'
   size?: 'lg' | 'default' | 'sm'
 }
+
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<UChipProps>(), {
   show: true,
@@ -47,7 +48,7 @@ const sizeClass = computed(() => {
 
 <template>
   <Primitive :class="cn('relative inline-flex items-center justify-center shrink-0', ui?.root)" data-slot="chip-root">
-    <Slot v-bind="{ ...$attrs }">
+    <Slot v-bind="$attrs">
       <slot />
     </Slot>
 

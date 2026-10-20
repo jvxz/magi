@@ -34,7 +34,7 @@ const dialogSrc = useResolveAvatarUrl(() => props.room.avatar_url, { size: 'full
             <span class="shrink-0"> {{ room.num_joined_members }} members </span>
 
             <template v-if="room.topic">
-              <UInlineSeparator />
+              <UInlineSeparatorRoot />
               <span>
                 {{ room.topic }}
               </span>

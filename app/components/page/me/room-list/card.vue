@@ -66,7 +66,7 @@ const to = computed<RouteLocationRaw | undefined>(() =>
               <USkeleton v-else class="rounded-sm h-1lh w-16" />
 
               <template v-if="topic">
-                <UInlineSeparator />
+                <UInlineSeparatorRoot />
                 <span>{{ topic }}</span>
               </template>
             </URoomShowcaseCardDescription>

@@ -20,7 +20,7 @@ const { sortState } = useSortRegion('notificationsPopover')
       :side-offset="8"
     >
       <div class="p-1 border-b flex shrink-0 w-full items-center left-px">
-        <USortSelect
+        <USortSelectComposite
           v-model:model-value="sortState"
           :ui="{ trigger: 'rounded-l-md', toggle: 'rounded-r-md', content: 'rounded-md' }"
           :side-offset="5"

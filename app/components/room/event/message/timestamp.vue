@@ -3,7 +3,7 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import type { NuxtTimeProps } from '#app'
 
-const props = defineProps<PrimitiveProps & { datetime: number; class?: string }>()
+const props = defineProps<PrimitiveProps & { datetime: number; class?: HTMLAttributes['class'] }>()
 
 const isOld = computed(() => {
   const yesterday = Temporal.Now.plainDateISO().subtract({ days: 1 })

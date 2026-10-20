@@ -49,7 +49,7 @@ const founder = useRoomFounder(() => props.space)
         </NuxtLink>
       </UShowcaseDetailsItem>
 
-      <UInlineSeparator />
+      <UInlineSeparatorRoot />
 
       <UTooltipRoot :disabled="isNil(creationTs)">
         <UTooltipTrigger as-child>
@@ -67,7 +67,7 @@ const founder = useRoomFounder(() => props.space)
         </UTooltipContent>
       </UTooltipRoot>
 
-      <UInlineSeparator />
+      <UInlineSeparatorRoot />
 
       <UProfilePopoverTrigger
         v-if="founder"

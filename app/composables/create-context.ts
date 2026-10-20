@@ -2,10 +2,6 @@
 // replace `Symbol(symbolDescription)` with `Symbol.for(symbolDescription)` + drop 2nd param + make `providerComponentName` string-only
 // `Symbol.for` because plain `Symbol` breaks in dev with HMR
 
-import type { InjectionKey } from 'vue'
-
-import { inject, provide } from 'vue'
-
 export function createContext<ContextValue>(providerComponentName: string) {
   const symbolDescription = `${providerComponentName}Context`
 

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { SSOAction } from 'matrix-js-sdk'
 
-import type { ButtonProps } from '~/components/u/button.vue'
+import type { UButtonProps } from '~/components/u/button.vue'
 
-export interface AuthSsoRedirectButtonProps extends ButtonProps {
+export interface AuthSsoRedirectButtonProps extends UButtonProps {
   action: SSOAction
   homeserver: string | undefined
 }

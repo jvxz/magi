@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import type { ButtonProps } from '~/components/u/button.vue'
+import type { UButtonProps } from '~/components/u/button.vue'
 
-const props = defineProps<Omit<ButtonProps, 'variant'>>()
+export type UAsideListButtonProps = Omit<UButtonProps, 'variant'>
+
+const props = defineProps<UAsideListButtonProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

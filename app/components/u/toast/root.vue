@@ -3,24 +3,25 @@ import type { ToastRootEmits, ToastRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-import type { ButtonProps } from '../button.vue'
+import type { AlertVariants } from '../alert/root.vue'
+import type { UButtonProps } from '../button.vue'
 
-export type UToastProps = ToastRootProps & {
-  class?: string
+export type UToastRootProps = ToastRootProps & {
+  class?: HTMLAttributes['class']
   title?: MaybeRefOrGetter<string>
   description?: MaybeRefOrGetter<string>
   icon?: string
-  variant?: AlertVariants
-  actions?: (ButtonProps & { label: string })[]
+  variant?: AlertVariants['variant']
+  actions?: (UButtonProps & { label: string })[]
   withClose?: boolean
 }
-export type UToastEmits = ToastRootEmits
+export type UToastRootEmits = ToastRootEmits
 
-const props = withDefaults(defineProps<UToastProps>(), {
+const props = withDefaults(defineProps<UToastRootProps>(), {
   variant: 'default',
   withClose: true,
 })
-const emits = defineEmits<UToastEmits>()
+const emits = defineEmits<UToastRootEmits>()
 
 const picked = reactivePick(props, ['as', 'defaultOpen', 'open', 'duration', 'type'])
 const forwarded = useForwardPropsEmits(picked, emits)
@@ -34,7 +35,7 @@ const forwarded = useForwardPropsEmits(picked, emits)
           'flex flex-row gap-2 toast-anim p-4 w-full relative',
           'data-[swipe=move]:translate-x-(--reka-toast-swipe-move-x)',
           'data-[swipe=cancel]:(translate-x-0 transition-transform)',
-          $props.class,
+          props.class,
         )
       "
       :variant

@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import type { CollapsibleContentEmits, CollapsibleContentProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
-const props = defineProps<CollapsibleContentProps & { class?: HTMLAttributes['class']; bar?: boolean }>()
-const emits = defineEmits<CollapsibleContentEmits>()
+export type UCollapsibleContentProps = CollapsibleContentProps & { class?: HTMLAttributes['class']; bar?: boolean }
+export type UCollapsibleContentEmits = CollapsibleContentEmits
+
+const props = defineProps<UCollapsibleContentProps>()
+const emits = defineEmits<UCollapsibleContentEmits>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>

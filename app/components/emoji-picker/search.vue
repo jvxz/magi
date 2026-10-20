@@ -36,7 +36,6 @@ function onKeydown(e: KeyboardEvent) {
 
 <template>
   <input
-    v-bind="$attrs"
     ref="inputEl"
     v-model="modelValue"
     :disabled="$props.disabled"
@@ -47,7 +46,6 @@ function onKeydown(e: KeyboardEvent) {
     aria-label="Search emoji"
     :aria-activedescendant="activeEmoji ? getEmojiKey(scopeId, activeEmoji) : undefined"
     data-slot="emoji-picker-search"
-    :class="$attrs.class"
     @keydown="onKeydown"
   />
 </template>

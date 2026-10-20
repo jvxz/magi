@@ -1,6 +1,5 @@
 <script lang="ts">
 import type { MatrixEvent } from 'matrix-js-sdk'
-import type { PropType } from 'vue'
 
 import { UBlockquote } from '#components'
 

@@ -4,7 +4,7 @@ import type { PrimitiveProps } from 'reka-ui'
 const props = defineProps<
   PrimitiveProps & {
     classes?: DefineClasses<'container' | 'shell'>
-    class?: string
+    class?: HTMLAttributes['class']
   }
 >()
 

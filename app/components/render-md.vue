@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
-import type { UCodeblockRootProps } from './u/codeblock.vue'
+import type { UCodeblockProps } from './u/codeblock.vue'
 
 const props = defineProps<{
   content: string | undefined
   inline?: boolean
-  codeblockUi?: UCodeblockRootProps['ui']
+  codeblockUi?: UCodeblockProps['ui']
   class?: HTMLAttributes['class']
 }>()
 

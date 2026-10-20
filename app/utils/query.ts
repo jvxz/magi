@@ -1,5 +1,3 @@
-import type { MaybeRefOrGetter } from 'vue'
-
 import { experimental_createQueryPersister } from '@tanstack/query-persist-client-core'
 import { toRef } from '@vueuse/core'
 

@@ -21,9 +21,9 @@ export type CardGroupItemVariants = VariantProps<typeof cardGroupItemVariants>
 <script lang="ts" setup>
 import type { VariantProps } from 'tailwind-variants'
 
-import type { UCardProps } from '../card/index.vue'
+import type { UCardRootProps } from '../card/root.vue'
 
-export interface UCardGroupItemProps extends UCardProps {
+export interface UCardGroupItemProps extends UCardRootProps {
   variant?: CardGroupItemVariants['variant']
   interactive?: boolean
   spacing?: CardGroupItemVariants['spacing']
@@ -37,7 +37,7 @@ const as = computed(() => (props.as ? props.as : props.interactive ? 'button' : 
 </script>
 
 <template>
-  <UCard
+  <UCardRoot
     v-bind="delegated"
     :as
     :data-interactive="interactive ? '' : undefined"
@@ -45,5 +45,5 @@ const as = computed(() => (props.as ? props.as : props.interactive ? 'button' : 
     data-slot="card-group-item"
   >
     <slot />
-  </UCard>
+  </UCardRoot>
 </template>

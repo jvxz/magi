@@ -1,3 +1,7 @@
+<script lang="ts">
+export const INJECTION_KEY__DISPLAY_MODE: InjectionKey<Ref<AsideDisplayMode>> = Symbol('display-mode')
+</script>
+
 <script lang="ts" setup>
 const route = useRoute()
 const toggleValue = shallowRef('home')
@@ -9,7 +13,7 @@ const toggle = computed({
 })
 
 const displayMode = useScopedLocalStorage<AsideDisplayMode>('asideDisplayMode', 'all')
-provide('displayMode', displayMode)
+provide(INJECTION_KEY__DISPLAY_MODE, displayMode)
 
 const rooms = useRooms(
   (room, axes) => {

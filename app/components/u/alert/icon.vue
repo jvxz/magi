@@ -3,13 +3,15 @@ import type { PrimitiveProps } from 'reka-ui'
 
 import { Icon } from '#components'
 
-const props = defineProps<PrimitiveProps & { name: string; class?: string }>()
+export type UAlertIconProps = PrimitiveProps & { name: string; class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAlertIconProps>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <Primitive v-bind="delegated" :class="cn('flex shrink-0 h-full pt-0.75', $props.class)" data-slot="alert-icon">
+  <Primitive v-bind="delegated" :class="cn('flex shrink-0 h-full pt-0.75', props.class)" data-slot="alert-icon">
     <Icon :name />
   </Primitive>
 </template>

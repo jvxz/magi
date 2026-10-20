@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import type { ToastDescriptionProps } from 'reka-ui'
 
-import type { AlertDescriptionProps } from '../alert/alert-description.vue'
+import type { UAlertDescriptionProps } from '../alert/description.vue'
 
-defineProps<ToastDescriptionProps & AlertDescriptionProps & { class?: string }>()
+export type UToastDescriptionProps = ToastDescriptionProps &
+  UAlertDescriptionProps & { class?: HTMLAttributes['class'] }
+
+defineProps<UToastDescriptionProps>()
 </script>
 
 <template>

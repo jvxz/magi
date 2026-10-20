@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import type { SliderRootEmits, SliderRootProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-const props = defineProps<SliderRootProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<SliderRootEmits>()
+export type USliderProps = SliderRootProps & { class?: HTMLAttributes['class'] }
+export type USliderEmits = SliderRootEmits
 
-const delegatedProps = reactiveOmit(props, 'class')
+const props = defineProps<USliderProps>()
+const emits = defineEmits<USliderEmits>()
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const delegated = reactiveOmit(props, 'class')
+
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

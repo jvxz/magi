@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { UCardGroupItemDescriptionProps } from '../card-group/item-description.vue'
 
-const props = withDefaults(defineProps<UCardGroupItemDescriptionProps>(), { as: 'p' })
+export type URoomShowcaseCardDescriptionProps = UCardGroupItemDescriptionProps
+
+const props = withDefaults(defineProps<URoomShowcaseCardDescriptionProps>(), { as: 'p' })
 
 const delegated = reactiveOmit(props, 'class')
 </script>

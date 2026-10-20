@@ -1,0 +1,30 @@
+<script setup lang="ts">
+import type { ComboboxAnchorProps } from 'reka-ui'
+
+import { AutocompleteAnchor, useForwardProps } from 'reka-ui'
+
+export type UAutocompleteAnchorProps = ComboboxAnchorProps & { class?: HTMLAttributes['class'] }
+
+const props = defineProps<UAutocompleteAnchorProps>()
+
+const delegated = reactiveOmit(props, 'class')
+
+const forwarded = useForwardProps(delegated)
+</script>
+
+<template>
+  <AutocompleteAnchor
+    data-slot="autocomplete-anchor"
+    v-bind="forwarded"
+    :class="
+      cn(
+        staticBase({ variant: 'default' }),
+        interactiveBase({ size: 'default' }),
+        'flex items-center justify-between pr-0 data-placeholder:text-muted-foreground',
+        props.class,
+      )
+    "
+  >
+    <slot />
+  </AutocompleteAnchor>
+</template>

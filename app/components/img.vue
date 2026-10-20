@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { HTMLAttributes, ImgHTMLAttributes } from 'vue'
+import type { ImgHTMLAttributes } from 'vue'
 
 import { useForwardPropsEmits } from 'reka-ui'
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
-const props = defineProps<PrimitiveProps & { class?: string; icon?: string }>()
+const props = defineProps<PrimitiveProps & { class?: HTMLAttributes['class']; icon?: string }>()
 
 const delegated = reactiveOmit(props, 'class')
 </script>
@@ -12,7 +12,7 @@ const delegated = reactiveOmit(props, 'class')
     :class="
       cn(
         'border-b bg-surface shrink-0 h-header-height w-full top-0 gap-2 sticky z-20 px-4 flex items-center',
-        $props.class,
+        props.class,
       )
     "
   >
