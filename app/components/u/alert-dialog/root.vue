@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { AlertDialogEmits, AlertDialogProps } from 'reka-ui'
 
-import { createContext, useForwardPropsEmits } from 'reka-ui'
+import { useForwardPropsEmits } from 'reka-ui'
 
 export const [injectAlertDialogPreventClose, provideAlertDialogPreventClose] = createContext<{
   preventClose: Ref<boolean>

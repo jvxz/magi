@@ -1,6 +1,4 @@
 <script lang="ts">
-import { createContext } from 'reka-ui'
-
 export interface SettingsContentDevicesContext {
   deleteDevice: (deviceId: string) => void
   renameDevice: (deviceId: string) => void
