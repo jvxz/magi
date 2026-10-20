@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 // oxlint-disable-next-line import/no-unassigned-import
 import 'microlighter/micro-lighter-element.min.js'
-import type { UCardProps } from './card/index.vue'
+import type { UCardProps } from './card/root.vue'
 export interface UCodeblockRootProps extends UCardProps {
   lang?: string
   input: string
@@ -32,7 +32,7 @@ const { isYOverflowed } = useElementOverflow(microlighterRoot)
 </script>
 
 <template>
-  <UCard
+  <UCardRoot
     v-bind="delegated"
     data-slot="codeblock-root"
     :class="cn('p-0 bg-surface gap-0 shadow-none text-sm overflow-clip', props.class, ui?.root)"
@@ -84,5 +84,5 @@ const { isYOverflowed } = useElementOverflow(microlighterRoot)
         <pre class="p-2"><code v-text="code"/></pre>
       </micro-lighter>
     </div>
-  </UCard>
+  </UCardRoot>
 </template>

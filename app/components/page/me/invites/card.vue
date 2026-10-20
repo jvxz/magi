@@ -58,8 +58,8 @@ async function handleJoin() {
         <URoomShowcaseCardHeader>
           <URoomShowcaseCardTitle class="shrink-0 gap-1">
             <span>{{ resolveRoomName(inviteRoom) }}</span>
-            <UTooltipIcon v-if="isDirectInvite" name="direct" class="text-muted-foreground size-3.5" />
-            <UTooltipIcon v-if="isEncrypted(inviteRoom)" name="encrypted" class="text-muted-foreground size-3.5" />
+            <UTooltipIconRoot v-if="isDirectInvite" name="direct" class="text-muted-foreground size-3.5" />
+            <UTooltipIconRoot v-if="isEncrypted(inviteRoom)" name="encrypted" class="text-muted-foreground size-3.5" />
             <!-- <UBadge v-if="isDirectInvite" size="sm"> Direct Room </UBadge> -->
           </URoomShowcaseCardTitle>
 

@@ -42,12 +42,12 @@ const noRoomsAvailable = computed(() => !isLoading.value && !error.value && !con
     <USkeleton v-for="i in Math.max(1, count ?? 4)" :key="i" class="h-18 w-full" />
   </template>
 
-  <UCard
+  <UCardRoot
     v-else-if="error"
     v-bind="$props"
     variant="danger"
     :class="cn('w-full relative p-3.5 border flex-row gap-3.5 ', $attrs.class)"
   >
     Unable to get rooms. Please try again later
-  </UCard>
+  </UCardRoot>
 </template>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UCardProps } from '~/components/u/card/index.vue'
+import type { UCardProps } from '~/components/u/card/root.vue'
 
 import type { SettingsFormPrimitiveProps } from '../form/primitive.vue'
 

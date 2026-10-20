@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UCardProps } from './card/index.vue'
+import type { UCardProps } from './card/root.vue'
 
 export interface UCodespanProps extends Omit<UCardProps, 'variant'> {}
 
@@ -11,7 +11,7 @@ const delegated = reactiveOmit(props, ['class'])
 </script>
 
 <template>
-  <UCard
+  <UCardRoot
     v-bind="delegated"
     :class="
       cn(
@@ -22,5 +22,5 @@ const delegated = reactiveOmit(props, ['class'])
     data-slot="codespan"
   >
     <slot />
-  </UCard>
+  </UCardRoot>
 </template>

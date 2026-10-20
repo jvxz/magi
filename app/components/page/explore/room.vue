@@ -25,7 +25,7 @@ const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => 
       <div v-else class="border border-border rounded-t-lg border-b-none bg-surface-top size-full"></div>
     </div>
 
-    <UCard
+    <UCardRoot
       variant="raised"
       class="mt-2/5 p-4 pt-1/8 border border-t-0 rounded-b-lg rounded-t-0 flex flex-col gap-2 relative z-10 isolate"
     >
@@ -57,6 +57,6 @@ const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => 
           {{ room ? 'members' : '' }}
         </p>
       </div>
-    </UCard>
+    </UCardRoot>
   </div>
 </template>

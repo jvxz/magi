@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UCardProps } from '../card/index.vue'
+import type { UCardProps } from '../card/root.vue'
 
 export interface UCardGroupRootProps extends UCardProps {
   ghost?: boolean
@@ -14,12 +14,12 @@ const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <UCard
+  <UCardRoot
     v-bind="delegated"
     :data-spacing="spacing"
     :class="cn('p-0 gap-0 of-clip', ghost && 'border-0 bg-transparent shadow-none', props.class)"
     data-slot="card-group-root"
   >
     <slot />
-  </UCard>
+  </UCardRoot>
 </template>

@@ -92,7 +92,7 @@ provideSettingsContentDevicesContext({
                     <Icon :name="ICON__RELOAD" />
                   </UButton>
 
-                  <USortSelect
+                  <USortSelectComposite
                     v-model:model-value="sortState"
                     :disabled="!!error"
                     :default-value="{ dir: 'asc', option: 'last-active' }"
