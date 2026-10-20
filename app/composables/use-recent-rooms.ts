@@ -1,9 +1,11 @@
-type RecentRoomEntry = ContextMenuRegions['homeRoom']['room'] & {
+export type RecentRoomEntry = ContextMenuRegions['homeRoom']['room'] & {
   lastVisited: number
 }
 
 type RecentRoomsState = Map<string, RecentRoomEntry>
 type RecentRoomsBlacklistedState = Set<string>
+
+const MAX_RECENT_ROOMS = 50
 
 export const useRecentRooms = createGlobalState(() => {
   const recentRooms = useScopedLocalStorage<RecentRoomsState>('recentRooms', new Map(), {
@@ -28,10 +30,16 @@ export const useRecentRooms = createGlobalState(() => {
   function bumpRecentRoom(payload: ContextMenuRegions['homeRoom']['room']) {
     if (isRoomBlacklisted(payload.roomId)) return
 
+    recentRooms.value.delete(payload.roomId)
     recentRooms.value.set(payload.roomId, {
       ...payload,
       lastVisited: Date.now(),
     })
+
+    if (recentRooms.value.size > MAX_RECENT_ROOMS) {
+      const ordered = orderBy([...recentRooms.value], [([, v]) => v.lastVisited], ['desc']).slice(MAX_RECENT_ROOMS)
+      for (const [key] of ordered) recentRooms.value.delete(key)
+    }
 
     triggerRef(recentRooms)
   }

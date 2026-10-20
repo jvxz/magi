@@ -1,8 +1,15 @@
 import type { VariantProps } from 'tailwind-variants'
 
 // @unocss-include
+export const interactionStates = tv({
+  base: 'cursor-pointer text-start outline-none select-none focus-visible:(ring-ring/40 ring-[3px]) disabled:(pointer-events-none opacity-50) hover:disabled:cursor-not-allowed',
+})
+
 export const interactiveBase = tv({
-  base: 'font-medium cursor-pointer shadow-none select-none focus-visible:ring-ring/40 focus-visible:ring-[3px] aria-invalid:border-danger shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none transition-transform duration-75',
+  base: [
+    interactionStates(),
+    'font-medium shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none transition-transform duration-75',
+  ],
   compoundVariants: [
     {
       class: 'h-fit py-0',
@@ -57,7 +64,7 @@ export const staticBase = tv({
 })
 
 export const popoverContentBase = tv({
-  base: 'shadow z-popover w-52 overflow-hidden',
+  base: 'z-popover w-52 overflow-hidden',
   defaultVariants: {
     spacing: 'default',
     variant: 'default',
@@ -96,7 +103,7 @@ export type PopoverItemVariants = VariantProps<typeof popoverItemBase>
 export const tooltipContentBase = tv({
   base: [
     popoverContentBase({ variant: 'raised' }),
-    'will-change-transform relative overflow-visible w-fit will-change-opacity border-border-strong bg-surface-top z-tooltip p-0 px-3 py-1.5 text-sm text-balance font-medium shadow',
+    'will-change-transform relative overflow-visible w-fit will-change-opacity border-border-strong bg-surface-top z-tooltip p-0 px-3 py-1.5 text-sm text-balance font-medium',
   ],
 })
 

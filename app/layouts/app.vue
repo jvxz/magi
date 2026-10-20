@@ -35,7 +35,7 @@
               </SplitterResizeHandle>
               <SplitterPanel id="aside-extra-splitter-panel-2">
                 <div class="border-t flex flex-col h-full">
-                  <div id="app-page-header" />
+                  <div id="app-page-header" class="shrink-0" />
                   <slot />
                 </div>
               </SplitterPanel>

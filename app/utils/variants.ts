@@ -129,3 +129,17 @@ export const buttonCardVariants = tv({
 })
 
 export type ButtonCardVariants = VariantProps<typeof buttonCardVariants>
+
+export const collapsibleTriggerVariants = tv({
+  base: 'w-full justify-start',
+  defaultVariants: {
+    variant: 'ghost',
+  },
+  extend: buttonVariants,
+  variants: {
+    variant: {
+      ghost: 'data-[state=open]:(bg-selected hover:bg-selected) text-foreground',
+    },
+  },
+})
+export type CollapsibleTriggerVariants = VariantProps<typeof collapsibleTriggerVariants>

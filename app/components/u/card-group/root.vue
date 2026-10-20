@@ -17,7 +17,7 @@ const delegated = reactiveOmit(props, 'class')
   <UCard
     v-bind="delegated"
     :data-spacing="spacing"
-    :class="cn(ghost && 'p-0 border-0 bg-transparent shadow-none', props.class)"
+    :class="cn('p-0 gap-0 of-clip', ghost && 'border-0 bg-transparent shadow-none', props.class)"
     data-slot="card-group-root"
   >
     <slot />

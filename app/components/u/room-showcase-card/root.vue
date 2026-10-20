@@ -5,19 +5,15 @@ import { useForwardProps } from 'reka-ui'
 
 import { UCard, UCardGroupItem } from '#components'
 
-const props = withDefaults(
-  defineProps<
-    PrimitiveProps & {
-      room?: MaybeRoomOrId | undefined
-      class?: string
-      dynamicStyles?: boolean
-      group?: boolean
-    }
-  >(),
-  {
-    dynamicStyles: false,
-  },
-)
+import type { UCardGroupItemProps } from '../card-group/item.vue'
+
+export interface URoomShowcaseCardRootProps extends PrimitiveProps, UCardGroupItemProps {
+  room?: MaybeRoomOrId | undefined
+  class?: string
+  group?: boolean
+}
+
+const props = defineProps<URoomShowcaseCardRootProps>()
 
 const room = useRoom(() => props.room)
 
@@ -30,14 +26,7 @@ const forwarded = useForwardProps(delegated)
     :is="group ? UCardGroupItem : UCard"
     v-bind="forwarded"
     variant="raised"
-    :class="
-      cn(
-        'w-full relative h-13 border flex-row gap-3.5',
-        dynamicStyles &&
-          'hover:(border-border-strong bg-hover) data-[context-menu-open]:(border-border-strong bg-hover)',
-        props.class,
-      )
-    "
+    :class="cn('flex-row', props.class)"
     data-slot="room-showcase-card-root"
   >
     <slot :room />

@@ -1,4 +1,17 @@
+<script lang="ts">
+export interface SpaceMembersListContext {
+  inputQuery: Ref<string>
+  spaceId: ComputedRef<string | undefined>
+  filteredMembers: ComputedRef<RoomMember[]>
+}
+
+export const [injectSpaceMembersListContext, provideSpaceMembersListContext] =
+  createContext<SpaceMembersListContext>('SpaceMembersList')
+</script>
+
 <script lang="ts" setup>
+import type { RoomMember } from 'matrix-js-sdk'
+
 definePageMeta({
   layout: 'app',
   name: 'space-members',
@@ -12,23 +25,18 @@ const cachedCount = useCachedCount(
   () => (isLoaded.value ? Math.min(24, members.value.length) : undefined),
   4,
 )
-const invitedMemberCount = useRoomComputed(spaceId, r => r?.getInvitedMemberCount())
-const creator = useRoomComputed(spaceId, r => r?.getCreator())
 
-const { openDialog } = useGlobalDialog()
-
-const inputQuery = useUrlSearchParams('history', {
+const params = useUrlSearchParams('history', {
   initialValue: {
     q: '',
   },
   removeFalsyValues: true,
 })
-const hasQuery = computed(() => !!inputQuery.q.trim().length)
-// const inputPlaceholder = computed(() =>
-//   members.value
-//     ? `Search ${members.value.length} ${handlePlural(members.value.length, 'members', 'member')}`
-//     : 'Search members',
-// )
+const inputQuery = computed({
+  get: () => params.q,
+  set: value => (params.q = value),
+})
+const hasQuery = computed(() => !!inputQuery.value.trim().length)
 
 const input = useTemplateRef('input')
 useAutoType(() => input.value?.$el as HTMLElement)
@@ -37,7 +45,7 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
 
 const filteredMembers = useFilter(members, {
   keys: ['name', 'userId'],
-  query: () => inputQuery.q,
+  query: inputQuery,
 })
 
 const isQueryEmpty = computed(
@@ -49,6 +57,12 @@ const isQueryEmpty = computed(
     // no results
     filteredMembers.value.length === 0,
 )
+
+provideSpaceMembersListContext({
+  filteredMembers,
+  inputQuery,
+  spaceId,
+})
 </script>
 
 <template>
@@ -62,32 +76,12 @@ const isQueryEmpty = computed(
   <div ref="scrollEl" class="py-page-y-padding h-full relative overflow-y-scroll scrollbar-gutter-stable">
     <UShowcaseRoot>
       <div class="flex items-center justify-between">
-        <UShowcaseHeader>
-          <UShowcaseTitle>
-            <span>Members</span>
-          </UShowcaseTitle>
-
-          <UShowcaseDetails>
-            <UShowcaseDetailsItem>
-              <Icon :name="ICON__MEMBER_COUNT" />
-              <span>{{ filteredMembers.length }} joined</span>
-            </UShowcaseDetailsItem>
-
-            <template v-if="!hasQuery">
-              <UInlineSeparator />
-              <UShowcaseDetailsItem>
-                <Icon :name="ICON__INVITE" />
-                <span>{{ invitedMemberCount }} invited</span>
-              </UShowcaseDetailsItem>
-            </template>
-            <p v-else class="text-muted-foreground">(filtered)</p>
-          </UShowcaseDetails>
-        </UShowcaseHeader>
+        <PageSpaceMembersHeader :space-id :filtered-members />
 
         <div class="self-end">
           <UInput
             ref="input"
-            v-model:model-value="inputQuery.q"
+            v-model:model-value="inputQuery"
             variant="raised"
             class="w-64"
             placeholder="Search..."
@@ -105,69 +99,21 @@ const isQueryEmpty = computed(
             v-slot="{ item: member, index }"
             :items="filteredMembers"
             :scroll-el="scrollEl"
-            :estimate-size="(_, i) => (i ? 57 : 40)"
+            :estimate-size="() => 72"
             :get-item-key="member => member.userId"
-            :gap="16"
-            row-class="flex flex-col gap-4"
+            :gap="0"
+            row-class="flex flex-col"
           >
             <UCardGroupSeparator v-if="index" />
 
-            <UCardGroupItem variant="raised">
-              <div class="flex gap-2 items-center">
-                <button
-                  class="p-0 shrink-0 cursor-pointer relative of-clip"
-                  @click="
-                    openDialog('avatar', {
-                      type: 'roomMember',
-                      member,
-                      label: resolveUserName(member),
-                      room: spaceId!,
-                    })
-                  "
-                >
-                  <MatrixRoomMemberAvatar
-                    class="rounded-sm size-10"
-                    :room="spaceId"
-                    :member
-                    square
-                    image-size="small"
-                  />
-
-                  <div aria-hidden="true" class="size-full inset-0 absolute hover:bg-hover-overlay" />
-                </button>
-
-                <UCardGroupItemHeader class="gap-1 justify-center">
-                  <UCardGroupItemTitle as="div" :title="resolveUserName(member)" class="flex gap-2 items-center">
-                    <p class="truncate">{{ resolveUserName(member) }}</p>
-
-                    <UTooltipRoot>
-                      <UTooltipTrigger as-child>
-                        <Icon v-if="member.userId === creator" class="text-primary" :name="ICON__CREATOR" />
-                      </UTooltipTrigger>
-                      <UTooltipContent> Owner </UTooltipContent>
-                    </UTooltipRoot>
-                  </UCardGroupItemTitle>
-
-                  <UCardGroupItemDescription :title="member.userId" class="flex items-center">
-                    <UClickToCopy side="right" as-child :with-title="false">
-                      <UButton variant="ghost-inline" class="text-xs font-normal shrink">
-                        <span class="truncate">{{ member.userId }}</span>
-                      </UButton>
-                    </UClickToCopy>
-
-                    <!-- spacer for copy indicator -->
-                    <span aria-hidden="true" class="shrink-0 w-4" />
-                  </UCardGroupItemDescription>
-                </UCardGroupItemHeader>
-              </div>
-            </UCardGroupItem>
+            <PageSpaceMembersCard :member />
           </VirtualList>
 
           <template v-else>
             <template v-for="i in cachedCount" :key="i">
               <UCardGroupSeparator v-if="i > 1" />
 
-              <UCardGroupItem variant="raised" class="h-2.5rem">
+              <UCardGroupItem variant="raised" class="h-18">
                 <USkeleton class="rounded-sm size-full" />
               </UCardGroupItem>
             </template>
