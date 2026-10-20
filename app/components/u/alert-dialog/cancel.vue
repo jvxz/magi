@@ -4,6 +4,7 @@ import type { HTMLAttributes } from 'vue'
 
 import type { ButtonProps } from '../button.vue'
 
+import { buttonVariants } from '../button.vue'
 import { injectAlertDialogPreventClose } from './root.vue'
 
 const props = withDefaults(defineProps<AlertDialogCancelProps & ButtonProps & { class?: HTMLAttributes['class'] }>(), {

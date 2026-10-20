@@ -3,6 +3,7 @@ import type { ToastRootEmits, ToastRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
+import type { AlertVariants } from '../alert/root.vue'
 import type { ButtonProps } from '../button.vue'
 
 export type UToastProps = ToastRootProps & {
@@ -10,7 +11,7 @@ export type UToastProps = ToastRootProps & {
   title?: MaybeRefOrGetter<string>
   description?: MaybeRefOrGetter<string>
   icon?: string
-  variant?: AlertVariants
+  variant?: AlertVariants['variant']
   actions?: (ButtonProps & { label: string })[]
   withClose?: boolean
 }

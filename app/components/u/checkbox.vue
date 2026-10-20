@@ -1,3 +1,14 @@
+<script lang="ts">
+import { buttonVariants } from './button.vue'
+
+export const checkboxVariants = tv({
+  base: [buttonVariants(), 'size-4 aspect-square p-0 rounded-sm'],
+  defaultVariants: {
+    variant: 'soft',
+  },
+})
+</script>
+
 <script lang="ts" setup>
 import type { CheckboxRootEmits, CheckboxRootProps } from 'reka-ui'
 

@@ -1,3 +1,27 @@
+<script lang="ts">
+import type { VariantProps } from 'tailwind-variants'
+
+export const toggleVariants = tv({
+  base: 'p-0 data-[state=off]:(hover:text-foreground hover:bg-hover) data-[state=on]:(bg-selected hover:bg-selected text-foreground)',
+  defaultVariants: {
+    size: 'default',
+    variant: 'ghost',
+  },
+  extend: interactiveBase,
+  variants: {
+    variant: {
+      ghost: interactiveBase({ variant: 'ghost' }),
+      outline: interactiveBase({
+        class: 'data-[state=on]:(border-border-strong)',
+        variant: 'outline',
+      }),
+    },
+  },
+})
+
+export type ToggleVariants = VariantProps<typeof toggleVariants>
+</script>
+
 <script setup lang="ts">
 import type { ToggleEmits, ToggleProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'

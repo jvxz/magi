@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 
+import { checkboxVariants } from '../checkbox.vue'
+
 const props = defineProps<PrimitiveProps & { class?: string }>()
 
 const delegated = reactiveOmit(props, 'class')

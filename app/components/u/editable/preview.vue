@@ -3,6 +3,7 @@ import type { EditablePreviewProps } from 'reka-ui'
 
 import { injectEditableRootContext } from 'reka-ui'
 
+import { buttonVariants } from '../button.vue'
 import { editableAreaLeadingIconInjectionKey } from './area.vue'
 
 export type UEditablePreviewProps = EditablePreviewProps & { class?: string }

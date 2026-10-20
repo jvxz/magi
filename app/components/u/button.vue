@@ -1,3 +1,28 @@
+<script lang="ts">
+import type { VariantProps } from 'tailwind-variants'
+
+export const buttonVariants = tv({
+  base: 'relative inline-flex items-center justify-center',
+  compoundVariants: [
+    {
+      class: 'h-fit py-0',
+      variant: 'link',
+    },
+    {
+      class: 'h-fit p-0',
+      variant: 'ghost-inline',
+    },
+  ],
+  defaultVariants: {
+    size: 'default',
+    variant: 'soft',
+  },
+  extend: interactiveBase,
+})
+
+export type ButtonVariants = VariantProps<typeof buttonVariants>
+</script>
+
 <script lang="ts" setup>
 import type { PrimitiveProps } from 'reka-ui'
 import type { ButtonHTMLAttributes, HTMLAttributes } from 'vue'
