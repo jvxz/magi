@@ -59,7 +59,7 @@ importers:
         version: 3.13.39(vue@3.6.0-rc.10(typescript-native-bridge@6.0.3-bridge.18.tsgo.7.0.2))
       '@tiptap/extension-emoji':
         specifier: ^3.31.4
-        version: 3.31.4(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4)(@tiptap/suggestion@3.31.4(@floating-ui/dom@1.8.0)(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4))(emojibase@17.0.0)
+        version: 3.31.4(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4)(@tiptap/suggestion@3.31.4(@floating-ui/dom@1.8.0)(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4))(emojibase@18.0.0)
       '@tiptap/extension-mention':
         specifier: ^3.31.4
         version: 3.31.4(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4)(@tiptap/suggestion@3.31.4(@floating-ui/dom@1.8.0)(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4))
@@ -79,11 +79,11 @@ importers:
         specifier: 3.4.7
         version: 3.4.7
       emojibase:
-        specifier: ^17.0.0
-        version: 17.0.0
+        specifier: ^18.0.0
+        version: 18.0.0
       emojibase-data:
-        specifier: ^17.0.0
-        version: 17.0.0(emojibase@17.0.0)
+        specifier: ^18.0.0
+        version: 18.0.0(emojibase@18.0.0)
       es-toolkit:
         specifier: ^1.52.0
         version: 1.52.0
@@ -5255,9 +5255,14 @@ packages:
     peerDependencies:
       emojibase: '*'
 
-  emojibase@17.0.0:
-    resolution: {integrity: sha512-bXdpf4HPY3p41zK5swVKZdC/VynsMZ4LoLxdYDE+GucqkFwzcM1GVc4ODfYAlwoKaf2U2oNNUoOO78N96ovpBA==}
-    engines: {node: '>=18.12.0'}
+  emojibase-data@18.0.0:
+    resolution: {integrity: sha512-TPPRRYv2zPd0jKI+pTpMquwWNZXYAsC3IVsCMeg2X8y8fEzKwOks4/5bz0YavF5r6d71aGPpb6oDnUEwSLLMoA==}
+    peerDependencies:
+      emojibase: '*'
+
+  emojibase@18.0.0:
+    resolution: {integrity: sha512-5PG+EEt5zQ9qvqdHZw61+T9iz96g+r621QS/w8jEzPg+3mjzAdjl8LPLc+e9ABv/yboNfMwEair7aK9qKnwAbQ==}
+    engines: {node: '>=20.0.0'}
 
   empathic@2.0.1:
     resolution: {integrity: sha512-YGRs8knHhKHVShLkFET/rWAU8kmHbOV5LwN938RHI0pljAJ1Gf6SzXsSmRaEzcXTtOOmVqJ5+WtQPL5uigY50Q==}
@@ -12572,13 +12577,13 @@ snapshots:
     dependencies:
       '@tiptap/extensions': 3.31.4(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4)
 
-  '@tiptap/extension-emoji@3.31.4(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4)(@tiptap/suggestion@3.31.4(@floating-ui/dom@1.8.0)(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4))(emojibase@17.0.0)':
+  '@tiptap/extension-emoji@3.31.4(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4)(@tiptap/suggestion@3.31.4(@floating-ui/dom@1.8.0)(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4))(emojibase@18.0.0)':
     dependencies:
       '@tiptap/core': 3.31.4(@tiptap/pm@3.31.4)
       '@tiptap/pm': 3.31.4
       '@tiptap/suggestion': 3.31.4(@floating-ui/dom@1.8.0)(@tiptap/core@3.31.4(@tiptap/pm@3.31.4))(@tiptap/pm@3.31.4)
       emoji-regex: 10.6.0
-      emojibase-data: 17.0.0(emojibase@17.0.0)
+      emojibase-data: 17.0.0(emojibase@18.0.0)
       is-emoji-supported: 0.0.5
     transitivePeerDependencies:
       - emojibase
@@ -14546,11 +14551,15 @@ snapshots:
 
   emoji-regex@9.2.2: {}
 
-  emojibase-data@17.0.0(emojibase@17.0.0):
+  emojibase-data@17.0.0(emojibase@18.0.0):
     dependencies:
-      emojibase: 17.0.0
+      emojibase: 18.0.0
 
-  emojibase@17.0.0: {}
+  emojibase-data@18.0.0(emojibase@18.0.0):
+    dependencies:
+      emojibase: 18.0.0
+
+  emojibase@18.0.0: {}
 
   empathic@2.0.1: {}
 
