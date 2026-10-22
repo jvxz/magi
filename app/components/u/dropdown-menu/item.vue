@@ -3,7 +3,7 @@ import type { DropdownMenuItemProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
-export type UDropdownMenuItemProps = DropdownMenuItemProps & { class?: HTMLAttributes['class']; inset?: boolean }
+export type UDropdownMenuItemProps = DropdownMenuItemProps & { class?: HTMLAttributes['class'] }
 
 const props = defineProps<UDropdownMenuItemProps>()
 

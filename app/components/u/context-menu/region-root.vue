@@ -3,6 +3,8 @@ import type { DropdownMenuRootEmits, DropdownMenuRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
+import { INJECTION_KEY__MENU_ITEM } from '../menu-item.vue'
+
 export type UContextMenuRegionRootProps<TName extends ContextMenuName> = DropdownMenuRootProps & { name: TName }
 export type UContextMenuRegionRootEmits = DropdownMenuRootEmits
 
@@ -40,6 +42,7 @@ function openAt(event: MouseEvent | PointerEvent, next: T, el?: MaybeElement) {
 const close = () => (open.value = false)
 
 provide(getContextMenuKey(props.name), { close, open, openAt, payload, reference } as ContextMenuRegionApi)
+provide(INJECTION_KEY__MENU_ITEM, 'context')
 
 const delegated = reactiveOmit(props, ['name', 'open', 'defaultOpen'])
 const forwarded = useForwardPropsEmits(delegated, emits)
