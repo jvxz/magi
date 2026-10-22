@@ -1,3 +1,11 @@
+<script lang="ts">
+export interface SpacePageContext {
+  spaceId: ComputedRef<string>
+}
+
+export const [injectSpacePageContext, provideSpacePageContext] = createContext<SpacePageContext>('SpacePage')
+</script>
+
 <script lang="ts" setup>
 definePageMeta({
   key: 'space',
@@ -6,15 +14,19 @@ definePageMeta({
   name: 'space',
 })
 
-const currentSpace = useCurrentSpace()
-const joinedRooms = useSpaceJoinedRooms(() => currentSpace.value?.roomId)
+const route = useRoute()
+const spaceId = computed(() => route.params.spaceId)
 
-const spaceName = useRoomComputed(currentSpace, space => (space ? resolveRoomName(space) : undefined))
+const spaceName = useRoomComputed(spaceId, space => (space ? resolveRoomName(space) : undefined))
 
 defineAppLabel({ label: spaceName })
 
 const currentRoomId = useCurrentRoomId()
 const isPaginating = shallowRef(false)
+
+provideSpacePageContext({
+  spaceId,
+})
 </script>
 
 <template>
@@ -25,88 +37,7 @@ const isPaginating = shallowRef(false)
   </LayoutAppSlot>
 
   <LayoutAppSlot name="aside">
-    <UAsideListRoot>
-      <UAsideListButton as-child>
-        <NuxtLink
-          :to="{
-            name: 'space-browse',
-            params: {
-              spaceId: $route.params.spaceId,
-            },
-          }"
-        >
-          <UAsideListButtonIcon :icon="ICON__BROWSE" />
-          <span>Browse Rooms</span>
-        </NuxtLink>
-      </UAsideListButton>
-
-      <UAsideListButton as-child>
-        <NuxtLink
-          :to="{
-            name: 'space-members',
-            params: {
-              spaceId: $route.params.spaceId,
-            },
-          }"
-        >
-          <UAsideListButtonIcon :icon="ICON__MEMBERS" />
-          <span>Members</span>
-        </NuxtLink>
-      </UAsideListButton>
-
-      <UAsideListSeparator />
-
-      <template v-if="!isTestMode()">
-        <UAsideListButton v-for="room in joinedRooms" :key="room.roomId" as-child>
-          <NuxtLink
-            :to="{
-              name: 'space-room',
-              params: {
-                spaceId: $route.params.spaceId,
-                roomId: room.roomId,
-              },
-            }"
-          >
-            <UAsideListButtonIcon :icon="ICON__ROOM" />
-            <span>{{ room.name }}</span>
-          </NuxtLink>
-        </UAsideListButton>
-      </template>
-      <template v-else>
-        <UAsideListButton
-          v-for="room in [
-            createMockRoom({ id: '250', seedMessages: 250 }).room,
-            createMockRoom({ id: '500', seedMessages: 500 }).room,
-            createMockRoom({ id: '750', seedMessages: 750 }).room,
-          ]"
-          :key="room.name"
-          :data-testid="`mock-room-${room.roomId}`"
-          as-child
-        >
-          <NuxtLink
-            :to="{
-              name: 'space-room',
-              params: {
-                spaceId: $route.params.spaceId,
-                roomId: room.roomId,
-              },
-            }"
-          >
-            <UAsideListButtonIcon :icon="ICON__ROOM" />
-            <span>{{ room.name }}</span>
-          </NuxtLink>
-        </UAsideListButton>
-      </template>
-    </UAsideListRoot>
-  </LayoutAppSlot>
-
-  <LayoutAppSlot v-if="currentRoomId" name="page-header">
-    <!-- <LayoutAppPageHeader class="flex gap-2 items-center">
-      {{ currentRoom.name }}
-      <DevOnly>
-        <USpinner v-if="isPaginating" class="size-4" />
-      </DevOnly>
-    </LayoutAppPageHeader> -->
+    <PageSpaceAside />
   </LayoutAppSlot>
 
   <RoomInstance :room="currentRoomId" />

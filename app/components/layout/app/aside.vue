@@ -1,13 +1,10 @@
 <script lang="ts" setup>
 const rooms = useRooms(isSpace)
-
-const { openDialog } = useGlobalDialog()
 </script>
 
 <template>
   <aside class="shrink-0 w-20 top-0 sticky isolate">
     <LayoutAppAsideHome />
-
     <USeparator class="mx-auto mb-[2px] w-1/2!" />
     <UContextMenuRegionRoot name="asideRoom">
       <div class="py-2.5 flex flex-col gap-2.5 items-center">
@@ -18,15 +15,16 @@ const { openDialog } = useGlobalDialog()
       </div>
 
       <UContextMenuRegionContent v-slot="{ payload }" name="asideRoom">
-        <UContextMenuItem v-if="payload" @select="openDialog('leave', { room: payload.room })">
-          Leave space
-        </UContextMenuItem>
-        <UContextMenuItem
-          v-if="payload"
-          @select="openDialog('avatar', { label: resolveRoomName(payload.room), room: payload.room, type: 'room' })"
-        >
-          View avatar
-        </UContextMenuItem>
+        <MenuItemInvite :payload="payload ? { room: payload?.room.roomId } : undefined" />
+        <MenuItemCopyUrl :id="payload?.room.roomId" type="roomId" />
+        <MenuItemCopyId :id="payload?.room.roomId" />
+
+        <UContextMenuSeparator />
+
+        <MenuItemViewAvatar
+          :payload="payload ? { label: resolveRoomName(payload.room), room: payload.room, type: 'room' } : undefined"
+        />
+        <MenuItemLeave type="space" :id="payload?.room" />
       </UContextMenuRegionContent>
     </UContextMenuRegionRoot>
 
