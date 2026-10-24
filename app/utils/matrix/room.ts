@@ -1,7 +1,7 @@
 import type { MatrixClient, MatrixEvent, RoomMember } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 
-import { JoinRule } from 'matrix-js-sdk'
+import { Direction, JoinRule } from 'matrix-js-sdk'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 
 import type { MaybeRoomOrId, MaybeUserOrId } from './types'
@@ -123,6 +123,11 @@ export function getDirectRoomAvatarUrl({
         useAuthentication,
         width: size,
       })
+}
+
+export function getCurrentRoomState(room: Room) {
+  const timeline = room.getLiveTimeline()
+  return timeline.getState(Direction.Forward)
 }
 
 export async function getSpaceRooms(
