@@ -319,7 +319,7 @@ export function getRoomCreators(room: Room | undefined) {
 
   const event = getRoomCreationEvent(room)
   const content = event?.getContent<RoomCreateEventContent>()
-  if (!content || !isRoomSupporting('creators', content.room_version!)) return creators
+  if (!content || !isRoomSupporting('creators', content.room_version ?? '1')) return creators
 
   if (event?.sender) creators.add(event.sender.userId)
 
