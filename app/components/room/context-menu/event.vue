@@ -27,15 +27,14 @@ function onEmojiPick(emoji: CompactEmoji) {
 const { sortedRecentReactions } = useRecentReactions()
 const firstFourRecentReactions = computed(() => sortedRecentReactions.value.slice(0, 4))
 
-const powerLevel = useRoomMemberPowerLevel(
+const { canRedactOwnMessages, canRedactMessages } = useRoomMemberPermissions(
   () => props.roomId,
   () => self.value?.userId,
 )
 
-const canRedact = computed(() => {
-  if (props.event.getSender() === self.value?.userId) return powerLevel.canRedactSelf.value
-  return powerLevel.canRedact.value
-})
+const canRedact = computed(() =>
+  props.event.getSender() === self.value?.userId ? canRedactOwnMessages.value : canRedactMessages.value,
+)
 
 const { current } = useMagicKeys()
 const { redact } = useRoomActions(
