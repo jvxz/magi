@@ -1,5 +1,5 @@
 export function useCurrentRoomCreator() {
   const currentRoom = useCurrentRoom()
 
-  return computed(() => currentRoom.value?.getCreator())
+  return useRoomComputed(currentRoom, r => r?.getCreator())
 }
