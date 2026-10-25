@@ -11,7 +11,8 @@ type EmitterListener<T extends ValidEvents = ValidEvents> = Listener<ValidEvents
 const syncHook = createEventHook<Parameters<EmitterListener<ClientEvent.Sync>>>()
 const decryptedHook = createEventHook<Parameters<EmitterListener<MatrixEventEvent.Decrypted>>>()
 const roomEvent = createEventHook<Parameters<EmitterListener<ClientEvent.Room | ClientEvent.DeleteRoom>>>()
-const roomStateEvent = createEventHook<Parameters<EmitterListener<RoomStateEvent.Update>>>()
+const roomStateEventsEvent = createEventHook<Parameters<EmitterListener<RoomStateEvent.Events>>>()
+const roomStateUpdateEvent = createEventHook<Parameters<EmitterListener<RoomStateEvent.Update>>>()
 const roomMembershipEvent = createEventHook<Parameters<EmitterListener<RoomMemberEvent.Membership>>>()
 const eventHook = createEventHook<Parameters<EmitterListener<ClientEvent.Event>>>()
 const userProfileHook = createEventHook<Parameters<EmitterListener<ClientEvent.UserProfileUpdate>>>()
@@ -40,7 +41,8 @@ export const useMatrixHooks = createSharedComposable(() => {
       bindListener(ClientEvent.Event, eventHook.trigger, { current, prev })
       bindListener(ClientEvent.Room, roomEvent.trigger, { current, prev })
       bindListener(ClientEvent.DeleteRoom, roomEvent.trigger, { current, prev })
-      bindListener(RoomStateEvent.Update, roomStateEvent.trigger, { current, prev })
+      bindListener(RoomStateEvent.Events, roomStateEventsEvent.trigger, { current, prev })
+      bindListener(RoomStateEvent.Update, roomStateUpdateEvent.trigger, { current, prev })
       bindListener(RoomMemberEvent.Typing, roomMemberTypingHook.trigger, { current, prev })
       bindListener(RoomMemberEvent.Membership, roomMembershipEvent.trigger, { current, prev })
       bindListener(MatrixEventEvent.Decrypted, decryptedHook.trigger, { current, prev })
@@ -78,7 +80,8 @@ export const useMatrixHooks = createSharedComposable(() => {
     onRoomName: nameHook.on,
     onRoomReceipt: receiptHook.on,
     onRoomRedaction: roomRedactionHook.on,
-    onRoomState: roomStateEvent.on,
+    onRoomStateEvents: roomStateEventsEvent.on,
+    onRoomStateUpdate: roomStateUpdateEvent.on,
     onRoomTags: roomTagsHook.on,
     onRoomTimeline: roomTimeline.on,
     onRoomTimelineReset: roomTimelineReset.on,

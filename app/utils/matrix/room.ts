@@ -1,7 +1,8 @@
 import type { MatrixClient, MatrixEvent, RoomMember } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
+import type { RoomCreateEventContent } from 'matrix-js-sdk/lib/types'
 
-import { JoinRule } from 'matrix-js-sdk'
+import { Direction, JoinRule } from 'matrix-js-sdk'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
 
 import type { MaybeRoomOrId, MaybeUserOrId } from './types'
@@ -74,6 +75,11 @@ export function getDirectRooms(client: MatrixClient) {
   return structuredDirects
 }
 
+export function getStateEvent(room: Room | undefined, eventType: EventType, stateKey = ''): MatrixEvent | undefined {
+  if (!room) return
+  return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType, stateKey) ?? undefined
+}
+
 export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] {
   return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType) ?? []
 }
@@ -123,6 +129,11 @@ export function getDirectRoomAvatarUrl({
         useAuthentication,
         width: size,
       })
+}
+
+export function getCurrentRoomState(room: Room) {
+  const timeline = room.getLiveTimeline()
+  return timeline.getState(Direction.Forward)
 }
 
 export async function getSpaceRooms(
@@ -295,11 +306,33 @@ export function getRoomTopic(room: Room | undefined) {
   if (events[0]) return events[0].getContent<{ topic?: string }>().topic
 }
 
-export function getRoomCreationTs(room: Room | undefined) {
-  if (!room) return
+export function getRoomCreationEvent(room: Room | undefined) {
+  return getStateEvent(room, EventType.RoomCreate)
+}
 
-  const events = getStateEvents(room, EventType.RoomCreate)
-  if (events[0]) return events[0].getTs()
+export function getRoomCreationTs(room: Room | undefined) {
+  return getRoomCreationEvent(room)?.getTs()
+}
+
+export function getRoomCreators(room: Room | undefined) {
+  const creators = new Set<string>()
+
+  const event = getRoomCreationEvent(room)
+  const content = event?.getContent<RoomCreateEventContent>()
+  if (!content || !isRoomSupporting('creators', content.room_version ?? '1')) return creators
+
+  if (event?.sender) creators.add(event.sender.userId)
+
+  // https://github.com/cinnyapp/cinny/blob/eff1f48e3fc1f7b35219bb0e1aa508087915f149/src/app/hooks/useRoomCreators.ts#L19-L25
+  if ('additional_creators' in content && Array.isArray(content.additional_creators)) {
+    content.additional_creators.forEach(creator => {
+      if (typeof creator === 'string') {
+        creators.add(creator)
+      }
+    })
+  }
+
+  return creators
 }
 
 export function getRoomMembersTyping(room: Room) {
@@ -457,4 +490,19 @@ export const isDirectInvite = (room: Room | undefined, myUserId: string | undefi
   const content = memberEvent?.getContent()
 
   return content?.is_direct === true
+}
+
+// https://github.com/cinnyapp/cinny/blob/eff1f48e3fc1f7b35219bb0e1aa508087915f149/src/app/utils/matrix.ts#L359-L374
+export type IsRoomSupportingOpts = 'knock' | 'restricted' | 'knockRestricted' | 'creators'
+export function isRoomSupporting(type: IsRoomSupportingOpts, version: string | number) {
+  switch (type) {
+    case 'creators':
+      return !['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'].includes(String(version))
+    case 'knock':
+      return !['1', '2', '3', '4', '5', '6'].includes(String(version))
+    case 'knockRestricted':
+      return !['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(String(version))
+    case 'restricted':
+      return !['1', '2', '3', '4', '5', '6', '7'].includes(String(version))
+  }
 }

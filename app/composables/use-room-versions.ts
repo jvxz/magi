@@ -7,7 +7,7 @@ export const useRoomVersions = createSharedComposable(() => {
     onRoomName,
     onRoomReceipt,
     onRoomRedaction,
-    onRoomState,
+    onRoomStateUpdate,
     onRoomTags,
     onRoomTimeline,
     onRoomTimelineReset,
@@ -23,7 +23,7 @@ export const useRoomVersions = createSharedComposable(() => {
   onRoomTags((_e, room) => bump(room.roomId))
   onRoomRedaction((_e, room) => bump(room.roomId))
   onRoomLocalEchoUpdated((_e, room) => bump(room.roomId))
-  onRoomState(state => bump(state.roomId))
+  onRoomStateUpdate(state => bump(state.roomId))
   onRoom(room => bump(resolveRoomId(room)))
 
   return versions
