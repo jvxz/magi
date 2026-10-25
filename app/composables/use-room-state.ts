@@ -6,8 +6,7 @@ export function useRoomState(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefine
   const { onRoomStateEvents, onRoomTimelineReset } = useMatrixHooks()
 
   const refresh = (room: Room | undefined) => {
-    if (!room) return
-    roomState.value = getCurrentRoomState(room)
+    roomState.value = room && getCurrentRoomState(room)
     triggerRef(roomState)
   }
 
