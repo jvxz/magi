@@ -107,7 +107,6 @@ export default defineConfig({
     },
     font: {
       mono: 'Paper Mono',
-      sans: 'Inter',
     },
     fontWeight: {
       // medium: '500',
