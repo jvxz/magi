@@ -4,7 +4,7 @@ defineProps<ContextMenuRegions['member']>()
 
 <template>
   <template v-if="member">
-    <MenuItemMention :roomMember="member" />
+    <MenuItemMention :room-member="member" />
     <!-- <UContextMenuItem> Message {{ member.name }} </UContextMenuItem> -->
     <MenuItemMessage :user="member" />
     <UContextMenuSeparator />

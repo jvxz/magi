@@ -24,7 +24,7 @@ const rooms = useRooms(isSpace)
         <MenuItemViewAvatar
           :payload="payload ? { label: resolveRoomName(payload.room), room: payload.room, type: 'room' } : undefined"
         />
-        <MenuItemLeave type="space" :id="payload?.room" />
+        <MenuItemLeave :id="payload?.room" type="space" />
       </UContextMenuRegionContent>
     </UContextMenuRegionRoot>
 

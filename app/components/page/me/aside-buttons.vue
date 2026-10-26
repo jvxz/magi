@@ -62,7 +62,7 @@ const rooms = useRooms(
 
           <UContextMenuRegionContent v-slot="{ payload }" name="directRoom">
             <MenuItemInvite :payload="payload ? { room: payload?.roomId } : undefined" />
-            <MenuItemLeave type="room" :id="payload ? payload.roomId : undefined" />
+            <MenuItemLeave :id="payload ? payload.roomId : undefined" type="room" />
           </UContextMenuRegionContent>
         </UContextMenuRegionRoot>
       </div>

@@ -58,7 +58,7 @@ const joinedRooms = useSpaceJoinedRooms(spaceId)
           </UAsideListButton>
         </UContextMenuRegionTrigger>
 
-        <UContextMenuRegionContent name="spaceAsideRoom" v-slot="{ payload }">
+        <UContextMenuRegionContent v-slot="{ payload }" name="spaceAsideRoom">
           <MenuItemInvite :payload="payload ? { room: payload.room.roomId } : undefined" />
           <MenuItemCopyUrl :id="payload?.room.roomId" type="roomId" />
           <MenuItemCopyId :id="payload?.room.roomId" type="roomId" />
