@@ -35,6 +35,9 @@ export interface ContextMenuRegions {
   browseRoom: {
     room: HierarchyRoom
   }
+  spaceAsideRoom: {
+    room: Room
+  }
 }
 
 export type ContextMenuName = keyof ContextMenuRegions

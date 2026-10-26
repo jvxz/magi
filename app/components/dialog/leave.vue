@@ -15,6 +15,9 @@ const emits = defineEmits<LeaveDialogEmits>()
 const { leave } = useRoomActions(() => props.room)
 const { isPending: isLeaving } = leave
 
+const { client } = useMatrixClient()
+const { removeRoomFromDirectList } = useDirectRooms()
+
 const openModel = defineModel<boolean>('open', { default: false })
 const open = computed({
   get: () => openModel.value,
@@ -33,6 +36,14 @@ const dialogDescription = computed(() =>
 
 const delegated = reactiveOmit(props, ['room', 'open'])
 const forwarded = useForwardPropsEmits(delegated, emits)
+
+async function onLeft() {
+  openModel.value = false
+  if (!isDirectRoom(client.value, props.room)) return
+
+  await removeRoomFromDirectList(props.room.roomId)
+  await navigateTo({ name: 'me-home' })
+}
 </script>
 
 <template>
@@ -56,9 +67,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
           @click="
             () =>
               leave.mutate(undefined, {
-                onSuccess: () => {
-                  openModel = false
-                },
+                onSuccess: onLeft,
               })
           "
         >
