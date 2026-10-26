@@ -13,6 +13,6 @@ const props = defineProps<{
 <template>
   <div :class="cn('shrink-0 size-10 group-data-[grouped=true]:h-0 mt-0.5 data-[grouped=true]:m-0', props.class)">
     <MatrixRoomMemberAvatar v-if="!ghost && member" :room :member :size="size ?? 32" class="size-full cursor-pointer" />
-    <USkeleton v-else-if="!ghost" class="rounded-full size-full" />
+    <USkeleton v-else-if="ghost" class="rounded-full size-full" />
   </div>
 </template>
