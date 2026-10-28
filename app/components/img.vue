@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { ImgHTMLAttributes } from 'vue'
 
-import { useForwardPropsEmits } from 'reka-ui'
-
 export interface ImgProps {
   src: string | undefined
   alt: string | undefined
@@ -13,11 +11,12 @@ export interface ImgProps {
   class?: HTMLAttributes['class']
   loading?: ImgHTMLAttributes['loading']
   doPlaceholder?: boolean
+  blurhash?: string
 }
 
 export interface ImgEmits {
   error: [event: Event]
-  load: [event: Event]
+  load: [image: HTMLImageElement]
   url: [url: string | undefined]
 }
 
@@ -36,40 +35,38 @@ watch(
   },
   { immediate: true },
 )
-
-function handleCached(e: any) {
-  const el = e.el as HTMLImageElement
-  if (!(el instanceof HTMLImageElement)) return
-
-  if (el.complete && el.naturalWidth > 0) loaded.value = true
-}
-
-const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <img
-    v-bind="forwarded"
-    :loading="loading ?? 'lazy'"
+  <UnLazyImage
+    :src
+    :blurhash
+    :placeholder-src="GENERAL__IMG_PLACEHOLDER_URL"
+    :loading
     :alt="alt ?? fallbackAlt ?? 'Unknown image'"
-    :width="size ?? width ?? 400"
-    :height="size ?? height ?? 400"
-    :src="!src ? GENERAL__IMG_PLACEHOLDER_URL : src"
-    :class="cn('select-none relative', props.class)"
+    :width="size ?? width"
+    :height="size ?? height"
+    :style="(size ?? width) && (size ?? height) ? { aspectRatio: `${size ?? width} / ${size ?? height}` } : undefined"
+    :class="
+      cn(
+        'select-none relative',
+        'data-[loaded=false]:data-[error=false]:(bg-secondary-raised animate-pulse)',
+        props.class,
+      )
+    "
     :data-loaded="loaded ? 'true' : 'false'"
     :data-error="error ? 'true' : 'false'"
-    @load="
-      (e: Event) => {
+    @image-load="
+      (image: HTMLImageElement) => {
         loaded = true
-        onLoad?.(e)
+        emits('load', image)
       }
     "
-    @error="
-      e => {
+    @image-error="
+      (_: HTMLImageElement, e: Event) => {
         error = true
-        onError?.(e)
+        emits('error', e)
       }
     "
-    @vue:mounted="handleCached"
   />
 </template>
