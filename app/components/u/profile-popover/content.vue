@@ -39,7 +39,7 @@ function viewAvatar() {
     : { label: displayName.value, type: 'user', user: id }
 
   open.value = false
-  nextTick(() => openDialog('avatar', payload))
+  nextTick(() => openDialog('image', payload))
 }
 </script>
 

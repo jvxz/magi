@@ -8,7 +8,7 @@ const { openDialog } = useGlobalDialog()
 </script>
 
 <template>
-  <UMenuItem :disabled="!payload" @select="($emit('select', $event), payload && openDialog('avatar', payload))">
+  <UMenuItem :disabled="!payload" @select="($emit('select', $event), payload && openDialog('image', payload))">
     <Icon :name="ICON__VIEW_AVATAR" />
     <span>View avatar</span>
   </UMenuItem>

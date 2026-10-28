@@ -1,15 +1,15 @@
-import type { Room, RoomMember } from 'matrix-js-sdk'
+import type { Room, RoomMember, ImageContent } from 'matrix-js-sdk'
 
 export interface GlobalDialogMap {
   invite: { room: string }
   leave: {
     room: Room
   }
-  avatar:
-    | { label: string; type: 'room'; room: MaybeRoomOrId }
-    | { label: string; type: 'user'; user: MaybeUserOrId }
-    | { label: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
-    | { label: string; type: 'image'; src: string }
+  image:
+    | { alt: string; type: 'room'; room: MaybeRoomOrId }
+    | { alt: string; type: 'user'; user: MaybeUserOrId }
+    | { alt: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
+    | { alt: string; type: 'image'; content: ImageContent }
   codeViewer: {
     code: string
     lang?: string
