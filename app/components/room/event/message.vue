@@ -1,18 +1,16 @@
 <script lang="ts" setup>
-import type { PopoverContentProps } from 'reka-ui'
-
 import { MsgType } from 'matrix-js-sdk'
 
 import { injectEventListItemContext } from './generic.vue'
 
-const { event, grouped, room } = injectEventListItemContext()
+const { event, grouped, room, eventMember, eventUserId, eventProfile, ...ctx } = injectEventListItemContext()
 
 const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(event.value, room.value)
 
-const userId = computed(() => event.value.getSender())
 const { content: eventContent, state: eventState } = useEventContent(event)
-const eventProfile = useUserProfile(userId)
-const eventMember = useRoomMember(() => room.value.roomId, userId)
+syncRef(eventState, ctx.eventState, { direction: 'ltr' })
+
+const messageType = computed(() => eventContent.value?.msgtype)
 
 const { content: replyEventContent, isRedacted: isReplyEventRedacted } = useEventContent(() => replyEvent.value)
 const replyEventBody = computed(() =>
@@ -21,23 +19,12 @@ const replyEventBody = computed(() =>
 const replySenderId = computed(() => replyEvent.value?.getSender())
 const replyEventProfile = useUserProfile(replySenderId)
 
-const hasReactions = useRoomEventHasReactions(room, event)
-
 const shouldRender = computed(() => {
-  const type = eventContent.value?.msgtype
-
-  const isMsg = type === MsgType.Text || type === 'm.bad.encrypted'
+  const isValid = [MsgType.Text, MsgType.Image, 'm.bad.encrypted'].includes(messageType.value as MsgType)
   const isEdit = isEditEvent(event.value)
 
-  return (isMsg || eventState.value === 'decrypting') && !isEdit
+  return (isValid || eventState.value === 'decrypting') && !isEdit
 })
-
-const contentProps: PopoverContentProps = {
-  align: 'start',
-  collisionPadding: 12,
-  side: 'right',
-  sideOffset: 8,
-}
 </script>
 
 <template>
@@ -82,47 +69,39 @@ const contentProps: PopoverContentProps = {
 
       <div class="flex gap-4">
         <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
-          <UProfilePopoverTrigger v-if="userId" :content-props :user="userId" as-child>
-            <RoomEventMessageAvatar :room :member="userId" :ghost="grouped" />
+          <UProfilePopoverTrigger
+            v-if="eventUserId"
+            :content-props="{ align: 'start', collisionPadding: 12, side: 'right', sideOffset: 8 }"
+            :user="eventUserId"
+            as-child
+          >
+            <RoomEventMessageAvatar :room :member="eventUserId" :ghost="grouped" />
           </UProfilePopoverTrigger>
         </UContextMenuRegionTrigger>
 
-        <div class="w-full">
-          <RoomEventMessageContent>
-            <template v-if="!grouped && isDefined(event.getTs()) && userId" #header>
-              <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
-                <UProfilePopoverTrigger :content-props :user="userId" as-child>
-                  <UButton
-                    variant="link"
-                    class="data-popover-open:underline! context-menu-open:underline data-[state=open]:no-underline"
-                  >
-                    {{ eventProfile?.displayname }}
-                  </UButton>
-                </UProfilePopoverTrigger>
-              </UContextMenuRegionTrigger>
+        <RoomEventMessageContent>
+          <template v-if="!grouped && isDefined(event.getTs()) && eventUserId" #header>
+            <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
+              <UProfilePopoverTrigger
+                :content-props="{ align: 'start', collisionPadding: 12, side: 'right', sideOffset: 8 }"
+                :user="eventUserId"
+                as-child
+              >
+                <UButton
+                  variant="link"
+                  class="data-popover-open:underline! context-menu-open:underline data-[state=open]:no-underline"
+                >
+                  {{ eventProfile.displayname }}
+                </UButton>
+              </UProfilePopoverTrigger>
+            </UContextMenuRegionTrigger>
 
-              <RoomEventMessageTimestamp :datetime="event.getTs()" />
-            </template>
+            <RoomEventMessageTimestamp :datetime="event.getTs()" />
+          </template>
 
-            <div
-              v-if="eventState === 'decrypting'"
-              class="text-base text-muted-foreground flex gap-1 italic items-center"
-            >
-              <USpinner class="size-0.75lh" />
-              <span class="text-muted-foreground">Decrypting event...</span>
-            </div>
-            <div
-              v-else-if="eventState === 'decryptionFailure'"
-              class="text-muted-foreground flex gap-1 italic items-center"
-            >
-              <Icon :name="ICON__ENCRYPTED" />
-              <span>Failed to decrypt event</span>
-            </div>
-            <RoomEventMessageBody v-else :event />
-          </RoomEventMessageContent>
-
-          <RoomEventMessageReactions v-if="hasReactions" />
-        </div>
+          <RoomEventMessageImage v-if="messageType === MsgType.Image" />
+          <RoomEventMessageText />
+        </RoomEventMessageContent>
       </div>
     </RoomEventMessageRoot>
   </RoomEvent>

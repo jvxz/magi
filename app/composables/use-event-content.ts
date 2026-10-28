@@ -2,6 +2,8 @@ import type { IContent, MatrixEvent } from 'matrix-js-sdk'
 
 import { toRef } from '@vueuse/core'
 
+export type EventState = 'redacted' | 'decrypting' | 'decryptionFailure'
+
 export function useEventContent<T extends IContent = IContent>(event: MaybeRefOrGetter<MatrixEvent | undefined>) {
   const eventRef = toRef(event)
   const version = computed(() => getEventVersion(eventRef.value?.getId()))
@@ -16,7 +18,7 @@ export function useEventContent<T extends IContent = IContent>(event: MaybeRefOr
     return eventRef.value?.isEncrypted() ?? false
   })
 
-  const state = computed(() => {
+  const state = computed<EventState | undefined>(() => {
     void version.value
     const event = eventRef.value
     if (!event) return

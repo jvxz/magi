@@ -5,6 +5,10 @@ export const [injectEventListItemContext, provideEventListItemContext] = createC
   event: Ref<MatrixEvent>
   room: Ref<Room>
   grouped: Ref<boolean>
+  eventMember: ReturnType<typeof useRoomMember>
+  eventProfile: ReturnType<typeof useUserProfile>
+  eventUserId: Ref<string | undefined>
+  eventState: Ref<EventState | undefined>
 }>('RoomEventGeneric')
 </script>
 
@@ -18,8 +22,16 @@ const props = defineProps<{
   dateDiffed: boolean
 }>()
 
+const eventUserId = computed(() => props.event.getSender())
+const eventProfile = useUserProfile(eventUserId)
+const eventMember = useRoomMember(() => props.room.roomId, eventUserId)
+
 provideEventListItemContext({
   event: toRef(props, 'event'),
+  eventMember,
+  eventProfile,
+  eventState: ref(),
+  eventUserId,
   grouped: toRef(props, 'grouped'),
   room: toRef(props, 'room'),
 })

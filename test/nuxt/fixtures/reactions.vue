@@ -7,6 +7,13 @@ const props = defineProps<{ event: MatrixEvent; room: Room }>()
 
 provideEventListItemContext({
   event: toRef(props, 'event'),
+  eventMember: useRoomMember(
+    () => props.room,
+    () => props.event.getSender(),
+  ),
+  eventProfile: useUserProfile(() => props.event.getSender()),
+  eventState: ref(),
+  eventUserId: computed(() => props.event.getSender()),
   grouped: ref(false),
   room: toRef(props, 'room'),
 })
