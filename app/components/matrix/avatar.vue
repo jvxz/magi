@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<MatrixAvatarProps>(), {
 const emits = defineEmits<ImgEmits>()
 
 const useFull = ref(false)
-const src = useResolveAvatarUrl(
+const src = useResolveImageUrl(
   () => props.src ?? undefined,
   () => ({
     size: useFull.value ? 'full' : props.imageSize,

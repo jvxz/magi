@@ -5,7 +5,7 @@ const props = defineProps<{
   room: IPublicRoomsChunkRoom | undefined
 }>()
 
-const src = useResolveAvatarUrl(() => props.room?.avatar_url)
+const src = useResolveImageUrl(() => props.room?.avatar_url)
 const alt = computed(() => props.room?.name ?? props.room?.room_id)
 
 const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => false)

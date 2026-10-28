@@ -1,6 +1,6 @@
-export function useResolveAvatarUrl(
+export function useResolveImageUrl(
   url: MaybeRefOrGetter<string | undefined>,
-  opts?: MaybeRefOrGetter<ResolveAvatarUrlOpts>,
+  opts?: MaybeRefOrGetter<ResolveImageUrlOpts>,
 ) {
   const urlRef = toRef(url)
   const optsRef = toRef(opts)
@@ -11,9 +11,9 @@ export function useResolveAvatarUrl(
     const { protocol } = parseURL(urlRef.value)
     if (protocol !== 'mxc:') return urlRef.value
 
-    return resolveAvatarUrl(
+    return resolveImageUrl(
       urlRef.value,
-      merge<ResolveAvatarUrlOpts, ResolveAvatarUrlOpts>(
+      merge<ResolveImageUrlOpts, ResolveImageUrlOpts>(
         {
           allowDirectLinks: true,
           allowRedirects: true,

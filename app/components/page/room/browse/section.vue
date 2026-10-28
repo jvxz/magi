@@ -12,7 +12,7 @@ const props = defineProps<{
 const openModel = defineModel<boolean>('open', { default: false })
 if (props.defaultOpen) openModel.value = props.defaultOpen
 
-const resolvedAvatar = useResolveAvatarUrl(() => props.avatar)
+const resolvedAvatar = useResolveImageUrl(() => props.avatar)
 </script>
 
 <template>

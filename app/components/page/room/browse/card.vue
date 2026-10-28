@@ -9,7 +9,7 @@ const props = defineProps<
   }
 >()
 
-const dialogSrc = useResolveAvatarUrl(() => props.room.avatar_url, { size: 'full' })
+const dialogSrc = useResolveImageUrl(() => props.room.avatar_url, { size: 'full' })
 </script>
 
 <template>

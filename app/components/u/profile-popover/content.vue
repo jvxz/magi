@@ -19,7 +19,7 @@ const roomMember = useRoomMember(room, userId)
 const displayName = computed(() =>
   roomMember.value ? resolveUserName(roomMember.value) : getDisplayNameFallback(user.value?.userId),
 )
-const avatarUrl = computed(() => resolveAvatarUrl(roomMember.value?.getMxcAvatarUrl(), { size: 'small' }))
+const avatarUrl = computed(() => resolveImageUrl(roomMember.value?.getMxcAvatarUrl(), { size: 'small' }))
 const parsedUserId = computed(() => parseUserId(roomMember.value?.userId))
 
 const membership = useRoomMembership(room, userId)

@@ -8,7 +8,7 @@ const via = computed(() => toArray(params.value.via ?? []))
 const { data: summary, isLoading: isSummaryLoading } = useRoomSummary(() => props.roomId, via)
 
 const name = computed(() => summary.value?.name ?? props.roomId)
-const avatarSrc = useResolveAvatarUrl(() => summary.value?.avatar_url)
+const avatarSrc = useResolveImageUrl(() => summary.value?.avatar_url)
 
 const { inviteIds } = useInvites()
 const isInvited = computed(() => inviteIds.value.has(props.roomId))
