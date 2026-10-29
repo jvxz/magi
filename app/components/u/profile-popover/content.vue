@@ -34,9 +34,9 @@ function viewAvatar() {
   const id = userId.value
   if (!id) return
 
-  const payload: GlobalDialogMap['avatar'] = room.value
-    ? { label: displayName.value, member: id, room: room.value, type: 'roomMember' }
-    : { label: displayName.value, type: 'user', user: id }
+  const payload: GlobalDialogMap['image'] = room.value
+    ? { alt: displayName.value, member: id, room: room.value, type: 'roomMember' }
+    : { alt: displayName.value, type: 'user', user: id }
 
   open.value = false
   nextTick(() => openDialog('image', payload))

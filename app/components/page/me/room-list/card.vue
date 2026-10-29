@@ -44,7 +44,7 @@ const to = computed<RouteLocationRaw | undefined>(() =>
         <URoomShowcaseCardImage
           as-child
           square
-          :dialog="title ? { type: 'room', label: title, room: roomId } : undefined"
+          :dialog="title ? { type: 'room', alt: title, room: roomId } : undefined"
           prevent
         >
           <MatrixRoomAvatar :room="roomId" :placeholder-variant="hasRoomData ? 'default' : 'empty-strong'" />

@@ -1,4 +1,4 @@
-import type { Room, RoomMember, ImageContent } from 'matrix-js-sdk'
+import type { Room, RoomMember } from 'matrix-js-sdk'
 
 export interface GlobalDialogMap {
   invite: { room: string }
@@ -9,7 +9,7 @@ export interface GlobalDialogMap {
     | { alt: string; type: 'room'; room: MaybeRoomOrId }
     | { alt: string; type: 'user'; user: MaybeUserOrId }
     | { alt: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
-    | { alt: string; type: 'image'; content: ImageContent }
+    | { alt: string; type: 'image'; url: string; blurhash?: string }
   codeViewer: {
     code: string
     lang?: string

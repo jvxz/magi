@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ImageContent, RoomMember } from 'matrix-js-sdk'
+import type { RoomMember } from 'matrix-js-sdk'
 import type { DialogRootProps } from 'reka-ui'
 
 export interface ImageDialogProps extends DialogRootProps {
@@ -9,7 +9,7 @@ export interface ImageDialogProps extends DialogRootProps {
   room?: MaybeRoomOrId
   user?: MaybeUserOrId
   member?: RoomMember | string
-  content?: ImageContent
+  url?: string
 }
 
 const props = withDefaults(defineProps<ImageDialogProps>(), { modal: true })
@@ -28,7 +28,7 @@ const shared = {
   square: true,
 } as const
 
-const src = useResolveImageUrl(() => props.content?.url, { size: 'full' })
+const src = useResolveImageUrl(() => props.url, { size: 'full' })
 </script>
 
 <template>

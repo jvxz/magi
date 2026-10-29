@@ -66,7 +66,7 @@ const joinedRooms = useSpaceJoinedRooms(spaceId)
           <UContextMenuSeparator />
 
           <MenuItemViewAvatar
-            :payload="payload ? { type: 'room', label: resolveRoomName(payload.room), room: payload.room } : undefined"
+            :payload="payload ? { type: 'room', alt: resolveRoomName(payload.room), room: payload.room } : undefined"
           />
           <MenuItemLeave :id="payload?.room.roomId" type="room" />
         </UContextMenuRegionContent>

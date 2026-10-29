@@ -31,7 +31,7 @@ const user = useUser(() => props.userId)
       <UDropdownMenuContent>
         <MenuItemCopyId :id="userId" />
         <MenuItemViewAvatar
-          :payload="userId ? { label: resolveUserName(user ?? props.userId), type: 'user', user: userId } : undefined"
+          :payload="userId ? { alt: resolveUserName(user ?? props.userId), type: 'user', user: userId } : undefined"
           @select="open = false"
         />
       </UDropdownMenuContent>

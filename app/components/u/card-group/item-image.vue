@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<UCardGroupItemImageProps>(), { as: 'img' 
 
 export interface UCardGroupItemImageProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
-  dialog?: GlobalDialogMap['avatar']
+  dialog?: GlobalDialogMap['image']
   prevent?: boolean
 }
 
