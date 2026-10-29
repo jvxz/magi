@@ -88,7 +88,7 @@ export function getEventReactions(room: Room, event: MaybeEventOrId): EventReact
 }
 
 export function getImageBlurhash(content: ImageContent | undefined) {
-  return content?.info['xyz.amorgan.blurhash']
+  return content?.info?.['xyz.amorgan.blurhash']
 }
 
 export function isUserReacting(

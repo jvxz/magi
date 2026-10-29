@@ -18,8 +18,8 @@ const { openDialog } = useGlobalDialog()
     @click="content?.url && openDialog('image', { type: 'image', url: content.url, alt: content.body, blurhash })"
     alt="Test"
     :src="url"
-    :width="content?.info.w"
-    :height="content?.info.h"
+    :width="content?.info?.w"
+    :height="content?.info?.h"
     hash-type="blurhash"
     :blurhash="blurhash"
   />

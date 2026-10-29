@@ -10,7 +10,7 @@ declare module 'matrix-js-sdk' {
   }
 
   interface ImageContent extends MatrixImageContent {
-    info: ImageInfo
+    info?: ImageInfo
   }
 }
 
