@@ -21,7 +21,7 @@ const isError = ref(false)
 const imageUrl = ref<string>()
 
 const shared = {
-  class: 'rounded pointer-events-auto size-full object-cover max-w-[calc(100vw-20rem)] max-h-[calc(100vh-10rem)]',
+  class: 'rounded pointer-events-auto size-full object-cover max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-20rem)] max-h-[calc(100vh-10rem)]',
   imageSize: 'full',
   onError: () => (isError.value = true),
   onUrl: (url: string | undefined) => (imageUrl.value = url),
@@ -46,6 +46,7 @@ const src = useResolveImageUrl(() => props.url, { size: 'full' })
     >
       <VisuallyHidden>
         <UDialogHeader>
+          <UDialogTitle> {{ alt }} </UDialogTitle>
           <UDialogDescription> {{ alt }} </UDialogDescription>
         </UDialogHeader>
       </VisuallyHidden>
