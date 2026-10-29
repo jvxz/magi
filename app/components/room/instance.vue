@@ -16,10 +16,10 @@ const isOnRoomPage = computed(() => route.name === 'space-room' || route.name ==
 <template>
   <LayoutAppSlot v-if="isOnRoomPage" name="page-header">
     <LayoutAppPageHeader>
-      <MatrixRoomAvatar v-if="room" square class="size-1.5em rounded-sm" :do-placeholder="false" :room />
+      <MatrixRoomAvatar v-if="room" square class="rounded-sm size-1.5em" :do-placeholder="false" :room />
 
       <span v-if="room">{{ resolveRoomName(room) }}</span>
-      <USkeleton v-else class="w-24 h-1em rounded-sm" />
+      <USkeleton v-else class="rounded-sm h-1em w-24" />
     </LayoutAppPageHeader>
   </LayoutAppSlot>
 
