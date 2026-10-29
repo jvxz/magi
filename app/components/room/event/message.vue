@@ -19,6 +19,8 @@ const replyEventBody = computed(() =>
 const replySenderId = computed(() => replyEvent.value?.getSender())
 const replyEventProfile = useUserProfile(replySenderId)
 
+const hasReactions = useRoomEventHasReactions(room, event)
+
 const shouldRender = computed(() => {
   const isValid = [MsgType.Text, MsgType.Image, 'm.bad.encrypted'].includes(messageType.value as MsgType)
   const isEdit = isEditEvent(event.value)
@@ -79,29 +81,33 @@ const shouldRender = computed(() => {
           </UProfilePopoverTrigger>
         </UContextMenuRegionTrigger>
 
-        <RoomEventMessageContent>
-          <template v-if="!grouped && isDefined(event.getTs()) && eventUserId" #header>
-            <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
-              <UProfilePopoverTrigger
-                :content-props="{ align: 'start', collisionPadding: 12, side: 'right', sideOffset: 8 }"
-                :user="eventUserId"
-                as-child
-              >
-                <UButton
-                  variant="link"
-                  class="data-popover-open:underline! context-menu-open:underline data-[state=open]:no-underline"
+        <div class="w-full">
+          <RoomEventMessageContent>
+            <template v-if="!grouped && isDefined(event.getTs()) && eventUserId" #header>
+              <UContextMenuRegionTrigger region="member" :value="{ member: eventMember, roomId: room.roomId }" as-child>
+                <UProfilePopoverTrigger
+                  :content-props="{ align: 'start', collisionPadding: 12, side: 'right', sideOffset: 8 }"
+                  :user="eventUserId"
+                  as-child
                 >
-                  {{ eventProfile.displayname }}
-                </UButton>
-              </UProfilePopoverTrigger>
-            </UContextMenuRegionTrigger>
+                  <UButton
+                    variant="link"
+                    class="data-popover-open:underline! context-menu-open:underline data-[state=open]:no-underline"
+                  >
+                    {{ eventProfile.displayname }}
+                  </UButton>
+                </UProfilePopoverTrigger>
+              </UContextMenuRegionTrigger>
 
-            <RoomEventMessageTimestamp :datetime="event.getTs()" />
-          </template>
+              <RoomEventMessageTimestamp :datetime="event.getTs()" />
+            </template>
 
-          <RoomEventMessageImage v-if="messageType === MsgType.Image" />
-          <RoomEventMessageText />
-        </RoomEventMessageContent>
+            <RoomEventMessageImage v-if="messageType === MsgType.Image" />
+            <RoomEventMessageText />
+          </RoomEventMessageContent>
+
+          <RoomEventMessageReactions v-if="hasReactions" />
+        </div>
       </div>
     </RoomEventMessageRoot>
   </RoomEvent>
