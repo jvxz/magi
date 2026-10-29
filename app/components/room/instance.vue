@@ -8,9 +8,21 @@ const roomId = useResolveRoomId(() => props.room)
 const room = useRoom(() => props.room)
 const { self } = useSelf()
 const membership = useRoomMembership(roomId, () => self.value?.userId)
+
+const route = useRoute()
+const isOnRoomPage = computed(() => route.name === 'space-room' || route.name === 'direct-room')
 </script>
 
 <template>
+  <LayoutAppSlot v-if="isOnRoomPage" name="page-header">
+    <LayoutAppPageHeader>
+      <MatrixRoomAvatar v-if="room" square class="size-1.5em rounded-sm" :do-placeholder="false" :room />
+
+      <span v-if="room">{{ resolveRoomName(room) }}</span>
+      <USkeleton v-else class="w-24 h-1em rounded-sm" />
+    </LayoutAppPageHeader>
+  </LayoutAppSlot>
+
   <RoomInstancePreview v-if="matrixStatus.isDataSynced && roomId && membership !== KnownMembership.Join" :room-id />
 
   <template v-else-if="room">

@@ -39,6 +39,7 @@ watch(
 
 <template>
   <UnLazyImage
+    :key="src"
     :src
     :blurhash
     :placeholder-src="GENERAL__IMG_PLACEHOLDER_URL"
