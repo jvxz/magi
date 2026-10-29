@@ -28,16 +28,7 @@ const shared = {
   square: true,
 } as const
 
-const resolvedId = computed(() => {
-  if (props.type === 'image') return props.alt
-  if (props.type === 'room') return props.room && resolveRoomId(props.room)
-  if (props.type === 'user') return props.user && resolveUserId(props.user)
-  if (!props.member) return undefined
-
-  return isString(props.member) ? props.member : props.member.userId
-})
-
-const src = useResolveImageUrl(() => (props.type === 'image' ? props.content?.url : undefined), { size: 'full' })
+const src = useResolveImageUrl(() => props.content?.url, { size: 'full' })
 </script>
 
 <template>

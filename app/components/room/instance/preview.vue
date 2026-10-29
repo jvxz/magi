@@ -8,7 +8,6 @@ const via = computed(() => toArray(params.value.via ?? []))
 const { data: summary, isLoading: isSummaryLoading } = useRoomSummary(() => props.roomId, via)
 
 const name = computed(() => summary.value?.name ?? props.roomId)
-const avatarSrc = useResolveImageUrl(() => summary.value?.avatar_url)
 
 const { inviteIds } = useInvites()
 const isInvited = computed(() => inviteIds.value.has(props.roomId))
@@ -24,7 +23,7 @@ const { join } = useRoomActions(() => props.roomId)
     <div class="flex flex-col gap-4 max-w-md w-full">
       <!-- avatar -->
       <USkeleton v-if="isSummaryLoading" class="rounded size-16" />
-      <MatrixAvatar v-else :src="avatarSrc" :alt="name" square class="rounded size-16" />
+      <MatrixAvatar v-else :src="summary?.avatar_url" :alt="name" square class="rounded size-16" />
 
       <div class="flex flex-col gap-1">
         <div class="flex gap-2 items-center">

@@ -11,8 +11,6 @@ const props = defineProps<{
 
 const openModel = defineModel<boolean>('open', { default: false })
 if (props.defaultOpen) openModel.value = props.defaultOpen
-
-const resolvedAvatar = useResolveImageUrl(() => props.avatar)
 </script>
 
 <template>
@@ -22,7 +20,7 @@ const resolvedAvatar = useResolveImageUrl(() => props.avatar)
 
       <MatrixAvatar
         v-if="isDefined(avatar) || avatarPlaceholder"
-        :src="resolvedAvatar"
+        :src="avatar"
         :alt="title"
         square
         class="rounded-sm shrink-0 h-full w-fit aspect-square object-contain"

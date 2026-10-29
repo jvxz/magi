@@ -7,11 +7,8 @@ export function useResolveImageUrl(
   const { client } = useMatrixClient()
   const reducedMotion = usePreferredReducedMotion()
 
-  const resolvedUrl = computed(() => {
-    const { protocol } = parseURL(urlRef.value)
-    if (protocol !== 'mxc:') return urlRef.value
-
-    return resolveImageUrl(
+  const resolvedUrl = computed(() =>
+    resolveImageUrl(
       urlRef.value,
       merge<ResolveImageUrlOpts, ResolveImageUrlOpts>(
         {
@@ -23,8 +20,8 @@ export function useResolveImageUrl(
         },
         optsRef.value ?? {},
       ),
-    )
-  })
+    ),
+  )
 
   return resolvedUrl
 }

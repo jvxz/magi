@@ -5,7 +5,6 @@ const props = defineProps<{
   room: IPublicRoomsChunkRoom | undefined
 }>()
 
-const src = useResolveImageUrl(() => props.room?.avatar_url)
 const alt = computed(() => props.room?.name ?? props.room?.room_id)
 
 const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => false)
@@ -15,10 +14,10 @@ const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => 
   <div class="p-0 rounded-lg border-none relative overflow-clip" :class="!room && 'border'">
     <div class="h-full inset-0 absolute">
       <MatrixAvatar
-        v-if="room && src && !isError"
+        v-if="room?.avatar_url && !isError"
         :size="32"
-        :alt="room?.name"
-        :src
+        :alt="room.name"
+        :src="room.avatar_url"
         class="size-full scale-120 object-cover blur-xl -m-px -translate-y-1/3"
         @error="isError = true"
       />
@@ -31,7 +30,7 @@ const isError = useState(`exploreRoomAvatarError:${props.room?.room_id}`, () => 
     >
       <MatrixAvatar
         v-if="room"
-        :src
+        :src="room.avatar_url"
         :alt
         class="border-5 border-surface-raised rounded-2xl bg-surface-raised flex size-16 items-center inset-0 left-4 justify-center absolute z-10 overflow-hidden -top-1/8"
         square
