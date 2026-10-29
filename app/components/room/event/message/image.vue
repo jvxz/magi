@@ -16,7 +16,7 @@ const { openDialog } = useGlobalDialog()
   <Img
     class="rounded max-w-72 my-1 cursor-pointer"
     @click="content?.url && openDialog('image', { type: 'image', url: content.url, alt: content.body, blurhash })"
-    alt="Test"
+    :alt="content?.body"
     :src="url"
     :width="content?.info?.w"
     :height="content?.info?.h"
