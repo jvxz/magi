@@ -14,13 +14,13 @@ const { openDialog } = useGlobalDialog()
 
 <template>
   <Img
-    class="rounded max-w-72 my-1 cursor-pointer"
-    @click="content?.url && openDialog('image', { type: 'image', url: content.url, alt: content.body, blurhash })"
+    class="my-1 rounded max-w-72 cursor-pointer"
     :alt="content?.body"
     :src="url"
     :width="content?.info?.w"
     :height="content?.info?.h"
     hash-type="blurhash"
     :blurhash="blurhash"
+    @click="content?.url && openDialog('image', { type: 'image', url: content.url, alt: content.body, blurhash })"
   />
 </template>

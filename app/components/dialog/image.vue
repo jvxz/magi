@@ -21,7 +21,8 @@ const isError = ref(false)
 const imageUrl = ref<string>()
 
 const shared = {
-  class: 'rounded pointer-events-auto size-full object-cover max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-20rem)] max-h-[calc(100vh-10rem)]',
+  class:
+    'rounded pointer-events-auto size-full object-cover max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-20rem)] max-h-[calc(100vh-10rem)]',
   imageSize: 'full',
   onError: () => (isError.value = true),
   onUrl: (url: string | undefined) => (imageUrl.value = url),
@@ -33,7 +34,7 @@ const src = useResolveImageUrl(() => props.url, { size: 'full' })
 
 <template>
   <UDialogRoot v-bind="delegated" v-model:open="open">
-    <div v-if="open" class="absolute inset-y-0 right-0 p-4 z-10000000">
+    <div v-if="open" class="p-4 inset-y-0 right-0 absolute z-10000000">
       <DialogClose as-child>
         <UButton size="icon">
           <Icon :name="ICON__CLOSE" />
@@ -42,7 +43,7 @@ const src = useResolveImageUrl(() => props.url, { size: 'full' })
     </div>
 
     <UDialogContent
-      class="sm:(size-fit max-w-screen) bg-transparent p-0 border-none items-center justify-center pointer-events-none"
+      class="p-0 border-none bg-transparent pointer-events-none items-center justify-center sm:(size-fit max-w-screen)"
     >
       <VisuallyHidden>
         <UDialogHeader>
