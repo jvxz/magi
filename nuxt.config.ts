@@ -34,6 +34,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    nitroAutoImports: true,
     typedPages: true,
     typescriptPlugin: true,
   },
