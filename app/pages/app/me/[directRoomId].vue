@@ -25,11 +25,5 @@ defineAppLabel({ label: resolvedName })
 </script>
 
 <template>
-  <LayoutAppSlot name="page-header">
-    <LayoutAppPageHeader>
-      <span> {{ resolvedName }}</span>
-    </LayoutAppPageHeader>
-  </LayoutAppSlot>
-
   <RoomInstance :room="route.params.directRoomId" />
 </template>

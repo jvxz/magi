@@ -9,7 +9,9 @@ export interface MatrixRoomAvatarProps extends Omit<MatrixAvatarProps, 'alt' | '
 }
 export interface MatrixRoomAvatarEmits extends MatrixAvatarEmits {}
 
-const props = defineProps<MatrixRoomAvatarProps>()
+const props = withDefaults(defineProps<MatrixRoomAvatarProps>(), {
+  doPlaceholder: true,
+})
 const emits = defineEmits<MatrixRoomAvatarEmits>()
 const emitsAsProps = useEmitAsProps(emits)
 const { client } = useMatrixClient()
