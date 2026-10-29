@@ -11,7 +11,7 @@ provideEventListItemContext({
     () => props.room,
     () => props.event.getSender(),
   ),
-  eventProfile: useUserProfile(() => props.event.getSender()),
+  eventProfile: useUserProfile(() => props.event?.getSender() ?? ''),
   eventState: ref(),
   eventUserId: computed(() => props.event.getSender()),
   grouped: ref(false),
