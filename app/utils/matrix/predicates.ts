@@ -11,3 +11,5 @@ export const isRoomAlias = (input: string): boolean => REGEX__MATRIX_ROOM_ALIAS.
 export const isJoined = (room: Room) => room.getMyMembership() === KnownMembership.Join
 
 export const isMatrixError = (value: unknown): value is MatrixError => value instanceof MatrixError
+
+export const isMxcUrl = (input: string) => parseURL(input).protocol === 'mxc:'

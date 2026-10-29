@@ -19,16 +19,16 @@ export function getDisplayNameFallback(maybeUserOrId: MaybeUserOrId | undefined)
   return match[2] || match[3]!
 }
 
-export type ResolveAvatarUrlOpts = Partial<
+export type ResolveImageUrlOpts = Partial<
   { baseUrl?: string; animated?: boolean; size?: AvatarImageSize } & MxcToHttpsOptions
 >
-export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: ResolveAvatarUrlOpts) {
-  if (!avatarUrl) return undefined
+export function resolveImageUrl(imageUrl: string | undefined, opts: ResolveImageUrlOpts = {}) {
+  if (!imageUrl || !isMxcUrl(imageUrl)) return undefined
 
   const size = opts?.size ? MATRIX__AVATAR_IMAGE_SIZE_VALUES[opts.size] : MATRIX__AVATAR_IMAGE_SIZE_VALUES.medium
 
   return mxcToHttps(
-    avatarUrl,
+    imageUrl,
     merge(
       {
         allowDirectLinks: false,
@@ -44,7 +44,7 @@ export function resolveAvatarUrl(avatarUrl: string | undefined, opts?: ResolveAv
             }
           : undefined),
       },
-      (opts ||= {}),
+      opts,
     ),
   )
 }

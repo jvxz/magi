@@ -1,4 +1,4 @@
-import type { IContent, IEvent, Room } from 'matrix-js-sdk'
+import type { IContent, IEvent, Room, ImageContent } from 'matrix-js-sdk'
 import type { RoomMemberEventContent } from 'matrix-js-sdk/lib/types'
 
 import { EventType, KnownMembership, MatrixEvent, RelationType } from 'matrix-js-sdk'
@@ -85,6 +85,10 @@ export function getEventReactions(room: Room, event: MaybeEventOrId): EventReact
   }
 
   return filteredAnnotations
+}
+
+export function getImageBlurhash(content: ImageContent | undefined) {
+  return content?.info?.['xyz.amorgan.blurhash']
 }
 
 export function isUserReacting(

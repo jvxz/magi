@@ -1,19 +1,16 @@
-export function useResolveAvatarUrl(
+export function useResolveImageUrl(
   url: MaybeRefOrGetter<string | undefined>,
-  opts?: MaybeRefOrGetter<ResolveAvatarUrlOpts>,
+  opts?: MaybeRefOrGetter<ResolveImageUrlOpts>,
 ) {
   const urlRef = toRef(url)
   const optsRef = toRef(opts)
   const { client } = useMatrixClient()
   const reducedMotion = usePreferredReducedMotion()
 
-  const resolvedUrl = computed(() => {
-    const { protocol } = parseURL(urlRef.value)
-    if (protocol !== 'mxc:') return urlRef.value
-
-    return resolveAvatarUrl(
+  const resolvedUrl = computed(() =>
+    resolveImageUrl(
       urlRef.value,
-      merge<ResolveAvatarUrlOpts, ResolveAvatarUrlOpts>(
+      merge<ResolveImageUrlOpts, ResolveImageUrlOpts>(
         {
           allowDirectLinks: true,
           allowRedirects: true,
@@ -23,8 +20,8 @@ export function useResolveAvatarUrl(
         },
         optsRef.value ?? {},
       ),
-    )
-  })
+    ),
+  )
 
   return resolvedUrl
 }

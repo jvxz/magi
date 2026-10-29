@@ -19,7 +19,7 @@ const roomMember = useRoomMember(room, userId)
 const displayName = computed(() =>
   roomMember.value ? resolveUserName(roomMember.value) : getDisplayNameFallback(user.value?.userId),
 )
-const avatarUrl = computed(() => resolveAvatarUrl(roomMember.value?.getMxcAvatarUrl(), { size: 'small' }))
+const avatarUrl = computed(() => resolveImageUrl(roomMember.value?.getMxcAvatarUrl(), { size: 'small' }))
 const parsedUserId = computed(() => parseUserId(roomMember.value?.userId))
 
 const membership = useRoomMembership(room, userId)
@@ -34,12 +34,12 @@ function viewAvatar() {
   const id = userId.value
   if (!id) return
 
-  const payload: GlobalDialogMap['avatar'] = room.value
-    ? { label: displayName.value, member: id, room: room.value, type: 'roomMember' }
-    : { label: displayName.value, type: 'user', user: id }
+  const payload: GlobalDialogMap['image'] = room.value
+    ? { alt: displayName.value, member: id, room: room.value, type: 'roomMember' }
+    : { alt: displayName.value, type: 'user', user: id }
 
   open.value = false
-  nextTick(() => openDialog('avatar', payload))
+  nextTick(() => openDialog('image', payload))
 }
 </script>
 

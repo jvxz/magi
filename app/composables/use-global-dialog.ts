@@ -5,11 +5,11 @@ export interface GlobalDialogMap {
   leave: {
     room: Room
   }
-  avatar:
-    | { label: string; type: 'room'; room: MaybeRoomOrId }
-    | { label: string; type: 'user'; user: MaybeUserOrId }
-    | { label: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
-    | { label: string; type: 'image'; src: string }
+  image:
+    | { alt: string; type: 'room'; room: MaybeRoomOrId }
+    | { alt: string; type: 'user'; user: MaybeUserOrId }
+    | { alt: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
+    | { alt: string; type: 'image'; url: string; blurhash?: string }
   codeViewer: {
     code: string
     lang?: string

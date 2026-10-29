@@ -131,6 +131,7 @@ export default defineNuxtConfig({
     'nuxt-twemoji',
     'nuxt-tiptap-editor',
     '@nuxtjs/i18n',
+    '@unlazy/nuxt',
     '@nuxt/scripts',
   ],
 

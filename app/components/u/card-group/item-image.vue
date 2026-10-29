@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<UCardGroupItemImageProps>(), { as: 'img' 
 
 export interface UCardGroupItemImageProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
-  dialog?: GlobalDialogMap['avatar']
+  dialog?: GlobalDialogMap['image']
   prevent?: boolean
 }
 
@@ -16,7 +16,7 @@ const box = 'size-10 rounded-sm aspect-square shrink-0'
 
 const handleClick = (e: Event) => {
   if (props.prevent) e.preventDefault()
-  if (props.dialog) openDialog('avatar', props.dialog)
+  if (props.dialog) openDialog('image', props.dialog)
 }
 </script>
 

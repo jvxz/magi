@@ -14,7 +14,7 @@ const creator = useRoomComputed(spaceId, r => r?.getCreator())
     <div class="flex gap-2 items-center">
       <UCardGroupItemImage
         as-child
-        :dialog="{ label: resolveUserName(member), member, type: 'roomMember', room: spaceId! }"
+        :dialog="{ alt: resolveUserName(member), member, type: 'roomMember', room: spaceId! }"
         class="size-10"
       >
         <MatrixRoomMemberAvatar :room="spaceId" :member square image-size="small" />

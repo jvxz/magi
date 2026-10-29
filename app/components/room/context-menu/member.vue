@@ -8,6 +8,6 @@ defineProps<ContextMenuRegions['member']>()
     <!-- <UContextMenuItem> Message {{ member.name }} </UContextMenuItem> -->
     <MenuItemMessage :user="member" />
     <UContextMenuSeparator />
-    <MenuItemViewAvatar :payload="{ label: member.name, member, room: roomId, type: 'roomMember' }" />
+    <MenuItemViewAvatar :payload="{ alt: member.name, member, room: roomId, type: 'roomMember' }" />
   </template>
 </template>

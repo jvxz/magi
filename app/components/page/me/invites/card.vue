@@ -49,7 +49,7 @@ async function handleJoin() {
       <URoomShowcaseCardImage
         as-child
         square
-        :dialog="{ type: 'room', room: inviteRoom, label: resolveRoomName(inviteRoom) }"
+        :dialog="{ type: 'room', room: inviteRoom, alt: resolveRoomName(inviteRoom) }"
       >
         <MatrixRoomAvatar :room="inviteRoom" :direct="isDirectInvite" />
       </URoomShowcaseCardImage>

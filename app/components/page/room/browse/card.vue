@@ -8,8 +8,6 @@ const props = defineProps<
     suggested?: boolean
   }
 >()
-
-const dialogSrc = useResolveAvatarUrl(() => props.room.avatar_url, { size: 'full' })
 </script>
 
 <template>
@@ -17,7 +15,7 @@ const dialogSrc = useResolveAvatarUrl(() => props.room.avatar_url, { size: 'full
     <URoomShowcaseCardRoot class="border-0 flex gap-2 h-fit shadow-none items-center" :room="room.room_id" group>
       <URoomShowcaseCardImage
         as-child
-        :dialog="dialogSrc ? { type: 'image', src: dialogSrc, label: room.name ?? room.room_id } : undefined"
+        :dialog="room.avatar_url ? { type: 'image', url: room.avatar_url, alt: room.name ?? room.room_id } : undefined"
       >
         <MatrixAvatar square :src="props.room.avatar_url" :alt="room.name ?? room.room_id" />
       </URoomShowcaseCardImage>

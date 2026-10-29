@@ -55,7 +55,7 @@
   --danger-foreground: oklch(0.985 0 0);
   --danger-hover: oklch(0.6 0.2 23 / 0.1);
 
-  --overlay: oklch(0% 0 0 / 0.5);
+  --overlay: oklch(0% 0 0 / 0.75);
   /* end default palette tokens */
 }
 
@@ -99,6 +99,10 @@ body {
 
 body[style*='padding-right'] {
   padding-right: 0 !important;
+}
+
+body:has([role='dialog'], [role='alertdialog']) {
+  pointer-events: auto !important;
 }
 
 @keyframes skeleton {

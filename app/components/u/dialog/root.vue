@@ -13,7 +13,7 @@ const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <DialogRoot v-bind="forwarded" data-slot="dialog-root">
-    <slot />
+  <DialogRoot v-slot="slotProps" v-bind="forwarded" data-slot="dialog-root">
+    <slot v-bind="slotProps" />
   </DialogRoot>
 </template>
