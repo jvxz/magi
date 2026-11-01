@@ -17,7 +17,7 @@ const { open } = injectCollapsibleRootContext()
     @click="open = !open"
   >
     <div
-      class="rounded-full bg-border h-full w-px group-has-[[data-state=open]]:bg-border-strong group-hover:bg-border-strong"
+      class="rounded-full bg-border h-full w-px group-has-[[data-state=open]]/collapsible:bg-border-strong group-hover/collapsible:bg-border-strong"
     />
   </button>
 </template>
