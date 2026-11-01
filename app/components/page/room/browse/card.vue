@@ -7,6 +7,7 @@ const { room, spaceId } = defineProps<
     room: HierarchyRoom
     spaceId: string
     suggested?: boolean
+    via?: string[] | undefined
   }
 >()
 
@@ -56,7 +57,7 @@ const { openDialog } = useGlobalDialog()
 
         <div class="flex shrink-0 gap-1 items-center justify-center">
           <!-- join btn -->
-          <UButton v-if="!joined" :is-loading="isJoining" variant="ghost-raised" @click="join()">
+          <UButton v-if="!joined" :is-loading="isJoining" variant="ghost-raised" @click="join({ via })">
             <span>Join</span>
           </UButton>
 

@@ -9,7 +9,10 @@ definePageMeta({
 const { spaceId } = injectSpacePageContext()
 
 const currentSpace = useRoom(spaceId)
-const { conversationRooms, isLoading, isSuccess, subspaces, suggestedRooms } = useSpaceHierarchy(spaceId, true)
+const { conversationRooms, isLoading, isSuccess, roomVias, subspaces, suggestedRooms } = useSpaceHierarchy(
+  spaceId,
+  true,
+)
 const rooms = computed(() => [...conversationRooms.value.values()])
 
 const conversationCachedCount = useCachedCount(
@@ -54,7 +57,12 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
               row-class="flex flex-col"
             >
               <UCardGroupSeparator v-if="index" />
-              <PageRoomBrowseCard :space-id :room :suggested="suggestedRooms.has(room.room_id)" />
+              <PageRoomBrowseCard
+                :space-id
+                :room
+                :suggested="suggestedRooms.has(room.room_id)"
+                :via="roomVias.get(room.room_id)"
+              />
             </VirtualList>
 
             <!-- conversation skeletons -->

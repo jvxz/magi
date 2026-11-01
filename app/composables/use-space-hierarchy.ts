@@ -68,6 +68,10 @@ export function useSpaceHierarchy(
       ),
   )
 
+  const roomVias = computed(
+    () => new Map(rooms.value.get(spaceIdRef.value)?.children_state.map(r => [r.state_key, r.content.via ?? []]) ?? []),
+  )
+
   const conversationRooms = computed(() => {
     const map = new Map<string, IHierarchyRoom>()
     if (!rooms.value) return map
@@ -145,6 +149,7 @@ export function useSpaceHierarchy(
     ...q,
     conversationRooms,
     rooms,
+    roomVias,
     subspaces,
     suggestedRooms,
   }

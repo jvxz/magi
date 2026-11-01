@@ -11,7 +11,7 @@ const props = defineProps<{
 
 const delegated = reactiveOmit(props, 'class')
 
-const { conversationRooms, error, isLoading, suggestedRooms } = useSpaceHierarchy(
+const { conversationRooms, error, isLoading, roomVias, suggestedRooms } = useSpaceHierarchy(
   () => props.space.room_id,
   () => props.open,
 )
@@ -30,7 +30,12 @@ const noRoomsAvailable = computed(() => !isLoading.value && !error.value && !con
     :get-item-key="room => room.room_id"
   >
     <UCardGroupSeparator v-if="index" />
-    <PageRoomBrowseCard :room :space-id="space.room_id" :suggested="suggestedRooms.has(room.room_id)" />
+    <PageRoomBrowseCard
+      :room
+      :space-id="space.room_id"
+      :suggested="suggestedRooms.has(room.room_id)"
+      :via="roomVias.get(room.room_id)"
+    />
   </VirtualList>
 
   <div
