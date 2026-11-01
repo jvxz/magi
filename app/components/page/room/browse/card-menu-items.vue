@@ -14,6 +14,8 @@ const isJoined = useRoomIsJoined(() => room.room_id)
 
   <UMenuItemSeparator />
 
-  <MenuItemViewAvatar :payload="{ type: 'room', room: id, alt: room.name ?? room.room_id }" />
+  <MenuItemViewAvatar
+    :payload="room.avatar_url ? { type: 'image', url: room.avatar_url, alt: room.name ?? room.room_id } : undefined"
+  />
   <MenuItemLeave v-if="isJoined" :id type="room" />
 </template>
