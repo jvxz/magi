@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UMenuItemEmits } from '../u/menu-item.vue'
+import type { UMenuItemEmits } from '../u/menu-item/index.vue'
 
 const { payload } = defineProps<{ payload: GlobalDialogMap['invite'] | undefined }>()
 defineEmits<UMenuItemEmits>()
