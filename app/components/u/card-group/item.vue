@@ -1,17 +1,25 @@
 <script lang="ts">
 const cardGroupItemVariants = tv({
-  base: [staticBase(), 'rounded-none border-0 relative isolate text-left'],
+  base: [
+    staticBase(),
+    'rounded-none border-0 relative isolate text-left of-clip isolate',
+    'before:(content-empty absolute inset-0 pointer-events-none -z-1 m-2 rounded-sm)',
+    'data-[interactive]:hover:(cursor-pointer)',
+  ],
   defaultVariants: {
     spacing: 'default',
   },
   variants: {
     spacing: {
-      default: 'data-[interactive]:(rounded-sm p-2 m-2) p-4',
-      lg: 'data-[interactive]:(rounded-sm p-2 m-3) p-5',
+      default: 'p-4',
+      lg: 'p-5',
     },
     variant: {
-      raised:
-        'bg-surface-raised data-[interactive]:(cursor-pointer hover:bg-surface-raised-hover active:bg-surface-raised-press) reka-open:(bg-surface-raised-press)',
+      raised: [
+        'bg-surface-raised',
+        'data-[interactive]:before:(hover:bg-surface-raised-hover active:bg-surface-raised-hover)',
+        'reka-open:before:(bg-surface-raised-hover)',
+      ],
     },
   },
 })

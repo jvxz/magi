@@ -78,7 +78,7 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
               :member-count="space.num_joined_members"
               avatar-placeholder
             >
-              <PageRoomBrowseSubspace :space="space" :open :count="space.roomCount" :scroll-el="scrollEl" />
+              <PageRoomBrowseSubspace :space :open :count="space.roomCount" :scroll-el="scrollEl" />
             </PageRoomBrowseSection>
           </template>
 

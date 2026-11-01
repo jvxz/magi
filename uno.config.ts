@@ -5,7 +5,15 @@ import { presetAnimations } from 'unocss-preset-animations'
 import { presetAnchor } from './uno-preset-anchor'
 import { presetReka } from './uno-preset-reka'
 
+const RE__STAR_SELECTOR = /\\\*\\:/
+
 export default defineConfig({
+  layers: { children: 2 },
+  postprocess: [
+    util => {
+      if (RE__STAR_SELECTOR.test(util.selector)) util.layer = 'children'
+    },
+  ],
   presets: [
     presetWind4({
       preflights: { reset: false },

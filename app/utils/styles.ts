@@ -64,7 +64,11 @@ export const staticBase = tv({
 })
 
 export const popoverContentBase = tv({
-  base: 'z-popover w-52 overflow-hidden',
+  base: [
+    'z-popover w-52 overflow-hidden font-medium',
+    'origin-[var(--reka-popper-transform-origin,top_right)]',
+    'data-[state=open]:(animate-in fade-in-0 zoom-in-96 ease-snappy)',
+  ],
   defaultVariants: {
     spacing: 'default',
     variant: 'default',
