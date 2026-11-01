@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { RoomMember } from 'matrix-js-sdk'
 
-import type { UMenuItemEmits } from '../u/menu-item.vue'
+import type { UMenuItemEmits } from '../u/menu-item/index.vue'
 
 defineProps<{ roomMember: RoomMember }>()
 defineEmits<UMenuItemEmits>()

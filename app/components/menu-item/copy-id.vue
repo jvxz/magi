@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UMenuItemEmits } from '../u/menu-item.vue'
+import type { UMenuItemEmits } from '../u/menu-item/index.vue'
 
 defineProps<{ id: string | undefined }>()
 defineEmits<UMenuItemEmits>()

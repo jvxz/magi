@@ -3,7 +3,7 @@ import type { DropdownMenuRootEmits, DropdownMenuRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-import { INJECTION_KEY__MENU_ITEM } from '../menu-item.vue'
+import { INJECTION_KEY__MENU_ITEM } from '../menu-item/index.vue'
 
 export type UContextMenuRegionRootProps<TName extends ContextMenuName> = DropdownMenuRootProps & { name: TName }
 export type UContextMenuRegionRootEmits = DropdownMenuRootEmits

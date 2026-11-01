@@ -94,11 +94,11 @@ export function useRoomActions(
   const join = useMutation({
     mutationFn: async (opts: { via?: string[] | LocationQueryValue[] } | void) => {
       if (!roomId.value) return
-      const { via: viaServers } = opts ?? {}
+      const { via: viaServers = [] } = opts ?? {}
 
       const via = resolveViaArray(
         roomId.value,
-        viaServers?.map(v => v?.toString()),
+        viaServers.map(v => v?.toString()),
       )
 
       const res = await joinRoom(client.value, roomId.value, via)

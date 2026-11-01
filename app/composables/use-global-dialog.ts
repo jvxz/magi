@@ -18,6 +18,10 @@ export interface GlobalDialogMap {
     roomId: string
     eventId: string
   }
+  text: {
+    title: string
+    text: string
+  }
 }
 export type GlobalDialog = keyof GlobalDialogMap
 

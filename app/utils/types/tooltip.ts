@@ -5,6 +5,7 @@ export interface TooltipRegions {
   deviceListVerifiedIcon: {
     verified: boolean | undefined
   }
+  lobbyRoomCard: string
 }
 
 export type TooltipName = keyof TooltipRegions
