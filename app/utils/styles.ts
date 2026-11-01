@@ -5,6 +5,8 @@ export const interactionStates = tv({
   base: 'cursor-pointer text-start outline-none select-none focus-visible:(ring-ring/40 ring-[3px]) disabled:(pointer-events-none opacity-50) hover:disabled:cursor-not-allowed',
 })
 
+const interactiveGhostVariantClass =
+  'text-muted-foreground border border-transparent hover:(bg-secondary text-foreground) data-[highlighted]:(bg-secondary text-foreground) data-[state=open]:(bg-secondary text-foreground)'
 export const interactiveBase = tv({
   base: [
     interactionStates(),
@@ -32,9 +34,12 @@ export const interactiveBase = tv({
     variant: {
       danger: 'bg-danger border border-transparent hover:(bg-danger-hover) text-danger-foreground',
       default: 'bg-primary text-primary-foreground border border-transparent',
-      ghost:
-        'text-muted-foreground border border-transparent hover:(bg-secondary text-foreground) data-[highlighted]:(bg-secondary text-foreground) data-[state=open]:(bg-secondary text-foreground)',
+      ghost: interactiveGhostVariantClass,
       'ghost-inline': 'text-muted-foreground hover:text-foreground data-[state=open]:text-foreground',
+      'ghost-raised': [
+        interactiveGhostVariantClass,
+        'hover:(bg-surface-raised-hover text-foreground) data-[highlighted]:(bg-surface-raised-hover text-foreground) data-[state=open]:(bg-surface-raised-hover text-foreground)',
+      ],
       link: 'text-foreground px-2.5 -mx-2.5 underline-offset-4 hover:underline data-[state=open]:underline',
       outline:
         'text-muted-foreground border-border/90 hover:(text-foreground bg-secondary border-border-strong) focus-visible:(text-foreground bg-secondary border-border-strong) data-[state=open]:(text-foreground bg-secondary border-border-strong) border bg-transparent',

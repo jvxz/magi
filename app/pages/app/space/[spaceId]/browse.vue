@@ -1,21 +1,24 @@
 <script lang="ts" setup>
+import { injectSpacePageContext } from '../[spaceId].vue'
+
 definePageMeta({
   layout: 'app',
   name: 'space-browse',
 })
 
-const currentSpaceId = useCurrentSpaceId()
-const currentSpace = useCurrentSpace()
-const { conversationRooms, isLoading, isSuccess, subspaces, suggestedRooms } = useSpaceHierarchy(currentSpaceId, true)
+const { spaceId } = injectSpacePageContext()
+
+const currentSpace = useRoom(spaceId)
+const { conversationRooms, isLoading, isSuccess, subspaces, suggestedRooms } = useSpaceHierarchy(spaceId, true)
 const rooms = computed(() => [...conversationRooms.value.values()])
 
 const conversationCachedCount = useCachedCount(
-  () => `${currentSpaceId.value}-conversations`,
+  () => `${spaceId.value}-conversations`,
   () => (isSuccess.value ? Math.min(50, conversationRooms.value.size) : undefined),
   6,
 )
 const subspaceCachedCount = useCachedCount(
-  () => `${currentSpaceId.value}-subspaces`,
+  () => `${spaceId.value}-subspaces`,
   () => (isSuccess.value ? Math.min(24, subspaces.value.size) : undefined),
   4,
 )
@@ -37,7 +40,7 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
 
       <UShowcaseSeparator />
 
-      <UContextMenuRegionRoot name="browseRoom">
+      <UContextMenuRegionRoot modal name="browseRoom">
         <UShowcaseContent>
           <!-- conversations -->
           <PageRoomBrowseSection title="Rooms" :default-open="true" class="h-fit">
@@ -48,9 +51,10 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
               :scroll-el="scrollEl"
               :estimate-size="(_, i) => (i ? 73 : 72)"
               :get-item-key="room => room.room_id"
+              row-class="flex flex-col"
             >
               <UCardGroupSeparator v-if="index" />
-              <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
+              <PageRoomBrowseCard :spaceId :room :suggested="suggestedRooms.has(room.room_id)" />
             </VirtualList>
 
             <!-- conversation skeletons -->
@@ -90,7 +94,9 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
           </template>
         </UShowcaseContent>
 
-        <PageRoomBrowseContextMenuContent />
+        <UContextMenuRegionContent v-slot="{ payload }" name="browseRoom">
+          <PageRoomBrowseCardMenuItems v-if="payload" :room="payload.room" />
+        </UContextMenuRegionContent>
       </UContextMenuRegionRoot>
     </UShowcaseRoot>
   </div>

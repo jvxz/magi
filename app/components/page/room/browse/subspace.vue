@@ -30,7 +30,7 @@ const noRoomsAvailable = computed(() => !isLoading.value && !error.value && !con
     :get-item-key="room => room.room_id"
   >
     <UCardGroupSeparator v-if="index" />
-    <PageRoomBrowseCard :room :suggested="suggestedRooms.has(room.room_id)" />
+    <PageRoomBrowseCard :room :spaceId="space.room_id" :suggested="suggestedRooms.has(room.room_id)" />
   </VirtualList>
 
   <div
