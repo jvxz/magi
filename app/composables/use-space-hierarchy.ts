@@ -148,8 +148,8 @@ export function useSpaceHierarchy(
   return {
     ...q,
     conversationRooms,
-    rooms,
     roomVias,
+    rooms,
     subspaces,
     suggestedRooms,
   }
