@@ -19,7 +19,9 @@ const delegated = reactiveOmit(props, ['title', 'text'])
         <UDialogTitle class="truncate"> {{ title }} </UDialogTitle>
       </UDialogHeader>
 
-      <p>{{ text }}</p>
+      <div class="overflow-y-scroll">
+        <p class="whitespace-pre-wrap">{{ text }}</p>
+      </div>
 
       <UDialogFooter>
         <UDialogClose> Close </UDialogClose>

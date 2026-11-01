@@ -16,7 +16,7 @@ const delegated = reactiveOmit(props, ['closeDisabled', 'withClose', 'class', 'u
 <template>
   <Primitive
     v-bind="delegated"
-    :class="cn('gap-1 mb-4 text-center sm:text-left flex flex-col', props.class, ui?.container)"
+    :class="cn('gap-1 mb-4 shrink-0 text-center sm:text-left flex flex-col', props.class, ui?.container)"
   >
     <slot />
     <DialogClose v-if="withClose" as-child>
