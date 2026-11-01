@@ -21,7 +21,7 @@ const { openDialog } = useGlobalDialog()
 
 <template>
   <UContextMenuRegionTrigger as-child region="browseRoom" :value="{ room }">
-    <URoomShowcaseCardRoot class="border-0 flex gap-2 h-fit shadow-none items-center group" :room="room.room_id" group>
+    <URoomShowcaseCardRoot class="group border-0 flex gap-2 h-fit shadow-none items-center" :room="room.room_id" group>
       <URoomShowcaseCardImage
         as-child
         :dialog="room.avatar_url ? { type: 'image', url: room.avatar_url, alt: room.name ?? room.room_id } : undefined"
@@ -44,9 +44,9 @@ const { openDialog } = useGlobalDialog()
               <UInlineSeparatorRoot class="shrink-0" />
 
               <UButton
-                @click="openDialog('text', { title: 'Topic', text: room.topic })"
                 variant="ghost-inline"
                 class="text-xs rounded-none shrink w-full"
+                @click="openDialog('text', { title: 'Topic', text: room.topic })"
               >
                 <span class="truncate">{{ room.topic }}</span>
               </UButton>
@@ -54,9 +54,9 @@ const { openDialog } = useGlobalDialog()
           </URoomShowcaseCardDescription>
         </URoomShowcaseCardHeader>
 
-        <div class="flex items-center justify-center gap-1 shrink-0">
+        <div class="flex shrink-0 gap-1 items-center justify-center">
           <!-- join btn -->
-          <UButton v-if="!joined" @click="join()" :is-loading="isJoining" variant="ghost-raised">
+          <UButton v-if="!joined" :is-loading="isJoining" variant="ghost-raised" @click="join()">
             <span>Join</span>
           </UButton>
 
@@ -83,7 +83,7 @@ const { openDialog } = useGlobalDialog()
               </UDropdownMenuContent>
             </UDropdownMenuRoot>
 
-            <UTooltipRegionContent name="lobbyRoomCard" v-slot="{ payload }">
+            <UTooltipRegionContent v-slot="{ payload }" name="lobbyRoomCard">
               {{ payload }}
             </UTooltipRegionContent>
           </UTooltipRegionRoot>

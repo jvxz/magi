@@ -54,7 +54,7 @@ const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
               row-class="flex flex-col"
             >
               <UCardGroupSeparator v-if="index" />
-              <PageRoomBrowseCard :spaceId :room :suggested="suggestedRooms.has(room.room_id)" />
+              <PageRoomBrowseCard :space-id :room :suggested="suggestedRooms.has(room.room_id)" />
             </VirtualList>
 
             <!-- conversation skeletons -->
