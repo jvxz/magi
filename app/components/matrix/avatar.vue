@@ -16,6 +16,7 @@ export interface MatrixAvatarProps
 export type MatrixAvatarEmits = ImgEmits
 
 const props = withDefaults(defineProps<MatrixAvatarProps>(), {
+  doPlaceholder: true,
   imageSize: 'small',
 })
 const emits = defineEmits<ImgEmits>()
@@ -62,7 +63,7 @@ const id = useId()
     @error="onError"
   />
   <AvatarPlaceholder
-    v-else
+    v-else-if="doPlaceholder"
     :is-loading
     :name="alt ?? id"
     :placeholder-variant

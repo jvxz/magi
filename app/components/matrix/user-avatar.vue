@@ -8,7 +8,9 @@ export interface UserAvatarProps extends Omit<MatrixAvatarProps, 'alt' | 'src'> 
 }
 export interface UserAvatarEmits extends MatrixAvatarEmits {}
 
-const props = defineProps<UserAvatarProps>()
+const props = withDefaults(defineProps<UserAvatarProps>(), {
+  doPlaceholder: true,
+})
 const emits = defineEmits<UserAvatarEmits>()
 const emitsAsProps = useEmitAsProps(emits)
 const profile = useUserProfile(() => props.user ?? undefined)
