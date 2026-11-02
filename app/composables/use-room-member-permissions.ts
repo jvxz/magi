@@ -29,20 +29,24 @@ export function useRoomMemberPermissions(
     })
   }
 
+  // membership
   const canKick = check((s, userId) => s.hasSufficientPowerLevelFor('kick', powerLevelOf(s, userId)))
   const canBan = check((s, userId) => s.hasSufficientPowerLevelFor('ban', powerLevelOf(s, userId)))
   const canBanUser = checkAgainst(canBan)
   const canKickUser = checkAgainst(canKick)
 
-  const canChangeName = check((s, userId) => s.maySendStateEvent(EventType.RoomName, userId))
+  // messages
   const canSendMessages = check((s, userId) => s.maySendMessage(userId))
   const canRedactMessages = check((s, userId) => s.hasSufficientPowerLevelFor('redact', powerLevelOf(s, userId)))
   const canRedactOwnMessages = check((s, userId) => s.maySendEvent(EventType.RoomRedaction, userId))
 
+  // room state/settings
+  const canEditRoomName = check((s, userId) => s.maySendStateEvent(EventType.RoomName, userId))
+
   return {
     canBan,
     canBanUser,
-    canChangeName,
+    canEditRoomName,
     canKick,
     canKickUser,
     canRedactMessages,
