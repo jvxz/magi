@@ -22,6 +22,9 @@ export interface GlobalDialogMap {
     title: string
     text: string
   }
+  roomSettings: {
+    room: Room
+  }
 }
 export type GlobalDialog = keyof GlobalDialogMap
 

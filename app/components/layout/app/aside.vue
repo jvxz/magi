@@ -18,6 +18,7 @@ const rooms = useRooms(isSpace)
         <MenuItemInvite :payload="payload ? { room: payload?.room.roomId } : undefined" />
         <MenuItemCopyUrl :id="payload?.room.roomId" type="roomId" />
         <MenuItemCopyId :id="payload?.room.roomId" />
+        <MenuItemRoomSettings :room="payload?.room" />
 
         <UContextMenuSeparator />
 
