@@ -59,8 +59,8 @@ provideRoomSettingsDialogContext({
       <UDialogSidebarLayout>
         <template #sidebar>
           <div class="flex flex-col gap-2 size-full">
-            <div class="flex items-center gap-2 p-1">
-              <MatrixRoomAvatar :room square imageSize="small" class="size-1.5em rounded-sm" />
+            <div class="p-1 flex gap-2 items-center">
+              <MatrixRoomAvatar :room square image-size="small" class="rounded-sm size-1.5em" />
               <span class="font-medium">{{ resolveRoomName(room) }}</span>
             </div>
 
@@ -73,7 +73,7 @@ provideRoomSettingsDialogContext({
           </div>
         </template>
 
-        <component v-if="selection" :is="roomSettingComponents[selection]" />
+        <component :is="roomSettingComponents[selection]" v-if="selection" />
       </UDialogSidebarLayout>
     </UDialogContent>
   </UDialogRoot>

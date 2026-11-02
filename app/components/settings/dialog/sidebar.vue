@@ -30,7 +30,7 @@ const filteredCategories = computed(() =>
 </script>
 
 <template>
-  <div class="rounded-l-lg h-full flex shrink-0 flex-col gap-4">
+  <div class="rounded-l-lg flex shrink-0 flex-col gap-4 h-full">
     <UButton
       variant="ghost"
       class="group text-foreground font-normal shrink-0 gap-3.5 h-14 w-full items-center justify-center"
@@ -45,7 +45,7 @@ const filteredCategories = computed(() =>
       </div>
     </UButton>
 
-    <div class="grid place-items-center shrink-0">
+    <div class="shrink-0 grid place-items-center">
       <UInput
         ref="input"
         v-model:model-value="searchQuery"

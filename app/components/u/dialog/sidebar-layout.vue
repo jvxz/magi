@@ -16,7 +16,7 @@ const title = computed(() => (props.getTitle ? props.getTitle(titleRef.value) : 
 
 <template>
   <div class="flex size-full">
-    <div class="h-full w-25% border-r p-2 group-data-[size=lg]/dialog:p-4 shrink-0 bg-background flex flex-col gap-1">
+    <div class="p-2 border-r bg-background flex shrink-0 flex-col gap-1 h-full w-25% group-data-[size=lg]/dialog:p-4">
       <slot name="sidebar" />
     </div>
 
