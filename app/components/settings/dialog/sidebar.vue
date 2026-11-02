@@ -30,7 +30,7 @@ const filteredCategories = computed(() =>
 </script>
 
 <template>
-  <div class="p-4 rounded-l-lg bg-background flex shrink-0 flex-col gap-4 w-64">
+  <div class="rounded-l-lg h-full flex shrink-0 flex-col gap-4">
     <UButton
       variant="ghost"
       class="group text-foreground font-normal shrink-0 gap-3.5 h-14 w-full items-center justify-center"
@@ -44,7 +44,8 @@ const filteredCategories = computed(() =>
         </span>
       </div>
     </UButton>
-    <div class="grid place-items-center">
+
+    <div class="grid place-items-center shrink-0">
       <UInput
         ref="input"
         v-model:model-value="searchQuery"
@@ -54,8 +55,8 @@ const filteredCategories = computed(() =>
       />
     </div>
 
-    <TabsList class="tab-list flex flex-col gap-1 isolate">
-      <TabsTrigger
+    <UDialogSidebarLayoutGroup :default-value="SETTINGS__CATEGORIES[0]">
+      <UDialogSidebarLayoutGroupItem
         v-for="entry in filteredCategories"
         :key="entry.key"
         :value="entry.key"
@@ -65,19 +66,15 @@ const filteredCategories = computed(() =>
       >
         <UButton
           variant="ghost"
-          class="justify-start data-[active]:text-foreground data-[active]:bg-selected hover:bg-hover data-[active]:anchor-name-item"
+          class="justify-start data-[active]:text-foreground data-[active]:bg-selected hover:bg-hover"
         >
           <Icon :name="entry.icon" class="size-4" />
           {{ upperFirst(entry.title) }}
         </UButton>
-      </TabsTrigger>
+      </UDialogSidebarLayoutGroupItem>
+    </UDialogSidebarLayoutGroup>
 
-      <div
-        class="rounded bg-selected pointer-events-none duration-100 absolute position-anchor-item anchor-inset ease-snappy -z-1"
-      />
-    </TabsList>
-
-    <div class="flex-1"></div>
+    <div class="flex-1" />
 
     <SettingsDialogSidebarLogout />
   </div>

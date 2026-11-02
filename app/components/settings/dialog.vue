@@ -1,3 +1,23 @@
+<script lang="ts">
+import {
+  SettingsContentAccessibility,
+  SettingsContentAdvanced,
+  SettingsContentAppearance,
+  SettingsContentDevices,
+  SettingsContentMessaging,
+  SettingsContentGeneral,
+} from '#components'
+
+const settingComponentMap = {
+  accessibility: SettingsContentAccessibility,
+  advanced: SettingsContentAdvanced,
+  appearance: SettingsContentAppearance,
+  devices: SettingsContentDevices,
+  general: SettingsContentGeneral,
+  messaging: SettingsContentMessaging,
+} satisfies Record<SettingsCategory, Component>
+</script>
+
 <script lang="ts" setup>
 const { open, searchQuery, tab } = useSettingsDialog()
 
@@ -14,40 +34,21 @@ onUnmounted(() => {
   <UDialogRoot v-model:open="open">
     <DialogPortal>
       <DialogOverlay :class="cn(overlayStyles)" />
+
       <UDialogContent
-        class="p-0 border-0 rounded-none gap-4 grid size-full max-w-full overflow-clip md:border md:rounded md:h-[90%] md:w-352 sm:max-w-full"
+        class="p-0 border-0 rounded-none gap-4 grid size-full max-w-full of-clip"
+        size="lg"
         @close-auto-focus.prevent
       >
-        <TabsRoot v-model:model-value="tab" activation-mode="manual" orientation="vertical" class="flex">
-          <SettingsDialogSidebar />
+        <UDialogSidebarLayout :get-title="key => SETTINGS__CATEGORY_METADATA[key as SettingsCategory].title">
+          <template #sidebar>
+            <SettingsDialogSidebar />
+          </template>
 
-          <div class="flex flex-1 flex-col">
-            <UDialogHeader
-              class="mb-0 pe-2.5 ps-4 border-b flex shrink-0 gap-2 h-header-height justify-center sm:text-left"
-              :ui="{
-                closeButton: 'top-2 right-2',
-              }"
-            >
-              <DialogTitle class="font-medium">
-                {{ SETTINGS__CATEGORY_METADATA[tab].title }}
-              </DialogTitle>
-
-              <VisuallyHidden>
-                <DialogDescription> {{ SETTINGS__CATEGORY_METADATA[tab].title }} settings </DialogDescription>
-              </VisuallyHidden>
-            </UDialogHeader>
-
-            <TabsContent
-              v-for="setting in SETTINGS__CATEGORY_METADATA"
-              :key="setting.key"
-              :value="setting.key"
-              :force-mount="visited.has(setting.key)"
-              class="data-[state=inactive]:hidden"
-            >
-              <SettingsContent :category="setting.key" />
-            </TabsContent>
+          <div class="flex flex-1 flex-col size-full">
+            <component :is="settingComponentMap[tab]" />
           </div>
-        </TabsRoot>
+        </UDialogSidebarLayout>
       </UDialogContent>
     </DialogPortal>
   </UDialogRoot>
