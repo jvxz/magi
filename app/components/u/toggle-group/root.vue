@@ -29,7 +29,7 @@ provide(INJECTION_KEY__TOGGLE_GROUP, {
   variant: props.variant,
 })
 
-const delegated = reactiveOmit(props, 'class', 'size', 'variant')
+const delegated = reactiveOmit(props, ['class', 'size', 'variant'])
 const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
