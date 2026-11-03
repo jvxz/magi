@@ -37,7 +37,7 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
 
 <template>
   <SettingsContentLayout>
-    <SettingsFormPrimitive
+    <USettingComposite
       :label="SETTINGS__ITEM_METADATA.advanced.resync.title"
       :description="SETTINGS__ITEM_METADATA.advanced.resync.description"
     >
@@ -74,9 +74,9 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
           </UButton>
         </UAlertDialogTrigger>
       </UAlertDialogRoot>
-    </SettingsFormPrimitive>
+    </USettingComposite>
 
-    <SettingsFormSwitch
+    <USettingSwitch
       v-model:model-value="settings.advanced.developerMode"
       :label="SETTINGS__ITEM_METADATA.advanced.developerMode.title"
       :description="SETTINGS__ITEM_METADATA.advanced.developerMode.description"
