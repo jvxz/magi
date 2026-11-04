@@ -59,3 +59,9 @@ export enum AccountDataEvent {
   CrossSigningUserSigning = 'm.cross_signing.user_signing',
   MegolmBackupV1 = 'm.megolm_backup.v1',
 }
+
+export interface RoomSettings {
+  avatarUrl: string | null
+  name: string
+  topic: string | undefined
+}

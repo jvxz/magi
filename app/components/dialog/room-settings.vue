@@ -7,8 +7,8 @@ import { DialogRoomSettingsGeneral, DialogRoomSettingsMembers, DialogRoomSetting
 
 import type { SidebarLayoutGroupItem } from '../u/dialog/sidebar-layout-group-item.vue'
 
-export type RoomSettingKey = (typeof roomSettings)[number]['key']
-const roomSettings = [
+export type RoomSettingKey = (typeof roomSettingsTabs)[number]['key']
+const roomSettingsTabs = [
   {
     icon: ICON__SETTINGS,
     key: 'General',
@@ -23,13 +23,7 @@ const roomSettings = [
   },
 ] as const satisfies SidebarLayoutGroupItem[]
 
-const roomSettingComponents = {
-  General: DialogRoomSettingsGeneral,
-  Members: DialogRoomSettingsMembers,
-  Permissions: DialogRoomSettingsPermissions,
-} as const satisfies Record<RoomSettingKey, Component>
-
-export interface RoomSettingsDialogContext {
+export interface RoomSettingsDialogContext extends ReturnType<typeof useUnsavedChanges<RoomSettings>> {
   room: Ref<Room>
   permissions: ReturnType<typeof useRoomMemberPermissions>
 }
@@ -40,17 +34,35 @@ export const [injectRoomSettingsDialogContext, provideRoomSettingsDialogContext]
 
 <script lang="ts" setup>
 const props = defineProps<GlobalDialogMap['roomSettings']>()
+
+const roomSettingComponents = {
+  General: DialogRoomSettingsGeneral,
+  Members: DialogRoomSettingsMembers,
+  Permissions: DialogRoomSettingsPermissions,
+} as const satisfies Record<RoomSettingKey, Component>
+
 const room = toRef(props, 'room')
 
-const selection = ref<RoomSettingKey>(roomSettings[0].key)
+const selection = ref<RoomSettingKey>(roomSettingsTabs[0].key)
 
 const { self } = useSelf()
 const permissions = useRoomMemberPermissions(room, () => self.value?.userId)
 
+const roomSettings = useRoomComputed<RoomSettings>(room, room => ({
+  avatarUrl: room.getMxcAvatarUrl(),
+  name: room.name,
+  topic: getRoomTopic(room),
+}))
+
+const unsavedChanges = useUnsavedChanges(roomSettings, noop /* todo */)
+
 provideRoomSettingsDialogContext({
+  ...unsavedChanges,
   permissions,
   room,
 })
+
+const roomName = useRoomComputed(room, resolveRoomName)
 </script>
 
 <template>
@@ -61,11 +73,15 @@ provideRoomSettingsDialogContext({
           <div class="flex flex-col gap-2 size-full">
             <div class="p-1 flex gap-2 items-center">
               <MatrixRoomAvatar :room square image-size="small" class="rounded-sm size-1.5em" />
-              <span class="font-medium">{{ resolveRoomName(room) }}</span>
+              <span class="font-medium">{{ roomName }}</span>
             </div>
 
-            <UDialogSidebarLayoutGroup v-model:model-value="selection" :default-value="roomSettings[0].key">
-              <UDialogSidebarLayoutGroupItem v-for="setting in roomSettings" :key="setting.key" :value="setting.key">
+            <UDialogSidebarLayoutGroup v-model:model-value="selection" :default-value="roomSettingsTabs[0].key">
+              <UDialogSidebarLayoutGroupItem
+                v-for="setting in roomSettingsTabs"
+                :key="setting.key"
+                :value="setting.key"
+              >
                 <Icon :name="setting.icon" />
                 <span>{{ setting.key }}</span>
               </UDialogSidebarLayoutGroupItem>
@@ -74,6 +90,23 @@ provideRoomSettingsDialogContext({
         </template>
 
         <component :is="roomSettingComponents[selection]" v-if="selection" />
+
+        <Transition :name="unsavedChanges.isDirty.value ? 'flip-up' : 'flip-down'">
+          <UDialogUnsavedChanges
+            v-if="unsavedChanges.isDirty.value"
+            variant="raised"
+            class="flex items-center justify-center px-2"
+          >
+            <div class="flex items-center justify-between w-full">
+              <span class="text-sm ps-1 font-medium">There are unsaved changes</span>
+
+              <div class="flex items-center gap-2">
+                <UButton @click="unsavedChanges.resetChanges()" variant="ghost-raised"> Reset </UButton>
+                <UButton @click="unsavedChanges.commitChanges()" variant="default"> Confirm </UButton>
+              </div>
+            </div>
+          </UDialogUnsavedChanges>
+        </Transition>
       </UDialogSidebarLayout>
     </UDialogContent>
   </UDialogRoot>
