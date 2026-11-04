@@ -3,20 +3,22 @@ import type { EditableInputProps } from 'reka-ui'
 
 import { injectEditableRootContext } from 'reka-ui'
 
-import { INJECTION_KEY__EDITABLE_AREA_LEADING_ICON } from './area.vue'
+import { INJECTION_KEY__EDITABLE_AREA_ICONS } from './area.vue'
 
 export type UEditableInputProps = EditableInputProps & { class?: HTMLAttributes['class'] }
 
 const props = defineProps<UEditableInputProps>()
 
 const { inputValue, isEditing } = injectEditableRootContext()
-const leadingIcon = inject(INJECTION_KEY__EDITABLE_AREA_LEADING_ICON)
+const { leadingIcon, trailingIcon, hideIconsWhenActive } = inject(INJECTION_KEY__EDITABLE_AREA_ICONS)!
+
+const shouldShowIcons = computed(() => (hideIconsWhenActive.value ? false : isEditing.value))
 
 const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <span v-if="leadingIcon && isEditing" class="px-1 flex shrink-0 size-fit items-center justify-center">
+  <span v-if="leadingIcon && shouldShowIcons" class="px-1 flex shrink-0 size-fit items-center justify-center">
     <Icon :name="leadingIcon" />
   </span>
 
@@ -29,4 +31,8 @@ const delegated = reactiveOmit(props, 'class')
       {{ inputValue }}
     </slot>
   </EditableInput>
+
+  <span v-if="trailingIcon && shouldShowIcons" class="px-1 flex shrink-0 size-fit items-center justify-center">
+    <Icon :name="trailingIcon" />
+  </span>
 </template>
