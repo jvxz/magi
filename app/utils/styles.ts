@@ -145,7 +145,7 @@ export const dialogStyles = tv({
     size: {
       default: 'sm:max-w-lg',
       lg: 'h-full max-h-[calc(100%-2rem)] md:(border rounded max-w-352 max-h-90%) sm:max-w-full',
-      md: 'h-full max-h-160 sm:max-w-224',
+      md: 'h-full max-h-192 sm:max-w-256',
     },
     // override spacing inherited from staticBase
     spacing: { default: 'p-5' },

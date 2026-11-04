@@ -29,13 +29,18 @@ const title = computed(() => (props.getTitle ? props.getTitle(titleRef.value) : 
             'group-data-[size=lg]/dialog:h-15 group-data-[size=lg]/dialog:pl-5',
           )
         "
-        :ui="{ closeButton: 'group-data-[size=lg]/dialog:right-4 group-data-[size=lg]/dialog:top-4' }"
+        :ui="{
+          closeButton: cn(
+            'group-data-[size=lg]/dialog:right-4 group-data-[size=lg]/dialog:top-4',
+            'group-data-[size=md]/dialog:right-2 group-data-[size=md]/dialog:top-2',
+          ),
+        }"
       >
         <UDialogTitle>{{ title }}</UDialogTitle>
       </UDialogHeader>
 
       <UScrollAreaRoot>
-        <UScrollAreaViewport class="p-2">
+        <UScrollAreaViewport class="p-2 px-4">
           <slot />
         </UScrollAreaViewport>
 
