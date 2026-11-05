@@ -23,7 +23,10 @@ const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>
-  <AlertDialogRoot v-bind="forwarded">
+  <AlertDialogRoot
+    v-bind="forwarded"
+    @before-update:open="(value, details) => !value && preventClose && details.cancel()"
+  >
     <slot />
   </AlertDialogRoot>
 </template>

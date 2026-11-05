@@ -18,7 +18,7 @@ const forwarded = useForwardProps(delegated)
     :class="
       cn(
         interactiveBase({ variant: 'ghost' }),
-        'relative inline-flex flex-1 size-full cursor-default items-center justify-center border-0 bg-transparent text-sm text-muted-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground',
+        'relative inline-flex flex-1 size-full cursor-default items-center justify-center border-0 bg-transparent text-sm text-muted-foreground data-[state=checked]:bg-muted data-[state=checked]:text-foreground',
         props.class,
       )
     "

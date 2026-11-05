@@ -2,7 +2,7 @@
 import type { PrimitiveProps } from 'reka-ui'
 import type { InputTypeHTMLAttribute } from 'vue'
 
-import { useForwardExpose } from 'reka-ui'
+import { useForwardElement } from 'reka-ui'
 
 export interface UInputRef extends ComponentPublicInstance {
   $el: HTMLInputElement | undefined
@@ -40,7 +40,8 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
 const iconClass = 'text-muted-foreground h-[1em] absolute top-1/2 -translate-y-1/2'
 
-const { forwardRef } = useForwardExpose()
+const { expose, forwardRef } = useForwardElement()
+defineExpose(expose)
 </script>
 
 <template>

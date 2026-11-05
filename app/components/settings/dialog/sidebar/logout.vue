@@ -1,16 +1,10 @@
 <script lang="ts" setup>
 const open = ref(false)
 const { logout } = useAuth()
-
-function handleOpen(value: boolean) {
-  if (logout.isLoading.value) return
-
-  open.value = value
-}
 </script>
 
 <template>
-  <UAlertDialogRoot :open @update:open="handleOpen">
+  <UAlertDialogRoot v-model:open="open" :prevent-close="logout.isLoading.value">
     <UAlertDialogTrigger as-child>
       <UButton variant="ghost" class="justify-start"> <Icon :name="ICON__LOGOUT" /> <span>Log out</span> </UButton>
     </UAlertDialogTrigger>

@@ -103,7 +103,7 @@ describe('reactions', () => {
 
     const reactionItem = new DOMWrapper(document.querySelector(createReactionItemSelector(reaction)))
 
-    expect(reactionItem.attributes()).toHaveProperty('data-state', 'active')
+    expect(reactionItem.attributes()).toHaveProperty('data-state', 'checked')
     expect(reactionItem.attributes()).toHaveProperty('reaction', reaction)
   })
 
@@ -119,7 +119,7 @@ describe('reactions', () => {
     await reactionItem.trigger('mousedown')
     await nextTick()
 
-    expect(reactionItem.attributes()).toHaveProperty('data-state', 'active')
+    expect(reactionItem.attributes()).toHaveProperty('data-state', 'checked')
     expect(reactionItem.attributes()).toHaveProperty('reaction', reaction)
   })
 

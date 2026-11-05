@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { AuthDict } from 'matrix-js-sdk'
-import type { DialogRootEmits, DialogRootProps } from 'reka-ui'
+import type { AlertDialogEmits, AlertDialogProps } from 'reka-ui'
 
 import { AuthType } from 'matrix-js-sdk'
 import { useForwardPropsEmits } from 'reka-ui'
@@ -45,10 +45,10 @@ export const [injectDialogUiaContext, provideDialogUiaContext] = createContext<D
 </script>
 
 <script lang="ts" setup>
-export type UiaDialogProps = DialogRootProps
-export type UiaDialogEmits = DialogRootEmits
+export type UiaDialogProps = AlertDialogProps
+export type UiaDialogEmits = AlertDialogEmits
 
-const props = withDefaults(defineProps<UiaDialogProps>(), { modal: true })
+const props = defineProps<UiaDialogProps>()
 const emits = defineEmits<UiaDialogEmits>()
 
 const isFormValid = ref(false)

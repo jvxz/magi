@@ -59,18 +59,7 @@ const handleInvite = async () => {
 </script>
 
 <template>
-  <UDialogRoot
-    v-bind="forwarded"
-    :open
-    @update:open="
-      e => {
-        emits('update:open', e)
-
-        if (isInviting) return
-        open = e
-      }
-    "
-  >
+  <UDialogRoot v-bind="forwarded" :open :prevent-close="isInviting">
     <UDialogContent v-if="room" @open-auto-focus.prevent="inputEl?.$el.focus">
       <UDialogHeader :close-disabled="isInviting">
         <UDialogTitle class="truncate"> Invite to "{{ roomName }}" </UDialogTitle>
