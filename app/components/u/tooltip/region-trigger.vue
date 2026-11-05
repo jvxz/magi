@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="TName extends TooltipName">
 import type { PrimitiveProps } from 'reka-ui'
 
-import { Primitive, useForwardExpose, useForwardProps } from 'reka-ui'
+import { Primitive, useForwardElement, useForwardProps } from 'reka-ui'
 
 export type UTooltipRegionTriggerProps<TName extends TooltipName> = PrimitiveProps & {
   class?: HTMLAttributes['class']
@@ -12,7 +12,8 @@ export type UTooltipRegionTriggerProps<TName extends TooltipName> = PrimitivePro
 const props = withDefaults(defineProps<UTooltipRegionTriggerProps<TName>>(), { as: 'div' })
 
 const { close, contentId, currentTarget, disableClosingTrigger, disabled, openAt } = useTooltipRegion(props.region)
-const { currentElement, forwardRef } = useForwardExpose()
+const { currentElement, expose, forwardRef } = useForwardElement()
+defineExpose(expose)
 
 const isOpen = computed(() => !!currentElement.value && currentElement.value === currentTarget.value)
 

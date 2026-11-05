@@ -63,8 +63,8 @@ const handleInvite = async () => {
     v-bind="forwarded"
     :open
     @update:open="
-      e => {
-        emits('update:open', e)
+      (e, details) => {
+        emits('update:open', e, details)
 
         if (isInviting) return
         open = e

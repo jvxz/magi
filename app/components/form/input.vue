@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { InputTypeHTMLAttribute } from 'vue'
 
-import { useForwardExpose } from 'reka-ui'
+import { useForwardElement } from 'reka-ui'
 
 import { UInput, UTextarea } from '#components'
 
@@ -21,7 +21,8 @@ const modelValue = defineModel<string | number>('modelValue')
 const hasError = computed(() => (props.error && Array.isArray(props.error) ? props.error.length > 0 : !!props.error))
 const delegated = reactiveOmit(props, ['placeholder', 'modelValue'])
 
-const { forwardRef } = useForwardExpose()
+const { expose, forwardRef } = useForwardElement()
+defineExpose(expose)
 </script>
 
 <template>

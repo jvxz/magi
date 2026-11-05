@@ -2,7 +2,7 @@
 import type { VariantProps } from 'tailwind-variants'
 
 export const toggleVariants = tv({
-  base: 'p-0 data-[state=off]:(hover:text-foreground hover:bg-hover) data-[state=on]:(bg-selected hover:bg-selected text-foreground)',
+  base: 'p-0 data-[state=unchecked]:(hover:text-foreground hover:bg-hover) data-[state=checked]:(bg-selected hover:bg-selected text-foreground)',
   defaultVariants: {
     size: 'default',
     variant: 'ghost',
@@ -12,7 +12,7 @@ export const toggleVariants = tv({
     variant: {
       ghost: interactiveBase({ variant: 'ghost' }),
       outline: interactiveBase({
-        class: 'data-[state=on]:(border-border-strong)',
+        class: 'data-[state=checked]:(border-border-strong)',
         variant: 'outline',
       }),
     },

@@ -42,7 +42,7 @@ onUnmounted(() => {
               :key="setting.key"
               :value="setting.key"
               :force-mount="visited.has(setting.key)"
-              class="data-[state=inactive]:hidden"
+              class="data-[state=unchecked]:hidden"
             >
               <SettingsContent :category="setting.key" />
             </TabsContent>
