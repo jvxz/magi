@@ -46,15 +46,7 @@ const inputEl = useTemplateRef('inputEl')
 </script>
 
 <template>
-  <UDialogRoot
-    :open
-    @update:open="
-      e => {
-        if (isCreating) return
-        open = e
-      }
-    "
-  >
+  <UDialogRoot v-model:open="open" :prevent-close="isCreating">
     <UTooltipRoot>
       <UDialogTrigger as-child>
         <UTooltipTrigger as-child>

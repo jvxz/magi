@@ -4,14 +4,7 @@ const tooltipOpen = ref(false)
 </script>
 
 <template>
-  <UTooltipRoot
-    :open="tooltipOpen"
-    @update:open="
-      e => {
-        if (!popoverOpen) tooltipOpen = e
-      }
-    "
-  >
+  <UTooltipRoot v-model:open="tooltipOpen" @before-update:open="(_, details) => popoverOpen && details.cancel()">
     <PopoverRoot v-model:open="popoverOpen">
       <UTooltipTrigger as-child>
         <PopoverTrigger as-child>
