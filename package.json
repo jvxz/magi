@@ -52,7 +52,7 @@
     "h3": "^2.0.8",
     "idb-keyval": "^6.3.0",
     "marked": "^18.1.2",
-    "matrix-js-sdk": "^41.9.0",
+    "matrix-js-sdk": "^45.0.0",
     "microlighter": "^2.2.0",
     "mime": "^4.1.2",
     "motion-v": "^2.9.0",
