@@ -3,20 +3,14 @@ import type { Variant } from 'unocss'
 import { definePreset } from 'unocss'
 
 const REKA_ATTRS: Record<string, string> = {
-  active: ':is([data-active],[data-state=on],[data-state=active])',
+  active: ':is([data-active],[data-state=checked])',
   checked: '[data-state=checked]',
   closed: '[data-state=closed]',
-  'delayed-open': '[data-state=delayed-open]',
   disabled: '[data-disabled]',
-  hidden: '[data-state=hidden]',
   highlighted: '[data-highlighted]',
   horizontal: '[data-orientation=horizontal]',
-  inactive: '[data-state=inactive]',
   indeterminate: '[data-state=indeterminate]',
-  'instant-open': '[data-state=instant-open]',
   invalid: '[data-invalid]',
-  off: '[data-state=off]',
-  on: '[data-state=on]',
   open: '[data-state=open]',
   placeholder: '[data-placeholder]',
   readonly: '[data-readonly]',
@@ -27,7 +21,6 @@ const REKA_ATTRS: Record<string, string> = {
   'side-top': '[data-side=top]',
   unchecked: '[data-state=unchecked]',
   vertical: '[data-orientation=vertical]',
-  visible: '[data-state=visible]',
 }
 
 const REKA_RE = /^(not-|group-|group-hover-not-)?reka-([\w-]+):(.+)$/

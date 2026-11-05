@@ -22,7 +22,7 @@ const imageUrl = ref<string>()
 
 const shared = {
   class:
-    'rounded pointer-events-auto size-full object-cover max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-20rem)] max-h-[calc(100vh-10rem)]',
+    'rounded size-full object-cover max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-20rem)] max-h-[calc(100vh-10rem)]',
   imageSize: 'full',
   onError: () => (isError.value = true),
   onUrl: (url: string | undefined) => (imageUrl.value = url),
@@ -42,9 +42,7 @@ const src = useResolveImageUrl(() => props.url, { size: 'full' })
       </DialogClose>
     </div>
 
-    <UDialogContent
-      class="p-0 border-none bg-transparent pointer-events-none items-center justify-center sm:(size-fit max-w-screen)"
-    >
+    <UDialogContent class="p-0 border-none bg-transparent items-center justify-center sm:(size-fit max-w-screen)">
       <VisuallyHidden>
         <UDialogHeader>
           <UDialogTitle> {{ alt }} </UDialogTitle>

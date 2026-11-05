@@ -19,14 +19,6 @@ const { client } = useMatrixClient()
 const { removeRoomFromDirectList } = useDirectRooms()
 
 const openModel = defineModel<boolean>('open', { default: false })
-const open = computed({
-  get: () => openModel.value,
-  set: (e: boolean) => {
-    if (isLeaving.value) return
-    openModel.value = e
-  },
-})
-
 const memberCount = useRoomMemberCount(() => props.room)
 const dialogDescription = computed(() =>
   memberCount.value === 1
@@ -47,7 +39,7 @@ async function onLeft() {
 </script>
 
 <template>
-  <UAlertDialogRoot v-bind="forwarded" v-model:open="open">
+  <UAlertDialogRoot v-bind="forwarded" v-model:open="openModel" :prevent-close="isLeaving">
     <UAlertDialogContent>
       <UAlertDialogHeader>
         <UAlertDialogTitle> Are you sure? </UAlertDialogTitle>
@@ -61,7 +53,7 @@ async function onLeft() {
       </UAlertDialogHeader>
 
       <UAlertDialogFooter>
-        <UAlertDialogCancel :disabled="isLeaving"> Cancel </UAlertDialogCancel>
+        <UAlertDialogCancel> Cancel </UAlertDialogCancel>
         <UButton
           :is-loading="isLeaving"
           @click="

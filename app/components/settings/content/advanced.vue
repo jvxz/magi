@@ -41,15 +41,7 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
       :label="SETTINGS__ITEM_METADATA.advanced.resync.title"
       :description="SETTINGS__ITEM_METADATA.advanced.resync.description"
     >
-      <UAlertDialogRoot
-        :open
-        @update:open="
-          e => {
-            if (isResyncing) return
-            open = e
-          }
-        "
-      >
+      <UAlertDialogRoot v-model:open="open" :prevent-close="isResyncing">
         <UAlertDialogContent>
           <UAlertDialogHeader>
             <UAlertDialogTitle> {{ SETTINGS__ITEM_METADATA.advanced.resync.title }} </UAlertDialogTitle>
@@ -60,7 +52,7 @@ const { executeImmediate: resync, isLoading: isResyncing } = useAsyncState(
           </UAlertDialogHeader>
 
           <UAlertDialogFooter>
-            <UAlertDialogCancel :disabled="isResyncing"> Cancel </UAlertDialogCancel>
+            <UAlertDialogCancel> Cancel </UAlertDialogCancel>
 
             <UButton variant="danger" :is-loading="isResyncing" @click="resync">
               <span>Continue</span>

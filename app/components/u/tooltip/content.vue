@@ -58,10 +58,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
   }
 }
 
-#tooltip-content[data-state='instant-open'] {
-  animation: tooltip-in 75ms ease;
-}
-#tooltip-content[data-state='delayed-open'] {
+#tooltip-content[data-state='open'] {
   animation: tooltip-in 75ms ease;
 }
 

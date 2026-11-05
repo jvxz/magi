@@ -15,7 +15,7 @@ const delegated = reactiveOmit(props, 'class')
     :class="
       cn(
         'text-sm w-full justify-start',
-        'data-[state=off]:(hover:text-foreground hover:bg-hover) router-link-active:(bg-selected hover:bg-selected text-foreground)',
+        'data-[state=unchecked]:(hover:text-foreground hover:bg-hover) router-link-active:(bg-selected hover:bg-selected text-foreground)',
         props.class,
       )
     "

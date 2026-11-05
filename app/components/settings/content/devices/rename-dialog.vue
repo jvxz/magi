@@ -21,14 +21,6 @@ const { r$ } = useRegle(
   },
 )
 
-const dialogOpen = computed({
-  get: () => renameDialogOpen.value,
-  set: open => {
-    if (renameDevice.isPending.value) return
-    renameDialogOpen.value = open
-  },
-})
-
 watch(renameDialogOpen, open => {
   if (!open) {
     deviceRenaming.value = undefined
@@ -58,7 +50,7 @@ const { executeImmediate: handleRename, isLoading: isRenamingDevice } = useAsync
 </script>
 
 <template>
-  <UDialogRoot v-model:open="dialogOpen">
+  <UDialogRoot v-model:open="renameDialogOpen" :prevent-close="renameDevice.isPending.value">
     <UDialogContent v-if="device" as-child>
       <Form @submit="handleRename">
         <UDialogHeader>
