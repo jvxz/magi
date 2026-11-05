@@ -14,7 +14,7 @@ overrides:
   h3: 1.15.11
   prosemirror-model: 1.25.12
   prosemirror-view: 1.42.8
-  reka-ui: 2.11.0
+  reka-ui: 3.0.0-alpha.0
   tinyexec: 1.3.1
   typescript: npm:typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2
   vite-plugin-pwa: 1.3.0
@@ -127,8 +127,8 @@ importers:
         specifier: ^7.3.0
         version: 7.3.0
       reka-ui:
-        specifier: 2.11.0
-        version: 2.11.0(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2))
+        specifier: 3.0.0-alpha.0
+        version: 3.0.0-alpha.0(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2))
       tailwind-merge:
         specifier: ^3.7.0
         version: 3.7.0
@@ -1629,9 +1629,6 @@ packages:
     engines: {node: '>=20.9.0'}
     cpu: [x64]
     os: [win32]
-
-  '@internationalized/date@3.12.2':
-    resolution: {integrity: sha512-FY1Y+H64NDs+HAF6omlnWxm3mEpfgaCSWtL5l551ZZfImA+kGjPFgrnJrGjH6lfmLL0g8Z/mBu1R3kufeCp6Jw==}
 
   '@internationalized/number@3.6.7':
     resolution: {integrity: sha512-3ji1fcrT+FPAK86UqEhB/psHixYo6niWPJtt7+qRaYFynt/BaJG8GhAPimtWUpEiVSTq8ZM8L5psMxGquiB/Vg==}
@@ -7788,8 +7785,8 @@ packages:
     resolution: {integrity: sha512-NgRBy2Nx/bE+9F27nVHnqcN5HjyLmecqsqx2PJHu3/IEtADD4WuxuXIVExD5PoSDFVrl78dOonfcOe5O+5nbzQ==}
     hasBin: true
 
-  reka-ui@2.11.0:
-    resolution: {integrity: sha512-ilkpm4bIAol4jwzm4tpm3WVcffyGOpqksNZL1k1qO9QmIwAA+q8jroxjkUGLEn/GddfdExFfvofWfQiKZszUeQ==}
+  reka-ui@3.0.0-alpha.0:
+    resolution: {integrity: sha512-pZENOHw2lptDtLwkgEdvoUbVxQK08pjGWmmNp4zJRBCevZswa48aYloMaqeMDtQSO0G6a18WD8d0MMe1mijZzg==}
     peerDependencies:
       vue: 3.6.0-rc.13
 
@@ -10621,10 +10618,6 @@ snapshots:
 
   '@img/sharp-win32-x64@0.35.5':
     optional: true
-
-  '@internationalized/date@3.12.2':
-    dependencies:
-      '@swc/helpers': 0.5.23
 
   '@internationalized/number@3.6.7':
     dependencies:
@@ -17976,10 +17969,9 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  reka-ui@2.11.0(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2)):
+  reka-ui@3.0.0-alpha.0(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2)):
     dependencies:
       '@floating-ui/vue': 2.0.1(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2))
-      '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.7
       '@tanstack/vue-virtual': 3.13.50(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2))
       '@vueuse/core': 14.4.0(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2))
