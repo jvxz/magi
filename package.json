@@ -102,7 +102,7 @@
     "eslint-plugin-regexp": "3.3.2",
     "eslint-plugin-sort-exports": "^0.9.1",
     "eslint-plugin-unused-imports": "4.4.1",
-    "happy-dom": "^20.14.6",
+    "happy-dom": "^21.0.4",
     "knip": "^6.43.0",
     "oxfmt": "^0.54.0",
     "oxlint": "^1.90.0",
