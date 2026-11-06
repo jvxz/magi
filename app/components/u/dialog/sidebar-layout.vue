@@ -44,7 +44,9 @@ const title = computed(() => (props.getTitle ? props.getTitle(titleRef.value) : 
           <slot />
         </UScrollAreaViewport>
 
-        <UScrollAreaScrollbars />
+        <UScrollAreaScrollbar orientation="vertical">
+          <UScrollAreaThumb />
+        </UScrollAreaScrollbar>
       </UScrollAreaRoot>
     </div>
   </div>
