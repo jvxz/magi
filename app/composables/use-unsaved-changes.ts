@@ -27,7 +27,7 @@ export function useUnsavedChanges<T extends object>(
       if (conflicts) continue
 
       next[key] = current[key]
-      unsavedChanges.value[key] = current[key]
+      unsavedChanges.value[key] = cloneDeep(current[key])
     }
 
     baseline.value = next
@@ -42,5 +42,5 @@ export function useUnsavedChanges<T extends object>(
     onCommit(unsavedChanges.value)
   }
 
-  return { commitChanges, isDirty, resetChanges, unsavedChanges, sourceHasChanges }
+  return { commitChanges, isDirty, resetChanges, sourceHasChanges, unsavedChanges }
 }

@@ -5,6 +5,7 @@ import type {
   Listener,
   MatrixEvent,
   Room,
+  StateEvents,
   User,
 } from 'matrix-js-sdk'
 import type { MatrixClient } from 'matrix-js-sdk/lib/client'
@@ -30,8 +31,8 @@ export type AvatarImageSize = 'small' | 'medium' | 'large' | 'full'
 export type PowerLevelName = 'member' | 'moderator' | 'admin' | 'owner' | 'unknown'
 
 export type IRoomHierarchy = Awaited<ReturnType<MatrixClient['getRoomHierarchy']>>
-
 export type IMediaConfig = Awaited<ReturnType<MatrixClient['getMediaConfig']>>
+
 export enum RoomAccountDataEvent {
   FullyRead = 'm.fully_read',
   Tag = 'm.tag',
@@ -61,8 +62,12 @@ export enum AccountDataEvent {
   MegolmBackupV1 = 'm.megolm_backup.v1',
 }
 
-export interface RoomSettings {
-  avatarUrl: string | null
-  name: string
-  topic: string | undefined
-}
+export type RoomSettings = Pick<StateEvents, (typeof MATRIX__CONFIGURABLE_ROOM_SETTINGS)[number]>
+// export interface RoomSettings {
+//   [EventType.RoomAvatar]: string | null
+//   [EventType.RoomName]: string
+//   [EventType.RoomTopic]: string | undefined
+// }
+// export type RoomSettingsEvents = {
+//   [K in keyof RoomSettings]: StateEvents[K]
+// }

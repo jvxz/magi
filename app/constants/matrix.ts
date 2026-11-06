@@ -1,3 +1,5 @@
+import type { StateEvents } from 'matrix-js-sdk'
+
 import { AuthType, EventType } from 'matrix-js-sdk'
 
 import type { AvatarImageSize } from '../utils/matrix/types'
@@ -38,8 +40,6 @@ export const MATRIX__ALLOWED_ATTRS_PER_TAG = {
   span: ['data-mx-bg-color', 'data-mx-color', 'data-mx-spoiler', 'data-mx-maths'],
 } as const
 
-export const MATRIX__ALLOWED_TAGS = [
-  'a',
 export const MATRIX__ALLOWED_AVATAR_FILE_TYPES = {
   accept: {
     'image/apng': ['.apng'],
@@ -52,6 +52,8 @@ export const MATRIX__ALLOWED_AVATAR_FILE_TYPES = {
   description: 'Image files',
 }
 
+export const MATRIX__ALLOWED_TAGS = [
+  'a',
   'code',
   'img',
   'span',
@@ -98,6 +100,12 @@ export const MATRIX__AVATAR_IMAGE_SIZE_VALUES = {
 } satisfies Record<AvatarImageSize, number>
 
 export const MATRIX__BASE_URL = 'https://matrix-client.matrix.org'
+
+export const MATRIX__CONFIGURABLE_ROOM_SETTINGS = [
+  EventType.RoomAvatar,
+  EventType.RoomName,
+  EventType.RoomTopic,
+] as const satisfies (keyof StateEvents)[]
 
 export const MATRIX__REACTABLE_EVENT_TYPES: (
   | EventType

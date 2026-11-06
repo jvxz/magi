@@ -12,6 +12,11 @@ export function useRoomMemberPermissions(
 
   const powerLevelOf = (s: RoomState, id: string) => s.getMember(id)?.powerLevel ?? 0
 
+  const canSendStateEvent = (event: EventType) => {
+    if (!!userId.value && roomCreators.value.has(userId.value)) return true
+    return !!roomState.value && !!userId.value && roomState.value.maySendStateEvent(event, userId.value)
+  }
+
   const check = (fn: (state: RoomState, userId: string) => boolean) =>
     computed(() => {
       if (!!userId.value && roomCreators.value.has(userId.value)) return true
@@ -42,15 +47,20 @@ export function useRoomMemberPermissions(
 
   // room state/settings
   const canEditRoomName = check((s, userId) => s.maySendStateEvent(EventType.RoomName, userId))
+  const canEditRoomTopic = check((s, userId) => s.maySendStateEvent(EventType.RoomTopic, userId))
+  const canEditRoomAvatar = check((s, userId) => s.maySendStateEvent(EventType.RoomAvatar, userId))
 
   return {
     canBan,
     canBanUser,
+    canEditRoomAvatar,
     canEditRoomName,
+    canEditRoomTopic,
     canKick,
     canKickUser,
     canRedactMessages,
     canRedactOwnMessages,
     canSendMessages,
+    canSendStateEvent,
   }
 }

@@ -80,7 +80,8 @@ export function getStateEvent(room: Room | undefined, eventType: EventType, stat
   return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType, stateKey) ?? undefined
 }
 
-export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] {
+// export function getStateEvents<T extends EventType[]>(room: Room, eventTypes: T): MatrixEvent[] {
+export function getStateEvents<T extends EventType>(room: Room, eventType: T): MatrixEvent[] {
   return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType) ?? []
 }
 
@@ -172,6 +173,18 @@ export async function getSpaceRooms(
     nextBatchToken: res.next_batch,
     rooms: res.rooms,
   }
+}
+
+export function getRoomSettings(room: Room) {
+  // a room's live timeline always has state
+  const currentState = getCurrentRoomState(room)!
+
+  const settings = {}
+  for (const key of MATRIX__CONFIGURABLE_ROOM_SETTINGS) {
+    Object.assign(settings, { [key]: currentState.getStateEvents(key, '')?.getContent() ?? {} })
+  }
+
+  return settings as RoomSettings
 }
 
 export function getJoinedRooms(client: MatrixClient, space: Room | undefined) {
