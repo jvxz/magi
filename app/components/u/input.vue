@@ -54,7 +54,7 @@ defineExpose(expose)
     />
 
     <input
-      v-bind="$attrs"
+      v-bind="props"
       :ref="forwardRef"
       v-model="modelValue"
       v-disable-pw="disablePw"
