@@ -31,6 +31,7 @@ export type PowerLevelName = 'member' | 'moderator' | 'admin' | 'owner' | 'unkno
 
 export type IRoomHierarchy = Awaited<ReturnType<MatrixClient['getRoomHierarchy']>>
 
+export type IMediaConfig = Awaited<ReturnType<MatrixClient['getMediaConfig']>>
 export enum RoomAccountDataEvent {
   FullyRead = 'm.fully_read',
   Tag = 'm.tag',

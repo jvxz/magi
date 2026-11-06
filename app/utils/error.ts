@@ -103,6 +103,10 @@ export function parseError(error: unknown, opts?: { fallbackMessage?: string }):
 
 // custom errors
 
+export class FileTooLargeError extends Error {
+  override name = 'FileTooLargeError'
+}
+
 export class EmailInUseError extends Error {
   override name = 'EmailInUseError'
 }

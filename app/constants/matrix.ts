@@ -40,6 +40,18 @@ export const MATRIX__ALLOWED_ATTRS_PER_TAG = {
 
 export const MATRIX__ALLOWED_TAGS = [
   'a',
+export const MATRIX__ALLOWED_AVATAR_FILE_TYPES = {
+  accept: {
+    'image/apng': ['.apng'],
+    'image/avif': ['.avif'],
+    'image/gif': ['.gif'],
+    'image/jpeg': ['.jpg', '.jpeg'],
+    'image/png': ['.png'],
+    'image/webp': ['.webp'],
+  },
+  description: 'Image files',
+}
+
   'code',
   'img',
   'span',
