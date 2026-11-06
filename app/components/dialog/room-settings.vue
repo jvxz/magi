@@ -90,25 +90,25 @@ const roomName = useRoomComputed(room, resolveRoomName)
           <UDialogUnsavedChanges
             v-if="unsavedChanges.isDirty.value"
             variant="raised"
-            class="flex items-center justify-center px-2"
+            class="px-2 flex items-center justify-center"
           >
-            <div class="flex items-center justify-between w-full">
-              <div class="flex items-center gap-2">
-                <span class="text-sm ps-1 font-medium">There are unsaved changes</span>
+            <div class="flex w-full items-center justify-between">
+              <div class="flex gap-2 items-center">
+                <span class="text-sm font-medium ps-1">There are unsaved changes</span>
                 <UTooltipRoot v-if="unsavedChanges.sourceHasChanges.value">
                   <UTooltipTrigger as-child>
                     <Icon :name="ICON__WARNING" class="text-warn" />
                   </UTooltipTrigger>
 
-                  <UTooltipContent class="w-xs text-center">
+                  <UTooltipContent class="text-center w-xs">
                     <span>Confirming will override changes that were made while you were editing</span>
                   </UTooltipContent>
                 </UTooltipRoot>
               </div>
 
-              <div class="flex items-center gap-2">
-                <UButton @click="unsavedChanges.resetChanges()" variant="ghost-raised"> Reset </UButton>
-                <UButton @click="unsavedChanges.commitChanges()" variant="default"> Confirm </UButton>
+              <div class="flex gap-2 items-center">
+                <UButton variant="ghost-raised" @click="unsavedChanges.resetChanges()"> Reset </UButton>
+                <UButton variant="default" @click="unsavedChanges.commitChanges()"> Confirm </UButton>
               </div>
             </div>
           </UDialogUnsavedChanges>

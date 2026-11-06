@@ -39,24 +39,24 @@ const avatarUrl = useResolveImageUrl(
 <template>
   <div class="flex flex-col gap-4">
     <!-- avatar, name -->
-    <div class="flex items-center gap-4">
+    <div class="flex gap-4 items-center">
       <UImgButton
         :progress="progress ? progress.loaded / progress.total : undefined"
         :visible="permissions.canEditRoomAvatar.value"
         :disabled="isPending"
-        @click="openFilePicker"
         :icon="ICON__EDIT"
+        @click="openFilePicker"
       >
         <Img
           :src="isPending ? '' : avatarUrl"
           :alt="`Avatar of ${resolveRoomName(room)}`"
-          imageSize="medium"
-          class="rounded-sm size-20 shrink-0"
+          image-size="medium"
+          class="rounded-sm shrink-0 size-20"
           square
         />
       </UImgButton>
 
-      <div class="flex flex-col h-full gap-1 shrink">
+      <div class="flex shrink flex-col gap-1 h-full">
         <UEditableRoot
           v-if="permissions.canEditRoomName.value"
           v-slot="{ modelValue }"
@@ -64,7 +64,7 @@ const avatarUrl = useResolveImageUrl(
           submit-mode="enter"
           class="shrink min-w-0"
         >
-          <UEditableArea :trailing-icon="ICON__EDIT" class="*:(text-xl font-medium px-1 -mx-1 shrink)">
+          <UEditableArea :trailing-icon="ICON__EDIT" class="*:(text-xl font-medium px-1 shrink -mx-1)">
             <UEditablePreview>
               <span class="truncate">{{ modelValue }}</span>
               <Icon :name="ICON__EDIT" class="shrink-0 size-0.9em" />
@@ -75,17 +75,17 @@ const avatarUrl = useResolveImageUrl(
         <p v-else class="text-xl font-medium">{{ unsavedChanges['m.room.name'].name }}</p>
 
         <UClickToCopy as-child side="right">
-          <UButton variant="ghost-inline" class="text-sm font-normal text-muted-foreground">{{ room.roomId }}</UButton>
+          <UButton variant="ghost-inline" class="text-sm text-muted-foreground font-normal">{{ room.roomId }}</UButton>
         </UClickToCopy>
       </div>
     </div>
 
     <FormInput
+      v-model:model-value="topic"
       :disabled="permissions.canEditRoomTopic.value"
       resizable="y"
       label="Topic"
       textarea
-      v-model:model-value="topic"
       :ui="{ input: 'max-h-32 min-h-8' }"
     />
   </div>

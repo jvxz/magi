@@ -40,8 +40,8 @@ const forwarded = useForwardPropsEmits(delegated, emits)
         )
       "
     >
-      <div class="size-full grid place-items-center max-w-85% mx-auto">
-        <Icon v-if="isNil(progress) && icon" :name="icon" class="size-40% text-foreground" />
+      <div class="mx-auto grid size-full max-w-85% place-items-center">
+        <Icon v-if="isNil(progress) && icon" :name="icon" class="text-foreground size-40%" />
         <UProgressBar v-else-if="isDefined(progress)" :progress class="text-2xs" />
       </div>
     </div>

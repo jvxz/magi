@@ -20,7 +20,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
     data-slot="progress-circle"
   >
     <ProgressIndicator
-      class="absolute inset-0 bg-primary transition-all duration-75"
+      class="bg-primary transition-all duration-75 inset-0 absolute"
       :style="{
         width: `${progress * 100}%`,
       }"
