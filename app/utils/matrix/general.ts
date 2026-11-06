@@ -1,5 +1,6 @@
-import type { MatrixClient } from 'matrix-js-sdk'
+import type { ImageInfo, MatrixClient, UploadOpts } from 'matrix-js-sdk'
 
+import { encodeFromCanvas } from '@thi.ng/blurhash'
 import { getHttpUriForMxc } from 'matrix-js-sdk'
 
 import { MATRIX__BASE_URL } from '~/constants/matrix'
@@ -124,4 +125,33 @@ export function mxcToHttps(mxc: string | undefined, opts?: MxcToHttpsOptions) {
   } catch {
     return undefined
   }
+}
+
+export type UploadContentFile = File | Blob
+export async function uploadContent(client: MatrixClient, file: UploadContentFile, opts?: UploadOpts) {
+  return client.uploadContent(file, opts)
+}
+
+export async function toImageInfo(file: File): Promise<ImageInfo> {
+  const bmp = await createImageBitmap(file)
+  const blurhash = await createBlurhash(file)
+  const info: ImageInfo = {
+    h: bmp.height,
+    mimetype: file.type,
+    size: file.size,
+    w: bmp.width,
+    'xyz.amorgan.blurhash': blurhash,
+  }
+  bmp.close()
+  return info
+}
+
+export async function createBlurhash(file: File) {
+  const bmp = await createImageBitmap(file, { resizeQuality: 'low', resizeWidth: 32 })
+  const cv = new OffscreenCanvas(bmp.width, bmp.height)
+
+  cv.getContext('2d', { willReadFrequently: true })!.drawImage(bmp, 0, 0)
+  bmp.close()
+
+  return encodeFromCanvas(cv, 4, 3)
 }

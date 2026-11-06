@@ -25,7 +25,7 @@ const delegated = reactiveOmit(props, ['closeDisabled', 'withClose', 'class', 'u
         variant="ghost"
         size="icon"
         :class="
-          cn('opacity-70 inline-flex size-8 items-center right-3.5 top-3.5 justify-center absolute', ui?.closeButton)
+          cn('opacity-70 inline-flex size-8 items-center justify-center absolute right-3.5 top-3.5', ui?.closeButton)
         "
         :disabled="closeDisabled"
       >

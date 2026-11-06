@@ -1,5 +1,13 @@
 <script lang="ts" setup>
-import { DialogCodeViewer, DialogDeleteMessage, DialogImage, DialogInvite, DialogLeave, DialogText } from '#components'
+import {
+  DialogCodeViewer,
+  DialogDeleteMessage,
+  DialogRoomSettings,
+  DialogImage,
+  DialogInvite,
+  DialogLeave,
+  DialogText,
+} from '#components'
 
 const { dialogKey, open, state } = useGlobalDialog()
 
@@ -9,6 +17,7 @@ const dialogs: Record<GlobalDialog, Component> = {
   image: DialogImage,
   invite: DialogInvite,
   leave: DialogLeave,
+  roomSettings: DialogRoomSettings,
   text: DialogText,
 }
 </script>

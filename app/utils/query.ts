@@ -49,6 +49,7 @@ export const $mk = {
   register: () => defineKey('register'),
   renameDevice: () => defineKey('renameDevice'),
   scrollEvents: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('scrollEvents', toRef(roomId)),
+  uploadContent: () => defineKey('uploadContent'),
 } as const
 
 export type $MKKey = keyof typeof $mk
