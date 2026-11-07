@@ -143,7 +143,7 @@ export const dialogStyles = tv({
   extend: staticBase,
   variants: {
     size: {
-      default: 'sm:max-w-lg',
+      default: 'max-w-[calc(100%-2rem)] max-h-[calc(100%-2rem)] sm:max-w-lg',
       lg: 'h-full max-h-[calc(100%-2rem)] md:(border rounded max-w-352 max-h-90%) sm:max-w-full',
       md: 'h-full max-h-192 sm:max-w-256',
     },
