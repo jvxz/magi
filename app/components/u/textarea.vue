@@ -32,7 +32,7 @@ const modelValue = useVModel(delegated, 'modelValue', emits, {
     v-bind="delegated"
     v-model="modelValue"
     data-slot="textarea"
-    :aria-disabled="disabled"
+    :disabled="disabled"
     :class="
       cn(
         inputStyles(),
