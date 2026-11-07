@@ -55,7 +55,7 @@ const filteredCategories = computed(() =>
       />
     </div>
 
-    <UDialogSidebarLayoutGroup :default-value="SETTINGS__CATEGORIES[0]">
+    <UDialogSidebarLayoutGroup :model-value="tab">
       <UDialogSidebarLayoutGroupItem
         v-for="entry in filteredCategories"
         :key="entry.key"
