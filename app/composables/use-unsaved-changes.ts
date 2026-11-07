@@ -38,9 +38,7 @@ export function useUnsavedChanges<T extends object>(
     sync()
   }
 
-  const commitChanges = () => {
-    onCommit(unsavedChanges.value)
-  }
+  const commitChanges = async () => onCommit(unsavedChanges.value)
 
   return { commitChanges, isDirty, resetChanges, sourceHasChanges, unsavedChanges }
 }
