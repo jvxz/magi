@@ -20,7 +20,7 @@ const title = computed(() => (props.getTitle ? props.getTitle(titleRef.value) : 
       <slot name="sidebar" />
     </div>
 
-    <div class="size-full">
+    <div class="flex flex-col size-full">
       <UDialogHeader
         :class="
           cn(
