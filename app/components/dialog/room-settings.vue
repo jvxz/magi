@@ -51,6 +51,10 @@ const permissions = useRoomMemberPermissions(room, () => self.value?.userId)
 const { currentRoomSettings, setSettings } = useRoomSettings(room)
 const unsavedChanges = useUnsavedChanges(currentRoomSettings, setSettings)
 
+const { notifyError } = useNotifications()
+const commit = () =>
+  unsavedChanges.commitChanges().catch(err => notifyError(err, `Failed to save ${resolveRoomName(room.value)} settings`))
+
 provideRoomSettingsDialogContext({
   ...unsavedChanges,
   permissions,
@@ -108,7 +112,7 @@ const roomName = useRoomComputed(room, resolveRoomName)
 
               <div class="flex gap-2 items-center">
                 <UButton variant="ghost-raised" @click="unsavedChanges.resetChanges()"> Reset </UButton>
-                <UButton variant="default" @click="unsavedChanges.commitChanges()"> Confirm </UButton>
+                <UButton variant="default" @click="commit"> Confirm </UButton>
               </div>
             </div>
           </UDialogUnsavedChanges>
