@@ -82,7 +82,7 @@ const avatarUrl = useResolveImageUrl(
 
     <FormInput
       v-model:model-value="topic"
-      :disabled="permissions.canEditRoomTopic.value"
+      :disabled="!permissions.canEditRoomTopic.value"
       resizable="y"
       label="Topic"
       textarea
