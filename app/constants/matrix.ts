@@ -1,6 +1,6 @@
 import type { StateEvents } from 'matrix-js-sdk'
 
-import { AuthType, EventType } from 'matrix-js-sdk'
+import { AuthType, EventType, JoinRule } from 'matrix-js-sdk'
 
 import type { AvatarImageSize } from '../utils/matrix/types'
 
@@ -105,7 +105,18 @@ export const MATRIX__CONFIGURABLE_ROOM_SETTINGS = [
   EventType.RoomAvatar,
   EventType.RoomName,
   EventType.RoomTopic,
+  EventType.RoomJoinRules,
 ] as const satisfies (keyof StateEvents)[]
+
+export const MATRIX__JOIN_RULE_NAME_MAP: Record<JoinRule, string> = {
+  invite: 'Invite only',
+  knock: 'Knock or invite',
+  private: 'Private',
+  public: 'Public',
+  restricted: 'Restricted',
+}
+
+export const MATRIX__JOIN_RULE_SETTABLE_RULES: JoinRule[] = [JoinRule.Public, JoinRule.Invite, JoinRule.Knock]
 
 export const MATRIX__REACTABLE_EVENT_TYPES: (
   | EventType

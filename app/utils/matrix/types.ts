@@ -7,6 +7,7 @@ import type {
   Room,
   StateEvents,
   User,
+  Visibility,
 } from 'matrix-js-sdk'
 import type { MatrixClient } from 'matrix-js-sdk/lib/client'
 
@@ -62,12 +63,7 @@ export enum AccountDataEvent {
   MegolmBackupV1 = 'm.megolm_backup.v1',
 }
 
-export type RoomSettings = Pick<StateEvents, (typeof MATRIX__CONFIGURABLE_ROOM_SETTINGS)[number]>
-// export interface RoomSettings {
-//   [EventType.RoomAvatar]: string | null
-//   [EventType.RoomName]: string
-//   [EventType.RoomTopic]: string | undefined
-// }
-// export type RoomSettingsEvents = {
-//   [K in keyof RoomSettings]: StateEvents[K]
-// }
+export type StateRoomSettings = Pick<StateEvents, (typeof MATRIX__CONFIGURABLE_ROOM_SETTINGS)[number]>
+export interface RoomSettings extends StateRoomSettings {
+  directoryVisibility: Visibility
+}
