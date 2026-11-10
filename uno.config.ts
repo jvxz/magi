@@ -115,11 +115,9 @@ export default defineConfig({
     },
     font: {
       mono: 'Paper Mono',
-      sans: 'Inter',
     },
     fontWeight: {
       medium: '525',
-      normal: '375',
     },
     radius: {
       DEFAULT: 'var(--radius)',
@@ -143,6 +141,10 @@ export default defineConfig({
       '2xs': {
         fontSize: '0.7rem',
         lineHeight: '0.875rem',
+      },
+      base: {
+        fontSize: '0.9375rem',
+        lineHeight: 'calc(1.5 / 1)',
       },
     },
   },
