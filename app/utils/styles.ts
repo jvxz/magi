@@ -44,6 +44,8 @@ export const interactiveBase = tv({
       outline:
         'text-muted-foreground border-border/90 hover:(text-foreground bg-secondary border-border-strong) focus-visible:(text-foreground bg-secondary border-border-strong) data-[state=open]:(text-foreground bg-secondary border-border-strong) border bg-transparent',
       soft: 'bg-secondary border-border text-muted-foreground border hover:(text-foreground border-border-strong) focus-visible:(text-foreground border-border-strong) data-[state=open]:(text-foreground border-border-strong)',
+      'soft-raised':
+        'bg-surface-top border-surface-top-hover text-muted-foreground border hover:(text-foreground border-border-strong) focus-visible:(text-foreground border-border-strong) data-[state=open]:(text-foreground border-border-strong)',
     },
   },
 })
@@ -67,6 +69,7 @@ export const staticBase = tv({
     },
   },
 })
+export type StaticVariants = VariantProps<typeof staticBase>
 
 export const popoverContentBase = tv({
   base: [

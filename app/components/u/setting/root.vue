@@ -9,7 +9,7 @@ export interface USettingRootContext {
 export const [injectSettingContext, provideSettingContext] = createContext<USettingRootContext>('USettingRoot')
 
 const settingRootVariants = tv({
-  base: 'flex gap-2',
+  base: 'flex gap-4',
   defaultVariants: {
     orientation: 'horizontal',
   },

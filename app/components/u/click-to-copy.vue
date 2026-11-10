@@ -21,7 +21,7 @@ defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<UClickToCopyProps>(), {
   as: 'button',
   copiedDuration: 1000,
-  side: 'top',
+  side: 'right',
   sideOffset: 4,
   withTitle: true,
 })
@@ -55,7 +55,7 @@ defineExpose({ copied, copy: onCopy })
         :as-child
         data-slot="click-to-copy"
         :data-copied="copied ? '' : undefined"
-        class="cursor-pointer"
+        class="cursor-pointer hover:underline underline-dotted"
         :title="withTitle ? 'Click to copy' : undefined"
         @click="onCopy"
       >
@@ -84,7 +84,7 @@ defineExpose({ copied, copy: onCopy })
         @close-auto-focus.prevent
       >
         <slot name="overlay" :copied :copy="onCopy">
-          <Icon :name="ICON__CHECK" class="size-1em" />
+          <Icon :name="ICON__COPIED" class="size-1em" />
         </slot>
       </PopoverContent>
     </PopoverPortal>

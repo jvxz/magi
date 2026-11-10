@@ -3,7 +3,7 @@ import type { SwitchRootEmits, SwitchRootProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-export type USwitchProps = SwitchRootProps & { class?: HTMLAttributes['class'] }
+export type USwitchProps = SwitchRootProps & { class?: HTMLAttributes['class']; variant?: StaticVariants['variant'] }
 export type USwitchEmits = SwitchRootEmits
 
 const props = defineProps<USwitchProps>()
@@ -20,8 +20,8 @@ const forwarded = useForwardPropsEmits(delegated, emits)
     v-bind="forwarded"
     :class="
       cn(
-        staticBase({ variant: 'default' }),
-        'inline-flex h-5 w-9 items-center shadow-none rounded-full border-2 border-muted bg-muted p-0 transition-all duration-150 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:glow-primary',
+        staticBase({ variant }),
+        'h-5.5 w-9 inline-flex p-0 shrink-0 items-center rounded-full border border-transparent outline-hidden transition-[background-color,border-color] reka-checked:(bg-primary border-transparent) ease-out duration-150 focus-visible:(outline-2 outline-solid outline-ring outline-offset-2)',
         props.class,
       )
     "
@@ -30,7 +30,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
       :class="
         cn(
           interactiveBase({ variant: 'default' }),
-          'pointer-events-none block size-4 rounded-full border-0 bg-background ring-0 transition-transform data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0',
+          'pointer-events-none block size-[calc(--spacing(4)-2px)] rounded-full border-0 bg-foreground ring-0 transition-transform ease-out data-[state=checked]:translate-x-4.5 data-[state=unchecked]:translate-x-0.5',
         )
       "
     >

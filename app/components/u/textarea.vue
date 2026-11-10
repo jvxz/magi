@@ -36,7 +36,7 @@ const modelValue = useVModel(delegated, 'modelValue', emits, {
     :class="
       cn(
         inputStyles(),
-        'h-42 field-sizing-content resize-none whitespace-pre-wrap text-clip',
+        'h-42 py-2 field-sizing-content resize-none whitespace-pre-wrap text-ellipsis',
         resizable === 'x' ? 'resize-x' : resizable === 'y' ? 'resize-y' : resizable ? 'resize' : '',
         props.class,
       )
