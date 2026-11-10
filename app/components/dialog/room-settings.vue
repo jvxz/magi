@@ -49,11 +49,15 @@ const { self } = useSelf()
 const permissions = useRoomMemberPermissions(room, () => self.value?.userId)
 
 const { currentRoomSettings, setSettings } = useRoomSettings(room)
-const unsavedChanges = useUnsavedChanges(currentRoomSettings, setSettings)
+const { mutateAsync: mutateRoomSettings, isPending: isChangingSettings } = setSettings
+
+const unsavedChanges = useUnsavedChanges(currentRoomSettings, mutateRoomSettings)
 
 const { notifyError } = useNotifications()
 const commit = () =>
-  unsavedChanges.commitChanges().catch(err => notifyError(err, `Failed to save ${resolveRoomName(room.value)} settings`))
+  unsavedChanges
+    .commitChanges()
+    .catch(err => notifyError(err, `Failed to save ${resolveRoomName(room.value)} settings`))
 
 provideRoomSettingsDialogContext({
   ...unsavedChanges,
@@ -62,17 +66,24 @@ provideRoomSettingsDialogContext({
 })
 
 const roomName = useRoomComputed(room, resolveRoomName)
+
+const unsavedChangesCard = useTemplateRef('unsavedChanges')
 </script>
 
 <template>
-  <UDialogRoot>
+  <UDialogRoot
+    @before-update:open="
+      (_, details) =>
+        (isChangingSettings || unsavedChanges.isDirty.value) && (details.cancel(), unsavedChangesCard?.animatePrevent())
+    "
+  >
     <UDialogContent size="md" class="p-0 of-clip">
       <UDialogSidebarLayout>
         <template #sidebar>
           <div class="flex flex-col gap-2 size-full">
             <div class="p-1 flex gap-2 items-center">
               <MatrixRoomAvatar :room square image-size="small" class="rounded-sm size-1.5em" />
-              <span class="font-medium">{{ roomName }}</span>
+              <span class="font-medium text-lg">{{ roomName }}</span>
             </div>
 
             <UDialogSidebarLayoutGroup v-model:model-value="selection" :default-value="roomSettingsTabs[0].key">
@@ -93,6 +104,7 @@ const roomName = useRoomComputed(room, resolveRoomName)
         <Transition :name="unsavedChanges.isDirty.value ? 'flip-up' : 'flip-down'">
           <UDialogUnsavedChanges
             v-if="unsavedChanges.isDirty.value"
+            ref="unsavedChanges"
             variant="raised"
             class="px-2 flex items-center justify-center"
           >
@@ -111,8 +123,12 @@ const roomName = useRoomComputed(room, resolveRoomName)
               </div>
 
               <div class="flex gap-2 items-center">
-                <UButton variant="ghost-raised" @click="unsavedChanges.resetChanges()"> Reset </UButton>
-                <UButton variant="default" @click="commit"> Confirm </UButton>
+                <UButton :disabled="isChangingSettings" variant="ghost-raised" @click="unsavedChanges.resetChanges()">
+                  Reset
+                </UButton>
+                <UButton :is-loading="isChangingSettings" variant="default" @click="commit">
+                  <span>Confirm</span>
+                </UButton>
               </div>
             </div>
           </UDialogUnsavedChanges>

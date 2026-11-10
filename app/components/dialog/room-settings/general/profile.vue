@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { Visibility } from 'matrix-js-sdk'
+
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
 const { room, unsavedChanges, permissions } = injectRoomSettingsDialogContext()
@@ -15,6 +17,11 @@ const topic = computed({
   },
 })
 
+const directoryVisibility = computed({
+  get: () => unsavedChanges.value.directoryVisibility === Visibility.Public,
+  set: (value: boolean) => (unsavedChanges.value.directoryVisibility = value ? Visibility.Public : Visibility.Private),
+})
+
 const { uploadContent, progress } = useUploadContent()
 
 const { mutateAsync, isPending } = uploadContent
@@ -27,13 +34,14 @@ const upload = async () => {
 
   unsavedChanges.value['m.room.avatar'] = { info: await toImageInfo(file.value), url: res.content_uri }
 }
-
 whenever(file, upload)
 
 const avatarUrl = useResolveImageUrl(
   () => unsavedChanges.value['m.room.avatar']?.url ?? room.value.getMxcAvatarUrl() ?? undefined,
   { useAuthentication: true },
 )
+
+const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility', () => room.value.roomId)
 </script>
 
 <template>
@@ -80,13 +88,65 @@ const avatarUrl = useResolveImageUrl(
       </div>
     </div>
 
+    <!-- topic -->
     <FormInput
       v-model:model-value="topic"
       :disabled="!permissions.canEditRoomTopic.value"
+      placeholder="What's this room about?"
       resizable="y"
       label="Topic"
       textarea
-      :ui="{ input: 'max-h-32 min-h-8' }"
+      :ui="{ input: 'max-h-36 min-h-10 bg-surface-raised' }"
     />
+
+    <USettingGroupRoot variant="top">
+      <USettingGroupHeader>
+        <USettingGroupTitle> Access & discovery </USettingGroupTitle>
+      </USettingGroupHeader>
+
+      <USettingGroupContent>
+        <USettingGroupItem variant="raised">
+          <!-- space access -->
+          <USettingComposite label="Space access" description="Change how users are able to join this space">
+            <USelectRoot
+              v-model:model-value="unsavedChanges['m.room.join_rules'].join_rule"
+              :disabled="!permissions.canEditJoinRules.value"
+            >
+              <USelectTrigger variant="soft-raised">
+                {{ MATRIX__JOIN_RULE_NAME_MAP[unsavedChanges['m.room.join_rules'].join_rule] }}
+              </USelectTrigger>
+
+              <USelectContent align="end">
+                <USelectItem v-for="rule in MATRIX__JOIN_RULE_SETTABLE_RULES" :key="rule" :value="rule">
+                  <USelectItemText>
+                    {{ MATRIX__JOIN_RULE_NAME_MAP[rule] }}
+                  </USelectItemText>
+                </USelectItem>
+              </USelectContent>
+            </USelectRoot>
+          </USettingComposite>
+        </USettingGroupItem>
+
+        <USettingGroupSeparator />
+
+        <!-- directory visibility -->
+        <USettingGroupItem variant="raised">
+          <USettingComposite
+            label="Display in directory"
+            description="Allow users to discover your space from your homeserver's public directory"
+            :is-loading="isPendingDiscoveryVisibility"
+            v-slot="{ id }"
+          >
+            <USwitch
+              :id
+              variant="raised"
+              class="bg-surface-top border-surface-top"
+              :disabled="isPendingDiscoveryVisibility || !permissions.canEditDirectoryVisibility.value"
+              v-model:model-value="directoryVisibility"
+            />
+          </USettingComposite>
+        </USettingGroupItem>
+      </USettingGroupContent>
+    </USettingGroupRoot>
   </div>
 </template>
