@@ -64,7 +64,8 @@
 
 /* surface scopes, allowing tokens to be relative to what surface they sit on */
 .bg-surface-raised > *,
-.bg-popover > * {
+.bg-popover > *,
+.popover-edge > * {
   --secondary: var(--neutral-700);
   --secondary-border: var(--neutral-600);
   --secondary-border-strong: var(--neutral-500);
