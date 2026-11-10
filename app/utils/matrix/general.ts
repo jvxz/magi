@@ -132,9 +132,15 @@ export async function uploadContent(client: MatrixClient, file: UploadContentFil
   return client.uploadContent(file, opts)
 }
 
-export async function toImageInfo(file: File): Promise<ImageInfo> {
+export interface ToImageInfoOpts {
+  blurhash?: boolean
+}
+export async function toImageInfo(file: File, opts?: ToImageInfoOpts): Promise<ImageInfo> {
+  const { blurhash: doBlurhash } = opts ?? {}
+
   const bmp = await createImageBitmap(file)
-  const blurhash = await createBlurhash(file)
+  const blurhash = doBlurhash ? await createBlurhash(file) : undefined
+
   const info: ImageInfo = {
     h: bmp.height,
     mimetype: file.type,
