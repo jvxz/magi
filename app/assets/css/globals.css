@@ -23,6 +23,9 @@
   --secondary-raised: var(--neutral-700);
   --secondary-foreground: var(--neutral-50);
 
+  --secondary-border: var(--neutral-700);
+  --secondary-border-strong: var(--neutral-600);
+
   --surface: var(--neutral-900);
   --surface-raised: var(--neutral-800);
   --surface-top: var(--neutral-700);
@@ -57,6 +60,37 @@
 
   --overlay: oklch(0% 0 0 / 0.75);
   /* end default palette tokens */
+}
+
+/* surface scopes, allowing tokens to be relative to what surface they sit on */
+.bg-surface-raised > *,
+.bg-popover > *,
+.popover-edge > * {
+  --secondary: var(--neutral-700);
+  --secondary-border: var(--neutral-600);
+  --secondary-border-strong: var(--neutral-500);
+  --input: var(--neutral-700);
+  --muted: var(--neutral-700);
+  --hover: var(--neutral-700);
+  --hover-overlay: oklch(from var(--hover) l c h / 35%);
+  --selected: var(--neutral-600);
+  --toggled: var(--neutral-600);
+  --border: var(--neutral-700);
+  --border-strong: var(--neutral-600);
+}
+
+.bg-surface-top > * {
+  --secondary: var(--neutral-600);
+  --secondary-border: var(--neutral-500);
+  --secondary-border-strong: var(--neutral-400);
+  --input: var(--neutral-600);
+  --muted: var(--neutral-600);
+  --hover: var(--neutral-600);
+  --hover-overlay: oklch(from var(--hover) l c h / 35%);
+  --selected: var(--neutral-500);
+  --toggled: var(--neutral-500);
+  --border: var(--neutral-600);
+  --border-strong: var(--neutral-500);
 }
 
 @utility scrollbar-fancy {

@@ -43,7 +43,7 @@ export const interactiveBase = tv({
       link: 'text-foreground px-2.5 -mx-2.5 underline-offset-4 hover:underline data-[state=open]:underline',
       outline:
         'text-muted-foreground border-border/90 hover:(text-foreground bg-secondary border-border-strong) focus-visible:(text-foreground bg-secondary border-border-strong) data-[state=open]:(text-foreground bg-secondary border-border-strong) border bg-transparent',
-      soft: 'bg-secondary border-border text-muted-foreground border hover:(text-foreground border-border-strong) focus-visible:(text-foreground border-border-strong) data-[state=open]:(text-foreground border-border-strong)',
+      soft: 'bg-secondary border-secondary-border text-muted-foreground border hover:(text-foreground border-secondary-border-strong) focus-visible:(text-foreground border-secondary-border-strong) data-[state=open]:(text-foreground border-secondary-border-strong)',
     },
   },
 })
@@ -84,7 +84,7 @@ export const popoverContentBase = tv({
       default: 'p-1',
     },
     variant: {
-      default: 'bg-popover border-border-strong',
+      default: 'popover-edge shadow-popover',
       raised: '',
     },
   },

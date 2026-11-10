@@ -36,6 +36,14 @@ export default defineConfig({
       },
     ],
     [
+      'popover-edge',
+      {
+        background:
+          'linear-gradient(var(--popover), var(--popover)) padding-box, linear-gradient(to bottom, oklch(100% 0 0 / 0.14), var(--border-strong) 45%) border-box',
+        'border-color': 'transparent',
+      },
+    ],
+    [
       'text-clip',
       {
         'text-box': 'trim-both cap alphabetic',
@@ -99,6 +107,8 @@ export default defineConfig({
       'primary-foreground': 'var(--primary-foreground)',
       ring: 'var(--ring)',
       secondary: 'var(--secondary)',
+      'secondary-border': 'var(--secondary-border)',
+      'secondary-border-strong': 'var(--secondary-border-strong)',
       'secondary-foreground': 'var(--secondary-foreground)',
       'secondary-raised': 'var(--secondary-raised)',
       selected: 'var(--selected)',
@@ -127,7 +137,7 @@ export default defineConfig({
       DEFAULT: [`0 4px 5px oklch(from var(--background) l c h / 0.35)`],
       lg: [`0 6px 8px oklch(from var(--background) l c h / 0.75)`],
       md: [`0 6px 6px oklch(from var(--background) l c h / 0.50)`],
-      popover: [`0 6px 10px oklch(from var(--background) l c h / 0.75)`],
+      popover: ['0 1px 2px oklch(0% 0 0 / 0.3), 0 8px 24px -6px oklch(0% 0 0 / 0.45)'],
       sm: [`0 4px 5px oklch(from var(--background) l c h / 0.35)`],
     },
     spacing: {
