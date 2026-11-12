@@ -1,6 +1,6 @@
 import type { MatrixClient, MatrixEvent, RoomMember } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
-import type { RoomCreateEventContent } from 'matrix-js-sdk/lib/types'
+import type { RoomCreateEventContent, RoomPowerLevelsEventContent } from 'matrix-js-sdk/lib/types'
 
 import { Direction, JoinRule } from 'matrix-js-sdk'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
@@ -185,6 +185,10 @@ export function getRoomSettings(room: Room) {
   }
 
   return settings as RoomSettings
+}
+
+export function getRoomPowerLevels(room: Room) {
+  return getStateEvent(room, EventType.RoomPowerLevels)?.getContent<RoomPowerLevelsEventContent>()
 }
 
 export function getJoinedRooms(client: MatrixClient, space: Room | undefined) {

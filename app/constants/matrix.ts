@@ -106,7 +106,20 @@ export const MATRIX__CONFIGURABLE_ROOM_SETTINGS = [
   EventType.RoomName,
   EventType.RoomTopic,
   EventType.RoomJoinRules,
+  EventType.RoomPowerLevels,
 ] as const satisfies (keyof StateEvents)[]
+
+// https://spec.matrix.org/v1.19/client-server-api/#mroompower_levels
+export const MATRIX__DEFAULT_POWER_LEVELS = {
+  ban: 50,
+  events_default: 0,
+  invite: 0,
+  kick: 50,
+  notifications: { room: 50 },
+  redact: 50,
+  state_default: 50,
+  users_default: 0,
+} as const
 
 export const MATRIX__JOIN_RULE_NAME_MAP: Record<JoinRule, string> = {
   invite: 'Invite only',
@@ -117,6 +130,21 @@ export const MATRIX__JOIN_RULE_NAME_MAP: Record<JoinRule, string> = {
 }
 
 export const MATRIX__JOIN_RULE_SETTABLE_RULES: JoinRule[] = [JoinRule.Public, JoinRule.Invite, JoinRule.Knock]
+
+// missing entries are filled with state_default
+export const MATRIX__POWER_LEVEL_EDITABLE_EVENTS = [
+  EventType.SpaceChild,
+  EventType.RoomAvatar,
+  EventType.RoomName,
+  EventType.RoomTopic,
+  EventType.RoomJoinRules,
+  EventType.RoomCanonicalAlias,
+  EventType.RoomPowerLevels,
+  EventType.RoomTombstone,
+] as const
+
+export const MATRIX__POWERLEVEL_MAX = 9007199254740991
+export const MATRIX__POWERLEVEL_MIN = -MATRIX__POWERLEVEL_MAX
 
 export const MATRIX__REACTABLE_EVENT_TYPES: (
   | EventType

@@ -1,5 +1,6 @@
 import type {
   ClientEventHandlerMap,
+  EventType,
   EmittedEvents,
   EventEmitterEvents,
   Listener,
@@ -10,6 +11,7 @@ import type {
   Visibility,
 } from 'matrix-js-sdk'
 import type { MatrixClient } from 'matrix-js-sdk/lib/client'
+import type { RoomPowerLevelsEventContent } from 'matrix-js-sdk/lib/types'
 
 export type EmitterListener<T extends EventEmitterEvents | EmittedEvents> = Listener<
   EmittedEvents,
@@ -30,6 +32,12 @@ export type MaybeEventOrId = MatrixEvent | string
 export type AvatarImageSize = 'small' | 'medium' | 'large' | 'full'
 
 export type PowerLevelName = 'member' | 'moderator' | 'admin' | 'owner' | 'unknown'
+export enum PowerLevelByName {
+  Member = 0,
+  Moderator = 50,
+  Admin = 100,
+  Owner = 101,
+}
 
 export type IRoomHierarchy = Awaited<ReturnType<MatrixClient['getRoomHierarchy']>>
 export type IMediaConfig = Awaited<ReturnType<MatrixClient['getMediaConfig']>>
@@ -66,4 +74,7 @@ export enum AccountDataEvent {
 export type StateRoomSettings = Pick<StateEvents, (typeof MATRIX__CONFIGURABLE_ROOM_SETTINGS)[number]>
 export interface RoomSettings extends StateRoomSettings {
   directoryVisibility: Visibility
+  [EventType.RoomPowerLevels]: RoomPowerLevelsEventContent & {
+    events: Partial<Record<EventType, number>>
+  }
 }

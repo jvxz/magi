@@ -1,11 +1,6 @@
-import type { RoomPowerLevelsEventContent } from 'matrix-js-sdk/lib/types'
+export const useRoomPowerLevels = (roomId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) => {
+  const powerLevels = useRoomComputed(roomId, r => (r ? getRoomPowerLevels(r) : undefined))
+  const defaultPowerLevel = computed(() => powerLevels.value?.users_default ?? 0)
 
-import { EventType } from 'matrix-js-sdk'
-
-export const useRoomPowerLevels = (roomId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) =>
-  useRoomComputed(roomId, room => {
-    if (!room) return
-
-    const event = head(getStateEvents(room, EventType.RoomPowerLevels))
-    return event?.getContent<RoomPowerLevelsEventContent>()
-  })
+  return { defaultPowerLevel, powerLevels }
+}

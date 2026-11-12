@@ -1,7 +1,8 @@
 import type { Room } from 'matrix-js-sdk'
 
 import { toRef } from '@vueuse/core'
-import { isEqual } from 'es-toolkit'
+import { isEqual, toMerged } from 'es-toolkit'
+import { EventType } from 'matrix-js-sdk'
 
 type ExtraKey = Exclude<keyof RoomSettings, keyof StateRoomSettings>
 
@@ -16,10 +17,21 @@ export function useRoomSettings(roomInput: MaybeRefOrGetter<Room>) {
   const stateSettings = useRoomComputed(room, getRoomSettings)
   const directoryVisibility = useRoomDirectoryVisibility(room)
 
-  const currentRoomSettings = computed<RoomSettings>(() => ({
-    ...stateSettings.value,
-    directoryVisibility: directoryVisibility.data.value,
-  }))
+  const currentRoomSettings = computed<RoomSettings>(() => {
+    const pl = stateSettings.value[EventType.RoomPowerLevels]
+    const stateDefault = pl.state_default ?? MATRIX__DEFAULT_POWER_LEVELS.state_default
+    const defaults = {
+      ...MATRIX__DEFAULT_POWER_LEVELS,
+      events: objectFromEntries(MATRIX__POWER_LEVEL_EDITABLE_EVENTS.map(type => [type, stateDefault])),
+    }
+
+    return {
+      ...stateSettings.value,
+      // apply default power levels. defaults get set when saving
+      [EventType.RoomPowerLevels]: toMerged(defaults, pl),
+      directoryVisibility: directoryVisibility.data.value,
+    }
+  })
 
   const extraWriters: { [K in ExtraKey]: (value: RoomSettings[K]) => Promise<unknown> | void } = {
     directoryVisibility: async value => {
