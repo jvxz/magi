@@ -33,6 +33,8 @@ export function useUnsavedChanges<T extends object>(
     baseline.value = next
   })
 
+  const isEdited = <R>(select: (s: T) => R) => !isEqual(select(unsavedChanges.value), select(baseline.value))
+
   const resetChanges = () => {
     baseline.value = source.value
     sync()
@@ -40,5 +42,5 @@ export function useUnsavedChanges<T extends object>(
 
   const commitChanges = async () => onCommit(unsavedChanges.value)
 
-  return { commitChanges, isDirty, resetChanges, sourceHasChanges, unsavedChanges }
+  return { commitChanges, isDirty, isEdited, resetChanges, sourceHasChanges, unsavedChanges }
 }

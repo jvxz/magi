@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { Visibility } from 'matrix-js-sdk'
+import { EventType, Visibility } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { room, unsavedChanges, permissions } = injectRoomSettingsDialogContext()
+const { room, unsavedChanges, permissions, isEdited } = injectRoomSettingsDialogContext()
 
 const topic = computed({
   get: () => unsavedChanges.value['m.room.topic'].topic ?? '',
@@ -89,15 +89,19 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
     </div>
 
     <!-- topic -->
-    <FormInput
-      v-model:model-value="topic"
-      :disabled="!permissions.canEditRoomTopic.value"
-      placeholder="What's this room about?"
-      resizable="y"
-      label="Topic"
-      textarea
-      :ui="{ input: 'max-h-36 min-h-10 bg-surface-raised' }"
-    />
+
+    <FormPrimitive label="Topic">
+      <UChip :ui="{ root: 'w-full' }" :show="isEdited(s => s[EventType.RoomTopic])">
+        <UTextarea
+          v-model:model-value="topic"
+          class="max-h-36 min-h-10 bg-surface-raised"
+          :disabled="!permissions.canEditRoomTopic.value"
+          placeholder="What's this room about?"
+          resizable="y"
+          label="Topic"
+        />
+      </UChip>
+    </FormPrimitive>
 
     <USettingGroupRoot variant="top">
       <USettingGroupHeader>
@@ -112,9 +116,11 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
               v-model:model-value="unsavedChanges['m.room.join_rules'].join_rule"
               :disabled="!permissions.canEditJoinRules.value"
             >
-              <USelectTrigger variant="soft-raised">
-                {{ MATRIX__JOIN_RULE_NAME_MAP[unsavedChanges['m.room.join_rules'].join_rule] }}
-              </USelectTrigger>
+              <UChip :show="isEdited(s => s['m.room.join_rules'])">
+                <USelectTrigger variant="soft-raised">
+                  {{ MATRIX__JOIN_RULE_NAME_MAP[unsavedChanges['m.room.join_rules'].join_rule] }}
+                </USelectTrigger>
+              </UChip>
 
               <USelectContent align="end">
                 <USelectItem v-for="rule in MATRIX__JOIN_RULE_SETTABLE_RULES" :key="rule" :value="rule">
@@ -137,13 +143,15 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
             :is-loading="isPendingDiscoveryVisibility"
             v-slot="{ id }"
           >
-            <USwitch
-              :id
-              variant="raised"
-              class="bg-surface-top border-surface-top"
-              :disabled="isPendingDiscoveryVisibility || !permissions.canEditDirectoryVisibility.value"
-              v-model:model-value="directoryVisibility"
-            />
+            <UChip :show="isEdited(s => s.directoryVisibility)" :ui="{ base: '-top-0.75 -right-0.75' }">
+              <USwitch
+                :id
+                variant="raised"
+                class="bg-surface-top border-surface-top"
+                :disabled="isPendingDiscoveryVisibility || !permissions.canEditDirectoryVisibility.value"
+                v-model:model-value="directoryVisibility"
+              />
+            </UChip>
           </USettingComposite>
         </USettingGroupItem>
       </USettingGroupContent>
