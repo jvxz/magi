@@ -132,6 +132,7 @@ export const inputStyles = tv({
     variant: {
       default: 'bg-surface',
       raised: 'bg-surface-raised',
+      top: 'bg-surface-top border-border-strong',
     },
   },
 })
