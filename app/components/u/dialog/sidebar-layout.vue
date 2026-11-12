@@ -40,7 +40,7 @@ const title = computed(() => (props.getTitle ? props.getTitle(titleRef.value) : 
       </UDialogHeader>
 
       <UScrollAreaRoot>
-        <UScrollAreaViewport class="p-2 px-4">
+        <UScrollAreaViewport class="p-2 px-4 pb-20">
           <slot />
         </UScrollAreaViewport>
 
