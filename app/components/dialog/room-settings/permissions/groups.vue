@@ -148,13 +148,13 @@ const groupMap: {
       <UTableRoot>
         <UTableBody>
           <UTableRow v-for="item in group.items" :key="item.key" :divide="false">
-            <UTableRowCell class="w-full p-4 space-x-2">
+            <UTableRowCell class="p-4 w-full space-x-2">
               <span class="font-medium">{{ item.label }}</span>
-              <span v-if="item.isEventType" class="text-muted-foreground text-xs">({{ item.key }})</span>
+              <span v-if="item.isEventType" class="text-xs text-muted-foreground">({{ item.key }})</span>
             </UTableRowCell>
             <UTableRowCell>
               <UChip :show="item.edited.value">
-                <UNumberField variant="top" v-model:model-value="item.ref.value" class="w-36" />
+                <UNumberField v-model:model-value="item.ref.value" variant="top" class="w-36" />
               </UChip>
             </UTableRowCell>
           </UTableRow>

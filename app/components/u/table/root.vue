@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<UTableRootProps>(), { variant: 'default' 
 
 <template>
   <div :class="cn(staticBase({ variant }), 'rounded p-0 of-clip text-left *:w-full', props.class)">
-    <table :data-variant="variant" data-slot="table-root" class="table-auto group/table">
+    <table :data-variant="variant" data-slot="table-root" class="group/table table-auto">
       <slot />
     </table>
   </div>

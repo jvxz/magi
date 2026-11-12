@@ -83,7 +83,7 @@ const unsavedChangesCard = useTemplateRef('unsavedChanges')
           <div class="flex flex-col gap-2 size-full">
             <div class="p-1 flex gap-2 items-center">
               <MatrixRoomAvatar :room square image-size="small" class="rounded-sm size-1.5em" />
-              <span class="font-medium text-lg">{{ roomName }}</span>
+              <span class="text-lg font-medium">{{ roomName }}</span>
             </div>
 
             <UDialogSidebarLayoutGroup v-model:model-value="selection" :default-value="roomSettingsTabs[0].key">

@@ -39,15 +39,15 @@ const beforeUpdate: (...args: UNumberFieldRootEmits['beforeUpdate:modelValue']) 
     data-slot="number-field"
     @before-update:model-value="beforeUpdate"
   >
-    <div class="shrink-1 flex-1 size-fit">
+    <div class="flex-1 shrink-1 size-fit">
       <NumberFieldIncrement :class="buttonClass">
         <Icon :name="ICON__INCREMENT" />
       </NumberFieldIncrement>
     </div>
 
-    <NumberFieldInput class="text-sm tabular-nums font-medium outline-none text-center w-full mx-6" />
+    <NumberFieldInput class="text-sm font-medium mx-6 text-center outline-none w-full tabular-nums" />
 
-    <div class="shrink-1 flex-1 size-fit justify-self-end">
+    <div class="flex-1 shrink-1 size-fit justify-self-end">
       <NumberFieldDecrement :class="cn(buttonClass, 'justify-self-end')">
         <Icon :name="ICON__DECREMENT" />
       </NumberFieldDecrement>

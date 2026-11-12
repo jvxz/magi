@@ -94,7 +94,7 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
       <UChip :ui="{ root: 'w-full' }" :show="isEdited(s => s[EventType.RoomTopic])">
         <UTextarea
           v-model:model-value="topic"
-          class="max-h-36 min-h-10 bg-surface-raised"
+          class="bg-surface-raised max-h-36 min-h-10"
           :disabled="!permissions.canEditRoomTopic.value"
           placeholder="What's this room about?"
           resizable="y"
@@ -138,18 +138,18 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
         <!-- directory visibility -->
         <USettingGroupItem variant="raised">
           <USettingComposite
+            v-slot="{ id }"
             label="Display in directory"
             description="Allow users to discover your space from your homeserver's public directory"
             :is-loading="isPendingDiscoveryVisibility"
-            v-slot="{ id }"
           >
             <UChip :show="isEdited(s => s.directoryVisibility)" :ui="{ base: '-top-0.75 -right-0.75' }">
               <USwitch
                 :id
-                variant="raised"
-                class="bg-surface-top border-surface-top"
-                :disabled="isPendingDiscoveryVisibility || !permissions.canEditDirectoryVisibility.value"
                 v-model:model-value="directoryVisibility"
+                variant="raised"
+                class="border-surface-top bg-surface-top"
+                :disabled="isPendingDiscoveryVisibility || !permissions.canEditDirectoryVisibility.value"
               />
             </UChip>
           </USettingComposite>

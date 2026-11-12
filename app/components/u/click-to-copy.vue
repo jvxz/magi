@@ -55,7 +55,7 @@ defineExpose({ copied, copy: onCopy })
         :as-child
         data-slot="click-to-copy"
         :data-copied="copied ? '' : undefined"
-        class="cursor-pointer hover:underline underline-dotted"
+        class="underline-dotted cursor-pointer hover:underline"
         :title="withTitle ? 'Click to copy' : undefined"
         @click="onCopy"
       >
