@@ -3,6 +3,7 @@ import type { MatrixError, UploadOpts, UploadProgress, UploadResponse } from 'ma
 export function useUploadContent() {
   const { client } = useMatrixClient()
   const { mediaConfig } = useMediaConfig()
+  const { notifyError, notify } = useNotifications()
   const progress = ref<UploadProgress>()
   const abortController = shallowRef<AbortController>()
 
@@ -29,6 +30,27 @@ export function useUploadContent() {
       return res
     },
     mutationKey: $mk.uploadContent(),
+    onError: err => {
+      const maxSize = mediaConfig.value?.['m.upload.size']
+
+      if (err instanceof DOMException) return
+
+      if (err instanceof FileTooLargeError)
+        notify(
+          'error',
+          {
+            payload: {
+              description: `The file you are trying to upload is too large.${isUndefined(maxSize) ? '' : ` The maximum file size is ${formatBytes(maxSize)}`}`,
+              title: 'File too large',
+            },
+          },
+          {
+            persist: false,
+            variant: 'danger',
+          },
+        )
+      else notifyError(err, err.message)
+    },
   })
 
   return {
