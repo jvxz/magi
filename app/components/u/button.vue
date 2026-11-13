@@ -54,7 +54,7 @@ withDefaults(defineProps<UButtonProps>(), { as: 'button' })
     "
     :aria-busy="isLoading || undefined"
   >
-    <LazyUSpinner v-if="isLoading" :invert="true" class="mx-auto shrink-0 size-2/3" />
+    <LazyUSpinner v-if="isLoading" :invert="true" class="mx-auto shrink-0 size-1em" />
     <slot />
   </Primitive>
 </template>

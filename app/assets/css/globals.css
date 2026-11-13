@@ -34,7 +34,7 @@
   --input: var(--neutral-800);
 
   --hover: var(--neutral-800);
-  --hover-overlay: oklch(from var(--hover) l c h / 25%);
+  --hover-overlay: oklch(from var(--hover) l c h / 35%);
   --selected: var(--neutral-700);
   --toggled: var(--neutral-700);
 
@@ -120,13 +120,14 @@
 html {
   scrollbar-color: var(--muted-foreground) transparent;
   overscroll-behavior: none;
+  interpolate-size: allow-keywords;
 }
 
 body {
-  @apply bg-background text-foreground font-sans text-pretty min-h-screen underline-offset-2 font-normal tracking-normal;
+  @apply text-base bg-background text-foreground font-sans text-pretty min-h-screen underline-offset-2 font-normal tracking-normal;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  letter-spacing: 0.0125em;
+  letter-spacing: 0.015em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

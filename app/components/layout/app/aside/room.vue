@@ -1,13 +1,9 @@
 <script lang="ts" setup>
 import type { Room } from 'matrix-js-sdk'
 
-const props = defineProps<{
+defineProps<{
   room: Room
 }>()
-
-const { client } = useMatrixClient()
-
-const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 96, useAuthentication: true })
 </script>
 
 <template>
@@ -22,7 +18,7 @@ const avatar = getRoomAvatarUrl({ client: client.value, room: props.room, size: 
           },
         }"
       >
-        <Img :src="avatar" :alt="room.name" class="size-full" />
+        <MatrixRoomAvatar square :room :alt="room.name" class="size-full" />
       </NuxtLink>
     </UContextMenuRegionTrigger>
   </LayoutAppAsideButton>

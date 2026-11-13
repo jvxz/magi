@@ -11,9 +11,7 @@ export interface RoomMemberAvatarProps extends Omit<MatrixAvatarProps, 'alt' | '
 }
 export interface RoomMemberAvatarEmits extends MatrixAvatarEmits {}
 
-const props = withDefaults(defineProps<RoomMemberAvatarProps>(), {
-  doPlaceholder: true,
-})
+const props = defineProps<RoomMemberAvatarProps>()
 const emits = defineEmits<RoomMemberAvatarEmits>()
 const emitsAsProps = useEmitAsProps(emits)
 const roomMember = useRoomMember(
@@ -23,13 +21,18 @@ const roomMember = useRoomMember(
 
 const alt = computed(() => resolveUserName(roomMember.value))
 
-const delegated = reactiveOmit(props, ['room', 'member'])
+const placeholderKey = computed(() =>
+  isDefined(props.placeholderKey) ? props.placeholderKey : resolveUserId(props.member),
+)
+
+const delegated = reactiveOmit(props, ['room', 'member', 'placeholderKey'])
 </script>
 
 <template>
   <MatrixAvatar
     v-bind="{ ...delegated, ...emitsAsProps }"
     :alt
+    :placeholder-key
     :src="roomMember?.getMxcAvatarUrl()"
     data-slot="room-member-avatar"
   />

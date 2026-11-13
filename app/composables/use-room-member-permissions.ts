@@ -12,6 +12,11 @@ export function useRoomMemberPermissions(
 
   const powerLevelOf = (s: RoomState, id: string) => s.getMember(id)?.powerLevel ?? 0
 
+  const canSendStateEvent = (event: EventType) => {
+    if (!!userId.value && roomCreators.value.has(userId.value)) return true
+    return !!roomState.value && !!userId.value && roomState.value.maySendStateEvent(event, userId.value)
+  }
+
   const check = (fn: (state: RoomState, userId: string) => boolean) =>
     computed(() => {
       if (!!userId.value && roomCreators.value.has(userId.value)) return true
@@ -29,24 +34,38 @@ export function useRoomMemberPermissions(
     })
   }
 
+  // membership
   const canKick = check((s, userId) => s.hasSufficientPowerLevelFor('kick', powerLevelOf(s, userId)))
   const canBan = check((s, userId) => s.hasSufficientPowerLevelFor('ban', powerLevelOf(s, userId)))
   const canBanUser = checkAgainst(canBan)
   const canKickUser = checkAgainst(canKick)
 
-  const canChangeName = check((s, userId) => s.maySendStateEvent(EventType.RoomName, userId))
+  // messages
   const canSendMessages = check((s, userId) => s.maySendMessage(userId))
   const canRedactMessages = check((s, userId) => s.hasSufficientPowerLevelFor('redact', powerLevelOf(s, userId)))
   const canRedactOwnMessages = check((s, userId) => s.maySendEvent(EventType.RoomRedaction, userId))
 
+  // room state/settings
+  const canEditRoomName = check((s, userId) => s.maySendStateEvent(EventType.RoomName, userId))
+  const canEditRoomTopic = check((s, userId) => s.maySendStateEvent(EventType.RoomTopic, userId))
+  const canEditRoomAvatar = check((s, userId) => s.maySendStateEvent(EventType.RoomAvatar, userId))
+  const canEditJoinRules = check((s, userId) => s.maySendStateEvent(EventType.RoomJoinRules, userId))
+  const canEditCanonicalAlias = check((s, userId) => s.maySendStateEvent(EventType.RoomCanonicalAlias, userId))
+  const canEditDirectoryVisibility = canEditCanonicalAlias
+
   return {
     canBan,
     canBanUser,
-    canChangeName,
+    canEditDirectoryVisibility,
+    canEditJoinRules,
+    canEditRoomAvatar,
+    canEditRoomName,
+    canEditRoomTopic,
     canKick,
     canKickUser,
     canRedactMessages,
     canRedactOwnMessages,
     canSendMessages,
+    canSendStateEvent,
   }
 }

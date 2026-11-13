@@ -95,6 +95,13 @@ export function parseError(error: unknown, opts?: { fallbackMessage?: string }):
       title: error.name,
     }
 
+  if (error instanceof FileTooLargeError)
+    return {
+      message: 'File is too large',
+      raw: JSON.stringify(error),
+      title: error.name,
+    }
+
   return {
     message: fallbackMessage,
     raw: JSON.stringify(error),
@@ -102,6 +109,18 @@ export function parseError(error: unknown, opts?: { fallbackMessage?: string }):
 }
 
 // custom errors
+
+export class UnexpectedError extends Error {
+  override name = 'UnexpectedError'
+
+  constructor(...[message = 'An unexpected error occurred', options]: ConstructorParameters<typeof Error>) {
+    super(message, options)
+  }
+}
+
+export class FileTooLargeError extends Error {
+  override name = 'FileTooLargeError'
+}
 
 export class EmailInUseError extends Error {
   override name = 'EmailInUseError'

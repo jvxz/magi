@@ -20,6 +20,8 @@ export const $qk = {
   mutualRooms: (userId: MaybeRefOrGetter<string | undefined>) => defineKey('mutualRooms', toRef(userId)),
   publicRooms: (server: MaybeRefOrGetter<string>, query: MaybeRefOrGetter<string | undefined>) =>
     defineKey('publicRooms', toRef(server), toRef(query)),
+  roomDirectoryVisibility: (roomId: MaybeRefOrGetter<string | undefined>) =>
+    defineKey('roomDirectoryVisibility', toRef(roomId)),
   roomReplyEvent: (replyEventId: MaybeRefOrGetter<string | undefined>, roomId: MaybeRefOrGetter<string>) =>
     defineKey('roomReplyEvent', toRef(replyEventId), toRef(roomId)),
   roomSummary: (roomId: MaybeRefOrGetter<string | undefined>, via: MaybeRefOrGetter<string[] | undefined>) =>
@@ -49,6 +51,8 @@ export const $mk = {
   register: () => defineKey('register'),
   renameDevice: () => defineKey('renameDevice'),
   scrollEvents: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('scrollEvents', toRef(roomId)),
+  setRoomSettings: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('setRoomSettings', toRef(roomId)),
+  uploadContent: () => defineKey('uploadContent'),
 } as const
 
 export type $MKKey = keyof typeof $mk

@@ -1,4 +1,6 @@
-import { AuthType, EventType } from 'matrix-js-sdk'
+import type { StateEvents } from 'matrix-js-sdk'
+
+import { AuthType, EventType, JoinRule } from 'matrix-js-sdk'
 
 import type { AvatarImageSize } from '../utils/matrix/types'
 
@@ -37,6 +39,18 @@ export const MATRIX__ALLOWED_ATTRS_PER_TAG = {
   ol: ['start'],
   span: ['data-mx-bg-color', 'data-mx-color', 'data-mx-spoiler', 'data-mx-maths'],
 } as const
+
+export const MATRIX__ALLOWED_AVATAR_FILE_TYPES = {
+  accept: {
+    'image/apng': ['.apng'],
+    'image/avif': ['.avif'],
+    'image/gif': ['.gif'],
+    'image/jpeg': ['.jpg', '.jpeg'],
+    'image/png': ['.png'],
+    'image/webp': ['.webp'],
+  },
+  description: 'Image files',
+}
 
 export const MATRIX__ALLOWED_TAGS = [
   'a',
@@ -86,6 +100,51 @@ export const MATRIX__AVATAR_IMAGE_SIZE_VALUES = {
 } satisfies Record<AvatarImageSize, number>
 
 export const MATRIX__BASE_URL = 'https://matrix-client.matrix.org'
+
+export const MATRIX__CONFIGURABLE_ROOM_SETTINGS = [
+  EventType.RoomAvatar,
+  EventType.RoomName,
+  EventType.RoomTopic,
+  EventType.RoomJoinRules,
+  EventType.RoomPowerLevels,
+] as const satisfies (keyof StateEvents)[]
+
+// https://spec.matrix.org/v1.19/client-server-api/#mroompower_levels
+export const MATRIX__DEFAULT_POWER_LEVELS = {
+  ban: 50,
+  events_default: 0,
+  invite: 0,
+  kick: 50,
+  notifications: { room: 50 },
+  redact: 50,
+  state_default: 50,
+  users_default: 0,
+} as const
+
+export const MATRIX__JOIN_RULE_NAME_MAP: Record<JoinRule, string> = {
+  invite: 'Invite only',
+  knock: 'Knock or invite',
+  private: 'Private',
+  public: 'Public',
+  restricted: 'Restricted',
+}
+
+export const MATRIX__JOIN_RULE_SETTABLE_RULES: JoinRule[] = [JoinRule.Public, JoinRule.Invite, JoinRule.Knock]
+
+// missing entries are filled with state_default
+export const MATRIX__POWER_LEVEL_EDITABLE_EVENTS = [
+  EventType.SpaceChild,
+  EventType.RoomAvatar,
+  EventType.RoomName,
+  EventType.RoomTopic,
+  EventType.RoomJoinRules,
+  EventType.RoomCanonicalAlias,
+  EventType.RoomPowerLevels,
+  EventType.RoomTombstone,
+] as const
+
+export const MATRIX__POWERLEVEL_MAX = 9007199254740991
+export const MATRIX__POWERLEVEL_MIN = -MATRIX__POWERLEVEL_MAX
 
 export const MATRIX__REACTABLE_EVENT_TYPES: (
   | EventType

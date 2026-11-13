@@ -27,7 +27,7 @@ function getDigit(number: number, ntn: number): number {
 }
 
 export interface AvatarPlaceholderProps {
-  name: string
+  name: string | number
   colors?: string[]
   title?: boolean
   square?: boolean
@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<AvatarPlaceholderProps>(), {
 const ELEMENTS = 3
 const SIZE = 80
 
-const properties = computed(() => generateColors(props.name, props.colors))
+const properties = computed(() => generateColors(String(props.name), props.colors))
 const maskId = useId()
 
 interface GeneratedColor {

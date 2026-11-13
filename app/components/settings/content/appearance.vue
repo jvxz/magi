@@ -9,26 +9,24 @@ const palette = computed({
 
 <template>
   <SettingsContentLayout>
-    <SettingsFormAutocomplete
+    <USettingSelect
       v-model:model-value="settings.appearance.font"
       :label="SETTINGS__ITEM_METADATA.appearance.font.title"
       :description="SETTINGS__ITEM_METADATA.appearance.font.description"
       :options="SETTINGS__ITEM_METADATA.appearance.font.options"
-      :default-option="SETTINGS__DEFAULTS.appearance.font"
     />
 
     <USeparator />
 
-    <SettingsFormAutocomplete
+    <USettingSelect
       v-model:model-value="palette"
       :label="SETTINGS__ITEM_METADATA.appearance.palette.title"
       :description="SETTINGS__ITEM_METADATA.appearance.palette.description"
       :options="$config.public.colorModes.map(c => upperFirst(c))"
-      :default-option="SETTINGS__DEFAULTS.appearance.palette"
     >
       <template #selectValue="{ modelValue }">
         {{ upperFirst(modelValue!) }}
       </template>
-    </SettingsFormAutocomplete>
+    </USettingSelect>
   </SettingsContentLayout>
 </template>
