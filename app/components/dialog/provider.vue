@@ -25,7 +25,7 @@ const dialogs: Record<GlobalDialog, Component> = {
 </script>
 
 <template>
-  <component v-for="item in stack" :is="dialogs[item.name]" :key="item.id" v-bind="item" v-model:open="item.open" />
+  <component :is="dialogs[item.name]" v-for="item in stack" :key="item.id" v-bind="item" v-model:open="item.open" />
 
   <DialogUia />
 </template>

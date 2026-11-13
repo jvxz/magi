@@ -61,34 +61,34 @@ const delegated = reactiveOmit(props, ['onAction', 'open'])
       </UDialogHeader>
 
       <div class="h-26">
-        <div v-if="!isUploading" class="h-full flex items-center justify-center *:(flex-1 h-full) gap-4">
-          <UButton :is-loading="isOpening" @click="openFileDialog" class="flex-col text-2xl">
+        <div v-if="!isUploading" class="flex gap-4 h-full items-center justify-center *:(flex-1 h-full)">
+          <UButton :is-loading="isOpening" class="text-2xl flex-col" @click="openFileDialog">
             <Icon :name="ICON__UPLOAD" class="text-2xl" />
             <span class="text-sm">Upload</span>
           </UButton>
 
-          <UButton @click="handleDelete" :disabled="isOpening" class="flex-col text-2xl">
+          <UButton :disabled="isOpening" class="text-2xl flex-col" @click="handleDelete">
             <Icon :name="ICON__DELETE" class="text-2xl" />
             <span class="text-sm">Delete</span>
           </UButton>
         </div>
 
-        <div v-else class="h-full flex flex-col gap-4">
-          <div class="flex items-center h-full gap-4">
-            <div class="h-full w-fit aspect-square rounded-sm of-clip">
+        <div v-else class="flex flex-col gap-4 h-full">
+          <div class="flex gap-4 h-full items-center">
+            <div class="rounded-sm h-full w-fit aspect-square of-clip">
               <Img :size="128" class="size-full object-cover" :src="objectUrl" :alt="fs.file.value?.name" />
             </div>
 
-            <div class="h-full flex flex-col gap-1">
-              <p class="font-medium truncate w-full">{{ fs.file.value?.name }}</p>
-              <p class="text-sm text-muted-foreground tabular-nums mb-auto">
+            <div class="flex flex-col gap-1 h-full">
+              <p class="font-medium w-full truncate">{{ fs.file.value?.name }}</p>
+              <p class="text-sm text-muted-foreground mb-auto tabular-nums">
                 {{ formatBytes(uploadProgress * fileSize) }} / {{ formatBytes(fileSize) }}
               </p>
-              <UButton variant="danger" class="w-fit" @click="uploadContent.abort()" size="sm"> Cancel </UButton>
+              <UButton variant="danger" class="w-fit" size="sm" @click="uploadContent.abort()"> Cancel </UButton>
             </div>
           </div>
 
-          <div class="h-1.5 flex items-center gap-2">
+          <div class="flex gap-2 h-1.5 items-center">
             <UProgressBar :progress="uploadProgress" class="shrink-0 h-full" />
             <USpinner />
           </div>
