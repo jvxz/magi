@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { EventType, Visibility } from 'matrix-js-sdk'
+import { Visibility } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
@@ -78,7 +78,7 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
 
     <!-- topic -->
     <FormPrimitive label="Topic">
-      <UChip :ui="{ root: 'w-full' }" :show="isEdited(s => s[EventType.RoomTopic])">
+      <UChip :ui="{ root: 'w-full' }" :show="isEdited(s => s['m.room.topic'])">
         <UTextarea
           v-model:model-value="topic"
           class="bg-surface-raised max-h-36 min-h-10"
