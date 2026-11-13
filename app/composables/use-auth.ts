@@ -47,7 +47,8 @@ export function useAuth() {
     mutationFn: async ({ email, manualClient, password, username }) => {
       const matrixClient = manualClient ?? client.value
 
-      const { inUse, sid } = await isEmailInUse(matrixClient, email, crypto.randomUUID())
+      const clientSecret = crypto.randomUUID()
+      const { inUse, sid } = await isEmailInUse(matrixClient, email, clientSecret)
       if (inUse) {
         throw new EmailInUseError()
       }
@@ -55,6 +56,7 @@ export function useAuth() {
       const res = await attemptAction(
         auth => matrixClient.registerRequest({ auth: auth ?? undefined, password, username }),
         {
+          clientSecret,
           emailSid: sid,
           inputs: { emailAddress: email },
           matrixClient,
