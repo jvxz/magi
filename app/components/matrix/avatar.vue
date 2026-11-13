@@ -16,7 +16,6 @@ export interface MatrixAvatarProps
 export type MatrixAvatarEmits = ImgEmits
 
 const props = withDefaults(defineProps<MatrixAvatarProps>(), {
-  doPlaceholder: true,
   imageSize: 'small',
 })
 const emits = defineEmits<ImgEmits>()
@@ -46,10 +45,8 @@ async function onError() {
   if (src.value === before) failed.value = true
 }
 
-const delegated = reactiveOmit(props, ['doPlaceholder', 'square', 'fallbackAlt', 'alt', 'placeholderVariant'])
+const delegated = reactiveOmit(props, ['placeholderKey', 'square', 'fallbackAlt', 'alt', 'placeholderVariant'])
 const forwarded = useForwardPropsEmits(delegated, emits)
-
-const id = useId()
 </script>
 
 <template>
@@ -63,11 +60,11 @@ const id = useId()
     @error="onError"
   />
   <AvatarPlaceholder
-    v-else-if="doPlaceholder"
+    v-else-if="placeholderKey"
     :is-loading
-    :name="alt ?? id"
+    :name="placeholderKey"
     :placeholder-variant
     :square
-    :class="cn(!square && 'rounded-full', 'size-full', props.class)"
+    :class="cn(!square && 'rounded-full', props.class)"
   />
 </template>

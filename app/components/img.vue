@@ -10,7 +10,7 @@ export interface ImgProps {
   size?: number
   class?: HTMLAttributes['class']
   loading?: ImgHTMLAttributes['loading']
-  doPlaceholder?: boolean
+  placeholderKey?: string | number
   blurhash?: string
 }
 
@@ -39,6 +39,7 @@ watch(
 
 <template>
   <UnLazyImage
+    v-if="isUndefined(placeholderKey) || src"
     :key="src"
     :src
     :blurhash
@@ -69,5 +70,13 @@ watch(
         emits('error', e)
       }
     "
+  />
+  <AvatarPlaceholder
+    v-else-if="isDefined(placeholderKey) && !src"
+    :name="placeholderKey"
+    :style="(size ?? width) && (size ?? height) ? { aspectRatio: `${size ?? width} / ${size ?? height}` } : undefined"
+    :data-loaded="loaded ? 'true' : 'false'"
+    :data-error="error ? 'true' : 'false'"
+    :class="cn('select-none relative', props.class)"
   />
 </template>
