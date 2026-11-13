@@ -8,18 +8,21 @@ export interface UImgButtonProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
   visible?: boolean
   icon?: string
-  progress?: number
   disabled?: boolean
 }
 
 const props = withDefaults(defineProps<UImgButtonProps>(), {
   as: 'button',
+  icon: ICON__EDIT,
   visible: true,
 })
-const emits = defineEmits<{ click: MouseEvent }>()
+const emits = defineEmits<{ action: Parameters<GlobalDialogMap['editAvatar']['onAction']> }>()
 
 const delegated = reactiveOmit(props, 'class')
-const forwarded = useForwardPropsEmits(delegated, emits)
+const forwarded = useForwardPropsEmits(delegated)
+
+const { openDialog } = useGlobalDialog()
+const handleClick = () => openDialog('editAvatar', { onAction: (url, file) => emits('action', url, file) })
 </script>
 
 <template>
@@ -28,12 +31,12 @@ const forwarded = useForwardPropsEmits(delegated, emits)
     v-bind="forwarded"
     :class="cn('relative of-clip cursor-pointer group/img-button', props.class)"
     data-slot="img-button"
+    @click="handleClick"
   >
     <slot />
 
     <div
       aria-hidden
-      :data-state="isDefined(progress) ? 'loading' : 'idle'"
       :class="
         cn(
           'absolute inset-0 size-full pointer-events-none invisible bg-hover-overlay group-hover/img-button:visible data-[state=loading]:visible ',
@@ -41,8 +44,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
       "
     >
       <div class="mx-auto grid size-full max-w-85% place-items-center">
-        <Icon v-if="isNil(progress) && icon" :name="icon" class="text-foreground size-40%" />
-        <UProgressBar v-else-if="isDefined(progress)" :progress class="text-2xs" />
+        <Icon :name="icon" class="text-foreground size-40%" />
       </div>
     </div>
   </Primitive>

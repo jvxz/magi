@@ -7,13 +7,15 @@ import {
   DialogInvite,
   DialogLeave,
   DialogText,
+  DialogEditAvatar,
 } from '#components'
 
-const { dialogKey, open, state } = useGlobalDialog()
+const { stack } = useGlobalDialog()
 
 const dialogs: Record<GlobalDialog, Component> = {
   codeViewer: DialogCodeViewer,
   deleteMessage: DialogDeleteMessage,
+  editAvatar: DialogEditAvatar,
   image: DialogImage,
   invite: DialogInvite,
   leave: DialogLeave,
@@ -23,13 +25,7 @@ const dialogs: Record<GlobalDialog, Component> = {
 </script>
 
 <template>
-  <component
-    :is="dialogs[state.name]"
-    v-if="state"
-    :key="`${state.name}-${dialogKey}`"
-    v-model:open="open"
-    v-bind="state"
-  />
+  <component v-for="item in stack" :is="dialogs[item.name]" :key="item.id" v-bind="item" v-model:open="item.open" />
 
   <DialogUia />
 </template>

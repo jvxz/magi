@@ -22,24 +22,15 @@ const directoryVisibility = computed({
   set: (value: boolean) => (unsavedChanges.value.directoryVisibility = value ? Visibility.Public : Visibility.Private),
 })
 
-const { uploadContent, progress } = useUploadContent()
-
-const { mutateAsync, isPending } = uploadContent
-
-const { open: openFilePicker, file } = useFileSystemAccess({ types: [MATRIX__ALLOWED_AVATAR_FILE_TYPES] })
-
-const upload = async () => {
-  if (!file.value || !isBlob(file.value) || !isFile(file.value)) return
-  const res = await mutateAsync({ file: file.value })
-
-  unsavedChanges.value['m.room.avatar'] = { info: await toImageInfo(file.value), url: res.content_uri }
+const upload = async (...args: Parameters<GlobalDialogMap['editAvatar']['onAction']>) => {
+  const [url, file] = args
+  if (!url || !file) unsavedChanges.value['m.room.avatar'] = {}
+  else unsavedChanges.value['m.room.avatar'] = { info: await toImageInfo(file), url }
 }
-whenever(file, upload)
 
-const avatarUrl = useResolveImageUrl(
-  () => unsavedChanges.value['m.room.avatar']?.url ?? room.value.getMxcAvatarUrl() ?? undefined,
-  { useAuthentication: true },
-)
+const avatarUrl = useResolveImageUrl(() => unsavedChanges.value['m.room.avatar']?.url ?? undefined, {
+  useAuthentication: true,
+})
 
 const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility', () => room.value.roomId)
 </script>
@@ -48,19 +39,14 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
   <div class="flex flex-col gap-4">
     <!-- avatar, name -->
     <div class="flex gap-4 items-center">
-      <UImgButton
-        :progress="progress ? progress.loaded / progress.total : undefined"
-        :visible="permissions.canEditRoomAvatar.value"
-        :disabled="isPending"
-        :icon="ICON__EDIT"
-        @click="openFilePicker"
-      >
+      <UImgButton :visible="permissions.canEditRoomAvatar.value" @action="upload">
         <Img
-          :src="isPending ? '' : avatarUrl"
+          :src="avatarUrl"
           :alt="`Avatar of ${resolveRoomName(room)}`"
           image-size="medium"
           class="rounded-sm shrink-0 size-20"
           square
+          :placeholder-key="room.roomId"
         />
       </UImgButton>
 
@@ -83,13 +69,14 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
         <p v-else class="text-xl font-medium">{{ unsavedChanges['m.room.name'].name }}</p>
 
         <UClickToCopy as-child side="right">
-          <UButton variant="ghost-inline" class="text-sm text-muted-foreground font-normal">{{ room.roomId }}</UButton>
+          <UButton variant="ghost-inline" class="text-sm text-muted-foreground font-normal w-fit">
+            {{ room.roomId }}
+          </UButton>
         </UClickToCopy>
       </div>
     </div>
 
     <!-- topic -->
-
     <FormPrimitive label="Topic">
       <UChip :ui="{ root: 'w-full' }" :show="isEdited(s => s[EventType.RoomTopic])">
         <UTextarea
@@ -103,6 +90,7 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
       </UChip>
     </FormPrimitive>
 
+    <!-- space access, directory visibility -->
     <USettingGroupRoot variant="top">
       <USettingGroupHeader>
         <USettingGroupTitle> Access & discovery </USettingGroupTitle>

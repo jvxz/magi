@@ -25,27 +25,29 @@ export interface GlobalDialogMap {
   roomSettings: {
     room: Room
   }
+  editAvatar: {
+    /**
+     * @param avatarUrl undefined if deletion request, string as mxc URL if uploaded
+     * @param file undefined if delection request
+     */
+    onAction: (avatarUrl: string | undefined, file: File | undefined) => void
+  }
 }
 export type GlobalDialog = keyof GlobalDialogMap
 
-type GlobalDialogState = Prettify<
-  {
-    [K in GlobalDialog]: {
-      name: K
-    } & GlobalDialogMap[K]
-  }[GlobalDialog]
->
+type GlobalDialogEntry = {
+  [K in GlobalDialog]: { name: K; id: number; open: boolean } & GlobalDialogMap[K]
+}[GlobalDialog]
 
 export const useGlobalDialog = createGlobalState(() => {
-  const open = ref(false)
-  const state = shallowRef<GlobalDialogState>()
-  const dialogKey = ref(0)
+  const stack = ref<GlobalDialogEntry[]>([])
+  let nextId = 0
 
   const openDialog = <T extends GlobalDialog>(name: T, payload: GlobalDialogMap[T]) => {
-    state.value = { name, ...payload } as GlobalDialogState
-    dialogKey.value++
-    open.value = true
+    // only drop dialogs that have finished closing to retain exit animation
+    stack.value = stack.value.filter(d => d.open)
+    stack.value.push({ id: nextId++, name, open: true, ...payload } as GlobalDialogEntry)
   }
 
-  return { dialogKey, open, openDialog, state }
+  return { openDialog, stack }
 })

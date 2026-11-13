@@ -16,7 +16,7 @@ const forwarded = useForwardPropsEmits(delegated, emits)
 <template>
   <ProgressRoot
     v-bind="forwarded"
-    :class="cn('h-1em w-full bg-surface-raised rounded relative of-clip', props.class)"
+    :class="cn('h-1.5 w-full bg-surface-raised rounded relative of-clip', props.class)"
     data-slot="progress-circle"
   >
     <ProgressIndicator

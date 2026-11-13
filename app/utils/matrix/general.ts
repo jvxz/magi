@@ -146,7 +146,7 @@ export async function toImageInfo(file: File, opts?: ToImageInfoOpts): Promise<I
     mimetype: file.type,
     size: file.size,
     w: bmp.width,
-    'xyz.amorgan.blurhash': blurhash,
+    ...(blurhash && { 'xyz.amorgan.blurhash': blurhash }),
   }
   bmp.close()
   return info

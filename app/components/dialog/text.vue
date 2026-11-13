@@ -7,9 +7,9 @@ export type DialogTextProps = DialogRootProps & GlobalDialogMap['text']
 
 const props = withDefaults(defineProps<DialogTextProps>(), { modal: true })
 
-const { open } = useGlobalDialog()
+const open = defineModel<boolean>('open')
 
-const delegated = reactiveOmit(props, ['title', 'text'])
+const delegated = reactiveOmit(props, ['title', 'text', 'open'])
 </script>
 
 <template>
