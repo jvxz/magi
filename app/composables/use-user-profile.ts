@@ -2,13 +2,13 @@ import type { IMatrixProfile } from 'matrix-js-sdk'
 
 import { User } from 'matrix-js-sdk'
 
-export const useUserProfileVersions = createSharedComposable(() => {
+export const useUserProfileRevisions = createSharedComposable(() => {
   const { client } = useMatrixClient()
-  const versions = shallowReactive(new Map<string, number>())
+  const revisions = shallowReactive(new Map<string, number>())
   const cache = new Map<string, Promise<IMatrixProfile | undefined>>()
   const { onEvent, onUserProfile } = useMatrixHooks()
 
-  const bump = (id: string) => versions.set(id, (versions.get(id) ?? 0) + 1)
+  const bump = (id: string) => revisions.set(id, (revisions.get(id) ?? 0) + 1)
   const fetchProfile = (id: string) => {
     let profile: Promise<IMatrixProfile | undefined> | undefined = cache.get(id)
     if (!profile) {
@@ -36,22 +36,22 @@ export const useUserProfileVersions = createSharedComposable(() => {
     bump(userId)
   })
 
-  return { fetchProfile, versions }
+  return { fetchProfile, revisions }
 })
 
 export function useUserProfile(userInput: MaybeRefOrGetter<MaybeUserOrId | undefined>) {
-  const { versions, fetchProfile } = useUserProfileVersions()
+  const { revisions, fetchProfile } = useUserProfileRevisions()
   const { client } = useMatrixClient()
 
   const userProfile = shallowRef<IMatrixProfile>({})
 
-  const version = computed(() => {
+  const revision = computed(() => {
     const u = toValue(userInput)
     if (!u) return 0
-    return versions.get(resolveUserId(u)) ?? 0
+    return revisions.get(resolveUserId(u)) ?? 0
   })
 
-  watchImmediate([() => toValue(userInput), version], async ([userOrId], [prevUserOrId]) => {
+  watchImmediate([() => toValue(userInput), revision], async ([userOrId], [prevUserOrId]) => {
     if (!userOrId) return (userProfile.value = {})
     const userId = resolveUserId(userOrId)
     const fallback = { displayname: getDisplayNameFallback(userId) }

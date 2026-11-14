@@ -1,5 +1,5 @@
-export const useRoomVersions = createSharedComposable(() => {
-  const versions = shallowReactive(new Map<string, number>())
+export const useRoomRevisions = createSharedComposable(() => {
+  const revisions = shallowReactive(new Map<string, number>())
   const {
     onRoom,
     onRoomLocalEchoUpdated,
@@ -13,7 +13,7 @@ export const useRoomVersions = createSharedComposable(() => {
     onRoomTimelineReset,
   } = useMatrixHooks()
 
-  const bump = (id: string) => versions.set(id, (versions.get(id) ?? 0) + 1)
+  const bump = (id: string) => revisions.set(id, (revisions.get(id) ?? 0) + 1)
 
   onRoomTimeline((_e, room) => room && bump(room.roomId))
   onRoomTimelineReset(room => room && bump(room.roomId))
@@ -26,5 +26,20 @@ export const useRoomVersions = createSharedComposable(() => {
   onRoomStateUpdate(state => bump(state.roomId))
   onRoom(room => bump(resolveRoomId(room)))
 
-  return versions
+  const getRevision = (roomOrId: MaybeRoomOrId | undefined) => {
+    if (!roomOrId) return -1
+    return revisions.get(resolveRoomId(roomOrId)) ?? -1
+  }
+
+  return { getRevision, revisions }
 })
+
+export function useRoomRevision(roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
+  const roomId = useResolveRoomId(roomOrId)
+  const { revisions } = useRoomRevisions()
+
+  return computed(() => {
+    if (!roomId.value) return -1
+    return revisions.get(roomId.value) ?? -1
+  })
+}
