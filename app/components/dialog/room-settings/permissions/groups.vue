@@ -37,6 +37,24 @@ const plEventItem = (key: EventType, label: string, defaultValue: number, specif
   specificTo,
 })
 
+const plNotificationItem = (
+  key: keyof NonNullable<RoomSettings['m.room.power_levels']['notifications']>,
+  label: string,
+  defaultValue: number,
+) => ({
+  edited: isPowerLevelEdited(s => s['m.room.power_levels'].notifications?.[key]),
+  key: `notifications.${key}`,
+  label,
+  ref: computed({
+    get: () => unsavedChanges.value['m.room.power_levels'].notifications?.[key] ?? defaultValue,
+    set: (v: number | undefined) => {
+      if (!isDefined(v)) return
+      const pl = unsavedChanges.value['m.room.power_levels']
+      pl.notifications = { ...pl.notifications, [key]: v }
+    },
+  }),
+})
+
 const shouldShow = <T extends { specificTo?: Scope }>(groupOrItem: T) =>
   groupOrItem.specificTo
     ? (groupOrItem.specificTo === 'space' && isSpace.value) || (groupOrItem.specificTo === 'room' && !isSpace.value)
@@ -62,9 +80,19 @@ const groupMap: {
   },
   {
     items: [
+      plItem('events_default', 'Send messages', MATRIX__DEFAULT_POWER_LEVELS.events_default),
+      plEventItem(EventType.RoomRedaction, 'Delete own messages', MATRIX__DEFAULT_POWER_LEVELS.events_default),
+      plNotificationItem('room', 'Notify everyone', MATRIX__DEFAULT_POWER_LEVELS.events_default),
+    ],
+    key: 'messaging',
+    label: 'Messaging',
+  },
+  {
+    items: [
       plItem('invite', 'Invite users', PowerLevelByName.Member),
       plItem('kick', 'Kick users', PowerLevelByName.Moderator),
       plItem('ban', 'Ban users', PowerLevelByName.Moderator),
+      plItem('redact', 'Delete messages', PowerLevelByName.Moderator),
     ],
     key: 'moderation',
     label: 'Moderation',
@@ -84,6 +112,7 @@ const groupMap: {
       plEventItem(EventType.RoomHistoryVisibility, 'Change history visibility', PowerLevelByName.Moderator),
       plEventItem(EventType.RoomCanonicalAlias, 'Edit room alias', PowerLevelByName.Moderator),
       plEventItem(EventType.RoomPowerLevels, 'Change power levels', PowerLevelByName.Admin),
+      plItem('state_default', 'Change other settings', MATRIX__DEFAULT_POWER_LEVELS.state_default),
       plEventItem(EventType.RoomTombstone, 'Upgrade room', PowerLevelByName.Admin),
     ],
     key: 'space-settings',
