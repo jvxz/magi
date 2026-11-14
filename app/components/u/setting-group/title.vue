@@ -9,7 +9,7 @@ const props = defineProps<USettingGroupTitleProps>()
 </script>
 
 <template>
-  <h2 :class="cn('font-medium', props.class)" data-slot="setting-group-title">
+  <p :class="cn('font-medium text-sm', props.class)" data-slot="setting-group-title">
     <slot />
-  </h2>
+  </p>
 </template>

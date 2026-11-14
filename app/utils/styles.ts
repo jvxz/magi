@@ -73,7 +73,7 @@ export type StaticVariants = VariantProps<typeof staticBase>
 
 export const popoverContentBase = tv({
   base: [
-    'z-popover w-52 overflow-hidden font-medium',
+    'z-popover min-w-52 overflow-hidden font-medium',
     'origin-[var(--reka-popper-transform-origin,top_right)]',
     'data-[state=open]:(animate-in fade-in-0 zoom-in-96 ease-snappy)',
   ],
@@ -94,7 +94,7 @@ export const popoverContentBase = tv({
 })
 
 export const popoverItemBase = tv({
-  base: 'rounded-sm duration-0 font-normal relative flex shadow-none cursor-default items-center text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  base: 'rounded-sm duration-0 relative flex shadow-none cursor-default items-center text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   defaultVariants: {
     size: 'default',
     variant: 'ghost',
@@ -115,7 +115,7 @@ export type PopoverItemVariants = VariantProps<typeof popoverItemBase>
 export const tooltipContentBase = tv({
   base: [
     popoverContentBase({ variant: 'raised' }),
-    'will-change-transform relative overflow-visible w-fit will-change-opacity border-border-strong bg-surface-top z-tooltip p-0 px-3 py-1.5 text-sm text-balance font-medium',
+    'will-change-transform relative overflow-visible min-w-fit will-change-opacity border-border-strong bg-surface-top z-tooltip p-0 px-3 py-1.5 text-sm text-balance font-medium',
   ],
 })
 

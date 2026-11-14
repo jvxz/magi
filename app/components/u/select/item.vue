@@ -17,22 +17,20 @@ const forwarded = useForwardProps(delegated)
     data-slot="select-item"
     v-bind="forwarded"
     :class="
-      cn(
-        popoverItemBase(),
-        'relative flex w-full cursor-default items-center gap-2 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2',
-        props.class,
-      )
+      cn(popoverItemBase(), 'relative flex w-full flex-row cursor-default items-center group/select-item', props.class)
     "
   >
-    <span class="size-4 right-2 top-1/2 absolute -translate-y-1/2">
-      <SelectItemIndicator class="size-full">
-        <slot name="indicator-icon">
-          <Icon :name="ICON__CHECK" />
-        </slot>
-      </SelectItemIndicator>
-    </span>
+    <SelectItemIndicator
+      class="size-4 group-data-[slot=select-rich-item]/select-item:pe-1 group-data-[slot=select-rich-item]/select-item:pt-0.5"
+    >
+      <slot name="indicator-icon">
+        <Icon :name="ICON__CHECK" />
+      </slot>
+    </SelectItemIndicator>
 
-    <SelectItemText>
+    <SelectItemText
+      class="shrink group-not-data-[state=checked]/select-item:ps-6 group-data-[slot=select-rich-item]/select-item:group-not-data-[state=checked]/select-item:ps-5"
+    >
       <slot />
     </SelectItemText>
   </SelectItem>
