@@ -13,9 +13,9 @@ const { unsavedChanges, isEdited } = injectRoomSettingsDialogContext()
             label="Default power level"
             description="Power level for users who were not specifically assigned one"
           >
-            <UChip :show="isEdited(s => s['m.room.power_levels'].events_default)">
+            <UChip :show="isEdited(s => s['m.room.power_levels'].users_default)">
               <UNumberField
-                v-model:model-value="unsavedChanges['m.room.power_levels'].events_default"
+                v-model:model-value="unsavedChanges['m.room.power_levels'].users_default"
                 :default-value="0"
                 :max="MATRIX__POWERLEVEL_MAX"
                 :min="MATRIX__POWERLEVEL_MIN"
