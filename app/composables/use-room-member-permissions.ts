@@ -50,6 +50,7 @@ export function useRoomMemberPermissions(
   const canEditRoomTopic = check((s, userId) => s.maySendStateEvent(EventType.RoomTopic, userId))
   const canEditRoomAvatar = check((s, userId) => s.maySendStateEvent(EventType.RoomAvatar, userId))
   const canEditJoinRules = check((s, userId) => s.maySendStateEvent(EventType.RoomJoinRules, userId))
+  const canEditHistoryVisibility = check((s, userId) => s.maySendStateEvent(EventType.RoomHistoryVisibility, userId))
   const canEditCanonicalAlias = check((s, userId) => s.maySendStateEvent(EventType.RoomCanonicalAlias, userId))
   const canEditDirectoryVisibility = canEditCanonicalAlias
   const canEditPowerLevels = check((s, userId) => s.maySendStateEvent(EventType.RoomPowerLevels, userId))
@@ -58,6 +59,7 @@ export function useRoomMemberPermissions(
     canBan,
     canBanUser,
     canEditDirectoryVisibility,
+    canEditHistoryVisibility,
     canEditJoinRules,
     canEditPowerLevels,
     canEditRoomAvatar,

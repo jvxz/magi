@@ -2,7 +2,7 @@ import type { Room } from 'matrix-js-sdk'
 
 import { toRef } from '@vueuse/core'
 import { isEqual, toMerged } from 'es-toolkit'
-import { EventType } from 'matrix-js-sdk'
+import { EventType, HistoryVisibility } from 'matrix-js-sdk'
 
 type ExtraKey = Exclude<keyof RoomSettings, keyof StateRoomSettings>
 
@@ -29,6 +29,11 @@ export function useRoomSettings(roomInput: MaybeRefOrGetter<Room>) {
       ...stateSettings.value,
       // apply default power levels. defaults get set when saving
       [EventType.RoomPowerLevels]: toMerged(defaults, pl),
+      [EventType.RoomHistoryVisibility]: {
+        ...stateSettings.value[EventType.RoomHistoryVisibility],
+        history_visibility:
+          stateSettings.value[EventType.RoomHistoryVisibility].history_visibility ?? HistoryVisibility.Shared,
+      },
       directoryVisibility: directoryVisibility.data.value,
     }
   })

@@ -1,6 +1,6 @@
 import type { StateEvents } from 'matrix-js-sdk'
 
-import { AuthType, EventType, JoinRule } from 'matrix-js-sdk'
+import { HistoryVisibility, AuthType, EventType, JoinRule } from 'matrix-js-sdk'
 
 import type { AvatarImageSize } from '../utils/matrix/types'
 
@@ -107,6 +107,7 @@ export const MATRIX__CONFIGURABLE_ROOM_SETTINGS = [
   EventType.RoomTopic,
   EventType.RoomJoinRules,
   EventType.RoomPowerLevels,
+  EventType.RoomHistoryVisibility,
 ] as const satisfies (keyof StateEvents)[]
 
 // https://spec.matrix.org/v1.19/client-server-api/#mroompower_levels
@@ -120,6 +121,13 @@ export const MATRIX__DEFAULT_POWER_LEVELS = {
   state_default: 50,
   users_default: 0,
 } as const
+
+export const MATRIX__HISTORY_VISIBILITY_OPTIONS = {
+  [HistoryVisibility.WorldReadable]: { description: 'Readable without joining', label: 'Anyone' },
+  [HistoryVisibility.Shared]: { description: 'All history, including before they joined', label: 'Members' },
+  [HistoryVisibility.Invited]: { description: 'History from when they were invited', label: 'Since invite' },
+  [HistoryVisibility.Joined]: { description: 'History from when they joined', label: 'Since joining' },
+} as const satisfies Record<HistoryVisibility, { label: string; description: string }>
 
 export const MATRIX__JOIN_RULE_NAME_MAP: Record<JoinRule, string> = {
   invite: 'Invite only',
@@ -138,6 +146,7 @@ export const MATRIX__POWER_LEVEL_EDITABLE_EVENTS = [
   EventType.RoomName,
   EventType.RoomTopic,
   EventType.RoomJoinRules,
+  EventType.RoomHistoryVisibility,
   EventType.RoomCanonicalAlias,
   EventType.RoomPowerLevels,
   EventType.RoomTombstone,

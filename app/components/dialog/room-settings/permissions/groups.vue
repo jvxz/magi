@@ -81,6 +81,7 @@ const groupMap: {
   {
     items: [
       plEventItem(EventType.RoomJoinRules, 'Change member access', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomHistoryVisibility, 'Change history visibility', PowerLevelByName.Moderator),
       plEventItem(EventType.RoomCanonicalAlias, 'Edit room alias', PowerLevelByName.Moderator),
       plEventItem(EventType.RoomPowerLevels, 'Change power levels', PowerLevelByName.Admin),
       plEventItem(EventType.RoomTombstone, 'Upgrade room', PowerLevelByName.Admin),
