@@ -11,9 +11,7 @@ const open = defineModel<boolean>('open')
 const { uploadContent, progress } = useUploadContent()
 const { isPending: isUploading } = uploadContent
 
-const { notifyError } = useNotifications()
-
-const fs = useFileDialog({ accept: 'image/*', multiple: false })
+const fs = useFileDialog({ accept: Object.keys(MATRIX__ALLOWED_AVATAR_FILE_TYPES.accept).join(','), multiple: false })
 const selectedFile = computed(() => fs.files.value?.[0])
 const fileSize = computed(() => selectedFile.value?.size ?? 0)
 
@@ -37,11 +35,8 @@ fs.onChange(async () => {
 
     props.onAction(mxc, selectedFile.value)
     open.value = false
-  } catch (err) {
-    if (!isError(err)) notifyError(new UnexpectedError(), 'Failed to upload file')
-
-    if (!(err instanceof FileTooLargeError) && !(err instanceof DOMException))
-      notifyError(err as Error, 'Failed to upload file')
+  } catch {
+    // reported by useUploadContent's onError
   } finally {
     isOpening.value = false
   }
