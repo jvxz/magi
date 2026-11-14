@@ -118,6 +118,10 @@ export class UnexpectedError extends Error {
   }
 }
 
+export class PermissionError extends Error {
+  override name = 'FileTooLargeError'
+}
+
 export class FileTooLargeError extends Error {
   override name = 'FileTooLargeError'
 }

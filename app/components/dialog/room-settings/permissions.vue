@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { injectRoomSettingsDialogContext } from '../room-settings.vue'
 
-const { unsavedChanges, isEdited } = injectRoomSettingsDialogContext()
+const { unsavedChanges, isEdited, permissions } = injectRoomSettingsDialogContext()
 </script>
 
 <template>
@@ -15,6 +15,7 @@ const { unsavedChanges, isEdited } = injectRoomSettingsDialogContext()
           >
             <UChip :show="isEdited(s => s['m.room.power_levels'].users_default)">
               <UNumberField
+                :disabled="!permissions.canEditPowerLevels.value"
                 v-model:model-value="unsavedChanges['m.room.power_levels'].users_default"
                 :default-value="0"
                 :max="MATRIX__POWERLEVEL_MAX"

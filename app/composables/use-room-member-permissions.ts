@@ -52,12 +52,14 @@ export function useRoomMemberPermissions(
   const canEditJoinRules = check((s, userId) => s.maySendStateEvent(EventType.RoomJoinRules, userId))
   const canEditCanonicalAlias = check((s, userId) => s.maySendStateEvent(EventType.RoomCanonicalAlias, userId))
   const canEditDirectoryVisibility = canEditCanonicalAlias
+  const canEditPowerLevels = check((s, userId) => s.maySendStateEvent(EventType.RoomPowerLevels, userId))
 
   return {
     canBan,
     canBanUser,
     canEditDirectoryVisibility,
     canEditJoinRules,
+    canEditPowerLevels,
     canEditRoomAvatar,
     canEditRoomName,
     canEditRoomTopic,

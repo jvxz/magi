@@ -3,7 +3,7 @@ import { EventType } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { unsavedChanges, isEdited, isSpace } = injectRoomSettingsDialogContext()
+const { unsavedChanges, isEdited, isSpace, permissions } = injectRoomSettingsDialogContext()
 
 type PlKey = keyof Omit<RoomSettings['m.room.power_levels'], 'events' | 'notifications' | 'users'>
 type Scope = 'space' | 'room'
@@ -109,7 +109,7 @@ const groupMap: {
                 </UTableRowCell>
                 <UTableRowCell>
                   <UChip :show="item.edited.value">
-                    <UNumberField v-model:model-value="item.ref.value" variant="top" class="w-36" />
+                    <UNumberField v-model:model-value="item.ref.value" :disabled="!permissions.canEditPowerLevels.value" variant="top" class="w-36" />
                   </UChip>
                 </UTableRowCell>
               </UTableRow>

@@ -48,7 +48,8 @@ export function useRoomSettings(roomInput: MaybeRefOrGetter<Room>) {
 
   const setSetting = <K extends keyof RoomSettings>(key: K, value: RoomSettings[K]) => {
     if (isExtraKey(key)) return extraWriters[key](value as never)
-    if (permissions.canSendStateEvent(key)) return client.value.sendStateEvent(room.value.roomId, key, value as never)
+    if (!permissions.canSendStateEvent(key)) throw new PermissionError(`Missing permission to change ${key}`)
+    return client.value.sendStateEvent(room.value.roomId, key, value as never)
   }
 
   const setSettings = useMutation({
