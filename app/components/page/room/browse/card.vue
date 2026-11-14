@@ -27,7 +27,7 @@ const { openDialog } = useGlobalDialog()
         as-child
         :dialog="room.avatar_url ? { type: 'image', url: room.avatar_url, alt: room.name ?? room.room_id } : undefined"
       >
-        <MatrixAvatar square :src="room.avatar_url" :alt="room.name ?? room.room_id" />
+        <MatrixAvatar square :src="room.avatar_url" :alt="room.name ?? room.room_id" :placeholder-key="room.room_id" />
       </URoomShowcaseCardImage>
 
       <URoomShowcaseCardContent>

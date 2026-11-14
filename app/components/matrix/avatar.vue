@@ -56,7 +56,6 @@ const forwarded = useForwardPropsEmits(delegated, emits)
     :alt
     :src
     :class="cn('object-cover', !square && 'rounded-full', props.class)"
-    :do-placeholder="false"
     @error="onError"
   />
   <AvatarPlaceholder
