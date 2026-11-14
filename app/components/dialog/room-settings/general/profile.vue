@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Visibility } from 'matrix-js-sdk'
+import { JoinRule, Visibility } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
@@ -31,6 +31,11 @@ const upload = async (...args: Parameters<GlobalDialogMap['editAvatar']['onActio
 const avatarUrl = useResolveImageUrl(() => unsavedChanges.value['m.room.avatar']?.url ?? undefined, {
   useAuthentication: true,
 })
+
+const supportsKnock = useRoomSupporting(room, 'knock')
+const validJoinRules = computed(() =>
+  MATRIX__JOIN_RULE_SETTABLE_RULES.filter(r => supportsKnock.value || r !== JoinRule.Knock),
+)
 
 const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility', () => room.value.roomId)
 </script>
@@ -111,7 +116,7 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
               </UChip>
 
               <USelectContent align="end">
-                <USelectItem v-for="rule in MATRIX__JOIN_RULE_SETTABLE_RULES" :key="rule" :value="rule">
+                <USelectItem v-for="rule in validJoinRules" :key="rule" :value="rule">
                   <USelectItemText>
                     {{ MATRIX__JOIN_RULE_NAME_MAP[rule] }}
                   </USelectItemText>
