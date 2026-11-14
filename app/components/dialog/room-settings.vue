@@ -26,6 +26,7 @@ const roomSettingsTabs = [
 export interface RoomSettingsDialogContext extends ReturnType<typeof useUnsavedChanges<RoomSettings>> {
   room: Ref<Room>
   permissions: ReturnType<typeof useRoomMemberPermissions>
+  isSpace: ComputedRef<boolean>
 }
 
 export const [injectRoomSettingsDialogContext, provideRoomSettingsDialogContext] =
@@ -59,8 +60,11 @@ const commit = () =>
     .commitChanges()
     .catch(err => notifyError(err, `Failed to save ${resolveRoomName(room.value)} settings`))
 
+const isRoomSpace = useRoomComputed(room, isSpace)
+
 provideRoomSettingsDialogContext({
   ...unsavedChanges,
+  isSpace: isRoomSpace,
   permissions,
   room,
 })

@@ -3,28 +3,44 @@ import { EventType } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { unsavedChanges, isEdited } = injectRoomSettingsDialogContext()
+const { unsavedChanges, isEdited, isSpace } = injectRoomSettingsDialogContext()
 
-const plRef = (
-  key: keyof Omit<RoomSettings['m.room.power_levels'], 'events' | 'notifications' | 'users'>,
-  defaultValue: number,
-) =>
-  computed({
+type PlKey = keyof Omit<RoomSettings['m.room.power_levels'], 'events' | 'notifications' | 'users'>
+type Scope = 'space' | 'room'
+
+const isPowerLevelEdited = (select: (s: globalThis.RoomSettings) => unknown) => computed(() => isEdited(select))
+
+const plItem = (key: PlKey, label: string, defaultValue: number, specificTo?: Scope) => ({
+  edited: isPowerLevelEdited(s => s['m.room.power_levels'][key]),
+  key,
+  label,
+  ref: computed({
     get: () => unsavedChanges.value['m.room.power_levels'][key] ?? defaultValue,
     set: (nextValue: number | undefined) => {
       if (isDefined(nextValue)) unsavedChanges.value['m.room.power_levels'][key] = nextValue
     },
-  })
+  }),
+  specificTo,
+})
 
-const plEventRef = (key: EventType, defaultValue: number) =>
-  computed({
+const plEventItem = (key: EventType, label: string, defaultValue: number, specificTo?: Scope) => ({
+  edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[key]),
+  isEventType: true as const,
+  key,
+  label,
+  ref: computed({
     get: () => unsavedChanges.value['m.room.power_levels'].events[key] ?? defaultValue,
     set: (nextValue: number | undefined) => {
       if (isDefined(nextValue)) unsavedChanges.value['m.room.power_levels'].events[key] = nextValue
     },
-  })
+  }),
+  specificTo,
+})
 
-const isPowerLevelEdited = (select: (s: globalThis.RoomSettings) => unknown) => computed(() => isEdited(select))
+const shouldShow = <T extends { specificTo?: Scope }>(groupOrItem: T) =>
+  groupOrItem.specificTo
+    ? (groupOrItem.specificTo === 'space' && isSpace.value) || (groupOrItem.specificTo === 'room' && !isSpace.value)
+    : true
 
 const groupMap: {
   items: {
@@ -32,134 +48,75 @@ const groupMap: {
     label: string
     ref: globalThis.WritableComputedRef<number, number | undefined>
     isEventType?: true
+    specificTo?: Scope
     edited: ComputedRef<boolean>
   }[]
   key: string
   label: string
+  specificTo?: Scope
 }[] = [
   {
-    items: [
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[EventType.SpaceChild]),
-        isEventType: true,
-        key: EventType.SpaceChild,
-        label: 'Manage space children',
-        ref: plEventRef(EventType.SpaceChild, MATRIX__DEFAULT_POWER_LEVELS.state_default),
-      },
-    ],
+    items: [plEventItem(EventType.SpaceChild, 'Manage space children', MATRIX__DEFAULT_POWER_LEVELS.state_default)],
     key: 'users',
     label: 'Users',
   },
   {
     items: [
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].invite),
-        key: 'invite',
-        label: 'Invite users',
-        ref: plRef('invite', PowerLevelByName.Member),
-      },
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].kick),
-        key: 'kick',
-        label: 'Kick users',
-        ref: plRef('kick', PowerLevelByName.Moderator),
-      },
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].ban),
-        key: 'ban',
-        label: 'Ban users',
-        ref: plRef('ban', PowerLevelByName.Moderator),
-      },
+      plItem('invite', 'Invite users', PowerLevelByName.Member),
+      plItem('kick', 'Kick users', PowerLevelByName.Moderator),
+      plItem('ban', 'Ban users', PowerLevelByName.Moderator),
     ],
     key: 'moderation',
     label: 'Moderation',
   },
   {
     items: [
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[EventType.RoomAvatar]),
-        isEventType: true,
-        key: EventType.RoomAvatar,
-        label: 'Edit avatar',
-        ref: plEventRef(EventType.RoomAvatar, PowerLevelByName.Moderator),
-      },
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[EventType.RoomName]),
-        isEventType: true,
-        key: EventType.RoomName,
-        label: 'Change name',
-        ref: plEventRef(EventType.RoomName, PowerLevelByName.Moderator),
-      },
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[EventType.RoomTopic]),
-        isEventType: true,
-        key: EventType.RoomTopic,
-        label: 'Edit topic',
-        ref: plEventRef(EventType.RoomTopic, PowerLevelByName.Moderator),
-      },
+      plEventItem(EventType.RoomAvatar, 'Edit avatar', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomName, 'Change name', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomTopic, 'Edit topic', PowerLevelByName.Moderator),
     ],
-    key: 'space-profile',
+    key: 'profile',
     label: 'Space profile',
   },
   {
     items: [
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[EventType.RoomJoinRules]),
-        isEventType: true,
-        key: EventType.RoomJoinRules,
-        label: 'Change member access',
-        ref: plEventRef(EventType.RoomJoinRules, PowerLevelByName.Moderator),
-      },
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[EventType.RoomCanonicalAlias]),
-        isEventType: true,
-        key: EventType.RoomCanonicalAlias,
-        label: 'Edit room alias',
-        ref: plEventRef(EventType.RoomCanonicalAlias, PowerLevelByName.Moderator),
-      },
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[EventType.RoomPowerLevels]),
-        isEventType: true,
-        key: EventType.RoomPowerLevels,
-        label: 'Change power levels',
-        ref: plEventRef(EventType.RoomPowerLevels, PowerLevelByName.Admin),
-      },
-      {
-        edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[EventType.RoomTombstone]),
-        isEventType: true,
-        key: EventType.RoomTombstone,
-        label: 'Upgrade room',
-        ref: plEventRef(EventType.RoomTombstone, PowerLevelByName.Admin),
-      },
+      plEventItem(EventType.RoomJoinRules, 'Change member access', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomCanonicalAlias, 'Edit room alias', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomPowerLevels, 'Change power levels', PowerLevelByName.Admin),
+      plEventItem(EventType.RoomTombstone, 'Upgrade room', PowerLevelByName.Admin),
     ],
     key: 'space-settings',
     label: 'Space settings',
   },
-]
+] as const
 </script>
 
 <template>
-  <USettingGroupRoot v-for="group in groupMap" :key="group.key">
-    <USettingGroupHeader>
-      <USettingGroupTitle> {{ group.label }} </USettingGroupTitle>
-    </USettingGroupHeader>
+  <template v-for="group in groupMap" :key="group.key">
+    <USettingGroupRoot v-if="shouldShow(group)">
+      <USettingGroupHeader>
+        <USettingGroupTitle> {{ group.label }} </USettingGroupTitle>
+      </USettingGroupHeader>
 
-    <USettingGroupContent variant="raised" as-child>
-      <UTableRoot>
-        <UTableBody>
-          <UTableRow v-for="item in group.items" :key="item.key" :divide="false">
-            <UTableRowCell class="p-4 w-full space-x-2">
-              <span class="font-medium">{{ item.label }}</span>
-              <span v-if="item.isEventType" class="text-xs text-muted-foreground">({{ item.key }})</span>
-            </UTableRowCell>
-            <UTableRowCell>
-              <UChip :show="item.edited.value">
-                <UNumberField v-model:model-value="item.ref.value" variant="top" class="w-36" />
-              </UChip>
-            </UTableRowCell>
-          </UTableRow>
-        </UTableBody>
-      </UTableRoot>
-    </USettingGroupContent>
-  </USettingGroupRoot>
+      <USettingGroupContent variant="raised" as-child>
+        <UTableRoot>
+          <UTableBody>
+            <template v-for="item in group.items" :key="item.key">
+              <UTableRow v-if="shouldShow(item)" :divide="false">
+                <UTableRowCell class="p-4 w-full space-x-2">
+                  <span class="font-medium">{{ item.label }}</span>
+                  <span v-if="item.isEventType" class="text-xs text-muted-foreground">({{ item.key }})</span>
+                </UTableRowCell>
+                <UTableRowCell>
+                  <UChip :show="item.edited.value">
+                    <UNumberField v-model:model-value="item.ref.value" variant="top" class="w-36" />
+                  </UChip>
+                </UTableRowCell>
+              </UTableRow>
+            </template>
+          </UTableBody>
+        </UTableRoot>
+      </USettingGroupContent>
+    </USettingGroupRoot>
+  </template>
 </template>
