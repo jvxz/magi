@@ -109,7 +109,12 @@ const groupMap: {
                 </UTableRowCell>
                 <UTableRowCell>
                   <UChip :show="item.edited.value">
-                    <UNumberField v-model:model-value="item.ref.value" :disabled="!permissions.canEditPowerLevels.value" variant="top" class="w-36" />
+                    <UNumberField
+                      v-model:model-value="item.ref.value"
+                      :disabled="!permissions.canEditPowerLevels.value"
+                      variant="top"
+                      class="w-36"
+                    />
                   </UChip>
                 </UTableRowCell>
               </UTableRow>

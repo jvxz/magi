@@ -15,8 +15,8 @@ const { unsavedChanges, isEdited, permissions } = injectRoomSettingsDialogContex
           >
             <UChip :show="isEdited(s => s['m.room.power_levels'].users_default)">
               <UNumberField
-                :disabled="!permissions.canEditPowerLevels.value"
                 v-model:model-value="unsavedChanges['m.room.power_levels'].users_default"
+                :disabled="!permissions.canEditPowerLevels.value"
                 :default-value="0"
                 :max="MATRIX__POWERLEVEL_MAX"
                 :min="MATRIX__POWERLEVEL_MIN"
