@@ -9,24 +9,33 @@ const props = withDefaults(defineProps<DialogTextProps>(), { modal: true })
 
 const open = defineModel<boolean>('open')
 const { uploadContent, progress } = useUploadContent()
-
-const { notifyError } = useNotifications()
-const fs = useFileSystemAccess({ types: [MATRIX__ALLOWED_AVATAR_FILE_TYPES] })
 const { isPending: isUploading } = uploadContent
 
-const objectUrl = useObjectUrl(fs.file)
+const { notifyError } = useNotifications()
+
+const fs = useFileDialog({ accept: 'image/*', multiple: false })
+const selectedFile = computed(() => fs.files.value?.[0])
+const fileSize = computed(() => selectedFile.value?.size ?? 0)
+
+const objectUrl = useObjectUrl(selectedFile)
 
 const isOpening = ref(false)
-const openFileDialog = async () => {
+const openFileDialog = () => {
+  isOpening.value = true
+  fs.open()
+}
+
+fs.onCancel(() => {
+  isOpening.value = false
+})
+
+fs.onChange(async () => {
   try {
-    isOpening.value = true
-    await fs.open()
+    if (!selectedFile.value) return
 
-    if (!fs.file.value) return
+    const { content_uri: mxc } = await uploadContent.mutateAsync({ file: selectedFile.value })
 
-    const { content_uri: mxc } = await uploadContent.mutateAsync({ file: fs.file.value })
-
-    props.onAction(mxc, fs.file.value)
+    props.onAction(mxc, selectedFile.value)
     open.value = false
   } catch (err) {
     if (!isError(err)) notifyError(new UnexpectedError(), 'Failed to upload file')
@@ -35,20 +44,20 @@ const openFileDialog = async () => {
       notifyError(err as Error, 'Failed to upload file')
   } finally {
     isOpening.value = false
-    fs.file.value = undefined
   }
-}
+})
 
 const handleDelete = () => {
   props.onAction(undefined, undefined)
   open.value = false
 }
 
-const fileSize = computed(() => fs.file.value?.size ?? 0)
 const uploadProgress = computed(() => {
   if (!progress.value) return 0
   return progress.value.loaded / progress.value.total
 })
+
+onMounted(() => fs.reset())
 
 const delegated = reactiveOmit(props, ['onAction', 'open'])
 </script>
@@ -76,11 +85,11 @@ const delegated = reactiveOmit(props, ['onAction', 'open'])
         <div v-else class="flex flex-col gap-4 h-full">
           <div class="flex gap-4 h-full items-center">
             <div class="rounded-sm h-full w-fit aspect-square of-clip">
-              <Img :size="128" class="size-full object-cover" :src="objectUrl" :alt="fs.file.value?.name" />
+              <Img :size="128" class="size-full object-cover" :src="objectUrl" :alt="selectedFile?.name" />
             </div>
 
             <div class="flex flex-col gap-1 h-full">
-              <p class="font-medium w-full truncate">{{ fs.file.value?.name }}</p>
+              <p class="font-medium w-full truncate">{{ selectedFile?.name }}</p>
               <p class="text-sm text-muted-foreground mb-auto tabular-nums">
                 {{ formatBytes(uploadProgress * fileSize) }} / {{ formatBytes(fileSize) }}
               </p>
