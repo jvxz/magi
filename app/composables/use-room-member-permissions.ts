@@ -58,6 +58,7 @@ export function useRoomMemberPermissions(
   return {
     canBan,
     canBanUser,
+    canEditCanonicalAlias,
     canEditDirectoryVisibility,
     canEditHistoryVisibility,
     canEditJoinRules,

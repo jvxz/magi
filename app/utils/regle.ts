@@ -32,7 +32,18 @@ export const noSpaces = createRule({
   message: 'No spaces allowed',
   validator: value => {
     if (typeof value === 'string' && value.includes(' ')) return false
-
     return true
   },
 })
+
+export const homeserverAliasMaxSize = (homeserver: string) =>
+  createRule({
+    message: 'Maximum length exceeded',
+    validator: value => {
+      if (!isString(value)) return false
+
+      const full = `#${value}:${homeserver}`
+      if (new TextEncoder().encode(full).length > 255) return false
+      return true
+    },
+  })

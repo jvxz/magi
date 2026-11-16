@@ -22,6 +22,7 @@ export const $qk = {
     defineKey('publicRooms', toRef(server), toRef(query)),
   roomDirectoryVisibility: (roomId: MaybeRefOrGetter<string | undefined>) =>
     defineKey('roomDirectoryVisibility', toRef(roomId)),
+  roomLocalAliases: (roomId: MaybeRefOrGetter<string | undefined>) => defineKey('roomLocalAliases', toRef(roomId)),
   roomReplyEvent: (replyEventId: MaybeRefOrGetter<string | undefined>, roomId: MaybeRefOrGetter<string>) =>
     defineKey('roomReplyEvent', toRef(replyEventId), toRef(roomId)),
   roomSummary: (roomId: MaybeRefOrGetter<string | undefined>, via: MaybeRefOrGetter<string[] | undefined>) =>

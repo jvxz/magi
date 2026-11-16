@@ -74,6 +74,7 @@ export enum AccountDataEvent {
 export type StateRoomSettings = Pick<StateEvents, (typeof MATRIX__CONFIGURABLE_ROOM_SETTINGS)[number]>
 export interface RoomSettings extends StateRoomSettings {
   directoryVisibility: Visibility
+  localAliases: string[]
   [EventType.RoomPowerLevels]: RoomPowerLevelsEventContent & {
     events: Partial<Record<EventType, number>>
   }

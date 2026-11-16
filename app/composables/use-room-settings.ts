@@ -16,6 +16,7 @@ export function useRoomSettings(roomInput: MaybeRefOrGetter<Room>) {
 
   const stateSettings = useRoomComputed(room, getRoomSettings)
   const directoryVisibility = useRoomDirectoryVisibility(room)
+  const { localAliases } = useRoomAliases(room)
 
   const currentRoomSettings = computed<RoomSettings>(() => {
     const pl = stateSettings.value[EventType.RoomPowerLevels]
@@ -35,18 +36,30 @@ export function useRoomSettings(roomInput: MaybeRefOrGetter<Room>) {
           stateSettings.value[EventType.RoomHistoryVisibility].history_visibility ?? HistoryVisibility.Shared,
       },
       directoryVisibility: directoryVisibility.data.value,
+      localAliases: localAliases.value,
     }
   })
 
   const extraWriters: { [K in ExtraKey]: (value: RoomSettings[K]) => Promise<unknown> | void } = {
     directoryVisibility: async value => {
-      const res = permissions.canEditDirectoryVisibility.value
-        ? await client.value.setRoomDirectoryVisibility(room.value.roomId, value)
-        : undefined
+      if (!permissions.canEditDirectoryVisibility.value) return
 
+      await client.value.setRoomDirectoryVisibility(room.value.roomId, value)
       qc.setQueryData($qk.roomDirectoryVisibility(room.value.roomId), value)
+    },
+    localAliases: async value => {
+      if (!permissions.canEditCanonicalAlias.value) return
 
-      return res
+      const current = currentRoomSettings.value.localAliases
+
+      for (const alias of xor(value, current)) {
+        if (current.includes(alias)) await client.value.deleteAlias(alias)
+        else await client.value.createAlias(alias, room.value.roomId)
+      }
+
+      await qc.refetchQueries({
+        queryKey: $qk.roomLocalAliases(room.value.roomId),
+      })
     },
   }
   const isExtraKey = (key: keyof RoomSettings): key is ExtraKey => key in extraWriters

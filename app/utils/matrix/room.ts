@@ -1,6 +1,10 @@
 import type { MatrixClient, MatrixEvent, RoomMember } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
-import type { RoomCreateEventContent, RoomPowerLevelsEventContent } from 'matrix-js-sdk/lib/types'
+import type {
+  RoomCanonicalAliasEventContent,
+  RoomCreateEventContent,
+  RoomPowerLevelsEventContent,
+} from 'matrix-js-sdk/lib/types'
 
 import { Direction, JoinRule } from 'matrix-js-sdk'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
@@ -80,7 +84,6 @@ export function getStateEvent(room: Room | undefined, eventType: EventType, stat
   return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType, stateKey) ?? undefined
 }
 
-// export function getStateEvents<T extends EventType[]>(room: Room, eventTypes: T): MatrixEvent[] {
 export function getStateEvents<T extends EventType>(room: Room, eventType: T): MatrixEvent[] {
   return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType) ?? []
 }
@@ -130,6 +133,20 @@ export function getDirectRoomAvatarUrl({
         useAuthentication,
         width: size,
       })
+}
+
+export function getPublishedRoomAliases(room: Room | undefined) {
+  return getStateEvent(room, EventType.RoomCanonicalAlias)?.getContent<RoomCanonicalAliasEventContent>()
+}
+
+export async function getLocalRoomAliases(client: MatrixClient, room: MaybeRoomOrId | undefined): Promise<string[]> {
+  if (!room) return []
+  return (await client.getLocalAliases(resolveRoomId(room))).aliases
+}
+
+export function flattenRoomAliases(aliases: RoomCanonicalAliasEventContent | undefined): string[] {
+  if (!aliases) return []
+  return uniq([...(aliases.alt_aliases ?? []), ...(aliases.alias ? [aliases.alias] : [])])
 }
 
 export function getCurrentRoomState(room: Room) {
@@ -184,7 +201,7 @@ export function getRoomSettings(room: Room) {
     Object.assign(settings, { [key]: currentState.getStateEvents(key, '')?.getContent() ?? {} })
   }
 
-  return settings as RoomSettings
+  return settings as StateRoomSettings
 }
 
 export function getRoomPowerLevels(room: Room) {
@@ -522,4 +539,8 @@ export function isRoomSupporting(type: IsRoomSupportingOpts, version: string | n
     case 'restricted':
       return !['1', '2', '3', '4', '5', '6', '7'].includes(String(version))
   }
+}
+
+export function createAliasString(rawAlias: string, domain: string) {
+  return `#${rawAlias}:${domain}`
 }
