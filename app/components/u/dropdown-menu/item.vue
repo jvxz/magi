@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import type { DropdownMenuItemProps } from 'reka-ui'
+import type { DropdownMenuItemEmits, DropdownMenuItemProps } from 'reka-ui'
 
-import { useForwardProps } from 'reka-ui'
+import { useForwardPropsEmits } from 'reka-ui'
 
 export type UDropdownMenuItemProps = DropdownMenuItemProps & {
   class?: HTMLAttributes['class']
   variant?: PopoverItemVariants['variant']
 }
+export type UDropdownMenuItemEmits = DropdownMenuItemEmits
 
 const props = defineProps<UDropdownMenuItemProps>()
+const emits = defineEmits<UDropdownMenuItemEmits>()
 
 const delegated = reactiveOmit(props, ['class', 'variant'])
 
-const forwarded = useForwardProps(delegated)
+const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>

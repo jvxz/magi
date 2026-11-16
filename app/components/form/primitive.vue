@@ -44,7 +44,7 @@ const errorMessage = computed(() => {
     <slot v-if="$slots.error" name="error" :message="errorMessage" />
 
     <Slot :id :data-error="errorMessage ? '' : undefined">
-      <slot />
+      <slot :id />
     </Slot>
 
     <div v-if="$slots.footer" :class="cn('text-xs text-muted-foreground text-end', props.ui?.footer)">

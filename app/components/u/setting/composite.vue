@@ -15,14 +15,14 @@ const delegated = reactiveOmit(props, ['label', 'description'])
 <template>
   <USettingRoot v-slot="{ id }" v-bind="delegated">
     <USettingHeader v-if="label || description">
-      <slot name="label">
+      <slot v-if="label || $slots.label" name="label">
         <USettingTitle>
           <span>{{ label }}</span>
           <USpinner v-if="isLoading" class="h-0.75lh" />
         </USettingTitle>
       </slot>
 
-      <slot name="description">
+      <slot v-if="description || $slots.description" name="description">
         <USettingDescription v-if="description">{{ description }}</USettingDescription>
       </slot>
     </USettingHeader>

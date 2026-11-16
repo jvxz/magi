@@ -126,7 +126,7 @@ export const inputStyles = tv({
   base: [
     staticBase({ variant: 'default' }),
     interactiveBase({ size: 'default' }),
-    'w-full cursor-text border-border font-normal truncate placeholder:text-muted-foreground focus-visible:(border-border-strong ring-0) text-sm',
+    'w-full cursor-text border-border font-normal truncate placeholder:text-muted-foreground focus-visible:(border-border-strong ring-0) has-focus-visible:(border-border-strong ring-0) text-sm',
   ],
   variants: {
     variant: {
