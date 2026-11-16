@@ -2,7 +2,7 @@ import type { VariantProps } from 'tailwind-variants'
 
 // @unocss-include
 export const interactionStates = tv({
-  base: 'cursor-pointer text-start outline-none select-none focus-visible:(ring-ring/40 ring-[3px]) disabled:(pointer-events-none opacity-50) hover:disabled:cursor-not-allowed',
+  base: 'cursor-pointer text-start outline-none select-none focus-visible:(ring-ring/40 ring-[3px]) disabled:(pointer-events-none opacity-50 cursor-not-allowed)',
 })
 
 const interactiveGhostVariantClass =
@@ -10,7 +10,7 @@ const interactiveGhostVariantClass =
 export const interactiveBase = tv({
   base: [
     interactionStates(),
-    'font-medium shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none transition-transform duration-75',
+    'font-medium shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none  disabled:(opacity-50 cursor-not-allowed pointer-events-none caret-transparent) underline-offset-4 [&_svg]:pointer-events-none transition-transform duration-75',
   ],
   compoundVariants: [
     {
@@ -65,7 +65,7 @@ export const staticBase = tv({
       danger: 'bg-surface border-danger border [&>svg]:text-current',
       default: 'bg-surface border text-surface-foreground',
       raised: 'bg-surface-raised border text-surface-foreground',
-      top: 'bg-surface-top border text-surface-foreground',
+      top: 'bg-surface-top border border-border-strong text-surface-foreground',
     },
   },
 })
