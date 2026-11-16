@@ -272,7 +272,10 @@ watch(currentRoom, () => {
   editor.value?.view.dispatch(editor.value.view.state.tr)
 })
 
-onStartTyping(e => editor.value?.chain().focus('end').insertContent(e.key).run())
+const { hasOpenDialog } = useGlobalDialog()
+onStartTyping(e => {
+  if (!hasOpenDialog.value) editor.value?.chain().focus('end').insertContent(e.key).run()
+})
 
 const vlist = useTemplateRef('vlist')
 watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' }))

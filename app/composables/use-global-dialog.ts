@@ -41,6 +41,7 @@ type GlobalDialogEntry = {
 
 export const useGlobalDialog = createGlobalState(() => {
   const stack = ref<GlobalDialogEntry[]>([])
+  const hasOpenDialog = computed(() => !!stack.value.length)
   let nextId = 0
 
   const openDialog = <T extends GlobalDialog>(name: T, payload: GlobalDialogMap[T]) => {
@@ -49,5 +50,5 @@ export const useGlobalDialog = createGlobalState(() => {
     stack.value.push({ id: nextId++, name, open: true, ...payload } as GlobalDialogEntry)
   }
 
-  return { openDialog, stack }
+  return { hasOpenDialog, openDialog, stack }
 })
