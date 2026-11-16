@@ -92,8 +92,8 @@ const deleteAlias = (alias: string) => {
                         <span class="font-medium">
                           {{ alias }}
                         </span>
-                        <UBadge size="sm" v-if="isMain(alias)"> Main </UBadge>
-                        <UBadge size="sm" variant="soft" v-else-if="isPublished(alias)"> Published </UBadge>
+                        <UBadge v-if="isMain(alias)" size="sm"> Main </UBadge>
+                        <UBadge v-else-if="isPublished(alias)" size="sm" variant="soft"> Published </UBadge>
                       </div>
 
                       <UDropdownMenuTrigger :disabled="!permissions.canEditCanonicalAlias.value" as-child>
@@ -124,17 +124,17 @@ const deleteAlias = (alias: string) => {
 
       <USettingGroupItem variant="raised">
         <FormPrimitive v-slot="{ id }" :error="r$.aliasInput.$value && r$.aliasInput.$errors" label="Add address">
-          <div class="flex items-center gap-2">
-            <UInputGroupRoot :disabled="!permissions.canEditCanonicalAlias.value" class="w-full shrink" variant="top">
+          <div class="flex gap-2 items-center">
+            <UInputGroupRoot :disabled="!permissions.canEditCanonicalAlias.value" class="shrink w-full" variant="top">
               <UInputGroupAddon>
                 <Icon :name="ICON__POUND" />
               </UInputGroupAddon>
 
-              <UInputGroupField @keydown.enter="addAlias" :id v-model:model-value="r$.aliasInput.$value" />
+              <UInputGroupField :id v-model:model-value="r$.aliasInput.$value" @keydown.enter="addAlias" />
 
               <UInputGroupAddon> :{{ domain }} </UInputGroupAddon>
             </UInputGroupRoot>
-            <UButton @click="addAlias" :disabled="r$.aliasInput.$error || !r$.aliasInput.$dirty"> Add address </UButton>
+            <UButton :disabled="r$.aliasInput.$error || !r$.aliasInput.$dirty" @click="addAlias"> Add address </UButton>
           </div>
         </FormPrimitive>
       </USettingGroupItem>

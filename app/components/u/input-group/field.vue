@@ -15,9 +15,9 @@ const { disabled } = injectInputGroupRootContext()
 
 <template>
   <input
+    v-model="modelValue"
     :disabled
     :tabindex="disabled ? -1 : undefined"
-    v-model="modelValue"
     :class="
       cn(
         'flex-1 px-2.5 min-w-0 not-first:ps-0 not-last:pe-0 bg-transparent outline-none disabled:(cursor-not-allowed caret-transparent)',
