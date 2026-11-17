@@ -52,14 +52,16 @@ export function useRoomSettings(roomInput: MaybeRefOrGetter<Room>) {
 
       const current = currentRoomSettings.value.localAliases
 
-      for (const alias of xor(value, current)) {
-        if (current.includes(alias)) await client.value.deleteAlias(alias)
-        else await client.value.createAlias(alias, room.value.roomId)
+      try {
+        for (const alias of xor(value, current)) {
+          if (current.includes(alias)) await client.value.deleteAlias(alias)
+          else await client.value.createAlias(alias, room.value.roomId)
+        }
+      } finally {
+        await qc.refetchQueries({
+          queryKey: $qk.roomLocalAliases(room.value.roomId),
+        })
       }
-
-      await qc.refetchQueries({
-        queryKey: $qk.roomLocalAliases(room.value.roomId),
-      })
     },
   }
   const isExtraKey = (key: keyof RoomSettings): key is ExtraKey => key in extraWriters
