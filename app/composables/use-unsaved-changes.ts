@@ -40,7 +40,7 @@ export function useUnsavedChanges<T extends object>(
     sync()
   }
 
-  const commitChanges = async () => onCommit(unsavedChanges.value)
+  const commitChanges = async () => onCommit(cloneDeep(unsavedChanges.value))
 
   return { commitChanges, isDirty, isEdited, resetChanges, sourceHasChanges, unsavedChanges }
 }
