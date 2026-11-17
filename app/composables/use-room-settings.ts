@@ -73,13 +73,13 @@ export function useRoomSettings(roomInput: MaybeRefOrGetter<Room>) {
   }
 
   const setSettings = useMutation({
-    mutationFn: (draft: RoomSettings) => {
+    mutationFn: async (draft: RoomSettings) => {
       const current = currentRoomSettings.value
-      return Promise.all(
-        objectKeys(draft)
-          .filter(key => !isEqual(draft[key], current[key]))
-          .map(key => setSetting(key, draft[key])),
-      )
+      const changed = objectKeys(draft).filter(key => !isEqual(draft[key], current[key]))
+
+      const [extras, state] = partition(changed, isExtraKey)
+      await Promise.all(extras.map(key => setSetting(key, draft[key])))
+      return Promise.all(state.map(key => setSetting(key, draft[key])))
     },
     mutationKey: $mk.setRoomSettings(() => room.value.roomId),
   })
