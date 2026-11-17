@@ -28,10 +28,10 @@ const allAliases = computed(() =>
 
 const addAlias = () => {
   if (!permissions.canEditCanonicalAlias.value || r$.aliasInput.$error) return
-  unsavedChanges.value.localAliases = [
+  unsavedChanges.value.localAliases = uniq([
     ...unsavedChanges.value.localAliases,
     createAliasString(aliasInput.value, domain.value),
-  ]
+  ])
   r$.$reset({ toOriginalState: true })
 }
 
