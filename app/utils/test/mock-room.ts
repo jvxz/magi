@@ -69,6 +69,7 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
   const room = {
     findEventById: (eventId: string) => events.find(e => e.getId() === eventId),
     getCanonicalAlias: () => alias,
+    getCreator: () => null,
     getDirectionalContent: () => {},
     getJoinedMembers: () => members.values().toArray(),
     getLiveTimeline: () => ({
@@ -85,6 +86,7 @@ export function createMockRoom(opts: CreateMockRoomOptions): MockRoom {
       return stub
     },
     getMembers: () => [...members.values()],
+    getMxcAvatarUrl: () => null,
     getUnfilteredTimelineSet: () => timelineSet,
     loadMembersIfNeeded: async () => {},
     membersLoaded: () => true,
