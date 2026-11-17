@@ -3,7 +3,10 @@ import { required } from '@regle/rules'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { unsavedChanges, isEdited, permissions } = injectRoomSettingsDialogContext()
+const { unsavedChanges, isEdited, permissions, room } = injectRoomSettingsDialogContext()
+
+const { isSuccess: hasLoadedAliases } = useRoomLocalAliases(room)
+const canEdit = computed(() => permissions.canEditCanonicalAlias.value && hasLoadedAliases.value)
 
 const { client } = useMatrixClient()
 const domain = computed(() => client.value.getDomain()!)
@@ -27,7 +30,7 @@ const allAliases = computed(() =>
 )
 
 const addAlias = () => {
-  if (!permissions.canEditCanonicalAlias.value || r$.aliasInput.$error) return
+  if (!canEdit.value || r$.aliasInput.$error) return
   unsavedChanges.value.localAliases = uniq([
     ...unsavedChanges.value.localAliases,
     createAliasString(aliasInput.value, domain.value),
@@ -96,7 +99,7 @@ const deleteAlias = (alias: string) => {
                         <UBadge v-else-if="isPublished(alias)" size="sm" variant="soft"> Published </UBadge>
                       </div>
 
-                      <UDropdownMenuTrigger :disabled="!permissions.canEditCanonicalAlias.value" as-child>
+                      <UDropdownMenuTrigger :disabled="!canEdit" as-child>
                         <UButton variant="ghost" size="icon-sm">
                           <Icon :name="ICON__MORE" />
                         </UButton>
@@ -125,7 +128,7 @@ const deleteAlias = (alias: string) => {
       <USettingGroupItem variant="raised">
         <FormPrimitive v-slot="{ id }" :error="r$.aliasInput.$value && r$.aliasInput.$errors" label="Add address">
           <div class="flex gap-2 items-center">
-            <UInputGroupRoot :disabled="!permissions.canEditCanonicalAlias.value" class="shrink w-full" variant="top">
+            <UInputGroupRoot :disabled="!canEdit" class="shrink w-full" variant="top">
               <UInputGroupAddon>
                 <Icon :name="ICON__POUND" />
               </UInputGroupAddon>
