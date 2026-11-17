@@ -3,14 +3,14 @@ import { EventType } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { unsavedChanges, isEdited, isSpace, permissions } = injectRoomSettingsDialogContext()
+const { unsavedChanges, isEdited, isSpace, permissions, roomNoun } = injectRoomSettingsDialogContext()
 
 type PlKey = keyof Omit<RoomSettings['m.room.power_levels'], 'events' | 'notifications' | 'users'>
 type Scope = 'space' | 'room'
 
 const isPowerLevelEdited = (select: (s: globalThis.RoomSettings) => unknown) => computed(() => isEdited(select))
 
-const plItem = (key: PlKey, label: string, defaultValue: number, specificTo?: Scope) => ({
+const plItem = (key: PlKey, label: MaybeRefOrGetter<string>, defaultValue: number, specificTo?: Scope) => ({
   edited: isPowerLevelEdited(s => s['m.room.power_levels'][key]),
   key,
   label,
@@ -23,7 +23,12 @@ const plItem = (key: PlKey, label: string, defaultValue: number, specificTo?: Sc
   specificTo,
 })
 
-const plEventItem = (key: EventType, label: string, defaultValue: MaybeRefOrGetter<number>, specificTo?: Scope) => ({
+const plEventItem = (
+  key: EventType,
+  label: MaybeRefOrGetter<string>,
+  defaultValue: MaybeRefOrGetter<number>,
+  specificTo?: Scope,
+) => ({
   edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[key]),
   isEventType: true as const,
   key,
@@ -39,7 +44,7 @@ const plEventItem = (key: EventType, label: string, defaultValue: MaybeRefOrGett
 
 const plNotificationItem = (
   key: keyof NonNullable<RoomSettings['m.room.power_levels']['notifications']>,
-  label: string,
+  label: MaybeRefOrGetter<string>,
   defaultValue: number,
 ) => ({
   edited: isPowerLevelEdited(s => s['m.room.power_levels'].notifications?.[key]),
@@ -63,20 +68,23 @@ const shouldShow = <T extends { specificTo?: Scope }>(groupOrItem: T) =>
 const groupMap: {
   items: {
     key: string
-    label: string
+    label: MaybeRefOrGetter<string>
     ref: globalThis.WritableComputedRef<number, number | undefined>
     isEventType?: true
     specificTo?: Scope
     edited: ComputedRef<boolean>
   }[]
   key: string
-  label: string
+  label: MaybeRefOrGetter<string>
   specificTo?: Scope
 }[] = [
   {
-    items: [plEventItem(EventType.SpaceChild, 'Manage space children', MATRIX__DEFAULT_POWER_LEVELS.state_default)],
+    items: [
+      plEventItem(EventType.SpaceChild, 'Manage space children', MATRIX__DEFAULT_POWER_LEVELS.state_default, 'space'),
+    ],
     key: 'users',
     label: 'Users',
+    specificTo: 'space',
   },
   {
     items: [
@@ -108,19 +116,19 @@ const groupMap: {
       plEventItem(EventType.RoomTopic, 'Edit topic', PowerLevelByName.Moderator),
     ],
     key: 'profile',
-    label: 'Space profile',
+    label: () => `${capitalize(roomNoun.value)} profile`,
   },
   {
     items: [
       plEventItem(EventType.RoomJoinRules, 'Change member access', PowerLevelByName.Moderator),
       plEventItem(EventType.RoomHistoryVisibility, 'Change history visibility', PowerLevelByName.Moderator),
-      plEventItem(EventType.RoomCanonicalAlias, 'Edit room alias', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomCanonicalAlias, () => `Edit ${roomNoun.value} alias`, PowerLevelByName.Moderator),
       plEventItem(EventType.RoomPowerLevels, 'Change power levels', PowerLevelByName.Admin),
       plItem('state_default', 'Change other settings', MATRIX__DEFAULT_POWER_LEVELS.state_default),
       plEventItem(EventType.RoomTombstone, 'Upgrade room', PowerLevelByName.Admin),
     ],
-    key: 'space-settings',
-    label: 'Space settings',
+    key: 'settings',
+    label: () => `${capitalize(roomNoun.value)} settings`,
   },
 ] as const
 </script>
@@ -129,7 +137,7 @@ const groupMap: {
   <template v-for="group in groupMap" :key="group.key">
     <USettingGroupRoot v-if="shouldShow(group)">
       <USettingGroupHeader>
-        <USettingGroupTitle> {{ group.label }} </USettingGroupTitle>
+        <USettingGroupTitle> {{ toValue(group.label) }} </USettingGroupTitle>
       </USettingGroupHeader>
 
       <USettingGroupContent variant="raised" as-child>
@@ -138,7 +146,7 @@ const groupMap: {
             <template v-for="item in group.items" :key="item.key">
               <UTableRow v-if="shouldShow(item)" :divide="false">
                 <UTableRowCell class="p-4 w-full space-x-2">
-                  <span class="font-medium">{{ item.label }}</span>
+                  <span class="font-medium">{{ toValue(item.label) }}</span>
                   <span v-if="item.isEventType" class="text-xs text-muted-foreground">({{ item.key }})</span>
                 </UTableRowCell>
                 <UTableRowCell>

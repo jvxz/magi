@@ -3,7 +3,7 @@ import { JoinRule, Visibility } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { room, unsavedChanges, permissions, isEdited } = injectRoomSettingsDialogContext()
+const { room, unsavedChanges, permissions, isEdited, roomNoun } = injectRoomSettingsDialogContext()
 
 const supportsKnock = useRoomSupporting(room, 'knock')
 const validJoinRules = computed(() =>
@@ -26,7 +26,10 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
     <USettingGroupContent>
       <!-- space access -->
       <USettingGroupItem variant="raised">
-        <USettingComposite label="Space access" description="Change how users are able to join this space">
+        <USettingComposite
+          :label="`${capitalize(roomNoun)} access`"
+          :description="`Change how users are able to join this ${roomNoun}`"
+        >
           <USelectRoot
             v-model:model-value="unsavedChanges['m.room.join_rules'].join_rule"
             :disabled="!permissions.canEditJoinRules.value"
@@ -55,7 +58,7 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
         <USettingComposite
           v-slot="{ id }"
           label="Display in directory"
-          description="Allow users to discover your space from your homeserver's public directory"
+          :description="`Allow users to discover your ${roomNoun} from your homeserver's public directory`"
           :is-loading="isPendingDiscoveryVisibility"
         >
           <UChip :show="isEdited(s => s.directoryVisibility)" :ui="{ base: '-top-0.75 -right-0.75' }">

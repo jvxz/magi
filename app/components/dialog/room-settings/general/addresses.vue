@@ -3,7 +3,7 @@ import { required } from '@regle/rules'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { unsavedChanges, isEdited, permissions, room } = injectRoomSettingsDialogContext()
+const { unsavedChanges, isEdited, permissions, room, roomNoun } = injectRoomSettingsDialogContext()
 
 const { isSuccess: hasLoadedAliases } = useRoomLocalAliases(room)
 const canEdit = computed(() => permissions.canEditCanonicalAlias.value && hasLoadedAliases.value)
@@ -80,7 +80,7 @@ const deleteAlias = (alias: string) => {
       <USettingGroupItem variant="raised" class="pb-0">
         <USettingComposite
           class="flex-col items-start"
-          description="Users can join the room using any of these addresses. Published addresses are shown on the room for everyone to see"
+          :description="`Users can join the ${roomNoun} using any of these addresses. Published addresses are shown on the ${roomNoun} for everyone to see`"
         >
           <UChip
             :show="isEdited(s => s.localAliases) || isEdited(s => s['m.room.canonical_alias'])"

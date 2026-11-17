@@ -6,6 +6,8 @@ defineEmits<UMenuItemEmits>()
 
 const { openDialog } = useGlobalDialog()
 
+const isRoomSpace = useRoomComputed(() => room, r => (r ? isSpace(r) : false))
+
 const handleOpen = () => {
   if (!room) return
   openDialog('roomSettings', { room })
@@ -15,6 +17,6 @@ const handleOpen = () => {
 <template>
   <UMenuItem @select="($emit('select', $event), handleOpen())">
     <Icon :name="ICON__SETTINGS" />
-    <span>Room settings</span>
+    <span>{{ isRoomSpace ? 'Space' : 'Room' }} settings</span>
   </UMenuItem>
 </template>

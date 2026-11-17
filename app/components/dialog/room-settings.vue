@@ -27,6 +27,7 @@ export interface RoomSettingsDialogContext extends ReturnType<typeof useUnsavedC
   room: Ref<Room>
   permissions: ReturnType<typeof useRoomMemberPermissions>
   isSpace: ComputedRef<boolean>
+  roomNoun: ComputedRef<'room' | 'space'>
 }
 
 export const [injectRoomSettingsDialogContext, provideRoomSettingsDialogContext] =
@@ -43,6 +44,7 @@ const roomSettingComponents = {
 } as const satisfies Record<RoomSettingKey, Component>
 
 const room = toRef(props, 'room')
+const isRoomSpace = useRoomComputed(room, isSpace)
 
 const selection = ref<RoomSettingKey>(roomSettingsTabs[0].key)
 
@@ -60,13 +62,12 @@ const commit = () =>
     .commitChanges()
     .catch(err => notifyError(err, `Failed to save ${resolveRoomName(room.value)} settings`))
 
-const isRoomSpace = useRoomComputed(room, isSpace)
-
 provideRoomSettingsDialogContext({
   ...unsavedChanges,
   isSpace: isRoomSpace,
   permissions,
   room,
+  roomNoun: computed(() => (isRoomSpace.value ? 'space' : 'room')),
 })
 
 const roomName = useRoomComputed(room, resolveRoomName)
