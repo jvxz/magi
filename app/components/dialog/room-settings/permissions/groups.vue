@@ -23,13 +23,13 @@ const plItem = (key: PlKey, label: string, defaultValue: number, specificTo?: Sc
   specificTo,
 })
 
-const plEventItem = (key: EventType, label: string, defaultValue: number, specificTo?: Scope) => ({
+const plEventItem = (key: EventType, label: string, defaultValue: MaybeRefOrGetter<number>, specificTo?: Scope) => ({
   edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[key]),
   isEventType: true as const,
   key,
   label,
   ref: computed({
-    get: () => unsavedChanges.value['m.room.power_levels'].events[key] ?? defaultValue,
+    get: () => unsavedChanges.value['m.room.power_levels'].events[key] ?? toValue(defaultValue),
     set: (nextValue: number | undefined) => {
       if (isDefined(nextValue)) unsavedChanges.value['m.room.power_levels'].events[key] = nextValue
     },
@@ -81,8 +81,12 @@ const groupMap: {
   {
     items: [
       plItem('events_default', 'Send messages', MATRIX__DEFAULT_POWER_LEVELS.events_default),
-      plEventItem(EventType.RoomRedaction, 'Delete own messages', MATRIX__DEFAULT_POWER_LEVELS.events_default),
-      plNotificationItem('room', 'Notify everyone', MATRIX__DEFAULT_POWER_LEVELS.events_default),
+      plEventItem(
+        EventType.RoomRedaction,
+        'Delete own messages',
+        () => unsavedChanges.value['m.room.power_levels'].events_default ?? MATRIX__DEFAULT_POWER_LEVELS.events_default,
+      ),
+      plNotificationItem('room', 'Notify everyone', MATRIX__DEFAULT_POWER_LEVELS.notifications.room),
     ],
     key: 'messaging',
     label: 'Messaging',
