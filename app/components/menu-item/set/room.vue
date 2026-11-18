@@ -20,10 +20,7 @@ const isRoomSpace = useRoomComputed(
 
   <UMenuItemSeparator />
 
-  <MenuItemViewAvatar
-    v-if="props.avatarUrl"
-    :payload="{ type: 'image', alt: roomId!, url: props.avatarUrl }"
-  />
+  <MenuItemViewAvatar v-if="props.avatarUrl" :payload="{ type: 'image', alt: roomId!, url: props.avatarUrl }" />
   <MenuItemViewAvatar v-else :payload="room ? { type: 'room', room } : undefined" />
   <MenuItemLeave v-if="isRoomJoined" :id="roomId" :type="isRoomSpace ? 'space' : 'room'" />
 </template>
