@@ -9,7 +9,7 @@ const props = defineProps<UAlertDialogFooterProps>()
 <template>
   <UDialogFooter
     :class="cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end w-full', props.class)"
-    data-slot="alert-dialog-footerf"
+    data-slot="alert-dialog-footer"
   >
     <slot />
   </UDialogFooter>
