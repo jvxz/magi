@@ -90,37 +90,45 @@ const deleteAlias = (alias: string) => {
           >
             <UTableRoot variant="top" class="w-full">
               <UTableBody>
-                <UDropdownMenuRoot v-for="alias in allAliases" :key="alias">
-                  <UTableRow>
-                    <UTableRowCell class="flex items-center justify-between">
-                      <div class="flex gap-2 items-center">
-                        <span class="font-medium">
-                          {{ alias }}
-                        </span>
-                        <UBadge v-if="isMain(alias)" size="sm"> Main </UBadge>
-                        <UBadge v-else-if="isPublished(alias)" size="sm" variant="soft"> Published </UBadge>
-                      </div>
+                <UTableRow v-if="!allAliases.length">
+                  <UTableRowCell>
+                    <span class="italic text-muted-foreground"> No addresses added </span>
+                  </UTableRowCell>
+                </UTableRow>
 
-                      <UDropdownMenuTrigger :disabled="!canEdit" as-child>
-                        <UButton variant="ghost" size="icon-sm">
-                          <Icon :name="ICON__MORE" />
-                        </UButton>
-                      </UDropdownMenuTrigger>
-                    </UTableRowCell>
-                  </UTableRow>
+                <template v-else>
+                  <UDropdownMenuRoot v-for="alias in allAliases" :key="alias">
+                    <UTableRow>
+                      <UTableRowCell class="flex items-center justify-between">
+                        <div class="flex gap-2 items-center">
+                          <span class="font-medium">
+                            {{ alias }}
+                          </span>
+                          <UBadge v-if="isMain(alias)" size="sm"> Main </UBadge>
+                          <UBadge v-else-if="isPublished(alias)" size="sm" variant="soft"> Published </UBadge>
+                        </div>
 
-                  <UDropdownMenuContent align="end">
-                    <UDropdownMenuItem v-if="!isMain(alias)" @select="setMain(alias)"> Set main </UDropdownMenuItem>
-                    <UDropdownMenuItem v-else @select="unsetMain()"> Unset main </UDropdownMenuItem>
+                        <UDropdownMenuTrigger :disabled="!canEdit" as-child>
+                          <UButton variant="ghost" size="icon-sm">
+                            <Icon :name="ICON__MORE" />
+                          </UButton>
+                        </UDropdownMenuTrigger>
+                      </UTableRowCell>
+                    </UTableRow>
 
-                    <UDropdownMenuItem v-if="!isPublished(alias)" @select="setPublished(alias)">
-                      Publish
-                    </UDropdownMenuItem>
-                    <UDropdownMenuItem v-else @select="setUnpublished(alias)"> Unpublish </UDropdownMenuItem>
+                    <UDropdownMenuContent align="end">
+                      <UDropdownMenuItem v-if="!isMain(alias)" @select="setMain(alias)"> Set main </UDropdownMenuItem>
+                      <UDropdownMenuItem v-else @select="unsetMain()"> Unset main </UDropdownMenuItem>
 
-                    <UDropdownMenuItem variant="danger" @select="deleteAlias(alias)"> Delete </UDropdownMenuItem>
-                  </UDropdownMenuContent>
-                </UDropdownMenuRoot>
+                      <UDropdownMenuItem v-if="!isPublished(alias)" @select="setPublished(alias)">
+                        Publish
+                      </UDropdownMenuItem>
+                      <UDropdownMenuItem v-else @select="setUnpublished(alias)"> Unpublish </UDropdownMenuItem>
+
+                      <UDropdownMenuItem variant="danger" @select="deleteAlias(alias)"> Delete </UDropdownMenuItem>
+                    </UDropdownMenuContent>
+                  </UDropdownMenuRoot>
+                </template>
               </UTableBody>
             </UTableRoot>
           </UChip>
