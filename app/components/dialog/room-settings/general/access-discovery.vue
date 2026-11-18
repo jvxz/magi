@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { RoomEncryptionEventContent } from 'matrix-js-sdk/lib/types'
 
-import { JoinRule, Visibility } from 'matrix-js-sdk'
+import { EventType, JoinRule, Visibility } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
@@ -134,7 +134,11 @@ const isRoomEncryptedDraft = computed({
             <UChip :show="isEdited(s => s['m.room.encryption'])">
               <UTooltipTrigger as-child>
                 <div tabindex="-1">
-                  <USwitch v-model:model-value="isRoomEncryptedDraft" :disabled="isRoomEncrypted" variant="top" />
+                  <USwitch
+                    v-model:model-value="isRoomEncryptedDraft"
+                    :disabled="isRoomEncrypted || !permissions.canSendStateEvent(EventType.RoomEncryption)"
+                    variant="top"
+                  />
                 </div>
               </UTooltipTrigger>
             </UChip>
