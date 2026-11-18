@@ -16,7 +16,7 @@ const isRoomSpace = useRoomComputed(
   <MenuItemInvite v-if="isRoomJoined" :payload="roomId ? { room: roomId } : undefined" />
   <MenuItemCopyUrl :id="roomId" type="roomId" />
   <MenuItemCopyId :id="roomId" />
-  <MenuItemRoomSettings :room />
+  <MenuItemRoomSettings v-if="isRoomJoined" :room />
 
   <UMenuItemSeparator />
 
