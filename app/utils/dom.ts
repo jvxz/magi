@@ -1,4 +1,4 @@
-import mime from 'mime/lite'
+import { lookup } from 'mrmime'
 
 export type MaybeElement = HTMLElement | null | undefined
 export type ElementOrDimensions = HTMLElement & {
@@ -167,7 +167,8 @@ export function saveAs(input: SaveAsInput, filename: string, mimeType = 'applica
         })
 
   const hasExtension = !!getFileExtension(filename)
-  if (!hasExtension && mime.getExtension(mimeType)) name = `${name}.${mime.getExtension(mimeType)}`
+  const ext = lookup(mimeType)
+  if (!hasExtension && ext) name = `${name}.${ext}`
 
   const url = URL.createObjectURL(blob)
   const anchor = document.createElement('a')
