@@ -148,7 +148,7 @@ const unsavedChangesCard = useTemplateRef('unsavedChanges')
       </UDialogSidebarLayout>
     </UDialogContent>
 
-    <UAlertDialogRoot v-model:open="roomEncryptionAlertOpen" v-slot="{ close }">
+    <UAlertDialogRoot v-slot="{ close }" v-model:open="roomEncryptionAlertOpen">
       <UAlertDialogContent>
         <UAlertDialogHeader>
           <UAlertDialogTitle> Room encryption </UAlertDialogTitle>

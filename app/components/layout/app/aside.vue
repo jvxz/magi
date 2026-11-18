@@ -15,7 +15,7 @@ const rooms = useRooms(isSpace)
       </div>
 
       <UContextMenuRegionContent v-slot="{ payload }" name="asideRoom">
-        <MenuItemSetRoom :roomId="payload?.room.roomId" />
+        <MenuItemSetRoom :room-id="payload?.room.roomId" />
       </UContextMenuRegionContent>
     </UContextMenuRegionRoot>
 

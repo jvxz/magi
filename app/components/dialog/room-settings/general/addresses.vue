@@ -92,7 +92,7 @@ const deleteAlias = (alias: string) => {
               <UTableBody>
                 <UTableRow v-if="!allAliases.length">
                   <UTableRowCell>
-                    <span class="italic text-muted-foreground"> No addresses added </span>
+                    <span class="text-muted-foreground italic"> No addresses added </span>
                   </UTableRowCell>
                 </UTableRow>
 

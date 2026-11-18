@@ -134,7 +134,7 @@ const isRoomEncryptedDraft = computed({
             <UChip :show="isEdited(s => s['m.room.encryption'])">
               <UTooltipTrigger as-child>
                 <div tabindex="-1">
-                  <USwitch :disabled="isRoomEncrypted" v-model:model-value="isRoomEncryptedDraft" variant="top" />
+                  <USwitch v-model:model-value="isRoomEncryptedDraft" :disabled="isRoomEncrypted" variant="top" />
                 </div>
               </UTooltipTrigger>
             </UChip>
