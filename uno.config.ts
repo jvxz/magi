@@ -125,10 +125,9 @@ export default defineConfig({
     },
     font: {
       mono: 'Paper Mono',
-      sans: 'Inter',
     },
     fontWeight: {
-      medium: '525',
+      medium: '475',
       normal: '375',
     },
     radius: {
