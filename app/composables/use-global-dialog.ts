@@ -6,9 +6,9 @@ export interface GlobalDialogMap {
     room: Room
   }
   image:
-    | { alt: string; type: 'room'; room: MaybeRoomOrId }
-    | { alt: string; type: 'user'; user: MaybeUserOrId }
-    | { alt: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
+    | { type: 'room'; room: MaybeRoomOrId }
+    | { type: 'user'; user: MaybeUserOrId }
+    | { type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
     | { alt: string; type: 'image'; url: string; blurhash?: string }
   codeViewer: {
     code: string

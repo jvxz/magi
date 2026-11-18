@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { RoomMember } from 'matrix-js-sdk'
+import type { HierarchyRoom, RoomMember } from 'matrix-js-sdk'
 import type { DialogRootProps } from 'reka-ui'
 
 export interface ImageDialogProps extends DialogRootProps {
-  alt: string
+  alt?: string
   blurhash?: string
   type: GlobalDialogMap['image']['type']
-  room?: MaybeRoomOrId
+  room?: MaybeRoomOrId | HierarchyRoom
   user?: MaybeUserOrId
   member?: RoomMember | string
   url?: string
@@ -19,6 +19,19 @@ const open = defineModel<boolean>('open')
 const delegated = reactiveOmit(props, ['alt', 'type', 'room', 'user', 'member'])
 const isError = ref(false)
 const imageUrl = ref<string>()
+const alt = computed(() => {
+  if (props.alt) return props.alt
+  switch (props.type) {
+    case 'image':
+      return props.alt
+    case 'room':
+      return isString(props.room) ? props.room : props.room ? resolveRoomName(props.room) : undefined
+    case 'roomMember':
+      return isString(props.member) ? props.member : props.member ? resolveUserName(props.member) : undefined
+    case 'user':
+      return isString(props.user) ? props.user : props.user ? resolveUserName(props.user) : undefined
+  }
+})
 
 const shared = {
   class:

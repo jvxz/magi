@@ -1,4 +1,4 @@
-import type { MatrixClient, MatrixEvent, RoomMember } from 'matrix-js-sdk'
+import type { HierarchyRoom, MatrixClient, MatrixEvent, RoomMember } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 import type {
   RoomCanonicalAliasEventContent,
@@ -471,14 +471,15 @@ export function sortMembersByPowerlevel(members: RoomMember[]) {
   })
 }
 
-export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
+export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId | HierarchyRoom) {
+  if (isString(maybeRoomOrId)) return maybeRoomOrId
   if (maybeRoomOrId instanceof Room) return maybeRoomOrId.roomId
-
-  return maybeRoomOrId
+  return maybeRoomOrId.room_id
 }
 
-export function resolveRoomName(room: Room): string {
-  return room.name ?? room.roomId
+export function resolveRoomName(room: Room | HierarchyRoom): string {
+  if ('room_id' in room) return room.name ?? room.room_id
+  else return room.name ?? room.roomId
 }
 
 export function resolveJoinRuleLabel(joinRule: JoinRule) {
