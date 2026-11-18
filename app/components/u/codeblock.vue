@@ -26,7 +26,7 @@ watchImmediate(code, () => nextTick(() => document.dispatchEvent(new Event('synt
   flush: 'post',
 })
 
-const microlighterRoot = useTemplateRef('microlighter')
+const microlighterRoot = useTemplateRef<HTMLElement>('microlighter')
 
 const { isYOverflowed } = useElementOverflow(microlighterRoot)
 </script>
