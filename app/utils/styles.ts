@@ -140,7 +140,7 @@ export type InputVariants = VariantProps<typeof inputStyles>
 
 export const dialogStyles = tv({
   base: [
-    'fixed top-[50%] left-[50%] z-dialog flex flex-col gap-2 translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) data-[state=closed]:(animate-out fade-out-0) group/dialog',
+    'fixed top-[50%] left-[50%] z-dialog flex flex-col translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) data-[state=closed]:(animate-out fade-out-0) group/dialog',
     'w-full',
   ],
   defaultVariants: { size: 'default', variant: 'default' },
@@ -152,7 +152,7 @@ export const dialogStyles = tv({
       md: 'h-full max-h-192 sm:max-w-256',
     },
     // override spacing inherited from staticBase
-    spacing: { default: 'p-5' },
+    spacing: { default: 'p-5 gap-4' },
   },
 })
 export type DialogVariants = VariantProps<typeof dialogStyles>
