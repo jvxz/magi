@@ -109,6 +109,7 @@ export const MATRIX__CONFIGURABLE_ROOM_SETTINGS = [
   EventType.RoomPowerLevels,
   EventType.RoomHistoryVisibility,
   EventType.RoomCanonicalAlias,
+  EventType.RoomEncryption,
 ] as const satisfies (keyof StateEvents)[]
 
 // https://spec.matrix.org/v1.19/client-server-api/#mroompower_levels

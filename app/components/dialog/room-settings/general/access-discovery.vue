@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import type { RoomEncryptionEventContent } from 'matrix-js-sdk/lib/types'
+
 import { JoinRule, Visibility } from 'matrix-js-sdk'
 
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { room, unsavedChanges, permissions, isEdited, roomNoun } = injectRoomSettingsDialogContext()
+const { room, unsavedChanges, permissions, isEdited, roomNoun, isSpace } = injectRoomSettingsDialogContext()
 
 const supportsKnock = useRoomSupporting(room, 'knock')
 const validJoinRules = computed(() =>
@@ -15,6 +17,17 @@ const directoryVisibility = computed({
   set: (value: boolean) => (unsavedChanges.value.directoryVisibility = value ? Visibility.Public : Visibility.Private),
 })
 const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility', () => room.value.roomId)
+
+const isRoomEncrypted = useRoomComputed(room, isEncrypted)
+const isRoomEncryptedDraft = computed({
+  get: () => !!unsavedChanges.value['m.room.encryption'].algorithm,
+  set: (encrypted: boolean) => {
+    if (isRoomEncrypted.value) return
+
+    if (encrypted) unsavedChanges.value['m.room.encryption'].algorithm = 'm.megolm.v1.aes-sha2'
+    else unsavedChanges.value['m.room.encryption'] = {} as RoomEncryptionEventContent
+  },
+})
 </script>
 
 <template>
@@ -106,6 +119,28 @@ const isPendingDiscoveryVisibility = useIsKeyFetching('roomDirectoryVisibility',
               </USelectRichItem>
             </USelectContent>
           </USelectRoot>
+        </USettingComposite>
+      </USettingGroupItem>
+
+      <USettingGroupSeparator />
+
+      <!-- room encryption -->
+      <USettingGroupItem v-if="!isSpace" variant="raised">
+        <USettingComposite
+          label="Room encryption"
+          description="Protect messages in this room with end-to-end encryption"
+        >
+          <UTooltipRoot :disabled="!isRoomEncrypted">
+            <UChip :show="isEdited(s => s['m.room.encryption'])">
+              <UTooltipTrigger as-child>
+                <div tabindex="-1">
+                  <USwitch :disabled="isRoomEncrypted" v-model:model-value="isRoomEncryptedDraft" variant="top" />
+                </div>
+              </UTooltipTrigger>
+            </UChip>
+
+            <UTooltipContent> Once enabled, encryption cannot be disabled </UTooltipContent>
+          </UTooltipRoot>
         </USettingComposite>
       </USettingGroupItem>
     </USettingGroupContent>

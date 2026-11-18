@@ -56,11 +56,18 @@ const { mutateAsync: mutateRoomSettings, isPending: isChangingSettings } = setSe
 
 const unsavedChanges = useUnsavedChanges(currentRoomSettings, mutateRoomSettings)
 
+const roomEncryptionAlertOpen = ref(false)
 const { notifyError } = useNotifications()
 const commit = () =>
   unsavedChanges
     .commitChanges()
     .catch(err => notifyError(err, `Failed to save ${resolveRoomName(room.value)} settings`))
+
+const attemptCommit = () => {
+  if (unsavedChanges.isEdited(s => s['m.room.encryption'])) {
+    roomEncryptionAlertOpen.value = true
+  } else commit()
+}
 
 provideRoomSettingsDialogContext({
   ...unsavedChanges,
@@ -131,7 +138,7 @@ const unsavedChangesCard = useTemplateRef('unsavedChanges')
                 <UButton :disabled="isChangingSettings" variant="ghost-raised" @click="unsavedChanges.resetChanges()">
                   Reset
                 </UButton>
-                <UButton :is-loading="isChangingSettings" variant="default" @click="commit">
+                <UButton :is-loading="isChangingSettings" variant="default" @click="attemptCommit">
                   <span>Confirm</span>
                 </UButton>
               </div>
@@ -140,5 +147,33 @@ const unsavedChangesCard = useTemplateRef('unsavedChanges')
         </Transition>
       </UDialogSidebarLayout>
     </UDialogContent>
+
+    <UAlertDialogRoot v-model:open="roomEncryptionAlertOpen" v-slot="{ close }">
+      <UAlertDialogContent>
+        <UAlertDialogHeader>
+          <UAlertDialogTitle> Room encryption </UAlertDialogTitle>
+          <UAlertDialogDescription>
+            You are attempting to enable encryption for this room. Once you enable it, you cannot disable it. Would you
+            like to proceed?
+          </UAlertDialogDescription>
+        </UAlertDialogHeader>
+
+        <UAlertDialogFooter>
+          <UAlertDialogCancel> Cancel </UAlertDialogCancel>
+
+          <UButton
+            variant="danger"
+            @click="
+              () => {
+                close()
+                commit()
+              }
+            "
+          >
+            Proceed
+          </UButton>
+        </UAlertDialogFooter>
+      </UAlertDialogContent>
+    </UAlertDialogRoot>
   </UDialogRoot>
 </template>
