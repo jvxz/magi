@@ -1,5 +1,3 @@
-import { lookup } from 'mrmime'
-
 export type MaybeElement = HTMLElement | null | undefined
 export type ElementOrDimensions = HTMLElement & {
   scrollTop: number
@@ -147,6 +145,16 @@ export function createPointReference(point: { clientX: number; clientY: number }
   return { getBoundingClientRect: () => rect }
 }
 
+const MIME_PARAMS_RE = /;.*/
+const MIME_EXTENSIONS: Record<string, string> = {
+  'image/avif': 'avif',
+  'image/gif': 'gif',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/svg+xml': 'svg',
+  'image/webp': 'webp',
+}
+
 export type SaveAsInput = Blob | BlobPart | BlobPart[]
 export function saveAs(input: SaveAsInput, filename: string, mimeType = 'application/octet-stream'): void {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
@@ -167,8 +175,11 @@ export function saveAs(input: SaveAsInput, filename: string, mimeType = 'applica
         })
 
   const hasExtension = !!getFileExtension(filename)
-  const ext = lookup(mimeType)
-  if (!hasExtension && ext) name = `${name}.${ext}`
+  if (!hasExtension) {
+    const type = mimeType.replace(MIME_PARAMS_RE, '').trim().toLowerCase()
+    const ext = MIME_EXTENSIONS[type]
+    if (ext) name = `${name}.${ext}`
+  }
 
   const url = URL.createObjectURL(blob)
   const anchor = document.createElement('a')
