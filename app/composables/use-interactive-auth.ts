@@ -64,6 +64,7 @@ export const useInteractiveAuth = createGlobalState(() => {
 
         isBusy.value = busy
       },
+      clientSecret: opts?.clientSecret,
       doRequest: request,
       emailSid: opts?.emailSid,
       inputs: opts?.inputs,

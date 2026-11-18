@@ -61,8 +61,7 @@ const rooms = useRooms(
           <PageMeAsideButtonsDirectRoom v-for="room in rooms" :key="room.roomId" :room-id="room.roomId" />
 
           <UContextMenuRegionContent v-slot="{ payload }" name="directRoom">
-            <MenuItemInvite :payload="payload ? { room: payload?.roomId } : undefined" />
-            <MenuItemLeave :id="payload ? payload.roomId : undefined" type="room" />
+            <MenuItemSetRoom :room-id="payload?.roomId" />
           </UContextMenuRegionContent>
         </UContextMenuRegionRoot>
       </div>

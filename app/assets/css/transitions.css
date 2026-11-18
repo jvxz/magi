@@ -1,4 +1,4 @@
-/* enter */
+/* zoom */
 .v-enter-active,
 .v-leave-active {
   transition: opacity 100ms ease;
@@ -23,7 +23,8 @@
 /* flip up */
 .flip-up-enter-active,
 .flip-up-leave-active {
-  transition: all 200ms ease;
+  transition: all 100ms;
+  @apply ease-snappy;
 }
 
 .flip-up-enter-to,
@@ -34,18 +35,19 @@
 
 .flip-up-enter-from {
   opacity: 0;
-  transform: translateY(75%);
+  transform: translateY(50%);
 }
 
 .flip-up-leave-to {
   opacity: 0;
-  transform: translateY(-75%);
+  transform: translateY(-50%);
 }
 
 /* flip down */
 .flip-down-enter-active,
 .flip-down-leave-active {
-  transition: all 200ms ease;
+  transition: all 100ms;
+  @apply ease-snappy;
 }
 
 .flip-down-enter-to,
@@ -56,10 +58,10 @@
 
 .flip-down-enter-from {
   opacity: 0;
-  transform: translateY(-75%);
+  transform: translateY(-50%);
 }
 
 .flip-down-leave-to {
   opacity: 0;
-  transform: translateY(75%);
+  transform: translateY(50%);
 }

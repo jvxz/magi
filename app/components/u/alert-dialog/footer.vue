@@ -1,13 +1,16 @@
 <script setup lang="ts">
-export interface UAlertDialogFooterProps {
-  class?: HTMLAttributes['class']
-}
+import type { UDialogFooterProps } from '../dialog/footer.vue'
+
+export interface UAlertDialogFooterProps extends UDialogFooterProps {}
 
 const props = defineProps<UAlertDialogFooterProps>()
 </script>
 
 <template>
-  <div :class="cn('flex flex-col-reverse mt-4 gap-2 sm:flex-row sm:justify-end w-full', props.class)">
+  <UDialogFooter
+    :class="cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end w-full', props.class)"
+    data-slot="alert-dialog-footer"
+  >
     <slot />
-  </div>
+  </UDialogFooter>
 </template>

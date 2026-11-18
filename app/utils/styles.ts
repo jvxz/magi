@@ -2,7 +2,7 @@ import type { VariantProps } from 'tailwind-variants'
 
 // @unocss-include
 export const interactionStates = tv({
-  base: 'cursor-pointer text-start outline-none select-none focus-visible:(ring-ring/40 ring-[3px]) disabled:(pointer-events-none opacity-50) hover:disabled:cursor-not-allowed',
+  base: 'cursor-pointer text-start outline-none select-none focus-visible:(ring-ring/40 ring-[3px]) disabled:(pointer-events-none opacity-50 cursor-not-allowed)',
 })
 
 const interactiveGhostVariantClass =
@@ -10,7 +10,7 @@ const interactiveGhostVariantClass =
 export const interactiveBase = tv({
   base: [
     interactionStates(),
-    'font-medium shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none transition-transform duration-75',
+    'font-medium shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none  disabled:(opacity-50 cursor-not-allowed pointer-events-none caret-transparent) underline-offset-4 [&_svg]:pointer-events-none transition-transform duration-75',
   ],
   compoundVariants: [
     {
@@ -44,6 +44,8 @@ export const interactiveBase = tv({
       outline:
         'text-muted-foreground border-border/90 hover:(text-foreground bg-secondary border-border-strong) focus-visible:(text-foreground bg-secondary border-border-strong) data-[state=open]:(text-foreground bg-secondary border-border-strong) border bg-transparent',
       soft: 'bg-secondary border-secondary-border text-muted-foreground border hover:(text-foreground border-secondary-border-strong) focus-visible:(text-foreground border-secondary-border-strong) data-[state=open]:(text-foreground border-secondary-border-strong)',
+      'soft-raised':
+        'bg-surface-top border-surface-top-hover text-muted-foreground border hover:(text-foreground border-border-strong) focus-visible:(text-foreground border-border-strong) data-[state=open]:(text-foreground border-border-strong)',
     },
   },
 })
@@ -63,14 +65,15 @@ export const staticBase = tv({
       danger: 'bg-surface border-danger border [&>svg]:text-current',
       default: 'bg-surface border text-surface-foreground',
       raised: 'bg-surface-raised border text-surface-foreground',
-      top: 'bg-surface-top border text-surface-foreground',
+      top: 'bg-surface-top border border-border-strong text-surface-foreground',
     },
   },
 })
+export type StaticVariants = VariantProps<typeof staticBase>
 
 export const popoverContentBase = tv({
   base: [
-    'z-popover w-52 overflow-hidden font-medium',
+    'z-popover min-w-52 overflow-hidden font-medium',
     'origin-[var(--reka-popper-transform-origin,top_right)]',
     'data-[state=open]:(animate-in fade-in-0 zoom-in-96 ease-snappy)',
   ],
@@ -91,7 +94,7 @@ export const popoverContentBase = tv({
 })
 
 export const popoverItemBase = tv({
-  base: 'rounded-sm duration-0 font-normal relative flex shadow-none cursor-default items-center text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  base: 'rounded-sm duration-0 relative flex shadow-none cursor-default items-center text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   defaultVariants: {
     size: 'default',
     variant: 'ghost',
@@ -112,7 +115,7 @@ export type PopoverItemVariants = VariantProps<typeof popoverItemBase>
 export const tooltipContentBase = tv({
   base: [
     popoverContentBase({ variant: 'raised' }),
-    'will-change-transform relative overflow-visible w-fit will-change-opacity border-border-strong bg-surface-top z-tooltip p-0 px-3 py-1.5 text-sm text-balance font-medium',
+    'will-change-transform relative overflow-visible min-w-fit will-change-opacity border-border-strong bg-surface-top z-tooltip p-0 px-3 py-1.5 text-sm text-balance font-medium',
   ],
 })
 
@@ -123,24 +126,33 @@ export const inputStyles = tv({
   base: [
     staticBase({ variant: 'default' }),
     interactiveBase({ size: 'default' }),
-    'w-full cursor-text border-border font-normal truncate placeholder:text-muted-foreground focus-visible:(border-border-strong ring-0) text-sm',
+    'w-full cursor-text border-border font-normal truncate placeholder:text-muted-foreground focus-visible:(border-border-strong ring-0) has-focus-visible:(border-border-strong ring-0) text-sm',
   ],
   variants: {
     variant: {
       default: 'bg-surface',
       raised: 'bg-surface-raised',
+      top: 'bg-surface-top border-border-strong',
     },
   },
 })
 export type InputVariants = VariantProps<typeof inputStyles>
 
 export const dialogStyles = tv({
-  base: 'fixed top-[50%] left-[50%] z-dialog flex flex-col gap-2 w-full max-w-[calc(100%-2rem)] max-h-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) sm:max-w-lg data-[state=closed]:(animate-out fade-out-0)',
-  defaultVariants: { variant: 'default' },
+  base: [
+    'fixed top-[50%] left-[50%] z-dialog flex flex-col translate-x-[-50%] translate-y-[-50%] data-[state=open]:(animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2 animate-in fade-in-0) data-[state=closed]:(animate-out fade-out-0) group/dialog',
+    'w-full',
+  ],
+  defaultVariants: { size: 'default', variant: 'default' },
   extend: staticBase,
   variants: {
-    spacing: {
-      default: 'p-5',
+    size: {
+      default: 'max-w-[calc(100%-2rem)] max-h-[calc(100%-2rem)] sm:max-w-lg',
+      lg: 'h-full max-h-[calc(100%-2rem)] md:(border rounded max-w-352 max-h-90%) sm:max-w-full',
+      md: 'h-full max-h-192 sm:max-w-256',
     },
+    // override spacing inherited from staticBase
+    spacing: { default: 'p-5 gap-4' },
   },
 })
+export type DialogVariants = VariantProps<typeof dialogStyles>

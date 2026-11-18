@@ -8,9 +8,7 @@ export interface UserAvatarProps extends Omit<MatrixAvatarProps, 'alt' | 'src'> 
 }
 export interface UserAvatarEmits extends MatrixAvatarEmits {}
 
-const props = withDefaults(defineProps<UserAvatarProps>(), {
-  doPlaceholder: true,
-})
+const props = defineProps<UserAvatarProps>()
 const emits = defineEmits<UserAvatarEmits>()
 const emitsAsProps = useEmitAsProps(emits)
 const profile = useUserProfile(() => props.user ?? undefined)
@@ -19,9 +17,24 @@ const alt = computed(() =>
   profile.value?.displayname ? profile.value.displayname : props.user ? resolveUserId(props.user) : 'User',
 )
 
-const delegated = reactiveOmit(props, 'user')
+const fallbackPlaceholderKey = useId()
+const placeholderKey = computed(() =>
+  isDefined(props.placeholderKey)
+    ? props.placeholderKey
+    : props.user
+      ? resolveUserId(props.user)
+      : fallbackPlaceholderKey,
+)
+
+const delegated = reactiveOmit(props, ['user', 'placeholderKey'])
 </script>
 
 <template>
-  <MatrixAvatar v-bind="{ ...delegated, ...emitsAsProps }" :alt :src="profile?.avatar_url" data-slot="user-avatar" />
+  <MatrixAvatar
+    v-bind="{ ...delegated, ...emitsAsProps }"
+    :placeholder-key
+    :alt
+    :src="profile?.avatar_url"
+    data-slot="user-avatar"
+  />
 </template>

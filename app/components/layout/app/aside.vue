@@ -15,16 +15,7 @@ const rooms = useRooms(isSpace)
       </div>
 
       <UContextMenuRegionContent v-slot="{ payload }" name="asideRoom">
-        <MenuItemInvite :payload="payload ? { room: payload?.room.roomId } : undefined" />
-        <MenuItemCopyUrl :id="payload?.room.roomId" type="roomId" />
-        <MenuItemCopyId :id="payload?.room.roomId" />
-
-        <UContextMenuSeparator />
-
-        <MenuItemViewAvatar
-          :payload="payload ? { alt: resolveRoomName(payload.room), room: payload.room, type: 'room' } : undefined"
-        />
-        <MenuItemLeave :id="payload?.room" type="space" />
+        <MenuItemSetRoom :room-id="payload?.room.roomId" />
       </UContextMenuRegionContent>
     </UContextMenuRegionRoot>
 
@@ -32,7 +23,7 @@ const rooms = useRooms(isSpace)
       aria-hidden="true"
       class="flex w-full pointer-events-none duration-100 items-center absolute z-1 position-anchor-active anchor-bottom anchor-top ease-snappy"
     >
-      <div class="rounded-r bg-foreground h-3/4 w-1"></div>
+      <div class="rounded-r bg-foreground h-3/4 w-1" />
     </div>
   </aside>
 </template>

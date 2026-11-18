@@ -1,0 +1,169 @@
+<script lang="ts" setup>
+import { EventType } from 'matrix-js-sdk'
+
+import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
+
+const { unsavedChanges, isEdited, isSpace, permissions, roomNoun } = injectRoomSettingsDialogContext()
+
+type PlKey = keyof Omit<RoomSettings['m.room.power_levels'], 'events' | 'notifications' | 'users'>
+type Scope = 'space' | 'room'
+
+const isPowerLevelEdited = (select: (s: globalThis.RoomSettings) => unknown) => computed(() => isEdited(select))
+
+const plItem = (key: PlKey, label: MaybeRefOrGetter<string>, defaultValue: number, specificTo?: Scope) => ({
+  edited: isPowerLevelEdited(s => s['m.room.power_levels'][key]),
+  key,
+  label,
+  ref: computed({
+    get: () => unsavedChanges.value['m.room.power_levels'][key] ?? defaultValue,
+    set: (nextValue: number | undefined) => {
+      if (isDefined(nextValue)) unsavedChanges.value['m.room.power_levels'][key] = nextValue
+    },
+  }),
+  specificTo,
+})
+
+const plEventItem = (
+  key: EventType,
+  label: MaybeRefOrGetter<string>,
+  defaultValue: MaybeRefOrGetter<number>,
+  specificTo?: Scope,
+) => ({
+  edited: isPowerLevelEdited(s => s['m.room.power_levels'].events[key]),
+  isEventType: true as const,
+  key,
+  label,
+  ref: computed({
+    get: () => unsavedChanges.value['m.room.power_levels'].events[key] ?? toValue(defaultValue),
+    set: (nextValue: number | undefined) => {
+      if (isDefined(nextValue)) unsavedChanges.value['m.room.power_levels'].events[key] = nextValue
+    },
+  }),
+  specificTo,
+})
+
+const plNotificationItem = (
+  key: keyof NonNullable<RoomSettings['m.room.power_levels']['notifications']>,
+  label: MaybeRefOrGetter<string>,
+  defaultValue: number,
+) => ({
+  edited: isPowerLevelEdited(s => s['m.room.power_levels'].notifications?.[key]),
+  key: `notifications.${key}`,
+  label,
+  ref: computed({
+    get: () => unsavedChanges.value['m.room.power_levels'].notifications?.[key] ?? defaultValue,
+    set: (v: number | undefined) => {
+      if (!isDefined(v)) return
+      const pl = unsavedChanges.value['m.room.power_levels']
+      pl.notifications = { ...pl.notifications, [key]: v }
+    },
+  }),
+})
+
+const shouldShow = <T extends { specificTo?: Scope }>(groupOrItem: T) =>
+  groupOrItem.specificTo
+    ? (groupOrItem.specificTo === 'space' && isSpace.value) || (groupOrItem.specificTo === 'room' && !isSpace.value)
+    : true
+
+const groupMap: {
+  items: {
+    key: string
+    label: MaybeRefOrGetter<string>
+    ref: globalThis.WritableComputedRef<number, number | undefined>
+    isEventType?: true
+    specificTo?: Scope
+    edited: ComputedRef<boolean>
+  }[]
+  key: string
+  label: MaybeRefOrGetter<string>
+  specificTo?: Scope
+}[] = [
+  {
+    items: [
+      plEventItem(EventType.SpaceChild, 'Manage space children', MATRIX__DEFAULT_POWER_LEVELS.state_default, 'space'),
+    ],
+    key: 'users',
+    label: 'Users',
+    specificTo: 'space',
+  },
+  {
+    items: [
+      plItem('events_default', 'Send messages', MATRIX__DEFAULT_POWER_LEVELS.events_default),
+      plEventItem(
+        EventType.RoomRedaction,
+        'Delete own messages',
+        () => unsavedChanges.value['m.room.power_levels'].events_default ?? MATRIX__DEFAULT_POWER_LEVELS.events_default,
+      ),
+      plNotificationItem('room', 'Notify everyone', MATRIX__DEFAULT_POWER_LEVELS.notifications.room),
+    ],
+    key: 'messaging',
+    label: 'Messaging',
+  },
+  {
+    items: [
+      plItem('invite', 'Invite users', PowerLevelByName.Member),
+      plItem('kick', 'Kick users', PowerLevelByName.Moderator),
+      plItem('ban', 'Ban users', PowerLevelByName.Moderator),
+      plItem('redact', 'Delete messages', PowerLevelByName.Moderator),
+    ],
+    key: 'moderation',
+    label: 'Moderation',
+  },
+  {
+    items: [
+      plEventItem(EventType.RoomAvatar, 'Edit avatar', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomName, 'Change name', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomTopic, 'Edit topic', PowerLevelByName.Moderator),
+    ],
+    key: 'profile',
+    label: () => `${capitalize(roomNoun.value)} profile`,
+  },
+  {
+    items: [
+      plEventItem(EventType.RoomJoinRules, 'Change member access', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomHistoryVisibility, 'Change history visibility', PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomCanonicalAlias, () => `Edit ${roomNoun.value} alias`, PowerLevelByName.Moderator),
+      plEventItem(EventType.RoomPowerLevels, 'Change power levels', PowerLevelByName.Admin),
+      plItem('state_default', 'Change other settings', MATRIX__DEFAULT_POWER_LEVELS.state_default),
+      plEventItem(EventType.RoomTombstone, 'Upgrade room', PowerLevelByName.Admin),
+    ],
+    key: 'settings',
+    label: () => `${capitalize(roomNoun.value)} settings`,
+  },
+] as const
+</script>
+
+<template>
+  <template v-for="group in groupMap" :key="group.key">
+    <USettingGroupRoot v-if="shouldShow(group)">
+      <USettingGroupHeader>
+        <USettingGroupTitle> {{ toValue(group.label) }} </USettingGroupTitle>
+      </USettingGroupHeader>
+
+      <USettingGroupContent variant="raised" as-child>
+        <UTableRoot>
+          <UTableBody>
+            <template v-for="item in group.items" :key="item.key">
+              <UTableRow v-if="shouldShow(item)" :divide="false">
+                <UTableRowCell class="p-4 w-full space-x-2">
+                  <span class="font-medium">{{ toValue(item.label) }}</span>
+                  <span v-if="item.isEventType" class="text-xs text-muted-foreground">({{ item.key }})</span>
+                </UTableRowCell>
+                <UTableRowCell>
+                  <UChip :show="item.edited.value">
+                    <UNumberField
+                      v-model:model-value="item.ref.value"
+                      :disabled="!permissions.canEditPowerLevels.value"
+                      variant="top"
+                      class="w-36"
+                    />
+                  </UChip>
+                </UTableRowCell>
+              </UTableRow>
+            </template>
+          </UTableBody>
+        </UTableRoot>
+      </USettingGroupContent>
+    </USettingGroupRoot>
+  </template>
+</template>

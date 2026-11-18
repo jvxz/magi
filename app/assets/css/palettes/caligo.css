@@ -1,18 +1,18 @@
-/* https://colorbox.io/?c0=~p%24s%24%3D11~p%24m%24%3Dok~p%24h%24st%24%3D220~p%24h%24e%24%3D240~p%24h%24c%24%3Deqo~p%24sa%24st%24%3D0.08~p%24sa%24e%24%3D1~p%24sa%24r%24%3D1~p%24sa%24c%24%3Deqo~p%24b%24st%24%3D1~p%24b%24e%24%3D0.2~p%24b%24c%24%3Deqti~p%24li%24st%24%3D94~p%24li%24e%24%3D10~p%24li%24c%24%3D0.35%2C0.5416666666666667%2C0.4666666666666667%2C0.7083333333333333~p%24ch%24st%24%3D0~p%24ch%24e%24%3D0~p%24ch%24r%24%3D1~p%24ch%24c%24%3Dl~p%24oh%24st%24%3D285~p%24oh%24e%24%3D285~p%24oh%24c%24%3Deqo~o%24ms%24%3D%5B%5D~o%24n%24%3DNeutral~o%24ro%24%3Dcw~o%24gm%24%3Dsr&c1=~p%24s%24%3D11~p%24m%24%3Dok~p%24h%24st%24%3D220~p%24h%24e%24%3D240~p%24h%24c%24%3Deqo~p%24sa%24st%24%3D0.08~p%24sa%24e%24%3D1~p%24sa%24r%24%3D1~p%24sa%24c%24%3Deqo~p%24b%24st%24%3D1~p%24b%24e%24%3D0.2~p%24b%24c%24%3Deqti~p%24li%24st%24%3D91~p%24li%24e%24%3D19~p%24li%24c%24%3Dl~p%24ch%24st%24%3D0.6~p%24ch%24e%24%3D0.6~p%24ch%24r%24%3D1~p%24ch%24c%24%3Deqo~p%24oh%24st%24%3D273.85~p%24oh%24e%24%3D273.85~p%24oh%24c%24%3Deqo~o%24ms%24%3D%5B%5D~o%24n%24%3DPrimary~o%24ro%24%3Dcw~o%24gm%24%3Dsr&ly=g&col=2&ns=tw */
+/* https://colorbox.io/?c0=~p%24s%24%3D11~p%24m%24%3Dok~p%24h%24st%24%3D220~p%24h%24e%24%3D240~p%24h%24c%24%3Deqo~p%24sa%24st%24%3D0.08~p%24sa%24e%24%3D1~p%24sa%24r%24%3D1~p%24sa%24c%24%3Deqo~p%24b%24st%24%3D1~p%24b%24e%24%3D0.2~p%24b%24c%24%3Deqti~p%24li%24st%24%3D92~p%24li%24e%24%3D10~p%24li%24c%24%3D0.38%2C0.63%2C0.4666666666666667%2C0.7083333333333333~p%24ch%24st%24%3D0~p%24ch%24e%24%3D0~p%24ch%24r%24%3D1~p%24ch%24c%24%3Dl~p%24oh%24st%24%3D285~p%24oh%24e%24%3D285~p%24oh%24c%24%3Deqo~o%24ms%24%3D%5B%5D~o%24n%24%3DNeutral~o%24ro%24%3Dcw~o%24gm%24%3Dsr&c1=~p%24s%24%3D11~p%24m%24%3Dok~p%24h%24st%24%3D220~p%24h%24e%24%3D240~p%24h%24c%24%3Deqo~p%24sa%24st%24%3D0.08~p%24sa%24e%24%3D1~p%24sa%24r%24%3D1~p%24sa%24c%24%3Deqo~p%24b%24st%24%3D1~p%24b%24e%24%3D0.2~p%24b%24c%24%3Deqti~p%24li%24st%24%3D91~p%24li%24e%24%3D19~p%24li%24c%24%3Dl~p%24ch%24st%24%3D0.6~p%24ch%24e%24%3D0.6~p%24ch%24r%24%3D1~p%24ch%24c%24%3Deqo~p%24oh%24st%24%3D273.85~p%24oh%24e%24%3D273.85~p%24oh%24c%24%3Deqo~o%24ms%24%3D%5B%5D~o%24n%24%3DPrimary~o%24ro%24%3Dcw~o%24gm%24%3Dsr&ly=g&col=2&ns=tw */
 
 .caligo {
   --shift-hover: 0.02;
 
-  --neutral-50: oklch(96% 0 0);
-  --neutral-100: oklch(82.8% 0 0);
-  --neutral-200: oklch(70% 0 0);
-  --neutral-300: oklch(58.2% 0 0);
-  --neutral-400: oklch(47.8% 0 0);
-  --neutral-500: oklch(39.1% 0 0);
-  --neutral-600: oklch(31.8% 0 0);
-  --neutral-700: oklch(25.5% 0 0);
-  --neutral-800: oklch(20% 0 0);
-  --neutral-900: oklch(14.8% 0 0);
+  --neutral-50: oklch(92% 0 0);
+  --neutral-100: oklch(78.6% 0 0);
+  --neutral-200: oklch(65.8% 0 0);
+  --neutral-300: oklch(54.1% 0 0);
+  --neutral-400: oklch(44.2% 0 0);
+  --neutral-500: oklch(36.2% 0 0);
+  --neutral-600: oklch(29.7% 0 0);
+  --neutral-700: oklch(24.2% 0 0);
+  --neutral-800: oklch(19.2% 0 0);
+  --neutral-900: oklch(14.5% 0 0);
   --neutral-950: oklch(10% 0 0);
 
   --primary-50: oklch(91% 0.043 273.9);

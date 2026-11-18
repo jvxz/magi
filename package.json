@@ -39,6 +39,7 @@
     "@tanstack/vue-hotkeys": "^0.10.0",
     "@tanstack/vue-query": "5.105.0",
     "@tanstack/vue-virtual": "^3.13.50",
+    "@thi.ng/blurhash": "^1.0.50",
     "@tiptap/extension-emoji": "^3.32.1",
     "@tiptap/extension-mention": "^3.32.1",
     "@tiptap/extension-placeholder": "^3.32.1",

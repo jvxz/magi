@@ -6,9 +6,9 @@ export interface GlobalDialogMap {
     room: Room
   }
   image:
-    | { alt: string; type: 'room'; room: MaybeRoomOrId }
-    | { alt: string; type: 'user'; user: MaybeUserOrId }
-    | { alt: string; type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string }
+    | { type: 'room'; room: MaybeRoomOrId; alt?: string }
+    | { type: 'user'; user: MaybeUserOrId; alt?: string }
+    | { type: 'roomMember'; room: MaybeRoomOrId; member: RoomMember | string; alt?: string }
     | { alt: string; type: 'image'; url: string; blurhash?: string }
   codeViewer: {
     code: string
@@ -22,27 +22,33 @@ export interface GlobalDialogMap {
     title: string
     text: string
   }
+  roomSettings: {
+    room: Room
+  }
+  editAvatar: {
+    /**
+     * @param avatarUrl undefined if deletion request, string as mxc URL if uploaded
+     * @param file undefined if delection request
+     */
+    onAction: (avatarUrl: string | undefined, file: File | undefined) => void
+  }
 }
 export type GlobalDialog = keyof GlobalDialogMap
 
-type GlobalDialogState = Prettify<
-  {
-    [K in GlobalDialog]: {
-      name: K
-    } & GlobalDialogMap[K]
-  }[GlobalDialog]
->
+type GlobalDialogEntry = {
+  [K in GlobalDialog]: { name: K; id: number; open: boolean } & GlobalDialogMap[K]
+}[GlobalDialog]
 
 export const useGlobalDialog = createGlobalState(() => {
-  const open = ref(false)
-  const state = shallowRef<GlobalDialogState>()
-  const dialogKey = ref(0)
+  const stack = ref<GlobalDialogEntry[]>([])
+  const hasOpenDialog = computed(() => stack.value.some(d => d.open))
+  let nextId = 0
 
   const openDialog = <T extends GlobalDialog>(name: T, payload: GlobalDialogMap[T]) => {
-    state.value = { name, ...payload } as GlobalDialogState
-    dialogKey.value++
-    open.value = true
+    // only drop dialogs that have finished closing to retain exit animation
+    stack.value = stack.value.filter(d => d.open)
+    stack.value.push({ id: nextId++, name, open: true, ...payload } as GlobalDialogEntry)
   }
 
-  return { dialogKey, open, openDialog, state }
+  return { hasOpenDialog, openDialog, stack }
 })

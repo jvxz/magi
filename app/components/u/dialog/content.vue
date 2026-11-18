@@ -17,10 +17,13 @@ import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
 
-export type UDialogContentProps = DialogContentProps & { class?: HTMLAttributes['class'] }
+export type UDialogContentProps = DialogContentProps & {
+  class?: HTMLAttributes['class']
+  size?: DialogVariants['size']
+}
 export type UDialogContentEmits = DialogContentEmits
 
-const props = defineProps<UDialogContentProps>()
+const props = withDefaults(defineProps<UDialogContentProps>(), { size: 'default' })
 const emits = defineEmits<UDialogContentEmits>()
 
 const delegated = reactiveOmit(props, 'class')
@@ -34,7 +37,8 @@ const forwarded = useForwardPropsEmits(delegated, emits)
     <DialogContent
       v-bind="forwarded"
       data-slot="dialog-content"
-      :class="cn(dialogStyles(), props.class)"
+      :data-size="size"
+      :class="cn(dialogStyles({ size }), props.class)"
       @open-auto-focus="onOpenAutoFocus"
     >
       <slot />

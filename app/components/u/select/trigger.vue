@@ -1,10 +1,24 @@
-<script setup lang="ts">
+<script lang="ts">
 import type { SelectTriggerProps } from 'reka-ui'
 
 import { useForwardProps } from 'reka-ui'
 
 import type { UButtonProps } from '../button.vue'
 
+export const selectTriggerStyles = tv({
+  base: 'flex items-center justify-between data-placeholder:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2',
+  extend: interactiveBase,
+  // variants: {
+  //   variant: {
+  //     ghost: 'text-foreground',
+  //     soft: 'text-foreground',
+  //     'soft-raised': 'text-foreground',
+  //   },
+  // },
+})
+</script>
+
+<script setup lang="ts">
 export type USelectTriggerProps = SelectTriggerProps & {
   class?: HTMLAttributes['class']
   size?: 'sm' | 'default'
@@ -23,14 +37,7 @@ const forwarded = useForwardProps(delegated)
     data-slot="select-trigger"
     :data-size="size"
     v-bind="forwarded"
-    :class="
-      cn(
-        interactiveBase({ variant: props.variant, size: props.size }),
-        'flex items-center justify-between data-placeholder:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2',
-        withIcon && 'pr-1.5',
-        props.class,
-      )
-    "
+    :class="cn(selectTriggerStyles({ variant: props.variant, size: props.size }), withIcon && 'pr-1.5', props.class)"
   >
     <slot />
 

@@ -1,6 +1,10 @@
-import type { MatrixClient, MatrixEvent, RoomMember } from 'matrix-js-sdk'
+import type { HierarchyRoom, MatrixClient, MatrixEvent, RoomMember } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
-import type { RoomCreateEventContent } from 'matrix-js-sdk/lib/types'
+import type {
+  RoomCanonicalAliasEventContent,
+  RoomCreateEventContent,
+  RoomPowerLevelsEventContent,
+} from 'matrix-js-sdk/lib/types'
 
 import { Direction, JoinRule } from 'matrix-js-sdk'
 import { EventTimeline, EventType, KnownMembership, Room } from 'matrix-js-sdk'
@@ -80,7 +84,7 @@ export function getStateEvent(room: Room | undefined, eventType: EventType, stat
   return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType, stateKey) ?? undefined
 }
 
-export function getStateEvents(room: Room, eventType: EventType): MatrixEvent[] {
+export function getStateEvents<T extends EventType>(room: Room, eventType: T): MatrixEvent[] {
   return room.getLiveTimeline().getState(EventTimeline.FORWARDS)?.getStateEvents(eventType) ?? []
 }
 
@@ -131,6 +135,20 @@ export function getDirectRoomAvatarUrl({
       })
 }
 
+export function getPublishedRoomAliases(room: Room | undefined) {
+  return getStateEvent(room, EventType.RoomCanonicalAlias)?.getContent<RoomCanonicalAliasEventContent>()
+}
+
+export async function getLocalRoomAliases(client: MatrixClient, room: MaybeRoomOrId | undefined): Promise<string[]> {
+  if (!room) return []
+  return (await client.getLocalAliases(resolveRoomId(room))).aliases
+}
+
+export function flattenRoomAliases(aliases: RoomCanonicalAliasEventContent | undefined): string[] {
+  if (!aliases) return []
+  return uniq([...(aliases.alt_aliases ?? []), ...(aliases.alias ? [aliases.alias] : [])])
+}
+
 export function getCurrentRoomState(room: Room) {
   const timeline = room.getLiveTimeline()
   return timeline.getState(Direction.Forward)
@@ -172,6 +190,22 @@ export async function getSpaceRooms(
     nextBatchToken: res.next_batch,
     rooms: res.rooms,
   }
+}
+
+export function getRoomSettings(room: Room) {
+  // a room's live timeline always has state
+  const currentState = getCurrentRoomState(room)!
+
+  const settings = {}
+  for (const key of MATRIX__CONFIGURABLE_ROOM_SETTINGS) {
+    Object.assign(settings, { [key]: currentState.getStateEvents(key, '')?.getContent() ?? {} })
+  }
+
+  return settings as StateRoomSettings
+}
+
+export function getRoomPowerLevels(room: Room) {
+  return getStateEvent(room, EventType.RoomPowerLevels)?.getContent<RoomPowerLevelsEventContent>()
 }
 
 export function getJoinedRooms(client: MatrixClient, space: Room | undefined) {
@@ -437,14 +471,15 @@ export function sortMembersByPowerlevel(members: RoomMember[]) {
   })
 }
 
-export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId) {
+export function resolveRoomId(maybeRoomOrId: MaybeRoomOrId | HierarchyRoom) {
+  if (isString(maybeRoomOrId)) return maybeRoomOrId
   if (maybeRoomOrId instanceof Room) return maybeRoomOrId.roomId
-
-  return maybeRoomOrId
+  return maybeRoomOrId.room_id
 }
 
-export function resolveRoomName(room: Room): string {
-  return room.name ?? room.roomId
+export function resolveRoomName(room: Room | HierarchyRoom): string {
+  if ('room_id' in room) return room.name ?? room.room_id
+  else return room.name ?? room.roomId
 }
 
 export function resolveJoinRuleLabel(joinRule: JoinRule) {
@@ -505,4 +540,8 @@ export function isRoomSupporting(type: IsRoomSupportingOpts, version: string | n
     case 'restricted':
       return !['1', '2', '3', '4', '5', '6', '7'].includes(String(version))
   }
+}
+
+export function createAliasString(rawAlias: string, domain: string) {
+  return `#${rawAlias}:${domain}`
 }

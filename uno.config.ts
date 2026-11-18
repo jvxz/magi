@@ -153,6 +153,10 @@ export default defineConfig({
         fontSize: '0.7rem',
         lineHeight: '0.875rem',
       },
+      base: {
+        fontSize: '0.9375rem',
+        lineHeight: 'calc(1.5 / 1)',
+      },
     },
   },
   transformers: [transformerVariantGroup(), transformerDirectives({ throwOnMissing: false })],

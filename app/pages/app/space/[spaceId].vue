@@ -31,8 +31,10 @@ provideSpacePageContext({
 
 <template>
   <LayoutAppSlot name="aside-header">
-    <LayoutAppAsideHeaderTitle>
-      {{ spaceName }}
+    <LayoutAppAsideHeaderTitle class="pe-2.5 justify-between">
+      <span>{{ spaceName }}</span>
+
+      <PageSpaceAsideHeaderDropdown />
     </LayoutAppAsideHeaderTitle>
   </LayoutAppSlot>
 

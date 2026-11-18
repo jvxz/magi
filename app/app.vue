@@ -5,9 +5,9 @@
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+    <DialogProvider />
   </UTooltipProvider>
   <UToastProvider />
-  <DialogProvider />
 
   <NuxtAnnouncer />
 </template>

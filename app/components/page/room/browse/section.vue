@@ -22,6 +22,7 @@ if (props.defaultOpen) openModel.value = props.defaultOpen
         v-if="isDefined(avatar) || avatarPlaceholder"
         :src="avatar"
         :alt="title"
+        :placeholder-key="avatarPlaceholder ? title : undefined"
         square
         class="rounded-sm shrink-0 h-full w-fit aspect-square object-contain"
       />

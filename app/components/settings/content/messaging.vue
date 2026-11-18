@@ -4,11 +4,10 @@ const settings = useSettings()
 
 <template>
   <SettingsContentLayout>
-    <SettingsFormSwitch
+    <USettingSwitch
       v-model:model-value="settings.messaging.typingEvents"
       :label="SETTINGS__ITEM_METADATA.messaging.typingEvents.title"
       :description="SETTINGS__ITEM_METADATA.messaging.typingEvents.description"
-    >
-    </SettingsFormSwitch>
+    />
   </SettingsContentLayout>
 </template>

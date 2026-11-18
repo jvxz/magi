@@ -47,19 +47,20 @@ const sizeClass = computed(() => {
 </script>
 
 <template>
-  <Primitive :class="cn('relative inline-flex items-center justify-center shrink-0', ui?.root)" data-slot="chip-root">
+  <Primitive :class="cn('relative inline-flex items-center justify-center shrink-0', ui?.root)" data-slot="chip">
     <Slot v-bind="$attrs">
       <slot />
     </Slot>
 
-    <span
-      v-if="show"
-      data-slot="base"
-      :class="cn('absolute ring-background rounded-full', variantClass, sizeClass, ui?.base, props.class)"
-    >
-      <slot name="content">
-        {{ props.text }}
-      </slot>
-    </span>
+    <Transition name="zoom">
+      <span
+        v-if="show"
+        :class="cn('absolute ring-background rounded-full', variantClass, sizeClass, ui?.base, props.class)"
+      >
+        <slot name="content">
+          {{ props.text }}
+        </slot>
+      </span>
+    </Transition>
   </Primitive>
 </template>

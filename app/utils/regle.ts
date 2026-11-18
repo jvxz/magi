@@ -30,9 +30,23 @@ export function getValidHomeserverRule() {
 
 export const noSpaces = createRule({
   message: 'No spaces allowed',
-  validator: value => {
-    if (typeof value === 'string' && value.includes(' ')) return false
-
-    return true
-  },
+  validator: value => !isString(value) || !REGEX__WHITESPACE.test(value),
 })
+
+export const homeserverAliasCharacters = (homeserver: string) =>
+  createRule({
+    message: 'Invalid characters',
+    validator: value => !isString(value) || REGEX__MATRIX_ROOM_ALIAS.test(`#${value}:${homeserver}`),
+  })
+
+export const homeserverAliasMaxSize = (homeserver: string) =>
+  createRule({
+    message: 'Maximum length exceeded',
+    validator: value => {
+      if (!isString(value)) return false
+
+      const full = `#${value}:${homeserver}`
+      if (new TextEncoder().encode(full).length > 255) return false
+      return true
+    },
+  })

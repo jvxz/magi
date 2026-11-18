@@ -76,30 +76,28 @@ provideSettingsContentDevicesContext({
     <UScrollAreaViewport>
       <UTooltipRegionRoot name="deviceListVerifiedIcon">
         <SettingsContentLayout class="flex flex-col h-full">
-          <SettingsItemPrimitive class="gap-2 w-full">
-            <template #label>
-              <div class="flex w-full items-center justify-between">
-                <div class="flex gap-1 items-center">
-                  <p class="font-medium">Device list</p>
+          <USettingRoot orientation="vertical" class="w-full">
+            <div class="flex w-full items-center justify-between">
+              <div class="flex gap-1 items-center">
+                <p class="font-medium">Device list</p>
 
-                  <USpinner v-if="isFetching" class="size-1em" />
-                </div>
-
-                <div class="flex gap-1 items-center">
-                  <UButton size="icon-sm" variant="ghost" @click="refetch">
-                    <Icon :name="ICON__RELOAD" />
-                  </UButton>
-
-                  <USortSelectComposite
-                    v-model:model-value="sortState"
-                    :disabled="!!error"
-                    :default-value="{ dir: 'asc', option: 'last-active' }"
-                    :options="['last-active', 'name', 'verified']"
-                    size="sm"
-                  />
-                </div>
+                <USpinner v-if="isFetching" class="size-1em" />
               </div>
-            </template>
+
+              <div class="flex gap-1 items-center">
+                <UButton size="icon-sm" variant="ghost" @click="refetch">
+                  <Icon :name="ICON__RELOAD" />
+                </UButton>
+
+                <USortSelectComposite
+                  v-model:model-value="sortState"
+                  :disabled="!!error"
+                  :default-value="{ dir: 'asc', option: 'last-active' }"
+                  :options="['last-active', 'name', 'verified']"
+                  size="sm"
+                />
+              </div>
+            </div>
 
             <UCardGroupRoot v-if="!error" variant="raised" class="w-full">
               <template v-if="devices.size">
@@ -125,7 +123,7 @@ provideSettingsContentDevicesContext({
                 </UAlertDescription>
               </UAlertContent>
             </UAlertRoot>
-          </SettingsItemPrimitive>
+          </USettingRoot>
         </SettingsContentLayout>
 
         <UTooltipRegionContent v-slot="{ payload }" name="deviceListVerifiedIcon">

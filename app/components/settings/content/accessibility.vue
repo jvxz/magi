@@ -4,11 +4,10 @@ const settings = useSettings()
 
 <template>
   <SettingsContentLayout>
-    <SettingsFormSwitch
+    <USettingSwitch
       v-model:model-value="settings.accessibility.uiAnimations"
       :label="SETTINGS__ITEM_METADATA.accessibility.uiAnimations.title"
       :description="SETTINGS__ITEM_METADATA.accessibility.uiAnimations.description"
-    >
-    </SettingsFormSwitch>
+    />
   </SettingsContentLayout>
 </template>

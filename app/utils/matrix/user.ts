@@ -49,7 +49,7 @@ export function resolveImageUrl(imageUrl: string | undefined, opts: ResolveImage
   )
 }
 
-export function resolveUserId(maybeUserOrId: MaybeUserOrId) {
+export function resolveUserId(maybeUserOrId: MaybeUserOrId | RoomMember) {
   if (typeof maybeUserOrId === 'string') return maybeUserOrId
 
   return maybeUserOrId.userId

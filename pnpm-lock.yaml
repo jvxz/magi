@@ -60,6 +60,9 @@ importers:
       '@tanstack/vue-virtual':
         specifier: ^3.13.50
         version: 3.13.50(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2))
+      '@thi.ng/blurhash':
+        specifier: ^1.0.50
+        version: 1.0.50
       '@tiptap/extension-emoji':
         specifier: ^3.32.1
         version: 3.32.1(@tiptap/core@3.32.1(@tiptap/pm@3.32.1))(@tiptap/pm@3.32.1)(@tiptap/suggestion@3.32.1(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.1(@tiptap/pm@3.32.1))(@tiptap/pm@3.32.1))(emojibase@17.0.0)
@@ -3799,6 +3802,30 @@ packages:
     resolution: {integrity: sha512-dSNztWxLuZskVwlq6bSStbB3rNIJlQeJFot+WQnTdsQgxI5ljmZpzz15ycNhqyDRFHEVdk8qboXY2jnxVTzYZg==}
     peerDependencies:
       vue: 3.6.0-rc.13
+
+  '@thi.ng/api@8.12.28':
+    resolution: {integrity: sha512-SbC2c2fULIXtAsgtT9Vz7Dviv1KaZD3oYrvqy3zV405xHuipaFMZN1VbVr6LzN8JCdIFp0oH4b6OdNHdojdzcA==}
+    engines: {node: '>=18'}
+
+  '@thi.ng/base-n@2.7.73':
+    resolution: {integrity: sha512-yEkxe4WlqRutwEBPAT/3lLbcnEjordeqtkJ/gDrjLi0F7mLvPd28QqOjyECH4idFIi+VFDeu/H7rNseE3kxDQg==}
+    engines: {node: '>=18'}
+
+  '@thi.ng/blurhash@1.0.50':
+    resolution: {integrity: sha512-shfXjM2YeiXGbpiycbD4/yjoztk6FNIgijkqqRXMIhJR+y5r+Gpj2oFEDAs8fEdJCx1TvVp0KpOJfHOfIaqb+w==}
+    engines: {node: '>=18'}
+
+  '@thi.ng/canvas@1.1.20':
+    resolution: {integrity: sha512-tkNk/rjoN8OUxMyXjhYlxu9pstS8IXHP62mj31ihL3bwagshH+t2rD2N0/ZuALMUuARDWVp0RtK79La0kcRcOg==}
+    engines: {node: '>=18'}
+
+  '@thi.ng/errors@2.6.17':
+    resolution: {integrity: sha512-momw7wo3EXes1wa6Smckr+l4BaJi/h+E67R3furYOBjQpciie1OgoTa43PXPb1POsuWxynkEF8OCnQgreE8twg==}
+    engines: {node: '>=18'}
+
+  '@thi.ng/math@5.15.17':
+    resolution: {integrity: sha512-TmgzOOZ4whILWPfwHxY42Z8OSAnibXVMVY5YFGk0gEVNFhTRSGF/L04hZCEeD4++r45g/N4IZkmWqcu+WciQjQ==}
+    engines: {node: '>=18'}
 
   '@tiptap/core@3.32.1':
     resolution: {integrity: sha512-ImhEufkmqFK1mIbcYAZOhoBColsdy4sepB3Wd6vDPULbonGXL1LliLs79IiVY1hzmqkBksxwyqkyPxlcFMNTdQ==}
@@ -12802,6 +12829,26 @@ snapshots:
     dependencies:
       '@tanstack/virtual-core': 3.19.9
       vue: 3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2)
+
+  '@thi.ng/api@8.12.28': {}
+
+  '@thi.ng/base-n@2.7.73': {}
+
+  '@thi.ng/blurhash@1.0.50':
+    dependencies:
+      '@thi.ng/api': 8.12.28
+      '@thi.ng/base-n': 2.7.73
+      '@thi.ng/canvas': 1.1.20
+      '@thi.ng/errors': 2.6.17
+      '@thi.ng/math': 5.15.17
+
+  '@thi.ng/canvas@1.1.20': {}
+
+  '@thi.ng/errors@2.6.17': {}
+
+  '@thi.ng/math@5.15.17':
+    dependencies:
+      '@thi.ng/api': 8.12.28
 
   '@tiptap/core@3.32.1(@tiptap/pm@3.32.1)':
     dependencies:

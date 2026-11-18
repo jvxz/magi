@@ -4,18 +4,18 @@ import { Room } from 'matrix-js-sdk'
 export function useRoom(roomInput: MaybeRefOrGetter<MaybeRoomOrId | undefined>) {
   const inputRef = toRef(roomInput)
   const { client } = useMatrixClient()
-  const versions = useRoomVersions()
+  const { revisions } = useRoomRevisions()
 
   const roomState = computed(() => {
     const input = toValue(inputRef)
-    if (!input) return { room: undefined, version: undefined }
+    if (!input) return { revision: undefined, room: undefined }
 
-    const version = versions.get(resolveRoomId(input))
+    const revision = revisions.get(resolveRoomId(input))
 
-    if (input instanceof Room) return { room: markRaw(input), version }
+    if (input instanceof Room) return { revision, room: markRaw(input) }
 
     const cachedRoom = getRoom(client.value, input)
-    return { room: cachedRoom ? markRaw(cachedRoom) : undefined, version }
+    return { revision, room: cachedRoom ? markRaw(cachedRoom) : undefined }
   })
 
   return toRef(() => roomState.value.room)
