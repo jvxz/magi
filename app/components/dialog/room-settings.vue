@@ -3,7 +3,7 @@ import type { Room } from 'matrix-js-sdk'
 
 import type { GlobalDialogMap } from '~/composables/use-global-dialog'
 
-import { DialogRoomSettingsGeneral, DialogRoomSettingsMembers, DialogRoomSettingsPermissions } from '#components'
+import { DialogRoomSettingsGeneral, DialogRoomSettingsPermissions } from '#components'
 
 import type { SidebarLayoutGroupItem } from '../u/dialog/sidebar-layout-group-item.vue'
 
@@ -12,10 +12,6 @@ const roomSettingsTabs = [
   {
     icon: ICON__SETTINGS,
     key: 'General',
-  },
-  {
-    icon: ICON__MEMBERS,
-    key: 'Members',
   },
   {
     icon: ICON__PERMISSION,
@@ -39,7 +35,6 @@ const props = defineProps<GlobalDialogMap['roomSettings']>()
 
 const roomSettingComponents = {
   General: DialogRoomSettingsGeneral,
-  Members: DialogRoomSettingsMembers,
   Permissions: DialogRoomSettingsPermissions,
 } as const satisfies Record<RoomSettingKey, Component>
 
