@@ -16,12 +16,14 @@ const { r$ } = useRegle(
   {
     aliasInput,
   },
-  {
+  () => ({
     aliasInput: {
+      homeserverAliasCharacters: homeserverAliasCharacters(domain.value),
       homeserverAliasMaxSize: homeserverAliasMaxSize(domain.value),
+      noSpaces,
       required,
     },
-  },
+  }),
 )
 
 const publishedAliases = computed(() => flattenRoomAliases(unsavedChanges.value['m.room.canonical_alias']))
