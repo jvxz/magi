@@ -59,6 +59,8 @@ export default defineConfig({
           include: ['test/nuxt/**/*.{test,spec}.ts'],
           name: 'nuxt',
           setupFiles: ['vitest-localstorage-mock'],
+          // first mountSuspended in a file imports the whole app, taking ~3-5s
+          testTimeout: 15000,
         },
       }),
     ],
