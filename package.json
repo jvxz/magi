@@ -56,7 +56,6 @@
     "matrix-js-sdk": "^41.9.0",
     "microlighter": "^2.2.0",
     "motion-v": "^2.13.0",
-    "mrmime": "^2.0.1",
     "nuxt": "4.6.4",
     "nuxt-security": "2.7.0",
     "nuxt-tiptap-editor": "3.4.0",
