@@ -10,8 +10,6 @@ const isRoomSpace = useRoomComputed(
   () => props.roomId,
   r => (r ? isSpace(r) : undefined),
 )
-
-const avatarUrl = useResolveImageUrl(() => props.avatarUrl)
 </script>
 
 <template>
@@ -23,8 +21,8 @@ const avatarUrl = useResolveImageUrl(() => props.avatarUrl)
   <UMenuItemSeparator />
 
   <MenuItemViewAvatar
-    v-if="avatarUrl"
-    :payload="avatarUrl ? { type: 'image', alt: roomId!, url: avatarUrl } : undefined"
+    v-if="props.avatarUrl"
+    :payload="{ type: 'image', alt: roomId!, url: props.avatarUrl }"
   />
   <MenuItemViewAvatar v-else :payload="room ? { type: 'room', room } : undefined" />
   <MenuItemLeave v-if="isRoomJoined" :id="roomId" :type="isRoomSpace ? 'space' : 'room'" />
