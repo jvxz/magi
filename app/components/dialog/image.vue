@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { HierarchyRoom, RoomMember } from 'matrix-js-sdk'
+import type { RoomMember } from 'matrix-js-sdk'
 import type { DialogRootProps } from 'reka-ui'
 
 export interface ImageDialogProps extends DialogRootProps {
   alt?: string
   blurhash?: string
   type: GlobalDialogMap['image']['type']
-  room?: MaybeRoomOrId | HierarchyRoom
+  room?: MaybeRoomOrId
   user?: MaybeUserOrId
   member?: RoomMember | string
   url?: string
