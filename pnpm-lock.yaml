@@ -111,9 +111,6 @@ importers:
       motion-v:
         specifier: ^2.9.0
         version: 2.9.0(@vueuse/core@14.4.0(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2)))(vue@3.6.0-rc.13(typescript-native-bridge@6.0.3-bridge.19.tsgo.7.0.2))
-      mrmime:
-        specifier: ^2.0.1
-        version: 2.0.1
       nuxt:
         specifier: 4.6.3
         version: 4.6.3(ed07c2fa082f69899f0882d360af8a25)
