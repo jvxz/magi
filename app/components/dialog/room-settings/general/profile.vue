@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { injectRoomSettingsDialogContext } from '../../room-settings.vue'
 
-const { room, unsavedChanges, permissions, isEdited } = injectRoomSettingsDialogContext()
+const { room, unsavedChanges, permissions, isEdited, roomNoun } = injectRoomSettingsDialogContext()
 
 const topic = computed({
   get: () => unsavedChanges.value['m.room.topic'].topic ?? '',
@@ -14,6 +14,12 @@ const topic = computed({
       }
   },
 })
+
+const name = computed({
+  get: () => unsavedChanges.value['m.room.name'].name ?? '',
+  set: (value: string) => (unsavedChanges.value['m.room.name'] = { name: value }),
+})
+const fallbackName = useRoomComputed(room, resolveRoomName)
 
 const upload = async (...args: Parameters<GlobalDialogMap['editAvatar']['onAction']>) => {
   const [url, file] = args
@@ -44,19 +50,22 @@ const avatarUrl = useResolveImageUrl(() => unsavedChanges.value['m.room.avatar']
       <UEditableRoot
         v-if="permissions.canEditRoomName.value"
         v-slot="{ modelValue }"
-        v-model:model-value="unsavedChanges['m.room.name'].name"
+        v-model:model-value="name"
+        :placeholder="fallbackName"
         submit-mode="enter"
         class="shrink min-w-0"
       >
         <UEditableArea :trailing-icon="ICON__EDIT" class="*:(text-xl font-medium px-1 shrink -mx-1)">
-          <UEditablePreview>
-            <span class="truncate">{{ modelValue }}</span>
+          <UEditablePreview :class="!modelValue && 'decoration-muted-foreground'">
+            <span class="truncate" :class="!modelValue && 'text-muted-foreground'">
+              {{ modelValue || fallbackName }}
+            </span>
             <Icon :name="ICON__EDIT" class="shrink-0 size-0.9em" />
           </UEditablePreview>
           <UEditableInput />
         </UEditableArea>
       </UEditableRoot>
-      <p v-else class="text-xl font-medium">{{ unsavedChanges['m.room.name'].name }}</p>
+      <p v-else class="text-xl font-medium" :class="!name && 'text-muted-foreground'">{{ name || fallbackName }}</p>
 
       <UClickToCopy as-child side="right">
         <UButton variant="ghost-inline" class="text-sm text-muted-foreground font-normal w-fit">
@@ -73,7 +82,7 @@ const avatarUrl = useResolveImageUrl(() => unsavedChanges.value['m.room.avatar']
         v-model:model-value="topic"
         class="bg-surface-raised max-h-36 min-h-10"
         :disabled="!permissions.canEditRoomTopic.value"
-        placeholder="What's this room about?"
+        :placeholder="`What's this ${roomNoun} about?`"
         resizable="y"
         label="Topic"
       />
