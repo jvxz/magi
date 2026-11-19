@@ -22,7 +22,9 @@ const replyEventProfile = useUserProfile(replySenderId)
 const hasReactions = useRoomEventHasReactions(room, event)
 
 const shouldRender = computed(() => {
-  const isValid = [MsgType.Text, MsgType.Image, 'm.bad.encrypted'].includes(messageType.value as MsgType)
+  const isValid = [MsgType.Text, MsgType.Image, MsgType.Notice, 'm.bad.encrypted'].includes(
+    messageType.value as MsgType,
+  )
   const isEdit = isEditEvent(event.value)
 
   return (isValid || eventState.value === 'decrypting') && !isEdit
