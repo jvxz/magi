@@ -14,17 +14,19 @@ import { Fragment, Slice } from '@tiptap/pm/model'
 import { useFilter } from 'reka-ui'
 import { VList } from 'virtua/vue'
 
-const currentRoom = useCurrentRoom()
+import { injectRoomInstanceContext } from './instance.vue'
+
+const { room } = injectRoomInstanceContext()
 const currentSpace = useCurrentSpace()
 
 const content = shallowRef('')
 
-const { areMembersTyping, onType } = useRoomMembersTyping.provide(currentRoom)
+const { areMembersTyping, onType } = useRoomMembersTyping.provide(room)
 
 const { contains } = useFilter({ sensitivity: 'base' })
 
 const { client } = useMatrixClient()
-const { members } = useRoomMembers(currentRoom)
+const { members } = useRoomMembers(room)
 const { rooms } = useSpaceHierarchy(() => currentSpace.value?.roomId)
 
 const roomsArray = computed(() => (rooms.value ? rooms.value.values().toArray() : []))
@@ -61,7 +63,7 @@ let command: ((props: MentionNodeAttrs) => void) | undefined
 
 const listHeight = computed(() => Math.min(filteredItems.value.length, 7) * 32)
 
-const { sendTextMessage } = useRoomMessaging(currentRoom)
+const { sendTextMessage } = useRoomMessaging(room)
 
 function selectItem(item: SuggestionItem) {
   command?.(item.commandProps as MentionNodeAttrs)
@@ -219,7 +221,7 @@ const editor = useEditor({
     }),
     InlineMarks,
     Placeholder.configure({
-      placeholder: () => `Message ${currentRoom.value?.name}`,
+      placeholder: () => `Message ${room.value?.name}`,
     }),
     Extension.create({
       addKeyboardShortcuts() {
@@ -268,7 +270,7 @@ const editor = useEditor({
   },
 })
 
-watch(currentRoom, () => {
+watch(room, () => {
   editor.value?.view.dispatch(editor.value.view.state.tr)
 })
 
@@ -313,7 +315,7 @@ watch(highlightedIdx, idx => vlist.value?.scrollToIndex(idx, { align: 'nearest' 
           @mouseenter="highlightedIdx = index"
           @mousedown.prevent="selectItem(item)"
         >
-          <MatrixRoomMemberAvatar v-if="item.user" class="h-4 w-fit" :room="currentRoom" :member="item.user" />
+          <MatrixRoomMemberAvatar v-if="item.user" class="h-4 w-fit" :room="room" :member="item.user" />
           <MatrixRoomAvatar v-else-if="item.room" class="h-4 w-fit" :room="item.room.room_id" />
           <Twemoji v-else :emoji="item.emoji?.hexcode" />
 

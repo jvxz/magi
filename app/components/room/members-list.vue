@@ -1,14 +1,16 @@
 <script lang="ts" setup>
 import type { Room } from 'matrix-js-sdk'
 
-const { room } = defineProps<{ room: Room }>()
+import { injectRoomInstanceContext } from './instance.vue'
 
-const { isLoaded, members } = useRoomMembers(() => room)
+const { room } = injectRoomInstanceContext()
 
-const membersGrouped = useRoomMemberGrouping(members, () => room.roomId)
+const { isLoaded, members } = useRoomMembers(room)
+
+const membersGrouped = useRoomMemberGrouping(members, room)
 
 const cachedCount = useCachedCount(
-  () => `${room.roomId}-members`,
+  () => `${room.value.roomId}-members`,
   () => (members.value.length !== 0 ? Math.min(24, members.value.length) : undefined),
   8,
 )
@@ -17,11 +19,7 @@ const virtualizerList = computed<MemberCachePayload['members']>(() => membersGro
 const scrollEl = useTemplateRef<HTMLDivElement>('scrollEl')
 const list = useTemplateRef('list')
 
-watch(
-  () => room.roomId,
-  () => list.value?.virtualizer.scrollToIndex(0, { align: 'start' }),
-  { flush: 'post' },
-)
+watch(room, () => list.value?.virtualizer.scrollToIndex(0, { align: 'start' }), { flush: 'post' })
 </script>
 
 <template>

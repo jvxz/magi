@@ -3,6 +3,7 @@ import type { EventType } from 'matrix-js-sdk'
 import type { PrimitiveProps } from 'reka-ui'
 
 import { injectEventListItemContext } from './event/generic.vue'
+import { injectRoomInstanceContext } from './instance.vue'
 
 export type RoomEventProps = PrimitiveProps & {
   class?: HTMLAttributes['class']
@@ -14,12 +15,13 @@ withDefaults(defineProps<RoomEventProps>(), {
   as: 'div',
 })
 
-const { event, grouped, room } = injectEventListItemContext()
+const { event, grouped } = injectEventListItemContext()
+const { room } = injectRoomInstanceContext()
 </script>
 
 <template>
   <UContextMenuRegionTrigger
-    v-if="event && room"
+    v-if="event"
     v-bind="$props"
     region="event"
     :value="{

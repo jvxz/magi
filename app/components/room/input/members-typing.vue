@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-const currentRoom = useCurrentRoom()
+import { injectRoomInstanceContext } from '../instance.vue'
+
+const { room } = injectRoomInstanceContext()
 
 const { areMembersTyping, typingMembers } = useRoomMembersTyping.inject()
 
@@ -15,13 +17,7 @@ const typingMembersDiff = computed(() => Math.max(0, typingMembers.value.size - 
       </div>
 
       <div class="natural-list inline">
-        <UseRoomMember
-          v-for="member in first3TypingMembers"
-          v-slot="{ roomMember }"
-          :key="member"
-          :user="member"
-          :room="currentRoom"
-        >
+        <UseRoomMember v-for="member in first3TypingMembers" v-slot="{ roomMember }" :key="member" :user="member" :room>
           <p class="font-medium inline">
             {{ resolveUserName(roomMember) }}
           </p>
