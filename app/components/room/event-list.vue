@@ -9,11 +9,11 @@ const scrollStates = new Map<string, TimelineScrollState>()
 </script>
 
 <script lang="ts" setup>
-import type { Room } from 'matrix-js-sdk'
-
 import { Direction, EventType } from 'matrix-js-sdk'
 
-const { room } = injectRoomInstanceContext()
+const { room: selectedRoom } = injectRoomInstanceContext()
+// store room in separate ref to avoid instances in <KeepAlive /> from sharing the same room instance
+const room = shallowRef(selectedRoom.value)
 
 const containerRef = useTemplateRef('container')
 const isPaginationBusy = ref(false)
@@ -65,7 +65,7 @@ watchEffect(() => {
 
 const roomId = computed(() => room.value.roomId)
 watch(
-  roomId,
+  () => selectedRoom.value.roomId,
   (_, prev) => {
     if (!prev || prev !== roomId.value) return
 
