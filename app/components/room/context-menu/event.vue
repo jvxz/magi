@@ -7,12 +7,11 @@ const props = defineProps<ContextMenuRegions['event']>()
 
 const { openDialog } = useGlobalDialog()
 
-const { openReactionViewer } = useRoomEventReactionsViewer()
 const { close } = useContextMenuRegion('event')
 const { self } = useSelf()
 
 const { reactions, reactTo } = useRoomEventReactions(
-  () => props.roomId,
+  () => props.room,
   () => props.event,
 )
 
@@ -28,7 +27,7 @@ const { sortedRecentReactions } = useRecentReactions()
 const firstFourRecentReactions = computed(() => sortedRecentReactions.value.slice(0, 4))
 
 const { canRedactOwnMessages, canRedactMessages } = useRoomMemberPermissions(
-  () => props.roomId,
+  () => props.room,
   () => self.value?.userId,
 )
 
@@ -38,12 +37,12 @@ const canRedact = computed(() =>
 
 const { current } = useMagicKeys()
 const { redact } = useRoomActions(
-  () => props.roomId,
+  () => props.room,
   () => props.event.getId(),
 )
 const handleDeleteMessage = () => {
   if (current.has('shift')) redact.mutate({ reason: undefined })
-  else openDialog('deleteMessage', { eventId: props.event.getId()!, roomId: props.roomId })
+  else openDialog('deleteMessage', { eventId: props.event.getId()!, roomId: props.room.roomId })
 }
 
 // lazy, only calculates if node structure item is selected
@@ -79,7 +78,10 @@ const { messageNodes } = useMessageBodyNodes(props.event)
         </ContextMenuItem>
       </UEmojiPickerRoot>
     </UContextMenuSub>
-    <UContextMenuItem :disabled="!reactions || !reactions.size" @select="openReactionViewer(roomId, event)">
+    <UContextMenuItem
+      :disabled="!reactions || !reactions.size"
+      @select="openDialog('reactionsViewer', { event, room })"
+    >
       View reactions
     </UContextMenuItem>
 

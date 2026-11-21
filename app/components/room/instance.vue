@@ -3,6 +3,7 @@ import type { Room } from 'matrix-js-sdk'
 
 export interface RoomInstanceContext {
   room: Readonly<Ref<Room>>
+  react: ReturnType<typeof useRoomActions>['react']
 }
 
 export const [injectRoomInstanceContext, provideRoomInstanceContext] =
@@ -15,8 +16,12 @@ const props = defineProps<{ room: Room }>()
 const route = useRoute()
 const isOnRoomPage = computed(() => route.name === 'space-room' || route.name === 'direct-room')
 
+const room = toRef(props, 'room')
+const { react } = useRoomActions(room)
+
 provideRoomInstanceContext({
-  room: toRef(props, 'room'),
+  react,
+  room,
 })
 </script>
 

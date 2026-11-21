@@ -8,6 +8,7 @@ import {
   DialogLeave,
   DialogText,
   DialogEditAvatar,
+  DialogReactionsViewer,
 } from '#components'
 
 const { stack } = useGlobalDialog()
@@ -19,6 +20,7 @@ const dialogs: Record<GlobalDialog, Component> = {
   image: DialogImage,
   invite: DialogInvite,
   leave: DialogLeave,
+  reactionsViewer: DialogReactionsViewer,
   roomSettings: DialogRoomSettings,
   text: DialogText,
 }

@@ -7,7 +7,7 @@ export interface ContextMenuRegions {
   }
   event: {
     event: MatrixEvent
-    roomId: string
+    room: Room
   }
   homeRoom: {
     room:

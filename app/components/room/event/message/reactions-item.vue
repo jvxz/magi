@@ -1,12 +1,17 @@
 <script lang="ts" setup>
 import { UToggle } from '#components'
 
+import { injectRoomInstanceContext } from '../../instance.vue'
+import { injectEventListItemContext } from '../generic.vue'
+
 const props = defineProps<{
   reaction: string
+  shortcode?: string
 }>()
 
-const { error, event, getReactors, isReactingTo, reactTo, room } = useRoomEventReactions.inject()
-const { openReactionViewer } = useRoomEventReactionsViewer()
+const { error, event, getReactors, isReactingTo, reactTo } = injectEventListItemContext()
+const { room } = injectRoomInstanceContext()
+const { openDialog } = useGlobalDialog()
 
 const tooltipOpen = shallowRef(false)
 
@@ -48,7 +53,8 @@ const reactorsString = computed(() => {
 })
 
 function handleReactionViewer() {
-  openReactionViewer(room.value, event.value)
+  if (!event.value || !room.value) return
+  openDialog('reactionsViewer', { event: event.value, room: room.value })
   tooltipOpen.value = false
 }
 </script>
@@ -58,9 +64,9 @@ function handleReactionViewer() {
     <UTooltipRoot v-model:open="tooltipOpen">
       <UTooltipTrigger as-child>
         <UReactionItem
+          :as="UToggle"
           :key="reaction"
           v-model:model-value="localIsReacting"
-          :as="UToggle"
           :count="localCount"
           :reaction
           size="sm"
@@ -71,10 +77,10 @@ function handleReactionViewer() {
       </UTooltipTrigger>
 
       <UTooltipContent class="font-normal py-3 bg-popover flex gap-2 max-w-64 min-w-48 items-center">
-        <Twemojify :text="reaction" class="text-10 shrink-0" />
-
         <p role="button" class="font-normal cursor-pointer hover:underline" @click="handleReactionViewer">
-          reacted by {{ reactorsString }}
+          <span class="font-medium">{{ reactorsString }}</span>
+          <span class="text-muted-foreground"> reacted with </span>
+          <span class="font-medium">:{{ shortcode }}:</span>
         </p>
       </UTooltipContent>
     </UTooltipRoot>

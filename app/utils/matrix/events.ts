@@ -206,7 +206,7 @@ export function getEventRelations(room: Room, event: MaybeEventOrId, relationTyp
   return tl.relations.getChildEventsForEvent(eventId, relationType, eventType)
 }
 
-export type EventReactions = Map<string, Set<MatrixEvent>>
+export type EventReactions = Map<string, { events: Set<MatrixEvent>; shortcode?: string }>
 export function getEventReactions(room: Room, event: MaybeEventOrId): EventReactions | undefined {
   const reactions = getEventRelations(room, event, RelationType.Annotation, EventType.Reaction)
   const annotations = reactions?.getSortedAnnotationsByKey()
@@ -216,12 +216,23 @@ export function getEventReactions(room: Room, event: MaybeEventOrId): EventReact
   for (const [reaction, events] of annotations) {
     if (!events.size || typeof reaction !== 'string') continue
 
-    const dedupedMemberEvents = new Map<string, MatrixEvent>() // userId → most recent event
+    let shortcode: string | undefined
+
+    const dedupedMemberEvents = new Map<string, MatrixEvent>()
     for (const event of events) {
       if (event.isRedacted()) continue
 
       const sender = event.getSender()
       if (!sender) continue
+
+      if (!shortcode) {
+        if (REGEX__EMOJI_STRICT.test(reaction)) {
+          shortcode = getShortcodeFromUnicode(reaction)
+        } else {
+          const content = event.getContent<{ shortcode: string | undefined }>()
+          if (content.shortcode) shortcode = content.shortcode
+        }
+      }
 
       const storedEvent = dedupedMemberEvents.get(sender)
       const storedTs = storedEvent?.getTs()
@@ -231,7 +242,8 @@ export function getEventReactions(room: Room, event: MaybeEventOrId): EventReact
       }
     }
 
-    if (dedupedMemberEvents.size) filteredAnnotations.set(reaction, new Set(dedupedMemberEvents.values()))
+    if (dedupedMemberEvents.size)
+      filteredAnnotations.set(reaction, { events: new Set(dedupedMemberEvents.values()), shortcode })
   }
 
   return filteredAnnotations
@@ -256,7 +268,7 @@ export function isUserReacting(
   if (!annotation) return
 
   let userReactionEvent: MatrixEvent | undefined
-  annotation.forEach(event => {
+  annotation.events.forEach(event => {
     if (event.getSender() === userId) userReactionEvent = event
   })
 

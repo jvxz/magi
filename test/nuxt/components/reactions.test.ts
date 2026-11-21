@@ -1,11 +1,11 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { DOMWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mockClient } from '~~/test/utils/client.ts'
 import { DEFAULT_MOCK_NAMES } from '~~/test/utils/factories.ts'
 import { withSetup } from '~~/test/utils/mount.ts'
 
-import { RoomEventReactionsViewer, UProfilePopoverRoot } from '#components'
+import { DialogReactionsViewer, UProfilePopoverRoot } from '#components'
 
 import Reactions from '../fixtures/reactions.vue'
 
@@ -24,19 +24,16 @@ const mountViewer = async () => {
   GENERAL__DEFAULT_RECENT_REACTIONS.forEach((v, k) => {
     for (let i = 0; i < k + 1; i++) mockRoom.pushReaction(target, v, { sender: DEFAULT_MOCK_NAMES[i] })
   })
-  useRoomEventReactionsViewer().openReactionViewer(mockRoom.room, target)
 
-  await mountSuspended(defineComponent(() => () => h(UProfilePopoverRoot, null, () => h(RoomEventReactionsViewer))))
+  await mountSuspended(
+    defineComponent(
+      () => () =>
+        h(UProfilePopoverRoot, null, () => h(DialogReactionsViewer, { event: target, open: true, room: mockRoom.room })),
+    ),
+  )
 }
 
 describe('reactions', () => {
-  beforeEach(() => {
-    const viewer = useRoomEventReactionsViewer()
-    viewer.open.value = false
-    viewer.room.value = undefined
-    viewer.event.value = undefined
-  })
-
   it('displays the dialog with default recent reactions', async () => {
     await mountViewer()
 
@@ -79,7 +76,7 @@ describe('reactions', () => {
 
     const reactions = await withSetup(
       () =>
-        useRoomEventReactions.provide(
+        useRoomEventReactions(
           () => mockRoom.room,
           () => event,
         ),
