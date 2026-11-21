@@ -52,7 +52,7 @@ export default defineConfig({
           exclude: [BROWSER_NUXT_TESTS],
           include: ['test/nuxt/**/*.{test,spec}.ts'],
           name: 'nuxt',
-          setupFiles: ['vitest-localstorage-mock', 'test/support/setup.ts'],
+          setupFiles: ['vitest-localstorage-mock', 'test/utils/setup.ts'],
           // first mountSuspended in a file imports the whole app, taking ~3-5s
           testTimeout: 15000,
         },
@@ -64,7 +64,7 @@ export default defineConfig({
           environmentOptions: { nuxt: nuxtOpts },
           include: [BROWSER_NUXT_TESTS],
           name: 'nuxt-browser',
-          setupFiles: ['test/support/setup.ts'],
+          setupFiles: ['test/utils/setup.ts'],
           testTimeout: 15000,
         },
       }),
