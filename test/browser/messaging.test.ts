@@ -94,6 +94,25 @@ describe('sanitizeFormattedBody', () => {
     )
   })
 
+  it.each([
+    ['<p width="100" data-mx-invalid height="200">hi</p>', '<p>hi</p>'],
+    [
+      '<code width="100" data-mx-invalid class="language-rust underline">hi</code>',
+      '<code class="language-rust">hi</code>',
+    ],
+    ['<span width="100" class="hi" data-mx-invalid>hi</span>', '<span>hi</span>'],
+    [
+      '<a width="100" class="hi" data-mx-invalid target="_blank" href="https://matrix.to">hi</a>',
+      '<a target="_blank" href="https://matrix.to">hi</a>',
+    ],
+    [
+      '<img width="100" wadth="hi" class="hi" data-mx-invalid alt="my cool image" src="mxc://matrix.org/my-cool-image">hi</img>',
+      '<img width="100" alt="my cool image" src="mxc://matrix.org/my-cool-image">hi',
+    ],
+  ])('normalises %s', (input, expected) => {
+    expect(sanitizeFormattedBody(input)).toBe(expected)
+  })
+
   describe('with RETURN_DOM', () => {
     it('returns the body without the reply fallback', () => {
       const body = sanitizeFormattedBody(
