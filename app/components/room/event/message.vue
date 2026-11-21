@@ -53,19 +53,34 @@ const shouldRender = computed(() => {
         </div>
 
         <template v-if="!isReplyEventLoading">
-          <p v-if="!isReplyEventRedacted" class="text-muted-foreground font-medium">
-            {{ replyEventProfile?.displayname }}
-          </p>
+          <UProfilePopoverTrigger
+            v-if="!isReplyEventRedacted"
+            as-child
+            :content-props="{
+              sideOffset: 4,
+              align: 'start',
+              side: 'right',
+            }"
+            :user="replySenderId"
+          >
+            <UButton
+              :title="replyEventProfile.displayname"
+              variant="ghost-inline"
+              class="text-muted-foreground font-medium truncate max-w-1/4 shrink-0"
+            >
+              {{ replyEventProfile.displayname }}
+            </UButton>
+          </UProfilePopoverTrigger>
 
           <p
             v-if="!isReplyEventRedacted"
-            class="max-w-2/3 truncate"
+            class="w-full truncate"
             :class="{
               'italic text-muted-foreground':
                 replyEvent?.isDecryptionFailure() || !replyEventBody || isReplyEventRedacted,
             }"
           >
-            <Twemojify :text="replyEventBody ?? ''" />
+            <Twemojify class="truncate" :text="replyEventBody ?? ''" />
           </p>
         </template>
         <template v-else>
