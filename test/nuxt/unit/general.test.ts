@@ -1,6 +1,5 @@
-import { describe, expect, it, vi } from 'vitest'
-
-import { createMockClient } from '../utils/matrix/client'
+import { describe, expect, it } from 'vitest'
+import { mockClient } from '~~/test/utils/client'
 
 describe('general', () => {
   it('generates valid matrix.to url', async () => {
@@ -9,33 +8,28 @@ describe('general', () => {
     const userId = '@admin:magi.social'
     const eventId = '$foobar123'
 
-    const client = createMockClient()
-    const { addMember, room } = createMockRoom({
-      alias: roomAlias,
-      id: roomId,
-      seedMembers: 16,
-    })
-
-    vi.spyOn(client, 'getRoom').mockReturnValue(room)
+    const mockRoom = createMockRoom({ alias: roomAlias, id: roomId, seedMembers: 16 })
+    const { addMember, room } = mockRoom
+    const client = mockClient({ rooms: [mockRoom] })
 
     addMember(userId, { powerLevel: 100 })
 
-    const roomIdUrl = await getMatrixToUrl(client, 'roomId', roomId)
+    const roomIdUrl = getMatrixToUrl(client, 'roomId', roomId)
     expect(roomIdUrl.startsWith(`https://matrix.to/#/${roomId}`)).toBe(true)
     expect(roomIdUrl.startsWith(`https://matrix.to/#/${roomId}?via=magi.social`)).toBe(true)
 
-    const roomIdUrlNoVia = await getMatrixToUrl(client, 'roomId', roomId, { viaServers: false })
+    const roomIdUrlNoVia = getMatrixToUrl(client, 'roomId', roomId, { viaServers: false })
     expect(roomIdUrlNoVia.startsWith(`https://matrix.to/#/${roomId}`)).toBe(true)
     expect(roomIdUrlNoVia.startsWith(`https://matrix.to/#/${roomId}?via=magi.social`)).toBe(false)
 
-    const roomAliasUrl = await getMatrixToUrl(client, 'roomAlias', room.getCanonicalAlias() ?? '')
+    const roomAliasUrl = getMatrixToUrl(client, 'roomAlias', room.getCanonicalAlias() ?? '')
     expect(roomAliasUrl.startsWith(`https://matrix.to/#/${roomAlias}`)).toBe(true)
     expect(roomAliasUrl.includes('?')).toBe(false)
 
-    const userIdUrl = await getMatrixToUrl(client, 'userId', userId)
+    const userIdUrl = getMatrixToUrl(client, 'userId', userId)
     expect(userIdUrl.startsWith(`https://matrix.to/#/${userId}`)).toBe(true)
 
-    const eventUrl = await getMatrixToUrl(client, 'event', roomId, {
+    const eventUrl = getMatrixToUrl(client, 'event', roomId, {
       eventId,
     })
     expect(eventUrl.startsWith(`https://matrix.to/#/${roomId}/${eventId}`)).toBe(true)

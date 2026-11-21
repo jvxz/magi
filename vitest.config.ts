@@ -3,6 +3,20 @@ import { playwright } from '@vitest/browser-playwright'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest/config'
 
+const defineBrowser = () => ({
+  enabled: true,
+  headless: true,
+  instances: [{ browser: 'chromium' as const }],
+  provider: playwright(),
+})
+
+const nuxtOpts = {
+  mock: { indexedDb: true },
+  rootDir: fileURLToPath(new URL('.', import.meta.url)),
+}
+
+const BROWSER_NUXT_TESTS = 'test/nuxt/components/**/*.{test,spec}.ts'
+
 export default defineConfig({
   test: {
     coverage: {
@@ -11,23 +25,11 @@ export default defineConfig({
     },
     projects: [
       {
-        test: {
-          environment: 'node',
-          include: ['test/unit/*.{test,spec}.ts'],
-          name: 'unit',
-        },
-      },
-      {
         resolve: {
           alias: { '~': fileURLToPath(new URL('./app', import.meta.url)) },
         },
         test: {
-          browser: {
-            enabled: true,
-            headless: true,
-            instances: [{ browser: 'chromium' }],
-            provider: playwright(),
-          },
+          browser: defineBrowser(),
           include: ['test/browser/**/*.{test,spec}.ts'],
           name: 'browser',
           sequence: { groupOrder: 1 },
@@ -46,20 +48,23 @@ export default defineConfig({
       await defineVitestProject({
         test: {
           environment: 'nuxt',
-          environmentOptions: {
-            nuxt: {
-              domEnvironment: 'happy-dom',
-
-              mock: {
-                indexedDb: true,
-              },
-              rootDir: fileURLToPath(new URL('.', import.meta.url)),
-            },
-          },
+          environmentOptions: { nuxt: { ...nuxtOpts, domEnvironment: 'happy-dom' } },
+          exclude: [BROWSER_NUXT_TESTS],
           include: ['test/nuxt/**/*.{test,spec}.ts'],
           name: 'nuxt',
-          setupFiles: ['vitest-localstorage-mock'],
+          setupFiles: ['vitest-localstorage-mock', 'test/utils/setup.ts'],
           // first mountSuspended in a file imports the whole app, taking ~3-5s
+          testTimeout: 15000,
+        },
+      }),
+      await defineVitestProject({
+        test: {
+          browser: defineBrowser(),
+          environment: 'nuxt',
+          environmentOptions: { nuxt: nuxtOpts },
+          include: [BROWSER_NUXT_TESTS],
+          name: 'nuxt-browser',
+          setupFiles: ['test/utils/setup.ts'],
           testTimeout: 15000,
         },
       }),

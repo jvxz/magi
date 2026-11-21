@@ -1,7 +1,7 @@
 import type { Membership } from 'matrix-js-sdk'
 
 import { KnownMembership, MatrixEvent, Room, RoomMember } from 'matrix-js-sdk'
-import { generateFakeUserId } from '~~/test/nuxt/utils/matrix/credentials'
+import { generateFakeUserId } from '~~/test/utils/factories'
 
 const DEFAULT_SENDER = '@test:localhost'
 const DEFAULT_START_TS = Date.UTC(2026, 0, 1)
