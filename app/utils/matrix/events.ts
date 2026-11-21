@@ -38,6 +38,156 @@ export function getEventContent(event: MatrixEvent | undefined): IContent {
   return content
 }
 
+const BLOCK_TAGS = new Set([
+  'body',
+  'blockquote',
+  'div',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'li',
+  'ol',
+  'p',
+  'pre',
+  'table',
+  'tbody',
+  'thead',
+  'tr',
+  'ul',
+])
+
+type AllowedTag = (typeof MATRIX__ALLOWED_TAGS)[number]
+
+export type MessageNode =
+  | { type: 'text'; value: string }
+  | { type: 'emoji'; unicode: string }
+  | { type: 'custom-emoji'; url: string; shortcode: string | undefined; alt: string | undefined }
+  | { type: 'codeblock'; value: string; language: string | undefined }
+  | { type: 'codespan'; value: string }
+  | { type: 'mention'; mentionType: MentionType; value: string; text: string | undefined }
+  | { type: 'link'; href: string; children: MessageNode[] }
+  | {
+      type: 'element'
+      tag: AllowedTag
+      attrs?: {
+        href?: string
+        target?: string
+        start?: number
+      }
+      children: MessageNode[]
+    }
+  | { type: 'spoiler'; reason?: string; children: MessageNode[] }
+  | { type: 'math'; latex: string; fallback: MessageNode[] }
+  | { type: 'image'; mxcUrl: string; alt?: string; width?: number; height?: number }
+
+export function createMessageNodes(el: HTMLElement) {
+  const nodes: MessageNode[] = []
+
+  function transform(el: HTMLElement) {
+    const isBlock = BLOCK_TAGS.has(el.tagName.toLowerCase())
+
+    for (const node of el.childNodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const value = node.nodeValue ?? ''
+        if (isBlock && !value.trim()) continue
+
+        value.split(REGEX__EMOJI_STRICT).forEach((part, i) => {
+          if (!part) return
+          // odd indices are always emoji unicode
+          nodes.push(i % 2 /* 0 = even */ ? { type: 'emoji', unicode: part } : { type: 'text', value: part })
+        })
+
+        continue
+      }
+
+      if (!(node instanceof HTMLElement)) continue
+
+      // codespan
+      if (node.tagName.toLowerCase() === 'code') {
+        nodes.push({
+          type: 'codespan',
+          value: node.textContent ?? '',
+        })
+      }
+
+      // codeblock
+      else if (node.tagName.toLowerCase() === 'pre') {
+        const code = node.querySelector('code')
+        nodes.push({
+          language: code?.classList
+            .values()
+            .find(cls => cls.startsWith('language-'))
+            ?.replace('language-', ''),
+          type: 'codeblock',
+          value: (code ?? node).textContent ?? '',
+        })
+      }
+
+      // mention
+      else if (node.tagName.toLowerCase() === 'a') {
+        const href = decode(node.getAttribute('href') ?? '')
+        const { type, value } = resolveMentionHref(href)
+        if (type !== 'unknown') {
+          nodes.push({
+            mentionType: type,
+            text: node.textContent,
+            type: 'mention',
+            value,
+          })
+        } else {
+          nodes.push({
+            children: createMessageNodes(node),
+            href,
+            type: 'link',
+          })
+        }
+      }
+
+      // image or custom emoji
+      else if (node.tagName.toLowerCase() === 'img') {
+        const src = node.getAttribute('src')
+        if (!src) continue
+
+        if (node.hasAttribute('data-mx-emoticon')) {
+          const alt = node.getAttribute('alt') ?? undefined
+          const shortcode = alt ?? node.getAttribute('title') ?? undefined
+          nodes.push({
+            alt,
+            shortcode,
+            type: 'custom-emoji',
+            url: src,
+          })
+        } else {
+          nodes.push({
+            alt: node.getAttribute('alt') ?? undefined,
+            height: Number(node.getAttribute('height')) || undefined,
+            mxcUrl: src,
+            type: 'image',
+            width: Number(node.getAttribute('width')) || undefined,
+          })
+        }
+      }
+
+      // default
+      else {
+        nodes.push({
+          attrs: readRenderAttrs(node),
+          children: createMessageNodes(node),
+          tag: node.tagName.toLowerCase() as AllowedTag,
+          type: 'element',
+        })
+      }
+    }
+  }
+
+  transform(el)
+
+  return nodes
+}
+
 export function getEventChildren(room: Room, event: MaybeEventOrId) {
   if (!room) return
 

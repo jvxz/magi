@@ -17,16 +17,9 @@ const props = defineProps<RoomEventMessageBodyProps>()
 
 const { messageNodes } = useMessageBodyNodes(() => props.event)
 
-const { content: eventContent } = useEventContent(() => props.event)
-const eventBody = computed(() => trimReplyFromBody(eventContent.value?.body))
 const isJumboEmoji = computed(() => {
-  const body = eventBody.value?.trim().replace(REGEX__EMOJI_VARIATION, '')
-  if (!body) return false
-
-  if (body.replace(REGEX__EMOJI, '').trim() !== '') return false
-
-  const count = body.match(REGEX__EMOJI)?.length ?? 0
-  return count > 0 && count <= 27
+  const nodes = messageNodes.value.filter(n => n.type !== 'text' || n.value.trim())
+  return nodes.length > 0 && nodes.length <= 27 && nodes.every(n => n.type === 'emoji' || n.type === 'custom-emoji')
 })
 
 const [DefineElement, Element] = createReusableTemplate<{
@@ -44,17 +37,22 @@ const [DefineElement, Element] = createReusableTemplate<{
 
 <template>
   <DefineElement v-slot="{ node }">
-    <Twemojify
-      v-if="node.type === 'text'"
-      :text="node.value"
-      class=""
-      :class="{
-        'text-4xl': isJumboEmoji,
-      }"
+    <!-- text -->
+    <span v-if="node.type === 'text'" data-slot="text">{{ node.value }}</span>
+
+    <!-- emoji -->
+    <UEmoji v-else-if="node.type === 'emoji'" :unicode="node.unicode" :class="isJumboEmoji && 'text-4xl'" />
+    <UEmoji
+      v-else-if="node.type === 'custom-emoji'"
+      :url="node.url"
+      :alt="node.alt"
+      :class="isJumboEmoji && 'text-4xl'"
     />
 
+    <!-- codespan -->
     <UCodespan v-else-if="node.type === 'codespan'">{{ node.value }}</UCodespan>
 
+    <!-- codeblock -->
     <UCodeblock
       v-else-if="node.type === 'codeblock'"
       :input="node.value"
@@ -65,8 +63,10 @@ const [DefineElement, Element] = createReusableTemplate<{
       }"
     />
 
+    <!-- link -->
     <UButton
       v-else-if="node.type === 'link'"
+      data-slot="link"
       variant="link"
       class="text-primary mx-0 px-0 w-fit"
       :style="{
@@ -80,8 +80,20 @@ const [DefineElement, Element] = createReusableTemplate<{
       </NuxtLink>
     </UButton>
 
-    <RoomEventMessageBodyMention v-else-if="node.type === 'mention'" v-bind="node" />
+    <!-- mention -->
+    <RoomEventMessageBodyMention v-else-if="node.type === 'mention'" data-slot="mention" v-bind="node" />
 
+    <!-- image -->
+    <RoomEventMessageBodyImage
+      v-else-if="node.type === 'image'"
+      data-slot="image"
+      :mxc-url="node.mxcUrl"
+      :alt="node.alt"
+      :width="node.width"
+      :height="node.height"
+    />
+
+    <!-- element -->
     <component :is="tagComponentMap[node.tag] ?? node.tag" v-else-if="node.type === 'element'" v-bind="node.attrs">
       <Element v-for="(child, index) in node.children" :key="index" :node="child" />
     </component>

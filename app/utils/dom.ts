@@ -109,6 +109,10 @@ export function getTotalNodeHeights<T extends ChildNode | HTMLElement | Dimensio
   }
 }
 
+export function readRenderAttrs(el: HTMLElement) {
+  return Object.fromEntries(Array.from(el.attributes, ({ name, value }) => [name, value]))
+}
+
 // https://github.com/vueuse/vueuse/blob/main/packages/core/onStartTyping/index.ts#L6C1-L25C2
 export function isFocusedElementEditable() {
   const { activeElement, body } = document

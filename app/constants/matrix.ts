@@ -35,7 +35,7 @@ export const MATRIX__ALLOWED_ATTRS_PER_TAG = {
   a: ['target', 'href'],
   code: ['class'],
   div: ['data-mx-maths'],
-  img: ['width', 'height', 'alt', 'title', 'src'],
+  img: ['width', 'height', 'alt', 'title', 'src', 'data-mx-emoticon'],
   ol: ['start'],
   span: ['data-mx-bg-color', 'data-mx-color', 'data-mx-spoiler', 'data-mx-maths'],
 } as const

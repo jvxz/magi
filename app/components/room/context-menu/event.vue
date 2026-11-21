@@ -45,6 +45,9 @@ const handleDeleteMessage = () => {
   if (current.has('shift')) redact.mutate({ reason: undefined })
   else openDialog('deleteMessage', { eventId: props.event.getId()!, roomId: props.roomId })
 }
+
+// lazy, only calculates if node structure item is selected
+const { messageNodes } = useMessageBodyNodes(props.event)
 </script>
 
 <template>
@@ -91,6 +94,12 @@ const handleDeleteMessage = () => {
         @select="openDialog('codeViewer', { lang: 'json', code: JSON.stringify(props.event, null, 2) })"
       >
         View source
+      </UContextMenuItem>
+
+      <UContextMenuItem
+        @select="openDialog('codeViewer', { lang: 'json', code: JSON.stringify(messageNodes, null, 2) })"
+      >
+        View node structure
       </UContextMenuItem>
     </template>
   </template>
