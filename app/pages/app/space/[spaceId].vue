@@ -44,6 +44,7 @@ provideSpacePageContext({
   </LayoutAppSlot>
 
   <RoomInstance v-if="room" :room />
+  <RoomPreview v-else-if="currentRoomId" :room-id="currentRoomId" />
 
   <NuxtPage :is-paginating />
 </template>
