@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { Room } from 'matrix-js-sdk'
-
 import { injectRoomInstanceContext } from './instance.vue'
 
 const { room } = injectRoomInstanceContext()

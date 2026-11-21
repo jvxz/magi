@@ -30,5 +30,5 @@ const isRoomJoined = useRoomComputed(room, r => (r ? isJoined(r) : false))
 
 <template>
   <RoomInstance v-if="room && isRoomJoined" :room />
-  <RoomPreview v-else :roomId />
+  <RoomPreview v-else :room-id />
 </template>
