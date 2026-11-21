@@ -184,7 +184,7 @@ export default defineNuxtConfig({
         rootDir: '..',
         types: ['grecaptcha'],
       },
-      include: ['../test/browser/**/*'],
+      include: ['../test/browser/**/*', '../test/support/**/*'],
     },
   },
 
