@@ -1,59 +1,33 @@
-import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { DOMWrapper } from '@vue/test-utils'
-import { User } from 'matrix-js-sdk'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { mockClient } from '~~/test/utils/client.ts'
+import { DEFAULT_MOCK_NAMES } from '~~/test/utils/factories.ts'
+import { withSetup } from '~~/test/utils/mount.ts'
 
 import { RoomEventReactionsViewer, UProfilePopoverRoot } from '#components'
 
 import Reactions from '../fixtures/reactions.vue'
-import { mockMatrixHooks } from '../utils/matrix/client.ts'
-import { DEFAULT_MOCK_NAMES, generateFakeHomeserver } from '../utils/matrix/credentials.ts'
 
-const { useMatrixClient, useMatrixHooks, useSelf } = vi.hoisted(() => {
-  return {
-    useMatrixClient: vi.fn(() => ({ client: shallowRef<Record<string, unknown>>({ getUserId: () => undefined }) })),
-    useMatrixHooks: vi.fn(),
-    useSelf: vi.fn(() => ({ self: shallowRef() })),
-  }
-})
+const [FIRST_REACTION] = GENERAL__DEFAULT_RECENT_REACTIONS as [string, ...string[]]
 
-const matrixHooks = mockMatrixHooks
-useMatrixHooks.mockImplementation(mockMatrixHooks)
+const reactionItemSelector = (reaction: string | undefined) => `[data-slot="reaction-item"][reaction="${reaction}"]`
 
-mockNuxtImport('useMatrixClient', () => useMatrixClient)
-mockNuxtImport('useMatrixHooks', () => useMatrixHooks)
-mockNuxtImport('useSelf', () => useSelf)
+const findReactionItem = (reaction: string | undefined) =>
+  new DOMWrapper(document.querySelector(reactionItemSelector(reaction)))
 
-const createWrapper = () => {
-  return defineComponent({
-    setup: () => () => h(UProfilePopoverRoot, null, () => h(RoomEventReactionsViewer)),
-  })
-}
-
-let currentMockRoom: MockRoom | undefined
-
-const setupState = (skipDefaults: boolean = false) => {
+const mountViewer = async () => {
   const mockRoom = createMockRoom({ id: 'reactionsViewer' })
-  currentMockRoom = mockRoom
+  mockClient({ rooms: [mockRoom] })
 
-  const viewer = useRoomEventReactionsViewer()
+  const target = mockRoom.pushMessage({ body: 'hello' })
+  GENERAL__DEFAULT_RECENT_REACTIONS.forEach((v, k) => {
+    for (let i = 0; i < k + 1; i++) mockRoom.pushReaction(target, v, { sender: DEFAULT_MOCK_NAMES[i] })
+  })
+  useRoomEventReactionsViewer().openReactionViewer(mockRoom.room, target)
 
-  if (!skipDefaults) {
-    const target = mockRoom.pushMessage({ body: 'hello' })
-    GENERAL__DEFAULT_RECENT_REACTIONS.forEach((v, k) => {
-      for (let i = 0; i < k + 1; i++) {
-        mockRoom.pushReaction(target, v, { sender: DEFAULT_MOCK_NAMES[i] })
-      }
-    })
-
-    viewer.openReactionViewer(mockRoom.room, target)
-  }
-
-  return { mockRoom, viewer }
+  await mountSuspended(defineComponent(() => () => h(UProfilePopoverRoot, null, () => h(RoomEventReactionsViewer))))
 }
-
-const createReactionItemSelector = (reaction: string | undefined) =>
-  `[data-slot="reaction-item"][reaction="${reaction}"]`
 
 describe('reactions', () => {
   beforeEach(() => {
@@ -61,136 +35,70 @@ describe('reactions', () => {
     viewer.open.value = false
     viewer.room.value = undefined
     viewer.event.value = undefined
-
-    useMatrixHooks.mockReturnValue(matrixHooks())
-
-    useMatrixClient.mockReturnValue({
-      client: shallowRef({
-        getHomeserverUrl: () => generateFakeHomeserver(),
-        getRoom: (id: string) => (currentMockRoom?.room.roomId === id ? currentMockRoom.room : undefined),
-        getSafeUserId: () => DEFAULT_MOCK_NAMES[0]!,
-        getUser: (id: string) => new User(id),
-        getUserId: () => DEFAULT_MOCK_NAMES[0]!,
-        redactEvent: vi.fn(),
-        sendEvent: vi.fn(),
-      }),
-    })
-
-    useSelf.mockReturnValue({
-      self: shallowRef(),
-    })
   })
 
   it('displays the dialog with default recent reactions', async () => {
-    setupState()
-    const Wrapper = createWrapper()
-    await mountSuspended(Wrapper)
+    await mountViewer()
 
-    // console.log('document.body: ', document.body.outerHTML)
-
-    GENERAL__DEFAULT_RECENT_REACTIONS.forEach(v => {
-      const reactionItem = new DOMWrapper(document.querySelector(createReactionItemSelector(v)))
-      expect(reactionItem.exists()).toBe(true)
-    })
+    GENERAL__DEFAULT_RECENT_REACTIONS.forEach(v => expect(findReactionItem(v).exists()).toBe(true))
   })
 
   it('displays the dialog with the first reaction selected by default', async () => {
-    setupState()
-    const Wrapper = createWrapper()
-    await mountSuspended(Wrapper)
+    await mountViewer()
 
-    const reaction = GENERAL__DEFAULT_RECENT_REACTIONS[0]
-
-    const reactionItem = new DOMWrapper(document.querySelector(createReactionItemSelector(reaction)))
-
-    expect(reactionItem.attributes()).toHaveProperty('data-state', 'checked')
-    expect(reactionItem.attributes()).toHaveProperty('reaction', reaction)
+    const item = findReactionItem(FIRST_REACTION)
+    expect(item.attributes()).toMatchObject({ 'data-state': 'checked', reaction: FIRST_REACTION })
   })
 
   it('displays the correct reaction member list in the dialog', async () => {
-    setupState()
-    const Wrapper = createWrapper()
-    await mountSuspended(Wrapper)
+    await mountViewer()
 
     const reaction = GENERAL__DEFAULT_RECENT_REACTIONS[3]
-
-    const reactionItem = new DOMWrapper(document.querySelector(createReactionItemSelector(reaction)))
-
-    await reactionItem.trigger('mousedown')
+    const item = findReactionItem(reaction)
+    await item.trigger('mousedown')
     await nextTick()
 
-    expect(reactionItem.attributes()).toHaveProperty('data-state', 'checked')
-    expect(reactionItem.attributes()).toHaveProperty('reaction', reaction)
+    expect(item.attributes()).toMatchObject({ 'data-state': 'checked', reaction })
   })
 
   it('displays reaction item under message', async () => {
-    const reaction = GENERAL__DEFAULT_RECENT_REACTIONS[0]!
-
-    const component = await mountSuspended(Reactions)
-
     const mockRoom = createMockRoom({ id: 'reactions' })
-    currentMockRoom = mockRoom
+    mockClient({ rooms: [mockRoom] })
+    const event = mockRoom.pushMessage()
+    mockRoom.pushReaction(event, FIRST_REACTION)
 
-    const msgEvent = mockRoom.pushMessage()
-    mockRoom.pushReaction(msgEvent, reaction)
+    const component = await mountSuspended(Reactions, { props: { event, room: mockRoom.room } })
 
-    await component.setProps({
-      event: msgEvent,
-      room: mockRoom.room,
-    })
-
-    const item = component.find(createReactionItemSelector(reaction))
-    expect(item.exists()).toBe(true)
+    expect(component.find(reactionItemSelector(FIRST_REACTION)).exists()).toBe(true)
   })
 
   it('successfully reacts to message', async () => {
-    const reaction = GENERAL__DEFAULT_RECENT_REACTIONS[0]!
-
     const mockRoom = createMockRoom({ id: 'reactions' })
-    currentMockRoom = mockRoom
+    const { sendEvent } = mockClient({ rooms: [mockRoom] })
+    const event = mockRoom.pushMessage()
 
-    const msgEvent = mockRoom.pushMessage()
-
-    useMatrixClient.mockReturnValue({
-      client: shallowRef({
-        getHomeserverUrl: () => generateFakeHomeserver(),
-        getRoom: (id: string) => (id === mockRoom.room.roomId ? mockRoom.room : undefined),
-        getSafeUserId: () => DEFAULT_MOCK_NAMES[0]!,
-        getUser: (id: string) => new User(id),
-        getUserId: () => DEFAULT_MOCK_NAMES[0]!,
-        redactEvent: vi.fn(),
-        sendEvent: vi.fn(),
-      }),
-    })
-
-    let setup!: ReturnType<typeof useRoomEventReactions.provide>
-    const Harness = defineComponent({
-      setup() {
-        setup = useRoomEventReactions.provide(
+    const reactions = await withSetup(
+      () =>
+        useRoomEventReactions.provide(
           () => mockRoom.room,
-          () => msgEvent,
-        )
-        return () => h(Reactions, { event: msgEvent, room: mockRoom.room })
-      },
-    })
-    await mountSuspended(Harness)
+          () => event,
+        ),
+      () => h(Reactions, { event, room: mockRoom.room }),
+    )
+    reactions.reactTo(FIRST_REACTION)
 
-    setup.reactTo(reaction)
-
-    const { sendEvent } = useMatrixClient().client.value as { sendEvent: () => void }
-
-    await vi.waitFor(() => expect(sendEvent).toHaveBeenCalledTimes(1))
-
-    expect(sendEvent).toHaveBeenCalledWith(
-      mockRoom.room.roomId,
-      'm.reaction',
-      expect.objectContaining({
-        'm.relates_to': expect.objectContaining({
-          event_id: msgEvent.getId(),
-          key: reaction,
-          rel_type: 'm.annotation',
+    await vi.waitFor(() =>
+      expect(sendEvent).toHaveBeenCalledExactlyOnceWith(
+        mockRoom.room.roomId,
+        'm.reaction',
+        expect.objectContaining({
+          'm.relates_to': expect.objectContaining({
+            event_id: event.getId(),
+            key: FIRST_REACTION,
+            rel_type: 'm.annotation',
+          }),
         }),
-      }),
+      ),
     )
   })
 })

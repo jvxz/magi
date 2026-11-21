@@ -1,6 +1,5 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { describe, expect, it, vi } from 'vitest'
-import { h } from 'vue'
 
 import AuthLayout from '~/layouts/auth.vue'
 import LoginPage from '~/pages/login/index.vue'
