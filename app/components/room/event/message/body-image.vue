@@ -11,5 +11,5 @@ const src = useResolveImageUrl(() => props.mxcUrl, { resizeMethod: 'scale' })
 </script>
 
 <template>
-  <Img class="inline align-middle" :src :alt :title="alt" :width :height />
+  <Img class="align-middle inline" :src :alt :title="alt" :width :height />
 </template>

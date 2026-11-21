@@ -64,9 +64,9 @@ function handleReactionViewer() {
     <UTooltipRoot v-model:open="tooltipOpen">
       <UTooltipTrigger as-child>
         <UReactionItem
-          :as="UToggle"
           :key="reaction"
           v-model:model-value="localIsReacting"
+          :as="UToggle"
           :count="localCount"
           :reaction
           size="sm"

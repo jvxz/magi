@@ -66,7 +66,7 @@ const shouldRender = computed(() => {
             <UButton
               :title="replyEventProfile.displayname"
               variant="ghost-inline"
-              class="text-muted-foreground font-medium truncate max-w-1/4 shrink-0"
+              class="text-muted-foreground font-medium shrink-0 max-w-1/4 truncate"
             >
               {{ replyEventProfile.displayname }}
             </UButton>

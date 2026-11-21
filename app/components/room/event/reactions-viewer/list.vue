@@ -1,8 +1,4 @@
 <script lang="ts" setup>
-import type { Room } from 'matrix-js-sdk'
-
-import { injectRoomInstanceContext } from '../../instance.vue'
-
 defineProps<{
   reaction: string
   reactors?: Set<string>
@@ -24,7 +20,7 @@ defineProps<{
     >
       <UButton variant="ghost" class="text-foreground p-1.5 gap-2 h-auto w-full items-center justify-start">
         <UseRoomMember v-slot="{ roomMember }" :room :user="reactor">
-          <MatrixRoomMemberAvatar :room :member="reactor" class="size-6 shrink-0" />
+          <MatrixRoomMemberAvatar :room :member="reactor" class="shrink-0 size-6" />
           <p class="truncate">{{ resolveUserName(roomMember) }}</p>
         </UseRoomMember>
       </UButton>

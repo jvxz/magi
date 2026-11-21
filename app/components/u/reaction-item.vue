@@ -27,7 +27,7 @@ const imageUrl = useResolveImageUrl(() => (!isEmoji.value ? props.reaction : und
       )
     "
   >
-    <Twemojify v-if="isEmoji" class="truncate max-h-1em" :text="reaction" />
+    <Twemojify v-if="isEmoji" class="max-h-1em truncate" :text="reaction" />
     <Img v-else :alt="reaction" :src="imageUrl" class="max-h-1em" />
 
     <div class="h-1lh relative">

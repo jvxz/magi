@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { injectRoomInstanceContext } from '../../instance.vue'
 import { injectEventListItemContext } from '../generic.vue'
 
 const { reactions } = injectEventListItemContext()
