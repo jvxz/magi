@@ -5,10 +5,9 @@ export const INJECTION_KEY__MENU_ITEM: MenuItemInjectionKey = Symbol('MenuItemIn
 </script>
 
 <script lang="ts" setup>
-import type { ContextMenuItemEmits, ContextMenuItemProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 
-import { useForwardPropsEmits } from 'reka-ui'
+import { useForwardPropsEmits, type ContextMenuItemEmits, type ContextMenuItemProps } from 'reka-ui'
 
 import { UContextMenuItem, UDropdownMenuItem } from '#components'
 
