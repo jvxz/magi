@@ -6,10 +6,15 @@ const { reactions, getReactors } = useRoomEventReactions(
 )
 
 const reactionKeys = computed(() => reactions.value?.keys().toArray())
+
+const open = defineModel<boolean>('open')
+
+const currentRoom = useCurrentRoom()
+watch(currentRoom, () => (open.value = false))
 </script>
 
 <template>
-  <UDialogRoot>
+  <UDialogRoot v-model:open="open">
     <UDialogContent class="flex flex-col gap-0 overflow-clip md:h-[60%] md:w-108">
       <UDialogHeader>
         <UDialogTitle>Reactions</UDialogTitle>
