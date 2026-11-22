@@ -116,6 +116,7 @@ export default defineNuxtConfig({
 
   modules: [
     '~/modules/palettes',
+    '~/modules/component-aliases',
     '~/modules/vitalizer',
     '@nuxt/eslint',
     '@nuxt/fonts',
@@ -184,6 +185,25 @@ export default defineNuxtConfig({
         rootDir: '..',
         types: ['grecaptcha'],
       },
+      // @ts-expect-error ts 7.1
+      contentMappers: [
+        {
+          extensions: ['.vue'],
+          options: {
+            target: 3.5,
+            dataAttributes: ['data-*'],
+            // v3 behavior; v4 checks all of these strictly by default
+            strictVModel: false,
+            checkUnknownProps: false,
+            checkUnknownEvents: false,
+            checkUnknownComponents: false,
+            checkUnknownDirectives: false,
+            // types useRoute()/$route per page, like vue-router/volar/sfc-typed-router does for v3
+            plugins: [{ name: '@vue/content-mapper/plugins/vue-router', options: { rootDir: import.meta.dirname } }],
+          },
+          package: '@vue/content-mapper',
+        },
+      ],
       include: ['../test/browser/**/*', '../test/utils/**/*'],
     },
   },
