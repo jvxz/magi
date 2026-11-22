@@ -190,16 +190,14 @@ export default defineNuxtConfig({
         {
           extensions: ['.vue'],
           options: {
-            target: 3.5,
-            dataAttributes: ['data-*'],
-            // v3 behavior; v4 checks all of these strictly by default
-            strictVModel: false,
-            checkUnknownProps: false,
-            checkUnknownEvents: false,
             checkUnknownComponents: false,
             checkUnknownDirectives: false,
-            // types useRoute()/$route per page, like vue-router/volar/sfc-typed-router does for v3
+            checkUnknownEvents: false,
+            checkUnknownProps: false,
+            dataAttributes: ['data-*'],
             plugins: [{ name: '@vue/content-mapper/plugins/vue-router', options: { rootDir: import.meta.dirname } }],
+            strictVModel: false,
+            target: 3.5,
           },
           package: '@vue/content-mapper',
         },
