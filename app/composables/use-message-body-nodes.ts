@@ -18,7 +18,7 @@ export function useMessageBodyNodes(event: MaybeRefOrGetter<MatrixEvent>) {
 
     const content = eventRef.value.getContent<RoomMessageTextEventContent>()
     const { body, format, formatted_body } = content
-    if (format !== 'org.matrix.custom.html' || !formatted_body) return [{ type: 'text', value: body }]
+    if (format !== 'org.matrix.custom.html' || !formatted_body) return splitEmojiText(body)
 
     let nodes = cache.get(content)
     if (!nodes) {

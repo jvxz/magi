@@ -83,6 +83,15 @@ export type MessageNode =
   | { type: 'math'; latex: string; fallback: MessageNode[] }
   | { type: 'image'; mxcUrl: string; alt?: string; width?: number; height?: number }
 
+export function splitEmojiText(text: string): MessageNode[] {
+  // odd indices are always emoji unicode
+  return text
+    .split(REGEX__EMOJI_STRICT)
+    .flatMap((part, i): MessageNode[] =>
+      !part ? [] : i % 2 ? [{ type: 'emoji', unicode: part }] : [{ type: 'text', value: part }],
+    )
+}
+
 export function createMessageNodes(el: HTMLElement) {
   const nodes: MessageNode[] = []
 
@@ -94,11 +103,7 @@ export function createMessageNodes(el: HTMLElement) {
         const value = node.nodeValue ?? ''
         if (isBlock && !value.trim()) continue
 
-        value.split(REGEX__EMOJI_STRICT).forEach((part, i) => {
-          if (!part) return
-          // odd indices are always emoji unicode
-          nodes.push(i % 2 /* 0 = even */ ? { type: 'emoji', unicode: part } : { type: 'text', value: part })
-        })
+        nodes.push(...splitEmojiText(value))
 
         continue
       }
