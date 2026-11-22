@@ -13,7 +13,8 @@ const count = toRef(props, 'count')
 const prevCount = refDefault(usePrevious(count), 0)
 
 const isEmoji = computed(() => REGEX__EMOJI_STRICT.test(props.reaction))
-const imageUrl = useResolveImageUrl(() => (!isEmoji.value ? props.reaction : undefined), { size: 'small' })
+const isMedia = computed(() => props.reaction.startsWith('mxc://'))
+const imageUrl = useResolveImageUrl(() => (isMedia.value ? props.reaction : undefined), { size: 'small' })
 </script>
 
 <template>
@@ -28,7 +29,8 @@ const imageUrl = useResolveImageUrl(() => (!isEmoji.value ? props.reaction : und
     "
   >
     <Twemojify v-if="isEmoji" class="max-h-1em truncate" :text="reaction" />
-    <Img v-else :alt="reaction" :src="imageUrl" class="max-h-1em" />
+    <Img v-else-if="isMedia" :alt="reaction" :src="imageUrl" class="max-h-1em" />
+    <span v-else class="max-h-1em truncate">{{ reaction }}</span>
 
     <div class="h-1lh relative">
       <span class="font-semibold opacity-0 select-none tabular-nums" aria-hidden="true">{{ count }}</span>
