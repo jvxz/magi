@@ -1,13 +1,14 @@
 import type { NuxtTemplate } from 'nuxt/schema'
 
-import { addTemplate, defineNuxtModule } from 'nuxt/kit'
+import { addTemplate, defineNuxtModule, tryUseNitro } from 'nuxt/kit'
 
-const DECLARATION_RE = /^( {2}|export const )([A-Z_$][\w$]*): typeof import\(("[^"]+")\)(?:\.([\w$]+)|\["([^"]+)"\])$/
+const DECLARATION_RE =
+  /^( {2}const | {4}readonly | {2}|export const )([\w$]+): (?:UnwrapRef<)?typeof import\((["'][^"']+["'])\)(?:\.([\w$]+)|\[["']([^"']+)["']\])?>?$/
 
 interface Alias {
   name: string
   path: string
-  exportName: string
+  exportName?: string
 }
 
 function splitAliases(contents: string, prefix: string) {
@@ -24,15 +25,18 @@ function splitAliases(contents: string, prefix: string) {
       const start = lines.findLastIndex(l => l.trim() === '/**')
       lines.splice(start)
     }
-    aliases.push({ exportName: match[4] ?? match[5]!, name: match[2]!, path: match[3]! })
+    aliases.push({ exportName: match[4] ?? match[5], name: match[2]!, path: match[3]! })
   }
 
   return { aliases, contents: lines.join('\n') }
 }
 
-const renderExport = ({ name, path, exportName }: Alias) => `export { ${exportName} as ${name} } from ${path}`
+const renderExport = ({ name, path, exportName }: Alias) =>
+  exportName ? `export { ${exportName} as ${name} } from ${path}` : `export * as ${name} from ${path}`
 
-function wrap(template: NuxtTemplate<any> | undefined, transform: (contents: string) => string) {
+const renderExports = (aliases: Alias[]) => `${aliases.map(renderExport).join('\n')}\n`
+
+function wrap(template: NuxtTemplate<any> | undefined, transform: (contents: string) => string | Promise<string>) {
   const getContents = template?.getContents
   if (!template || !getContents) return
   template.getContents = async data => transform(await getContents(data))
@@ -53,21 +57,47 @@ export default defineNuxtModule({
           `type _Aliases = typeof import('./component-aliases')\ninterface _GlobalComponents extends _Aliases {`,
         ),
       )
-      if (!getTypes) return
-
-      addTemplate({
-        filename: 'types/component-aliases.d.ts',
-        getContents: async data =>
-          `${splitAliases(await getTypes(data), '  ')
-            .aliases.map(renderExport)
-            .join('\n')}\n`,
-        write: true,
-      })
+      if (getTypes) {
+        addTemplate({
+          filename: 'types/component-aliases.d.ts',
+          getContents: async data => renderExports(splitAliases(await getTypes(data), '  ').aliases),
+          write: true,
+        })
+      }
 
       wrap(find('components.d.ts'), contents => {
         const { aliases, contents: rest } = splitAliases(contents, 'export const ')
-        return `${aliases.map(renderExport).join('\n')}\n${rest}`
+        return `${renderExports(aliases)}${rest}`
       })
+
+      const getImportTypes = wrap(find('types/imports.d.ts'), async contents => {
+        const { aliases, contents: rest } = splitAliases(contents, '  const ')
+        const nitroImports = await tryUseNitro()?.unimport?.getImports()
+        const nitroNames = new Set(nitroImports?.map(i => i.as || i.name))
+        const globals = aliases
+          .map(({ name }) =>
+            nitroNames.has(name)
+              ? `  const ${name}: typeof _Aliases.${name}`
+              : `  export import ${name} = _Aliases.${name}`,
+          )
+          .join('\n')
+
+        return `import * as _Aliases from './import-aliases'\n${splitAliases(rest, '    readonly ')
+          .contents.replace('declare global {', `declare global {\n${globals}`)
+          .replace(
+            'interface ComponentCustomProperties {',
+            'interface ComponentCustomProperties extends _AliasesType {',
+          )
+          .replace("declare module 'vue' {", `type _AliasesType = typeof _Aliases\ndeclare module 'vue' {`)}`
+      })
+
+      if (getImportTypes) {
+        addTemplate({
+          filename: 'types/import-aliases.d.ts',
+          getContents: async data => renderExports(splitAliases(await getImportTypes(data), '  const ').aliases),
+          write: true,
+        })
+      }
     })
   },
 })
