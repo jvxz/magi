@@ -14,7 +14,10 @@ const prevCount = refDefault(usePrevious(count), 0)
 
 const isEmoji = computed(() => REGEX__EMOJI_STRICT.test(props.reaction))
 const isMedia = computed(() => props.reaction.startsWith('mxc://'))
-const imageUrl = useResolveImageUrl(() => (isMedia.value ? props.reaction : undefined), { size: 'small' })
+const imageUrl = useResolveImageUrl(() => (isMedia.value ? props.reaction : undefined), {
+  resizeMethod: 'scale',
+  size: 'small',
+})
 </script>
 
 <template>
