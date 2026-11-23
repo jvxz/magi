@@ -17,10 +17,7 @@ const props = defineProps<RoomEventMessageBodyProps>()
 
 const { messageNodes } = useMessageBodyNodes(() => props.event)
 
-const isJumboEmoji = computed(() => {
-  const nodes = messageNodes.value.filter(n => n.type !== 'text' || n.value.trim())
-  return nodes.length > 0 && nodes.length <= 27 && nodes.every(n => n.type === 'emoji' || n.type === 'custom-emoji')
-})
+const isJumboEmoji = computed(() => isEmojiOnly(messageNodes.value))
 
 const [DefineElement, Element] = createReusableTemplate<{
   node: MessageNode

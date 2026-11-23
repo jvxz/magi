@@ -92,6 +92,14 @@ export function splitEmojiText(text: string): MessageNode[] {
     )
 }
 
+const EMOJI_WRAPPER_TAGS = new Set<AllowedTag>(['p', 'span', 'div'])
+export function isEmojiOnly(nodes: MessageNode[], max = 27): boolean {
+  const flat = nodes
+    .flatMap(n => (n.type === 'element' && EMOJI_WRAPPER_TAGS.has(n.tag) ? n.children : n))
+    .filter(n => n.type !== 'text' || n.value.trim())
+  return flat.length > 0 && flat.length <= max && flat.every(n => n.type === 'emoji' || n.type === 'custom-emoji')
+}
+
 export function createMessageNodes(el: HTMLElement) {
   const nodes: MessageNode[] = []
 
