@@ -116,6 +116,7 @@ export default defineNuxtConfig({
 
   modules: [
     '~/modules/palettes',
+    '~/modules/component-aliases',
     '~/modules/vitalizer',
     '@nuxt/eslint',
     '@nuxt/fonts',
@@ -184,6 +185,23 @@ export default defineNuxtConfig({
         rootDir: '..',
         types: ['grecaptcha'],
       },
+      // @ts-expect-error ts 7.1
+      contentMappers: [
+        {
+          extensions: ['.vue'],
+          options: {
+            checkUnknownComponents: false,
+            checkUnknownDirectives: false,
+            checkUnknownEvents: false,
+            checkUnknownProps: false,
+            dataAttributes: ['data-*'],
+            plugins: [{ name: '@vue/content-mapper/plugins/vue-router', options: { rootDir: import.meta.dirname } }],
+            strictVModel: false,
+            target: 3.5,
+          },
+          package: '@vue/content-mapper',
+        },
+      ],
       include: ['../test/browser/**/*', '../test/utils/**/*'],
     },
   },
