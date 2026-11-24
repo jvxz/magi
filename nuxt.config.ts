@@ -219,8 +219,6 @@ export default defineNuxtConfig({
         '@regle/rules',
         '@tanstack/vue-hotkeys',
         '@tanstack/vue-query',
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
         'es-toolkit',
         'es-toolkit/map',
         'es-toolkit/string',
