@@ -1,6 +1,8 @@
 import type { NuxtTemplate } from 'nuxt/schema'
 
-import { addTemplate, defineNuxtModule, tryUseNitro } from 'nuxt/kit'
+import { readFile, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { addTemplate, defineNuxtModule } from 'nuxt/kit'
 
 const DECLARATION_RE =
   /^( {2}const | {4}readonly | {2}|export const )([\w$]+): (?:UnwrapRef<)?typeof import\((["'][^"']+["'])\)(?:\.([\w$]+)|\[["']([^"']+)["']\])?>?$/
@@ -48,6 +50,26 @@ export default defineNuxtModule({
     name: 'component-aliases',
   },
   setup(_, nuxt) {
+    const readServerNames = async () => {
+      const contents = await readFile(join(nuxt.options.buildDir, 'types/server-imports.d.ts'), 'utf8').catch(() => '')
+      return new Set(contents.matchAll(/^ {2}const ([\w$]+):/gm).map(m => m[1]!))
+    }
+    const renderGlobal = (name: string, serverNames: Set<string>) =>
+      serverNames.has(name) ? `  const ${name}: typeof _Aliases.${name}` : `  export import ${name} = _Aliases.${name}`
+
+    nuxt.hook('ready', () => {
+      nuxt.hook('prepare:types', async () => {
+        const serverNames = await readServerNames()
+        const path = join(nuxt.options.buildDir, 'types/imports.d.ts')
+        const contents = await readFile(path, 'utf8').catch(() => undefined)
+        if (!contents) return
+        const patched = contents.replace(/^ {2}export import ([\w$]+) = _Aliases\.\1$/gm, (_, name: string) =>
+          renderGlobal(name, serverNames),
+        )
+        if (patched !== contents) await writeFile(path, patched)
+      })
+    })
+
     nuxt.hook('modules:done', () => {
       const find = (filename: string) => nuxt.options.build.templates.find(t => t.filename === filename)
 
@@ -72,15 +94,8 @@ export default defineNuxtModule({
 
       const getImportTypes = wrap(find('types/imports.d.ts'), async contents => {
         const { aliases, contents: rest } = splitAliases(contents, '  const ')
-        const nitroImports = await tryUseNitro()?.unimport?.getImports()
-        const nitroNames = new Set(nitroImports?.map(i => i.as || i.name))
-        const globals = aliases
-          .map(({ name }) =>
-            nitroNames.has(name)
-              ? `  const ${name}: typeof _Aliases.${name}`
-              : `  export import ${name} = _Aliases.${name}`,
-          )
-          .join('\n')
+        const serverNames = await readServerNames()
+        const globals = aliases.map(({ name }) => renderGlobal(name, serverNames)).join('\n')
 
         return `import * as _Aliases from './import-aliases'\n${splitAliases(rest, '    readonly ')
           .contents.replace('declare global {', `declare global {\n${globals}`)

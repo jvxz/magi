@@ -176,7 +176,7 @@ export default defineNuxtConfig({
 
   typescript: {
     nodeTsConfig: {
-      include: ['../test/e2e/**/*'],
+      include: ['../test/e2e/**/*', '../security-route-rules.d.ts'],
     },
     tsConfig: {
       compilerOptions: {
