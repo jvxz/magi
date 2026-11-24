@@ -176,7 +176,7 @@ export default defineNuxtConfig({
 
   typescript: {
     nodeTsConfig: {
-      include: ['../test/e2e/**/*'],
+      include: ['../test/e2e/**/*', '../security-route-rules.d.ts'],
     },
     tsConfig: {
       compilerOptions: {
@@ -219,8 +219,6 @@ export default defineNuxtConfig({
         '@regle/rules',
         '@tanstack/vue-hotkeys',
         '@tanstack/vue-query',
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
         'es-toolkit',
         'es-toolkit/map',
         'es-toolkit/string',

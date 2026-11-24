@@ -79,8 +79,6 @@ overrides:
   '@tiptap/starter-kit': 3.34.0
   '@tiptap/suggestion': 3.34.0
   '@tiptap/vue-3': 3.34.0
-  devframe>h3: ^2.0.8
-  h3: 1.15.11
   prosemirror-model: 1.25.13
   prosemirror-view: 1.42.9
   reka-ui: 3.0.0-alpha.0
