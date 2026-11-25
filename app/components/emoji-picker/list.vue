@@ -287,7 +287,7 @@ watchDebounced(
   <div
     class="pl-[calc(var(--emoji-picker-padding)*0.5)] rounded shrink size-full relative overflow-hidden"
     :style="{
-      '--active-color': `color-mix(in srgb, var(--primary) ${isInputFocused ? '30%' : '50%'}, transparent)`,
+      '--active-color': `color-mix(in srgb, var(--selected) ${isInputFocused ? '80%' : '100%'}, transparent)`,
     }"
   >
     <div ref="scrollEl" class="overscroll-none size-full overflow-y-auto scrollbar-gutter-stable">
