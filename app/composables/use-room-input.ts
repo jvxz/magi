@@ -1,13 +1,10 @@
-import type { Editor } from '@tiptap/core'
 import type { MentionNodeAttrs } from '@tiptap/extension-mention'
 import type { Node } from '@tiptap/pm/model'
-import type { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion'
 import type { RoomMember } from 'matrix-js-sdk'
 import type { Room } from 'matrix-js-sdk'
 import type { IHierarchyRoom } from 'matrix-js-sdk/lib/@types/spaces'
 
 import { Extension } from '@tiptap/core'
-import { Mention } from '@tiptap/extension-mention'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import { Fragment, Slice } from '@tiptap/pm/model'
 import { toRef } from '@vueuse/core'
@@ -69,69 +66,10 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
     return [...custom, ...unicode]
   })
 
-  const open = shallowRef(false)
-  const highlightedIdx = shallowRef(0)
-  const filteredItems = shallowRef<SuggestionItem[]>([])
-  let command: ((props: MentionNodeAttrs) => void) | undefined
-
-  const listHeight = computed(() => Math.min(filteredItems.value.length, 7) * 32)
+  const { createSuggestion, filteredItems, highlightedIdx, listHeight, open, selectItem } =
+    useEditorSuggestions<SuggestionItem>()
 
   const { sendTextMessage } = useRoomMessaging(room)
-
-  function selectItem(item: SuggestionItem) {
-    command?.(item.commandProps as MentionNodeAttrs)
-  }
-
-  function createSuggestion(
-    char: string,
-    getItems: (props: { query: string; editor: Editor }) => SuggestionItem[],
-    opts?: {
-      onUpdate?: (props: SuggestionProps<any, MentionNodeAttrs>) => void
-      shouldOpen?: (props: SuggestionProps<any, MentionNodeAttrs>) => boolean
-      command: SuggestionOptions['command']
-    },
-  ): Omit<SuggestionOptions<any, MentionNodeAttrs>, 'editor'> {
-    return {
-      char,
-      ...(opts?.command && { command: opts.command }),
-      items: getItems,
-      render: () => ({
-        onExit: () => (open.value = false),
-        onKeyDown: ({ event }) => {
-          const items = filteredItems.value
-          if (!items.length) return false
-          switch (event.key) {
-            case 'ArrowUp':
-              highlightedIdx.value = clamp(highlightedIdx.value - 1, 0, items.length - 1)
-              return true
-            case 'ArrowDown':
-              highlightedIdx.value = clamp(highlightedIdx.value + 1, 0, items.length - 1)
-              return true
-            case 'Enter':
-              selectItem(items[highlightedIdx.value]!)
-              return true
-            case 'Escape':
-              open.value = false
-              return true
-          }
-          return false
-        },
-        onStart: ({ command: commandLocal, items, ...rest }) => {
-          command = commandLocal
-          filteredItems.value = items
-          highlightedIdx.value = 0
-          open.value = opts?.shouldOpen ? opts.shouldOpen({ ...rest, command: commandLocal, items }) : true
-        },
-        onUpdate: ({ command: commandLocal, items, ...rest }) => {
-          open.value = opts?.shouldOpen ? opts.shouldOpen({ ...rest, command: commandLocal, items }) : true
-          opts?.onUpdate?.({ ...rest, command: commandLocal, items })
-          command = commandLocal
-          filteredItems.value = items
-          highlightedIdx.value = 0
-        },
-      }),
-    }
-  }
 
   const editor = useEditor({
     editorProps: {
@@ -142,32 +80,22 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
         const { schema, tr } = view.state
         const nodes: Node[] = []
         const lines = text.split('\n')
+
+        // handle hard breaks
         for (let i = 0; i < lines.length; i++) {
           if (i > 0) nodes.push(schema.nodes.hardBreak!.create())
           if (lines[i]) nodes.push(schema.text(lines[i]!))
         }
+
         tr.replaceSelection(new Slice(Fragment.from(nodes), 0, 0))
         view.dispatch(tr)
         return true
       },
     },
     extensions: [
-      TiptapStarterKit.configure({
-        blockquote: false,
-        bold: false,
-        bulletList: false,
-        code: false,
-        codeBlock: false,
-        heading: false,
-        horizontalRule: false,
-        italic: false,
-        link: false,
-        listItem: false,
-        orderedList: false,
-        strike: false,
-        trailingNode: false,
-        underline: false,
-      }),
+      EditorStarterKit,
+
+      // emoji suggestions
       EmojiNode.configure({
         resolveImageUrl: url =>
           resolveImageUrl(url, {
@@ -203,14 +131,9 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
           },
         ),
       }),
-      Mention.extend({
-        addAttributes() {
-          return {
-            ...this.parent?.(),
-            via: { default: null },
-          }
-        },
-      }).configure({
+
+      // mention suggestions
+      MentionNode.configure({
         suggestions: [
           createSuggestion('#', ({ query }) =>
             roomsArray.value
@@ -239,32 +162,26 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
           ),
         ],
       }),
+
+      // styling for formatting (underlines, bold, italic, etc)
       InlineMarks,
+
+      // placeholder
       Placeholder.configure({
-        placeholder: () => `Message ${room.value?.name}`,
+        placeholder: () => `Message ${room.value.name}`,
       }),
+
+      // keyboard interactions
       Extension.create({
         addKeyboardShortcuts() {
           return {
             Enter: ({ editor }) => {
               if (open.value) return false
 
-              const mentionedUserIds = new Set<string>()
-              editor.state.doc.descendants(node => {
-                if (node.type.name === 'mention') {
-                  const id = node.attrs.id as string
-                  if (isUserId(id)) mentionedUserIds.add(id)
-                }
-              })
+              const { body, formattedBody, mentionedUserIds } = serializeDoc(editor.state.doc, client.value)
+              if (!body.trim()) return false
 
-              const plainBody = nodeToPlainBody(editor.state.doc)
-              if (!plainBody.trim()) return false
-
-              const md = docToMarkdown(editor.state.doc, client.value)
-              const html = (MARKED_INSTANCE.parse(md) as string).trimEnd()
-              const sanitizedFormattedBody = sanitizeFormattedBody(html)
-
-              sendTextMessage(plainBody, sanitizedFormattedBody, mentionedUserIds)
+              sendTextMessage(body, formattedBody, mentionedUserIds)
 
               onType(true)
 
@@ -280,6 +197,8 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
         },
       }),
     ],
+
+    // typing status
     onUpdate: ({ editor }) => {
       content.value = editor.getText()
       if (content.value.trim()) {
