@@ -3,6 +3,7 @@ import type { Config, UponSanitizeAttributeHook } from 'dompurify'
 import type { MatrixClient } from 'matrix-js-sdk'
 
 import DOMPurify from 'dompurify'
+import { escape } from 'es-toolkit'
 
 import {
   MATRIX__ALLOWED_ATTRS,
@@ -90,7 +91,10 @@ export function docToMarkdown(doc: Node, clientForMatrixToUrls?: MatrixClient): 
       return false
     }
     if (node.type.name === 'emoji') {
-      out += node.attrs.unicode
+      const { label, shortcode, unicode, url } = node.attrs
+      out += url
+        ? `<img data-mx-emoticon src="${escape(url)}" alt="${escape(label ?? shortcode)}" title="${escape(shortcode)}" height="32">`
+        : unicode
       return false
     }
   })

@@ -13,8 +13,10 @@ export function nodeToPlainBody(node: Node): string {
       if (!label || label === id) return `${id ?? ''}`
       return `${isUserId(id) ? '@' : '#'}${label}`
     }
-    case 'emoji':
-      return (node.attrs as { unicode: string }).unicode
+    case 'emoji': {
+      const { shortcode, unicode, url } = node.attrs as { unicode: string; shortcode?: string; url?: string }
+      return url ? `:${shortcode}:` : unicode
+    }
     case 'codeBlock':
       return node.textContent
   }
@@ -116,7 +118,6 @@ function childrenToMarkdown(node: Node): string {
 
   node.forEach(child => {
     if (child.isText) {
-      // Important: preserve the raw Markdown markers here.
       output += child.text ?? ''
     } else {
       switch (child.type.name) {
