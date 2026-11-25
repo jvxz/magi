@@ -28,7 +28,9 @@ const mountViewer = async () => {
   await mountSuspended(
     defineComponent(
       () => () =>
-        h(UProfilePopoverRoot, null, () => h(DialogReactionsViewer, { event: target, open: true, room: mockRoom.room })),
+        h(UProfilePopoverRoot, null, () =>
+          h(DialogReactionsViewer, { event: target, open: true, room: mockRoom.room }),
+        ),
     ),
   )
 }
