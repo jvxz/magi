@@ -1,17 +1,19 @@
 <script lang="ts" setup>
-import type { CompactEmoji } from 'emojibase'
-
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/vue-virtual'
 import { useFilter } from 'reka-ui'
 
-import { getEmojiKey, injectEmojiPickerContext } from './root.vue'
+import type { PickerEmoji } from './root.vue'
 
-const COLS = 9
+import { fromCompactEmoji, fromImagePack, getEmojiKey, injectEmojiPickerContext } from './root.vue'
+
+const COLUMN_COUNT = 9
 const HEADER_SIZE = 24
 const ROW_SIZE = 32
 
 const { categories, groupedEmojis, isLoading } = useEmojiData()
-const { activeEmoji, gridId, isInputFocused, onInputMove, onPick, scopeId, searchQuery } = injectEmojiPickerContext()
+const { getTwemojiUrl } = useTwemoji()
+const { activeEmoji, gridId, isInputFocused, onInputMove, onPick, scopeId, searchQuery, ...ctx } =
+  injectEmojiPickerContext()
 
 const scrollEl = useTemplateRef('scrollEl')
 
@@ -22,30 +24,71 @@ interface FlatItemHeader {
 }
 
 interface FlatItemCells {
-  emojis: CompactEmoji[]
+  emojis: PickerEmoji[]
   key: string
   type: 'cells'
 }
 type FlatItem = FlatItemHeader | FlatItemCells
 
+const { allEmojiPacks } = useUserImagePacks()
+
+const { client } = useMatrixClient()
+const reducedMotion = usePreferredReducedMotion()
+
+const customSections = computed(() => {
+  const opts: ResolveImageUrlOpts = {
+    allowDirectLinks: true,
+    animated: reducedMotion.value !== 'reduce',
+    baseUrl: client.value.getHomeserverUrl(),
+    resizeMethod: 'scale',
+    size: 'small',
+  }
+
+  const srcs = new Map<string, string | undefined>()
+  const sections: { emojis: PickerEmoji[]; key: string; label: string }[] = []
+
+  for (const pack of allEmojiPacks.value) {
+    const isEnabled = pack.roomId ? toValue(ctx.userRoomPacks) : toValue(ctx.userEmojis)
+    if (!isEnabled) continue
+
+    const emojis = fromImagePack(pack)
+    for (const emoji of emojis) {
+      if (emoji.type === 'custom') srcs.set(emoji.key, resolveImageUrl(emoji.image.url, opts))
+    }
+
+    const fallbackLabel = pack.roomId ? client.value.getRoom(pack.roomId)?.name : 'Personal'
+    sections.push({ emojis, key: `pack-${pack.id}`, label: pack.display_name ?? fallbackLabel ?? pack.id })
+  }
+
+  return { sections, srcs }
+})
+
 const flatList = computed(() => {
   const flat: FlatItem[] = []
+
+  // customs first
+  for (const section of customSections.value.sections) {
+    pushSection(flat, section.key, section.label, section.emojis)
+  }
+
+  // then emojibase
   for (const [key, category] of objectEntries(categories.value)) {
-    const emojis = getFilteredEmojis(groupedEmojis.value[key] ?? [])
-    if (!emojis.length) continue
-
-    flat.push({ key: category.key, label: category.label, type: 'header' })
-
-    for (let i = 0; i < emojis.length; i += COLS) {
-      const emoji = emojis[i]
-      if (!emoji) continue
-
-      flat.push({ emojis: emojis.slice(i, i + COLS), key: makeKey([i, key]), type: 'cells' })
-    }
+    pushSection(flat, category.key, category.label, (groupedEmojis.value[key] ?? []).map(fromCompactEmoji))
   }
 
   return flat
 })
+
+function pushSection(flat: FlatItem[], key: string, label: string, sectionEmojis: PickerEmoji[]) {
+  const emojis = getFilteredEmojis(sectionEmojis)
+  if (!emojis.length) return
+
+  flat.push({ key, label, type: 'header' })
+
+  for (let i = 0; i < emojis.length; i += COLUMN_COUNT) {
+    flat.push({ emojis: emojis.slice(i, i + COLUMN_COUNT), key: makeKey([i, key]), type: 'cells' })
+  }
+}
 
 const headerIndices = computed(() => flatList.value.flatMap(({ type }, i) => (type === 'header' ? [i] : [])))
 const activeHeaderIdx = ref<number>()
@@ -74,7 +117,7 @@ const virtualItems = computed(() => virtualizer.value.getVirtualItems())
 const totalSize = computed(() => virtualizer.value.getTotalSize())
 
 const flatEmojis = computed(() => {
-  const emojis: CompactEmoji[] = []
+  const emojis: PickerEmoji[] = []
   for (const item of flatList.value) {
     if (item.type === 'cells') {
       emojis.push(...item.emojis)
@@ -97,7 +140,7 @@ watch(activeEmojiIdx, idx => {
   })
 })
 
-const emojiFlatIdxMap = computed(() => new Map(flatEmojis.value.map((e, i) => [e.hexcode, i])))
+const emojiFlatIdxMap = computed(() => new Map(flatEmojis.value.map((e, i) => [e.key, i])))
 
 function move(key: string) {
   const idx = activeEmojiIdx.value
@@ -206,25 +249,25 @@ function makeKey(input: (string | number)[]) {
 }
 
 const { contains } = useFilter({ sensitivity: 'base' })
-function getFilteredEmojis(emojis: CompactEmoji[]): CompactEmoji[] {
+function getFilteredEmojis(emojis: PickerEmoji[]): PickerEmoji[] {
   if (!searchQuery.value) return emojis
 
-  const filtered: CompactEmoji[] = []
+  const filtered: PickerEmoji[] = []
   for (const emoji of emojis) {
-    if (contains([emoji.label, ...(emoji.tags ?? [])].join(' '), searchQuery.value)) filtered.push(emoji)
+    if (contains(emoji.terms, searchQuery.value)) filtered.push(emoji)
   }
   return filtered
 }
 
-function getEmojiFlatIdx(targetEmoji: CompactEmoji) {
-  return emojiFlatIdxMap.value.get(targetEmoji.hexcode) ?? -1
+function getEmojiFlatIdx(targetEmoji: PickerEmoji) {
+  return emojiFlatIdxMap.value.get(targetEmoji.key) ?? -1
 }
 
 function clampIdx(idx: number) {
   return clamp(idx, 0, flatEmojis.value.length - 1)
 }
 
-function handleSelect(manualEmoji?: CompactEmoji) {
+function handleSelect(manualEmoji?: PickerEmoji) {
   const emoji = manualEmoji ?? activeEmoji.value
   if (emoji) onPick?.(emoji)
 }
@@ -244,7 +287,7 @@ watchDebounced(
   <div
     class="pl-[calc(var(--emoji-picker-padding)*0.5)] rounded shrink size-full relative overflow-hidden"
     :style="{
-      '--active-color': `color-mix(in srgb, var(--muted) ${isInputFocused ? '60%' : '100%'}, transparent)`,
+      '--active-color': `color-mix(in srgb, var(--primary) ${isInputFocused ? '30%' : '50%'}, transparent)`,
     }"
   >
     <div ref="scrollEl" class="overscroll-none size-full overflow-y-auto scrollbar-gutter-stable">
@@ -295,17 +338,32 @@ watchDebounced(
             <button
               v-for="emoji in (flatList[v.index] as FlatItemCells).emojis"
               :id="getEmojiKey(scopeId, emoji)"
-              :key="emoji.hexcode"
+              :key="emoji.key"
               :title="emoji.label"
               role="gridcell"
               tabindex="-1"
               type="button"
-              :data-active="activeEmoji?.hexcode === emoji.hexcode ? '' : undefined"
+              :data-active="activeEmoji?.key === emoji.key ? '' : undefined"
               class="text-base rounded grid size-8 aspect-square transition-transform place-items-center data-[active]:bg-[var(--active-color)]"
               @click="handleSelect(emoji)"
               @mouseover="activeEmojiIdx = getEmojiFlatIdx(emoji)"
             >
-              <Twemoji :emoji="emoji.unicode" />
+              <img
+                v-if="emoji.type === 'unicode'"
+                :src="getTwemojiUrl(emoji.emoji.unicode)"
+                :alt="emoji.emoji.unicode"
+                class="size-4.5"
+                decoding="async"
+                draggable="false"
+              />
+              <img
+                v-else
+                :src="customSections.srcs.get(emoji.key)"
+                :alt="emoji.shortcode"
+                class="size-4.5 object-contain"
+                decoding="async"
+                draggable="false"
+              />
             </button>
           </div>
         </div>

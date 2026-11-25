@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { CompactEmoji } from 'emojibase'
+import type { PickerEmoji } from '~/components/emoji-picker/root.vue'
 
 import { ContextMenuSubContent } from '#components'
 
@@ -15,9 +15,10 @@ const { reactions, reactTo } = useRoomEventReactions(
   () => props.event,
 )
 
-function onEmojiPick(emoji: CompactEmoji) {
+function onEmojiPick(emoji: PickerEmoji) {
   if (props.event) {
-    reactTo(emoji.unicode, true)
+    if (emoji.type === 'unicode') reactTo(emoji.emoji.unicode, true)
+    else reactTo(emoji.image.url, true, emoji.shortcode)
   }
 
   close()
@@ -71,7 +72,7 @@ const { messageNodes } = useMessageBodyNodes(props.event)
     <UContextMenuSub>
       <UContextMenuSubTrigger> Add reaction </UContextMenuSubTrigger>
 
-      <UEmojiPickerRoot :as="ContextMenuSubContent" @pick="onEmojiPick">
+      <UEmojiPickerRoot :as="ContextMenuSubContent" :room-ids="[room.roomId]" :space-ids="[]" @pick="onEmojiPick">
         <UEmojiPickerSearch />
         <ContextMenuItem as-child>
           <UEmojiPickerList />

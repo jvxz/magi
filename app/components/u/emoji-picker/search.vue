@@ -2,11 +2,12 @@
 export interface UEmojiPickerSearchProps {
   class?: HTMLAttributes['class']
   ui?: DefineClasses<'wrapper' | 'input'>
+  variant?: InputVariants['variant']
 }
 
 defineOptions({ inheritAttrs: false })
 
-const props = defineProps<UEmojiPickerSearchProps>()
+const props = withDefaults(defineProps<UEmojiPickerSearchProps>(), { variant: 'top' })
 
 const modelValue = defineModel<string | number>()
 </script>
@@ -17,7 +18,7 @@ const modelValue = defineModel<string | number>()
       v-bind="$attrs"
       v-model:model-value="modelValue"
       :placeholder="$attrs.placeholder ?? 'Search...'"
-      :class="cn(inputStyles(), props.class, props.ui?.input)"
+      :class="cn(inputStyles({ variant }), props.class, props.ui?.input)"
     />
   </div>
 </template>
