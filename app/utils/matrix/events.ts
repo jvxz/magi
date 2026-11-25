@@ -242,8 +242,9 @@ export function getEventReactions(room: Room, event: MaybeEventOrId): EventReact
         if (REGEX__EMOJI_STRICT.test(reaction)) {
           shortcode = getShortcodeFromUnicode(reaction)
         } else {
-          const content = event.getContent<{ shortcode: string | undefined }>()
-          if (content.shortcode) shortcode = content.shortcode
+          const content = event.getContent<{ shortcode?: string; 'com.beeper.reaction.shortcode'?: string }>()
+          const raw = content.shortcode ?? content['com.beeper.reaction.shortcode']
+          if (raw) shortcode = raw.replace(REGEX__EMOJI_CUSTOM, '')
         }
       }
 

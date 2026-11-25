@@ -33,12 +33,12 @@ export function useRoomEventReactions(
 
   const getDebouncedReactFn = memoize((key: string) =>
     throttle(
-      async (shouldReact: boolean) => {
+      async (shouldReact: boolean, shortcode?: string) => {
         if (!event.value || !MATRIX__REACTABLE_EVENT_TYPES.includes(event.value.getType())) return
 
         error.value = null
         try {
-          await toggle(key, shouldReact)
+          await toggle(key, shouldReact, shortcode)
         } catch (e) {
           error.value = e as Error
         }
@@ -48,7 +48,7 @@ export function useRoomEventReactions(
     ),
   )
 
-  async function toggle(key: string, shouldReact: boolean) {
+  async function toggle(key: string, shouldReact: boolean, shortcode?: string) {
     if (!event.value) return
 
     if (shouldReact) {
@@ -67,7 +67,7 @@ export function useRoomEventReactions(
         }
       }
 
-      await react.mutateAsync({ event: event.value, reaction: key, redact: false })
+      await react.mutateAsync({ event: event.value, reaction: key, redact: false, shortcode })
       bumpRecentReaction(key)
     } else {
       const reactionEvent = isReactingTo(key)
@@ -85,13 +85,13 @@ export function useRoomEventReactions(
     }
   }
 
-  function reactTo(reaction: string, shouldReact = true) {
+  function reactTo(reaction: string, shouldReact = true, shortcode?: string) {
     if (!event.value || !room.value) return
 
     const eventId = event.value.getId()
     assert(eventId, `eventId was undefined when toggling reaction to ${reaction}`)
 
-    getDebouncedReactFn(reaction)(shouldReact)
+    getDebouncedReactFn(reaction)(shouldReact, shortcode)
   }
 
   function isUserReactingTo(user: MaybeUserOrId, reaction: string) {
