@@ -77,7 +77,7 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
         const text = event.clipboardData?.getData('text/plain')
         if (!text) return false
 
-        const { schema, tr } = view.state
+        const { schema, selection, tr } = view.state
         const nodes: Node[] = []
         const lines = text.split('\n')
 
@@ -88,6 +88,7 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
         }
 
         tr.replaceSelection(new Slice(Fragment.from(nodes), 0, 0))
+        tr.setMeta('applyPasteRules', { from: selection.from, text })
         view.dispatch(tr)
         return true
       },
@@ -97,6 +98,10 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
 
       // emoji suggestions
       EmojiNode.configure({
+        findCustomEmoji: shortcode => {
+          const emoji = suggestionEmojis.value.find(e => e.type === 'custom' && e.shortcode === shortcode)
+          return emoji && getEmojiNodeAttrs(emoji)
+        },
         resolveImageUrl: url =>
           resolveImageUrl(url, {
             allowDirectLinks: true,

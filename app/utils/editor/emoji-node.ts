@@ -1,15 +1,21 @@
-import type { EmojiItem, EmojiOptions } from '@tiptap/extension-emoji'
+import type { EmojiOptions } from '@tiptap/extension-emoji'
 
 import { InputRule, mergeAttributes, PasteRule } from '@tiptap/core'
 import { Emoji } from '@tiptap/extension-emoji'
 
-function findEmojiByShortcode(shortcode: string, emojis: EmojiItem[]) {
-  return emojis.find(e => e.name === shortcode || e.shortcodes?.includes(shortcode))
-}
-
 export interface EmojiNodeOptions extends EmojiOptions {
   // handles custom emojis
   resolveImageUrl: ((mxcUrl: string) => string | undefined) | undefined
+  findCustomEmoji: ((shortcode: string) => EmojiNodeAttrs | undefined) | undefined
+}
+
+// custom emoji win over unicode ones with the same shortcode
+function findEmojiAttrs(shortcode: string, options: EmojiNodeOptions): EmojiNodeAttrs | undefined {
+  const custom = options.findCustomEmoji?.(shortcode)
+  if (custom) return custom
+
+  const item = options.emojis.find(e => e.name === shortcode || e.shortcodes?.includes(shortcode))
+  if (item?.emoji) return { label: item.name, unicode: item.emoji }
 }
 
 export interface EmojiNodeAttrs {
@@ -33,33 +39,25 @@ export const EmojiNode = Emoji.extend<EmojiNodeOptions>({
       new InputRule({
         find: REGEX__SHORTCODE_INPUT,
         handler: ({ chain, match, range }) => {
-          const item = findEmojiByShortcode(match[1]!, this.options.emojis)
-          if (!item?.emoji) return
-          chain()
-            .insertContentAt(range, { attrs: { label: item.name, unicode: item.emoji }, type: this.name })
-            .run()
+          const attrs = findEmojiAttrs(match[1]!, this.options)
+          if (!attrs) return
+          chain().insertContentAt(range, { attrs, type: this.name }).run()
         },
       }),
     ]
   },
   addOptions() {
-    return { ...this.parent!(), resolveImageUrl: undefined }
+    return { ...this.parent!(), findCustomEmoji: undefined, resolveImageUrl: undefined }
   },
   addPasteRules() {
     return [
       new PasteRule({
         find: REGEX__SHORTCODE_PASTE,
         handler: ({ chain, match, range }) => {
-          const item = findEmojiByShortcode(match[2]!, this.options.emojis)
-          if (!item?.emoji) return
+          const attrs = findEmojiAttrs(match[2]!, this.options)
+          if (!attrs) return
           const from = range.from + (match[1]?.length ?? 0)
-          chain()
-            .insertContentAt(
-              { from, to: range.to },
-              { attrs: { label: item.name, unicode: item.emoji }, type: this.name },
-              { updateSelection: false },
-            )
-            .run()
+          chain().insertContentAt({ from, to: range.to }, { attrs, type: this.name }, { updateSelection: false }).run()
         },
       }),
     ]
