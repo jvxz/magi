@@ -6,6 +6,7 @@ export interface USidebarLayoutGroupItemProps extends UToggleGroupItemProps {}
 export interface SidebarLayoutGroupItem {
   key: string
   icon?: string
+  title: string
 }
 
 const props = defineProps<USidebarLayoutGroupItemProps>()
