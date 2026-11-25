@@ -11,14 +11,19 @@ export type UEmojiProps = (
     }
 ) & {
   class?: HTMLAttributes['class']
+  twemojiRender?: 'svg' | 'png'
 }
 
-const props = defineProps<UEmojiProps>()
+const props = withDefaults(defineProps<UEmojiProps>(), {
+  twemojiRender: 'png',
+})
 
 const shared = computed(() => ({
   class: cn('inline h-1lh max-w-24', props.class),
   'data-slot': 'emoji',
 }))
+
+const { getTwemojiUrl } = useTwemoji()
 
 const imageUrl = useResolveImageUrl(() => ('url' in props ? props.url : undefined), {
   resizeMethod: 'scale',
@@ -27,6 +32,11 @@ const imageUrl = useResolveImageUrl(() => ('url' in props ? props.url : undefine
 </script>
 
 <template>
-  <Twemoji v-if="'unicode' in props && props.unicode" :emoji="props.unicode" v-bind="shared" />
+  <Img
+    v-if="'unicode' in props && props.unicode"
+    v-bind="shared"
+    :src="getTwemojiUrl({ unicode: props.unicode })"
+    :alt="props.unicode"
+  />
   <Img v-else-if="'url' in props && props.url" :src="imageUrl" :alt="props.alt ?? props.url" v-bind="shared" />
 </template>

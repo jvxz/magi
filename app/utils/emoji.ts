@@ -7,6 +7,11 @@ export function getUnicodeFromHexcode(hexcode: string) {
   return fromCodepointToUnicode(fromHexcodeToCodepoint(hexcode))
 }
 
+export function getUnicodeFromCodepoint(codepoint: string | number[]) {
+  if (!isString(codepoint)) return fromCodepointToUnicode(codepoint)
+  return fromCodepointToUnicode([Number(codepoint)])
+}
+
 export function getHexcodeFromUnicode(unicode: string) {
   return fromUnicodeToHexcode(unicode)
 }
@@ -14,4 +19,16 @@ export function getHexcodeFromUnicode(unicode: string) {
 export function getShortcodeFromUnicode(unicode: string) {
   const maybeArr = dataset[getHexcodeFromUnicode(unicode)]
   return Array.isArray(maybeArr) ? maybeArr[0] : maybeArr
+}
+
+export function isEmojiHexcode(input: string): boolean {
+  return REGEX__EMOJI_HEXCODE.test(input)
+}
+
+export function isEmojiCodepoint(input: string): boolean {
+  return REGEX__EMOJI_CODEPOINT.test(input)
+}
+
+export function isEmoji(input: string): boolean {
+  return REGEX__EMOJI_STRICT.test(input)
 }

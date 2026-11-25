@@ -12,7 +12,7 @@ const delegated = reactiveOmit(props, 'class')
 const count = toRef(props, 'count')
 const prevCount = refDefault(usePrevious(count), 0)
 
-const isEmoji = computed(() => REGEX__EMOJI_STRICT.test(props.reaction))
+const isReactionEmoji = computed(() => isEmoji(props.reaction))
 const isMedia = computed(() => props.reaction.startsWith('mxc://'))
 const imageUrl = useResolveImageUrl(() => (isMedia.value ? props.reaction : undefined), {
   resizeMethod: 'scale',
@@ -31,7 +31,7 @@ const imageUrl = useResolveImageUrl(() => (isMedia.value ? props.reaction : unde
       )
     "
   >
-    <Twemojify v-if="isEmoji" class="max-h-1em truncate" :text="reaction" />
+    <Twemojify v-if="isReactionEmoji" class="max-h-1em truncate" :text="reaction" />
     <Img v-else-if="isMedia" :alt="reaction" :src="imageUrl" class="max-h-1em" />
     <span v-else class="max-h-1em truncate">{{ reaction }}</span>
 
