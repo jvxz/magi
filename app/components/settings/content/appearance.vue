@@ -10,8 +10,8 @@ const palette = computed({
 <template>
   <SettingsContentLayout>
     <USettingSwitch
-      variant="top"
       v-model:model-value="settings.appearance.useSystem"
+      variant="top"
       :label="SETTINGS__ITEM_METADATA.appearance.useSystem.title"
       :description="SETTINGS__ITEM_METADATA.appearance.useSystem.description"
     />

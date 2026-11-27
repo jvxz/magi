@@ -18,6 +18,6 @@ const modelValue = useVModel(props, 'modelValue', emits, { passive: true })
 
 <template>
   <USettingComposite v-slot="{ id }" v-bind="delegated" data-slot="setting-switch">
-    <USwitch :variant :id v-model="modelValue" />
+    <USwitch :id v-model="modelValue" :variant />
   </USettingComposite>
 </template>
