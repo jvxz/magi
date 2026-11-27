@@ -11,7 +11,7 @@ export const useUserImagePacks = createGlobalState(() => {
 
     const { client } = useMatrixClient()
     const { rooms } = roomPacksRaw.value.getContent<UserRoomImagePackContent>()
-    for (const [roomId, packs] of objectEntries(rooms)) {
+    for (const [roomId, packs] of objectEntries(rooms ?? {})) {
       const room = getRoom(client.value, roomId)
       if (!room) continue
 
