@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getEmojiKey, injectEmojiPickerContext } from './root.vue'
+import { injectEmojiPickerContext } from './root.vue'
 
 defineProps<{ disabled?: boolean }>()
 

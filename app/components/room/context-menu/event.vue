@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { PickerEmoji } from '~/components/emoji-picker/root.vue'
-
 import { ContextMenuSubContent } from '#components'
 
 const props = defineProps<ContextMenuRegions['event']>()
@@ -15,10 +13,10 @@ const { reactions, reactTo } = useRoomEventReactions(
   () => props.event,
 )
 
-function onEmojiPick(emoji: PickerEmoji) {
+function onEmojiPick(emoji: Emoji) {
   if (props.event) {
-    if (emoji.type === 'unicode') reactTo(emoji.emoji.unicode, true)
-    else reactTo(emoji.image.url, true, emoji.shortcode)
+    if (emoji.type === 'unicode') reactTo(emoji.unicode, true)
+    else reactTo(emoji.url, true, emoji.shortcode)
   }
 
   close()

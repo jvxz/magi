@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import type { PickerEmoji } from '~/components/emoji-picker/root.vue'
-
 import { getEmojiNodeAttrs } from '~/components/emoji-picker/root.vue'
 
 import { injectRoomInstanceContext } from '../instance.vue'
 
 const { inputEditor, room, space } = injectRoomInstanceContext()
 
-function onPick(emoji: PickerEmoji) {
+function onPick(emoji: Emoji) {
   inputEditor.value
     ?.chain()
     .focus()

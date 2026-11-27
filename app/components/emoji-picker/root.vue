@@ -11,59 +11,23 @@ export interface InputMoveEvent {
   dir: Dir
 }
 
-interface PickerEmojiBase {
-  key: string
-  label: string
-  terms: string
-}
-
-export type PickerEmoji =
-  | (PickerEmojiBase & { type: 'unicode'; emoji: CompactEmoji })
-  | (PickerEmojiBase & { type: 'custom'; packId: string; shortcode: string; image: ImagePackImage })
-
-export function fromCompactEmoji(emoji: CompactEmoji): PickerEmoji {
-  return {
-    emoji,
-    key: emoji.hexcode,
-    label: emoji.label,
-    terms: [emoji.label, ...(emoji.tags ?? [])].join(' '),
-    type: 'unicode',
-  }
-}
-
-export function fromImagePackImage(packId: string, shortcode: string, image: ImagePackImage): PickerEmoji {
-  return {
-    image,
-    key: `${packId}/${shortcode}`,
-    label: shortcode,
-    packId,
-    shortcode,
-    terms: image.body ? `${shortcode} ${image.body}` : shortcode,
-    type: 'custom',
-  }
-}
-
-export function getEmojiNodeAttrs(emoji: PickerEmoji): EmojiNodeAttrs {
+export function getEmojiNodeAttrs(emoji: Emoji): EmojiNodeAttrs {
   if (emoji.type === 'unicode') {
-    return { hexcode: emoji.emoji.hexcode, label: emoji.emoji.label, unicode: emoji.emoji.unicode }
+    return { hexcode: emoji.hexcode, label: emoji.label, unicode: emoji.unicode }
   }
 
-  return { label: emoji.image.body ?? null, shortcode: emoji.shortcode, url: emoji.image.url }
-}
-
-export function fromImagePack(pack: ImagePack): PickerEmoji[] {
-  return objectEntries(pack.images).map(([shortcode, image]) => fromImagePackImage(pack.id, shortcode, image))
+  return { label: emoji.body ?? null, shortcode: emoji.shortcode, url: emoji.url }
 }
 
 export interface EmojiPickerContext {
-  activeEmoji: Ref<PickerEmoji | undefined>
+  activeEmoji: Ref<Emoji | undefined>
   searchQuery: Ref<string>
   isInputFocused: Ref<boolean>
   scopeId: string
   gridId: string
   onInputMove: EventHookOn<InputMoveEvent>
   triggerInputMove: EventHookTrigger<InputMoveEvent>
-  onPick?: (emoji: PickerEmoji) => void
+  onPick?: (emoji: Emoji) => void
   userEmojis: Ref<boolean>
   userRoomPacks: Ref<boolean>
   roomIds: Ref<string[]>
@@ -82,11 +46,7 @@ export interface EmojiPickerRootProps extends PrimitiveProps {
 }
 
 export interface EmojiPickerRootEmits {
-  pick: [emoji: PickerEmoji]
-}
-
-export function getEmojiKey(scopeId: string, emoji: PickerEmoji) {
-  return `${scopeId}-${emoji.key}`
+  pick: [emoji: Emoji]
 }
 </script>
 
@@ -100,14 +60,14 @@ const emits = defineEmits<EmojiPickerRootEmits>()
 
 const inputMoveHook = createEventHook<InputMoveEvent>()
 
-const activeEmoji = shallowRef<PickerEmoji>()
+const activeEmoji = shallowRef<Emoji>()
 const searchQuery = shallowRef('')
 const scopeId = useId()
 const gridId = `${scopeId}-grid`
 
 const isInputFocused = shallowRef(false)
 
-const onPick = (emoji: PickerEmoji) => {
+const onPick = (emoji: Emoji) => {
   emits('pick', emoji)
 }
 

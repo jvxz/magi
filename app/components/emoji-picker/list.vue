@@ -2,15 +2,14 @@
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/vue-virtual'
 import { useFilter } from 'reka-ui'
 
-import type { PickerEmoji } from './root.vue'
-
-import { fromCompactEmoji, fromImagePack, getEmojiKey, injectEmojiPickerContext } from './root.vue'
+import { injectEmojiPickerContext } from './root.vue'
 
 const COLUMN_COUNT = 9
 const HEADER_SIZE = 24
 const ROW_SIZE = 32
 
-const { categories, groupedEmojis, isLoading } = useEmojibase()
+const { categories, isLoading } = useEmojibase()
+const { unicodeByGroup } = useEmoji()
 const { getTwemojiUrl } = useTwemoji()
 const { activeEmoji, gridId, isInputFocused, onInputMove, onPick, scopeId, searchQuery, ...ctx } =
   injectEmojiPickerContext()
@@ -24,7 +23,7 @@ interface FlatItemHeader {
 }
 
 interface FlatItemCells {
-  emojis: PickerEmoji[]
+  emojis: Emoji[]
   key: string
   type: 'cells'
 }
@@ -45,7 +44,7 @@ const customSections = computed(() => {
   }
 
   const srcs = new Map<string, string | undefined>()
-  const sections: { emojis: PickerEmoji[]; key: string; label: string }[] = []
+  const sections: { emojis: Emoji[]; key: string; label: string }[] = []
 
   for (const pack of allEmojiPacks.value) {
     const isEnabled = pack.roomId ? toValue(ctx.userRoomPacks) : toValue(ctx.userEmojis)
@@ -53,7 +52,7 @@ const customSections = computed(() => {
 
     const emojis = fromImagePack(pack)
     for (const emoji of emojis) {
-      if (emoji.type === 'custom') srcs.set(emoji.key, resolveImageUrl(emoji.image.url, opts))
+      if (emoji.type === 'custom') srcs.set(emoji.key, resolveImageUrl(emoji.url, opts))
     }
 
     const fallbackLabel = pack.roomId ? client.value.getRoom(pack.roomId)?.name : 'Personal'
@@ -73,13 +72,13 @@ const flatList = computed(() => {
 
   // then emojibase
   for (const [key, category] of objectEntries(categories.value)) {
-    pushSection(flat, category.key, category.label, (groupedEmojis.value[key] ?? []).map(fromCompactEmoji))
+    pushSection(flat, category.key, category.label, unicodeByGroup.value[key] ?? [])
   }
 
   return flat
 })
 
-function pushSection(flat: FlatItem[], key: string, label: string, sectionEmojis: PickerEmoji[]) {
+function pushSection(flat: FlatItem[], key: string, label: string, sectionEmojis: Emoji[]) {
   const emojis = getFilteredEmojis(sectionEmojis)
   if (!emojis.length) return
 
@@ -117,7 +116,7 @@ const virtualItems = computed(() => virtualizer.value.getVirtualItems())
 const totalSize = computed(() => virtualizer.value.getTotalSize())
 
 const flatEmojis = computed(() => {
-  const emojis: PickerEmoji[] = []
+  const emojis: Emoji[] = []
   for (const item of flatList.value) {
     if (item.type === 'cells') {
       emojis.push(...item.emojis)
@@ -249,17 +248,17 @@ function makeKey(input: (string | number)[]) {
 }
 
 const { contains } = useFilter({ sensitivity: 'base' })
-function getFilteredEmojis(emojis: PickerEmoji[]): PickerEmoji[] {
+function getFilteredEmojis(emojis: Emoji[]): Emoji[] {
   if (!searchQuery.value) return emojis
 
-  const filtered: PickerEmoji[] = []
+  const filtered: Emoji[] = []
   for (const emoji of emojis) {
     if (contains(emoji.terms, searchQuery.value)) filtered.push(emoji)
   }
   return filtered
 }
 
-function getEmojiFlatIdx(targetEmoji: PickerEmoji) {
+function getEmojiFlatIdx(targetEmoji: Emoji) {
   return emojiFlatIdxMap.value.get(targetEmoji.key) ?? -1
 }
 
@@ -267,7 +266,7 @@ function clampIdx(idx: number) {
   return clamp(idx, 0, flatEmojis.value.length - 1)
 }
 
-function handleSelect(manualEmoji?: PickerEmoji) {
+function handleSelect(manualEmoji?: Emoji) {
   const emoji = manualEmoji ?? activeEmoji.value
   if (emoji) onPick?.(emoji)
 }
@@ -350,8 +349,8 @@ watchDebounced(
             >
               <img
                 v-if="emoji.type === 'unicode'"
-                :src="getTwemojiUrl(emoji.emoji.unicode)"
-                :alt="emoji.emoji.unicode"
+                :src="getTwemojiUrl(emoji.unicode)"
+                :alt="emoji.unicode"
                 class="size-4.5"
                 decoding="async"
                 draggable="false"

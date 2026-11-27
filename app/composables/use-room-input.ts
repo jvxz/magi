@@ -10,9 +10,7 @@ import { Fragment, Slice } from '@tiptap/pm/model'
 import { toRef } from '@vueuse/core'
 import { useFilter } from 'reka-ui'
 
-import type { PickerEmoji } from '~/components/emoji-picker/root.vue'
-
-import { fromCompactEmoji, fromImagePack, getEmojiNodeAttrs } from '~/components/emoji-picker/root.vue'
+import { getEmojiNodeAttrs } from '~/components/emoji-picker/root.vue'
 
 type SuggestionItem = { id: string; label: string } & (
   | {
@@ -29,7 +27,7 @@ type SuggestionItem = { id: string; label: string } & (
     }
   | {
       user?: never
-      emoji: PickerEmoji
+      emoji: Emoji
       room?: never
       commandProps: EmojiNodeAttrs
     }
@@ -119,7 +117,7 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
                 commandProps: getEmojiNodeAttrs(e),
                 emoji: e,
                 id: e.key,
-                label: e.type === 'unicode' ? e.emoji.unicode : `:${e.shortcode}:`,
+                label: e.type === 'unicode' ? e.unicode : `:${e.shortcode}:`,
               })),
           {
             command: ({ editor, props, range }) => {

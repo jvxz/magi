@@ -66,10 +66,10 @@ watch(inputHighlightedSuggestionItem, idx => vlist.value?.scrollToIndex(idx, { a
         >
           <MatrixRoomMemberAvatar v-if="item.user" class="h-4 w-fit" :room="room" :member="item.user" />
           <MatrixRoomAvatar v-else-if="item.room" class="h-4 w-fit" :room="item.room.room_id" />
-          <Twemoji v-else-if="item.emoji.type === 'unicode'" :emoji="item.emoji.emoji.hexcode" />
+          <Twemoji v-else-if="item.emoji.type === 'unicode'" :emoji="item.emoji.hexcode" />
           <img
             v-else
-            :src="resolveCustomEmojiUrl(item.emoji.image.url)"
+            :src="resolveCustomEmojiUrl(item.emoji.url)"
             :alt="item.emoji.shortcode"
             class="size-4 object-contain"
             decoding="async"
