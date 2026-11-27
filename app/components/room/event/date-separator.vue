@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { MatrixEvent } from 'matrix-js-sdk'
+import { injectEventListItemContext } from './generic.vue'
 
-defineProps<{ event: MatrixEvent }>()
+const { event } = injectEventListItemContext()
 </script>
 
 <template>

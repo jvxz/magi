@@ -1,11 +1,13 @@
 <script lang="ts" setup>
+import { injectRoomInstanceContext } from '../instance.vue'
+
 const props = defineProps<{
   userId: string
 }>()
 
+const { room } = injectRoomInstanceContext()
 const profile = useUserProfile(props.userId)
 const creator = useCurrentRoomCreator()
-const room = useCurrentRoom()
 
 const triggerRef = useTemplateRef('trigger')
 onMounted(() => {

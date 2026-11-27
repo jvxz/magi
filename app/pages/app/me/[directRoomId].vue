@@ -22,8 +22,13 @@ const resolvedName = useRoomComputed(roomId, room =>
 )
 
 defineAppLabel({ label: resolvedName })
+
+const room = useRoom(() => route.params.directRoomId)
+// TODO: handle guest access
+const isRoomJoined = useRoomComputed(room, r => (r ? isJoined(r) : false))
 </script>
 
 <template>
-  <RoomInstance :room="route.params.directRoomId" />
+  <RoomInstance v-if="room && isRoomJoined" :room />
+  <RoomPreview v-else :room-id />
 </template>

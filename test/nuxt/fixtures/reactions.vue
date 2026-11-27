@@ -2,8 +2,11 @@
 import type { MatrixEvent, Room } from 'matrix-js-sdk'
 
 import { provideEventListItemContext } from '~/components/room/event/generic.vue'
+import { provideRoomInstanceContext } from '~/components/room/instance.vue'
 
 const props = defineProps<{ event: MatrixEvent; room: Room }>()
+
+provideRoomInstanceContext({ room: toRef(props, 'room') })
 
 provideEventListItemContext({
   event: toRef(props, 'event'),
@@ -15,7 +18,6 @@ provideEventListItemContext({
   eventState: ref(),
   eventUserId: computed(() => props.event.getSender()),
   grouped: ref(false),
-  room: toRef(props, 'room'),
 })
 </script>
 

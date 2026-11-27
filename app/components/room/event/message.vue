@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { MsgType } from 'matrix-js-sdk'
 
+import { injectRoomInstanceContext } from '../instance.vue'
 import { injectEventListItemContext } from './generic.vue'
 
-const { event, grouped, room, eventMember, eventUserId, eventProfile, ...ctx } = injectEventListItemContext()
+const { room } = injectRoomInstanceContext()
+const { event, grouped, eventMember, eventUserId, eventProfile, ...ctx } = injectEventListItemContext()
 
 const { data: replyEvent, isLoading: isReplyEventLoading, isReplyEvent } = useRoomReplyEvent(event.value, room.value)
 

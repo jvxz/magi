@@ -1,19 +1,19 @@
 <script lang="ts">
 import type { TimelineScrollState } from '~/composables/use-timeline-pagination'
 
+import { injectRoomInstanceContext } from './instance.vue'
+
 const MAX_CACHED_ROOMS = 32
 
 const scrollStates = new Map<string, TimelineScrollState>()
 </script>
 
 <script lang="ts" setup>
-import type { Room } from 'matrix-js-sdk'
-
 import { Direction, EventType } from 'matrix-js-sdk'
 
-const props = defineProps<{
-  room: Room | undefined
-}>()
+const { room: selectedRoom } = injectRoomInstanceContext()
+// store room in separate ref to avoid instances in <KeepAlive /> from sharing the same room instance
+const room = shallowRef(selectedRoom.value)
 
 const containerRef = useTemplateRef('container')
 const isPaginationBusy = ref(false)
@@ -23,7 +23,7 @@ const {
   events: roomEvents,
   isFullyLoaded,
   scrollEventsAsync,
-} = useRoomEvents(toRef(props, 'room'), {
+} = useRoomEvents(room, {
   filter: [
     EventType.Reaction,
     EventType.RoomRedaction,
@@ -51,7 +51,7 @@ const {
   followTail: true,
   getKey: e => e.getTxnId() ?? e.getId()!,
   hasMore: dir => dir === 'backward' && !isFullyLoaded.value,
-  initialState: () => props.room && scrollStates.get(props.room.roomId),
+  initialState: () => room.value && scrollStates.get(room.value.roomId),
   onBeforePaginate: async dir => {
     if (dir === 'backward') await loadOlder()
   },
@@ -63,11 +63,9 @@ watchEffect(() => {
   isPaginationBusy.value = isPaginating.value.backward || isPaginating.value.forward
 })
 
-const roomId = computed(() => props.room?.roomId)
-
-const currentRoomId = useCurrentRoomId()
+const roomId = computed(() => room.value.roomId)
 watch(
-  currentRoomId,
+  () => selectedRoom.value.roomId,
   (_, prev) => {
     if (!prev || prev !== roomId.value) return
 
@@ -83,7 +81,7 @@ watch(
 
 const alive = useAlive()
 whenever(alive, async () => {
-  const saved = roomId.value && scrollStates.get(roomId.value)
+  const saved = scrollStates.get(roomId.value)
   if (!saved || !(await restoreState(saved))) await reset()
 })
 
@@ -108,22 +106,20 @@ const groupedEvents = useEventGrouping({
 
         <div ref="backSentinel" data-ignore />
 
-        <template v-if="room">
-          <div
-            v-for="(event, idx) in groupedEvents.events"
-            :key="event.getId() ?? idx"
-            :data-index="idx"
-            :data-item-id="event.getTxnId() ?? event.getId()"
-            :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
-          >
-            <RoomEventGeneric
-              :event
-              :grouped="groupedEvents.grouped[idx] !== false"
-              :date-diffed="!!groupedEvents.dateDiffed[idx]"
-              :room
-            />
-          </div>
-        </template>
+        <div
+          v-for="(event, idx) in groupedEvents.events"
+          :key="event.getId() ?? idx"
+          :data-index="idx"
+          :data-item-id="event.getTxnId() ?? event.getId()"
+          :style="isTestMode() ? { height: `${(event as any)._size}px` } : undefined"
+        >
+          <RoomEventGeneric
+            :event
+            :grouped="groupedEvents.grouped[idx] !== false"
+            :date-diffed="!!groupedEvents.dateDiffed[idx]"
+          />
+        </div>
+
         <div ref="forwardSentinel" data-ignore />
 
         <div data-ignore class="h-12" />
