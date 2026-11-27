@@ -3,7 +3,7 @@ import type { USettingCompositeProps } from './composite.vue'
 
 export interface USettingSwitchProps extends USettingCompositeProps {
   modelValue?: boolean
-  variant: StaticVariants['variant']
+  variant?: StaticVariants['variant']
 }
 export interface USettingSwitchEmits {
   'update:modelValue': [value: boolean]
