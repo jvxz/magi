@@ -55,14 +55,9 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
     return new Map(roomSpace.children_state.filter(c => c.content.via?.length).map(c => [c.state_key, c.content.via]))
   })
 
-  const { emojiData } = useEmojibase()
-  const { allEmojiPacks } = useUserImagePacks()
-
-  const suggestionEmojis = computed(() => {
-    const custom = allEmojiPacks.value.flatMap(fromImagePack)
-    const unicode = (emojiData.value?.emojis ?? []).map(fromCompactEmoji)
-    return [...custom, ...unicode]
-  })
+  const { allEmojis, getEmojisByShortcode } = useRoomEmoji(() =>
+    space.value ? [room.value.roomId, space.value.roomId] : [room.value.roomId],
+  )
 
   const { createSuggestion, filteredItems, highlightedIdx, listHeight, open, selectItem } =
     useEditorSuggestions<SuggestionItem>()
@@ -96,8 +91,8 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
 
       // emoji suggestions
       EmojiNode.configure({
-        findCustomEmoji: shortcode => {
-          const emoji = suggestionEmojis.value.find(e => e.type === 'custom' && e.shortcode === shortcode)
+        findEmoji: shortcode => {
+          const emoji = getEmojisByShortcode(shortcode)[0]
           return emoji && getEmojiNodeAttrs(emoji)
         },
         resolveImageUrl: url =>
@@ -110,7 +105,7 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
         suggestion: createSuggestion(
           ':',
           ({ query }) =>
-            suggestionEmojis.value
+            allEmojis.value
               .filter(e => contains(e.terms, query))
               .slice(0, 50)
               .map(e => ({

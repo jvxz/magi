@@ -6,16 +6,7 @@ import { Emoji } from '@tiptap/extension-emoji'
 export interface EmojiNodeOptions extends EmojiOptions {
   // handles custom emojis
   resolveImageUrl: ((mxcUrl: string) => string | undefined) | undefined
-  findCustomEmoji: ((shortcode: string) => EmojiNodeAttrs | undefined) | undefined
-}
-
-// custom emoji win over unicode ones with the same shortcode
-function findEmojiAttrs(shortcode: string, options: EmojiNodeOptions): EmojiNodeAttrs | undefined {
-  const custom = options.findCustomEmoji?.(shortcode)
-  if (custom) return custom
-
-  const item = options.emojis.find(e => e.name === shortcode || e.shortcodes?.includes(shortcode))
-  if (item?.emoji) return { label: item.name, unicode: item.emoji }
+  findEmoji: ((shortcode: string) => EmojiNodeAttrs | undefined) | undefined
 }
 
 export interface EmojiNodeAttrs {
@@ -39,7 +30,7 @@ export const EmojiNode = Emoji.extend<EmojiNodeOptions>({
       new InputRule({
         find: REGEX__SHORTCODE_INPUT,
         handler: ({ chain, match, range }) => {
-          const attrs = findEmojiAttrs(match[1]!, this.options)
+          const attrs = this.options.findEmoji?.(match[1]!)
           if (!attrs) return
           chain().insertContentAt(range, { attrs, type: this.name }).run()
         },
@@ -47,14 +38,14 @@ export const EmojiNode = Emoji.extend<EmojiNodeOptions>({
     ]
   },
   addOptions() {
-    return { ...this.parent!(), findCustomEmoji: undefined, resolveImageUrl: undefined }
+    return { ...this.parent!(), findEmoji: undefined, resolveImageUrl: undefined }
   },
   addPasteRules() {
     return [
       new PasteRule({
         find: REGEX__SHORTCODE_PASTE,
         handler: ({ chain, match, range }) => {
-          const attrs = findEmojiAttrs(match[2]!, this.options)
+          const attrs = this.options.findEmoji?.(match[2]!)
           if (!attrs) return
           const from = range.from + (match[1]?.length ?? 0)
           chain().insertContentAt({ from, to: range.to }, { attrs, type: this.name }, { updateSelection: false }).run()
