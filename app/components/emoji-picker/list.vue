@@ -339,7 +339,7 @@ watchDebounced(
               v-for="emoji in (flatList[v.index] as FlatItemCells).emojis"
               :id="getEmojiKey(scopeId, emoji)"
               :key="emoji.key"
-              :title="emoji.label"
+              :title="resolveEmojiReadableName(emoji)"
               role="gridcell"
               tabindex="-1"
               type="button"

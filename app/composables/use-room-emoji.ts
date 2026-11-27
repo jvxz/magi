@@ -55,5 +55,16 @@ export function useRoomEmoji(roomIds: MaybeRefOrGetter<string[]>) {
     return arr
   }
 
-  return { allEmojis, emojiMap, getEmojiById, getEmojisByShortcode, packs, roomEmojis }
+  const reactionMap = computed(() => {
+    const map = new Map<Reaction, Emoji>()
+    for (const emoji of allEmojis.value) {
+      const reaction = emoji.type === 'unicode' ? emoji.unicode : emoji.url
+      if (!map.has(reaction)) map.set(reaction, emoji)
+    }
+    return map
+  })
+
+  const getEmojiByReaction = (reaction: Reaction) => reactionMap.value.get(reaction)
+
+  return { allEmojis, emojiMap, getEmojiById, getEmojiByReaction, getEmojisByShortcode, packs, roomEmojis }
 }

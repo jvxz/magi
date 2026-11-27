@@ -11,6 +11,7 @@ export function useRoomEventReactions(
   const room = useRoom(roomOrId)
   const event = useRoomLiveEvent(roomOrId, eventOrId)
   const { bumpRecentReaction } = useRecentReactions()
+  const { getEmojiByReaction } = useRoomEmoji(() => (room.value ? [room.value.roomId] : []))
 
   const reactions = computed(() => {
     if (!room.value || !event.value) return
@@ -68,7 +69,8 @@ export function useRoomEventReactions(
       }
 
       await react.mutateAsync({ event: event.value, reaction: key, redact: false, shortcode })
-      bumpRecentReaction(key)
+      const emoji = getEmojiByReaction(key)
+      if (emoji) bumpRecentReaction(emoji.key)
     } else {
       const reactionEvent = isReactingTo(key)
       if (!reactionEvent) return

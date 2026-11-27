@@ -76,3 +76,8 @@ export function isEmojiCodepoint(input: string): boolean {
 export function isEmoji(input: string): boolean {
   return REGEX__EMOJI_STRICT.test(input)
 }
+
+export function resolveEmojiReadableName(emoji: Emoji) {
+  if (emoji.type === 'custom') return emoji.label
+  return getShortcodesFromUnicode(emoji.unicode)[0]
+}

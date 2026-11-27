@@ -3,12 +3,14 @@ interface RecentReaction {
   lastUsed: number
 }
 
-type RecentReactionState = Map<string, RecentReaction>
+type RecentReactionState = Map<Emoji['key'], RecentReaction>
 
-const initialValue = new Map(GENERAL__DEFAULT_RECENT_REACTIONS.map(e => [e, { lastUsed: 0, reaction: e, uses: 0 }]))
+const initialValue = new Map(
+  GENERAL__DEFAULT_RECENT_REACTIONS.map(e => [getHexcodeFromUnicode(e), { lastUsed: 0, uses: 0 }]),
+)
 
 export const useRecentReactions = createGlobalState(() => {
-  const recentReactions = useLocalStorage<RecentReactionState>('recentReactions', initialValue, {
+  const recentReactions = useLocalStorage<RecentReactionState>('recentEmojis', initialValue, {
     shallow: true,
   })
 
@@ -20,10 +22,10 @@ export const useRecentReactions = createGlobalState(() => {
     ),
   )
 
-  function bumpRecentReaction(reaction: Reaction) {
-    const prev = recentReactions.value.get(reaction)
+  function bumpRecentReaction(emojiKey: Emoji['key']) {
+    const prev = recentReactions.value.get(emojiKey)
 
-    recentReactions.value.set(reaction, {
+    recentReactions.value.set(emojiKey, {
       lastUsed: Date.now(),
       uses: (prev?.uses ?? 0) + 1,
     })
@@ -37,3 +39,10 @@ export const useRecentReactions = createGlobalState(() => {
     sortedRecentReactions,
   }
 })
+
+export function useRoomRecentReactions(roomIds: MaybeRefOrGetter<string[]>) {
+  const { sortedRecentReactions } = useRecentReactions()
+  const { getEmojiById } = useRoomEmoji(roomIds)
+
+  return computed(() => sortedRecentReactions.value.map(r => getEmojiById(r.key)).filter(isDefined) as Emoji[])
+}
