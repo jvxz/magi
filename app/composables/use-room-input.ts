@@ -57,7 +57,7 @@ export function useRoomInput(roomInput: MaybeRefOrGetter<Room>, spaceInput?: May
     return new Map(roomSpace.children_state.filter(c => c.content.via?.length).map(c => [c.state_key, c.content.via]))
   })
 
-  const { emojiData } = useEmojiData()
+  const { emojiData } = useEmojibase()
   const { allEmojiPacks } = useUserImagePacks()
 
   const suggestionEmojis = computed(() => {

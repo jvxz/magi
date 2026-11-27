@@ -10,7 +10,7 @@ const COLUMN_COUNT = 9
 const HEADER_SIZE = 24
 const ROW_SIZE = 32
 
-const { categories, groupedEmojis, isLoading } = useEmojiData()
+const { categories, groupedEmojis, isLoading } = useEmojibase()
 const { getTwemojiUrl } = useTwemoji()
 const { activeEmoji, gridId, isInputFocused, onInputMove, onPick, scopeId, searchQuery, ...ctx } =
   injectEmojiPickerContext()
