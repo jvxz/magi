@@ -16,9 +16,9 @@ export function getHexcodeFromUnicode(unicode: string) {
   return fromUnicodeToHexcode(unicode)
 }
 
-export function getShortcodeFromUnicode(unicode: string) {
-  const maybeArr = dataset[getHexcodeFromUnicode(unicode)]
-  return Array.isArray(maybeArr) ? maybeArr[0] : maybeArr
+export function getShortcodesFromUnicode(unicode: string) {
+  const maybeArr = dataset[getHexcodeFromUnicode(unicode)] ?? []
+  return toArray(maybeArr)
 }
 
 export function isEmojiHexcode(input: string): boolean {
