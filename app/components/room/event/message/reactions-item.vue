@@ -80,7 +80,7 @@ function handleReactionViewer() {
         <p role="button" class="font-normal cursor-pointer hover:underline" @click="handleReactionViewer">
           <span class="font-medium">{{ reactorsString }}</span>
           <span class="text-muted-foreground"> reacted with </span>
-          <span class="font-medium">:{{ shortcode }}:</span>
+          <span class="font-medium">{{ shortcode ? `:${shortcode}:` : reaction }}</span>
         </p>
       </UTooltipContent>
     </UTooltipRoot>
