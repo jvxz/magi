@@ -9,11 +9,11 @@ const palette = computed({
 
 <template>
   <SettingsContentLayout>
-    <USettingSelect
-      v-model:model-value="settings.appearance.font"
-      :label="SETTINGS__ITEM_METADATA.appearance.font.title"
-      :description="SETTINGS__ITEM_METADATA.appearance.font.description"
-      :options="SETTINGS__ITEM_METADATA.appearance.font.options"
+    <USettingSwitch
+      v-model:model-value="settings.appearance.useSystem"
+      variant="top"
+      :label="SETTINGS__ITEM_METADATA.appearance.useSystem.title"
+      :description="SETTINGS__ITEM_METADATA.appearance.useSystem.description"
     />
 
     <USeparator />

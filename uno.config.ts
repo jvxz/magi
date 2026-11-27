@@ -125,6 +125,7 @@ export default defineConfig({
     },
     font: {
       mono: 'Paper Mono',
+      sans: 'Allo',
     },
     fontWeight: {
       medium: '475',

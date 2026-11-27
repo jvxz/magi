@@ -11,7 +11,7 @@ import {
 
 export interface Settings {
   appearance: {
-    font: 'Inter' | 'System'
+    useSystem: boolean
     palette: PublicRuntimeConfig['colorModes'][number]
   }
   accessibility: {
@@ -85,8 +85,8 @@ export const SETTINGS__DEFAULTS: EnforcedSettingsKeys<Settings> = {
     resync: undefined,
   },
   appearance: {
-    font: 'System',
     palette: 'default',
+    useSystem: false,
   },
   devices: {},
   general: {},
@@ -115,14 +115,13 @@ export const SETTINGS__ITEM_METADATA: SettingsItemMetadata = {
     },
   },
   appearance: {
-    font: {
-      description: 'The font to use in the app',
-      options: ['Inter', 'System'],
-      title: 'Font',
-    },
     palette: {
       description: 'Color palette of the app',
       title: 'Color palette',
+    },
+    useSystem: {
+      description: "Use system's default font instead of Magi's custom font",
+      title: 'System font',
     },
   },
   devices: {},

@@ -44,6 +44,16 @@ export default defineNuxtConfig({
       preload: true,
       weights: ['100 900'],
     },
+    families: [
+      // https://allo.joshpuckett.me/configure/141K58qUkWpJJcP3aTRAuSW3
+      {
+        name: 'Allo',
+        provider: 'local',
+        styles: ['normal'],
+        subsets: ['latin'],
+        weights: ['100 900'],
+      },
+    ],
   },
 
   future: {
