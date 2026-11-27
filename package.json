@@ -101,7 +101,7 @@
     "@vue/test-utils": "^2.6.0",
     "eslint": "^10.15.0",
     "eslint-plugin-antfu": "3.3.1",
-    "eslint-plugin-command": "3.5.3",
+    "eslint-plugin-command": "4.0.0",
     "eslint-plugin-oxlint": "^1.94.0",
     "eslint-plugin-perfectionist": "5.14.0",
     "eslint-plugin-regexp": "3.3.3",
