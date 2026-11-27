@@ -3,6 +3,7 @@ import type { Room } from 'matrix-js-sdk'
 
 export interface RoomInstanceContext extends ReturnType<typeof useRoomInput>, ReturnType<typeof useRoomMembersTyping> {
   room: Readonly<Ref<Room>>
+  space: Readonly<Ref<Room | undefined>>
   react: ReturnType<typeof useRoomActions>['react']
 }
 
@@ -28,6 +29,7 @@ provideRoomInstanceContext({
   ...roomMembersTyping,
   react,
   room,
+  space,
 })
 </script>
 

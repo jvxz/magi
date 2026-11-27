@@ -5,7 +5,7 @@ import { getEmojiNodeAttrs } from '~/components/emoji-picker/root.vue'
 
 import { injectRoomInstanceContext } from '../instance.vue'
 
-const { inputEditor, room } = injectRoomInstanceContext()
+const { inputEditor, room, space } = injectRoomInstanceContext()
 
 function onPick(emoji: PickerEmoji) {
   inputEditor.value
@@ -29,7 +29,7 @@ function onPick(emoji: PickerEmoji) {
 
     <PopoverContent as-child>
       <KeepAlive>
-        <UEmojiPickerRoot :room-ids="[room.roomId]" :space-ids="[]" @pick="onPick">
+        <UEmojiPickerRoot :room-ids="[room.roomId]" :space-ids="space ? [space.roomId] : []" @pick="onPick">
           <UEmojiPickerSearch />
           <UEmojiPickerList />
         </UEmojiPickerRoot>
