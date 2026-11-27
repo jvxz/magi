@@ -2,7 +2,7 @@ export const useUserImagePacks = createGlobalState(() => {
   const userPacksRaw = useAccountData(AccountDataEvent.PoniesUserEmotes)
   const roomPacksRaw = useAccountData(AccountDataEvent.PoniesEmoteRooms)
 
-  const userEmotes = computed(() => formatImagePack(userPacksRaw.value, 'user'))
+  const userEmotes = computed(() => formatImagePack(userPacksRaw.value))
 
   const { revisions } = useRoomRevisions()
   const roomPacks = computed(() => {
@@ -18,11 +18,10 @@ export const useUserImagePacks = createGlobalState(() => {
       void revisions.get(roomId)
 
       for (const packName of objectKeys(packs)) {
-        const id = `${roomId}/${packName}`
-        const formattedPack = formatImagePack(getRoomImagePack(room, packName), id)
+        const formattedPack = formatImagePack(getRoomImagePack(room, packName))
         if (!formattedPack) continue
 
-        roomPacks.set(id, formattedPack)
+        roomPacks.set(formattedPack.id, formattedPack)
       }
     }
 

@@ -17,15 +17,20 @@ export function getRoomImagePack(room: Room, packStateKey: string) {
   return event.find(e => e.getStateKey() === packStateKey)
 }
 
-export function formatImagePack(event: MatrixEvent | undefined, id = event?.getStateKey()): ImagePack | undefined {
+export function getImagePackId(roomId: string, stateKey: string) {
+  return `${roomId}/${stateKey}`
+}
+
+export function formatImagePack(event: MatrixEvent | undefined): ImagePack | undefined {
   if (
     !event ||
-    id === undefined ||
     !([CustomEventType.PoniesRoomEmotes, AccountDataEvent.PoniesUserEmotes] as any[]).includes(event.getType())
   )
     return
 
   const { images, pack } = event.getContent<ImagePackContent>()
+  const roomId = event.getRoomId()
+  const id = roomId ? getImagePackId(roomId, event.getStateKey() ?? '') : 'user'
 
   return {
     ...pack,
@@ -35,14 +40,4 @@ export function formatImagePack(event: MatrixEvent | undefined, id = event?.getS
     images: images ?? {},
     roomId: event.getRoomId(),
   }
-}
-
-export function formatImagePacks(events: MatrixEvent[]) {
-  const packs = new Map<string, ImagePack>()
-  for (const event of events) {
-    const pack = formatImagePack(event)
-    if (pack) packs.set(pack.id, pack)
-  }
-
-  return packs
 }
