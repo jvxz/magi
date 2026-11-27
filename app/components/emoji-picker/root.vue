@@ -32,6 +32,7 @@ export interface EmojiPickerContext {
   userRoomPacks: Ref<boolean>
   roomIds: Ref<string[]>
   spaceIds: Ref<string[]>
+  roomEmoji: ReturnType<typeof useRoomEmoji>
 }
 
 export const [injectEmojiPickerContext, provideEmojiPickerContext] =
@@ -67,6 +68,8 @@ const gridId = `${scopeId}-grid`
 
 const isInputFocused = shallowRef(false)
 
+const roomEmoji = useRoomEmoji(() => [...(props.roomIds ?? []), ...(props.spaceIds ?? [])])
+
 const onPick = (emoji: Emoji) => {
   emits('pick', emoji)
 }
@@ -77,6 +80,7 @@ provideEmojiPickerContext({
   isInputFocused,
   onInputMove: inputMoveHook.on,
   onPick,
+  roomEmoji,
   roomIds: toRef(() => props.roomIds ?? []),
   scopeId,
   searchQuery,

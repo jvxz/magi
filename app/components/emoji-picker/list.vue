@@ -29,8 +29,6 @@ interface FlatItemCells {
 }
 type FlatItem = FlatItemHeader | FlatItemCells
 
-const { allEmojiPacks } = useUserImagePacks()
-
 const { client } = useMatrixClient()
 const reducedMotion = usePreferredReducedMotion()
 
@@ -46,8 +44,11 @@ const customSections = computed(() => {
   const srcs = new Map<string, string | undefined>()
   const sections: { emojis: Emoji[]; key: string; label: string }[] = []
 
-  for (const pack of allEmojiPacks.value) {
-    const isEnabled = pack.roomId ? toValue(ctx.userRoomPacks) : toValue(ctx.userEmojis)
+  const contextRoomIds = new Set([...ctx.roomIds.value, ...ctx.spaceIds.value])
+  for (const pack of ctx.roomEmoji.packs.value) {
+    const isEnabled = pack.roomId
+      ? contextRoomIds.has(pack.roomId) || toValue(ctx.userRoomPacks)
+      : toValue(ctx.userEmojis)
     if (!isEnabled) continue
 
     const emojis = fromImagePack(pack)
