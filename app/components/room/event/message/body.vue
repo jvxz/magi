@@ -11,13 +11,19 @@ const tagComponentMap: Record<any, Component> = {
 <script lang="ts" setup>
 export interface RoomEventMessageBodyProps {
   event: MatrixEvent
+  reply?: boolean
 }
 
 const props = defineProps<RoomEventMessageBodyProps>()
 
-const { messageNodes } = useMessageBodyNodes(() => props.event)
+const { messageNodes: rawMessageNodes } = useMessageBodyNodes(() => props.event)
+const messageNodes = computed(() => {
+  if (!props.reply) return rawMessageNodes.value
+  // get first line of message
+  return takeWhile(rawMessageNodes.value, n => n.type !== 'element' || (n.type === 'element' && n.tag !== 'br'))
+})
 
-const isJumboEmoji = computed(() => isEmojiOnly(messageNodes.value))
+const isJumboEmoji = computed(() => !props.reply && isEmojiOnly(messageNodes.value))
 
 const [DefineElement, Element] = createReusableTemplate<{
   node: MessageNode
@@ -38,12 +44,16 @@ const [DefineElement, Element] = createReusableTemplate<{
     <span v-if="node.type === 'text'" data-slot="text">{{ node.value }}</span>
 
     <!-- emoji -->
-    <UEmoji v-else-if="node.type === 'emoji'" :unicode="node.unicode" :class="isJumboEmoji && 'text-4xl'" />
+    <UEmoji
+      v-else-if="node.type === 'emoji'"
+      :unicode="node.unicode"
+      :class="cn(isJumboEmoji && 'text-4xl', props.reply && 'text-inherit!')"
+    />
     <UEmoji
       v-else-if="node.type === 'custom-emoji'"
       :url="node.url"
       :alt="node.alt"
-      :class="isJumboEmoji && 'text-4xl'"
+      :class="cn(isJumboEmoji && 'text-4xl', props.reply && 'text-inherit!')"
     />
 
     <!-- codespan -->

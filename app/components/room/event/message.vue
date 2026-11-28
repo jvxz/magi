@@ -73,14 +73,14 @@ const shouldRender = computed(() => {
           </UProfilePopoverTrigger>
 
           <p
-            v-if="!isReplyEventRedacted"
+            v-if="!isReplyEventRedacted && replyEvent"
             class="w-full truncate"
             :class="{
               'italic text-muted-foreground':
                 replyEvent?.isDecryptionFailure() || !replyEventBody || isReplyEventRedacted,
             }"
           >
-            <Twemojify class="truncate" :text="replyEventBody ?? ''" />
+            <RoomEventMessageBody reply :event="replyEvent" />
           </p>
         </template>
         <template v-else>
