@@ -1,0 +1,45 @@
+export const useUserImagePacks = createGlobalState(() => {
+  const userPacksRaw = useAccountData(AccountDataEvent.PoniesUserEmotes)
+  const roomPacksRaw = useAccountData(AccountDataEvent.PoniesEmoteRooms)
+
+  const userEmotes = computed(() => formatImagePack(userPacksRaw.value))
+
+  const { revisions } = useRoomRevisions()
+  const roomPacks = computed(() => {
+    if (!roomPacksRaw.value) return
+    const roomPacks = new Map<string, ImagePack>()
+
+    const { client } = useMatrixClient()
+    const { rooms } = roomPacksRaw.value.getContent<UserRoomImagePackContent>()
+    for (const [roomId, packs] of objectEntries(rooms ?? {})) {
+      void revisions.get(roomId)
+
+      const room = getRoom(client.value, roomId)
+      if (!room) continue
+
+      for (const packName of objectKeys(packs)) {
+        const formattedPack = formatImagePack(getRoomImagePack(room, packName))
+        if (!formattedPack) continue
+
+        roomPacks.set(formattedPack.id, formattedPack)
+      }
+    }
+
+    return roomPacks
+  })
+
+  const allEmojiPacks = computed(() => {
+    const allEmojiPacks: ImagePack[] = []
+    const packs = [userEmotes.value, ...(roomPacks.value?.values() ?? [])]
+    for (const pack of packs) {
+      if (!pack) continue
+      if (pack.usage?.length && !pack.usage.includes('emoticon')) continue
+
+      allEmojiPacks.push(pack)
+    }
+
+    return allEmojiPacks
+  })
+
+  return { allEmojiPacks, roomPacks, userEmotes }
+})

@@ -26,7 +26,7 @@ const { room } = injectRoomInstanceContext()
     region="event"
     :value="{
       event,
-      roomId: resolveRoomId(room),
+      room,
     }"
     data-testid="event-root"
     :data-event-id="event.getId()"

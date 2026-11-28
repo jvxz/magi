@@ -9,7 +9,7 @@ const LOCALE_LOADER_MAP = {
 
 type SupportedLocale = keyof typeof LOCALE_LOADER_MAP
 
-export const useEmojiData = createGlobalState(() => {
+export const useEmojibase = createGlobalState(() => {
   // TODO: implement locale switching and loading
   const locale = shallowRef<SupportedLocale>('en')
   const targetLocale = computed(() => (locale.value in LOCALE_LOADER_MAP ? locale.value : 'en'))

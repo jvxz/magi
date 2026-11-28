@@ -19,6 +19,7 @@ export function useRoomActions(
     mutationFn: async (params: {
       event: MatrixEvent
       reaction?: string
+      shortcode?: string
       redact:
         | false
         | {
@@ -27,7 +28,7 @@ export function useRoomActions(
     }) => {
       if (!room.value) return
 
-      const { event, reaction, redact } = params
+      const { event, reaction, redact, shortcode } = params
 
       const event_id = event.getId()
       if (!event_id) return
@@ -65,6 +66,10 @@ export function useRoomActions(
           key: reaction,
           rel_type: RelationType.Annotation,
         },
+        ...(shortcode && {
+          'com.beeper.reaction.shortcode': `:${shortcode}:`,
+          shortcode: `:${shortcode}:`,
+        }),
       })
     },
     mutationKey: $mk.react(roomId),

@@ -3,12 +3,10 @@ import { TabsTrigger } from '#components'
 
 const props = defineProps<{
   reaction: string
+  reactors?: Set<string>
 }>()
 
-const { getReactors } = useRoomEventReactions.inject()
-const reactors = computed(() => getReactors(props.reaction))
-
-const count = computed(() => reactors.value?.size ?? 0)
+const count = computed(() => props.reactors?.size ?? 0)
 </script>
 
 <template>

@@ -12,6 +12,7 @@ interface MockClientOptions {
 
 export function mockClient({ rooms = [], userId = DEFAULT_MOCK_NAMES[0]! }: MockClientOptions = {}) {
   const client = Object.assign(createClient({ baseUrl: generateFakeHomeserver() }), {
+    getJoinedRooms: () => rooms.map(r => r.room.roomId),
     getRoom: (id: string) => rooms.find(r => r.room.roomId === id)?.room ?? null,
     getSafeUserId: () => userId,
     getUser: (id: string) => new User(id),

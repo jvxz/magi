@@ -16,7 +16,7 @@ const emitTyping = (userIds: string[]) =>
     new RoomMember(mockRoom.room.roomId, userIds[0] ?? CURRENT_USER),
   )
 
-const mountTyping = () => withSetup(() => useRoomMembersTyping.provide(() => mockRoom.room))
+const mountTyping = () => withSetup(() => useRoomMembersTyping(() => mockRoom.room))
 
 describe('typing indicator', () => {
   let roomSeq = 0

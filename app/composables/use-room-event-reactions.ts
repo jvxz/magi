@@ -2,108 +2,123 @@ import type { MatrixEvent } from 'matrix-js-sdk'
 
 import { map } from 'es-toolkit/set'
 
-export const useRoomEventReactions = createProvidableComposable(
-  'useRoomEventReactions',
-  (roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>, eventOrId: MaybeRefOrGetter<MatrixEvent | undefined>) => {
-    const room = useRoom(roomOrId)
-    const event = useRoomLiveEvent(roomOrId, eventOrId)
-    const { bumpRecentReaction } = useRecentReactions()
+import { injectRoomInstanceContext } from '~/components/room/instance.vue'
 
-    const reactions = computed(() => {
-      if (!room.value || !event.value) return
+export function useRoomEventReactions(
+  roomOrId: MaybeRefOrGetter<MaybeRoomOrId | undefined>,
+  eventOrId: MaybeRefOrGetter<MatrixEvent | undefined>,
+) {
+  const room = useRoom(roomOrId)
+  const event = useRoomLiveEvent(roomOrId, eventOrId)
+  const { bumpRecentReaction } = useRecentReactions()
+  const { getEmojiByReaction } = useRoomEmoji(() => (room.value ? [room.value.roomId] : []))
 
-      const eventId = event.value.getId()
-      assert(eventId, 'eventId was undefined when getting event reactions')
+  const reactions = computed(() => {
+    if (!room.value || !event.value) return
 
-      return getEventReactions(room.value, eventId)
-    })
+    const eventId = event.value.getId()
+    assert(eventId, 'eventId was undefined when getting event reactions')
 
-    const { self } = useSelf()
-    function isReactingTo(reaction: string) {
-      if (!self.value) return
-      return isUserReactingTo(self.value, reaction)
-    }
+    return getEventReactions(room.value, eventId)
+  })
 
-    const { react } = useRoomActions(room)
-    const pendingRedaction = new Map<string, string>()
+  const { self } = useSelf()
+  function isReactingTo(reaction: string) {
+    if (!self.value) return
+    return isUserReactingTo(self.value, reaction)
+  }
 
-    const getDebouncedReactFn = memoize((key: string) =>
-      throttle(
-        async (shouldReact: boolean) => {
-          if (!event.value || !MATRIX__REACTABLE_EVENT_TYPES.includes(event.value.getType())) return
+  const { react } = injectRoomInstanceContext(null) ?? useRoomActions(room)
+  const error = shallowRef<Error | null>(null)
+  const pendingRedaction = new Map<string, string>()
 
-          if (shouldReact) {
-            const reactionEvent = isReactingTo(key)
-            if (reactionEvent) {
-              const reactionEventId = reactionEvent.getId()!
+  const getDebouncedReactFn = memoize((key: string) =>
+    throttle(
+      async (shouldReact: boolean, shortcode?: string) => {
+        if (!event.value || !MATRIX__REACTABLE_EVENT_TYPES.includes(event.value.getType())) return
 
-              if (pendingRedaction.get(key) !== reactionEventId) {
-                pendingRedaction.set(key, reactionEventId)
+        error.value = null
+        try {
+          await toggle(key, shouldReact, shortcode)
+        } catch (e) {
+          error.value = e as Error
+        }
+      },
+      400,
+      { edges: ['leading', 'trailing'] },
+    ),
+  )
 
-                try {
-                  await react.mutateAsync({ event: event.value, redact: { reactionEvent } })
-                } finally {
-                  pendingRedaction.delete(key)
-                }
-              }
-            }
+  async function toggle(key: string, shouldReact: boolean, shortcode?: string) {
+    if (!event.value) return
 
-            await react.mutateAsync({ event: event.value, reaction: key, redact: false })
-            bumpRecentReaction(key)
-          } else {
-            const reactionEvent = isReactingTo(key)
-            if (!reactionEvent) return
+    if (shouldReact) {
+      const reactionEvent = isReactingTo(key)
+      if (reactionEvent) {
+        const reactionEventId = reactionEvent.getId()!
 
-            const id = reactionEvent.getId()!
-            if (pendingRedaction.get(key) === id) return
+        if (pendingRedaction.get(key) !== reactionEventId) {
+          pendingRedaction.set(key, reactionEventId)
 
-            pendingRedaction.set(key, id)
-            try {
-              await react.mutateAsync({ event: event.value, redact: { reactionEvent } })
-            } finally {
-              pendingRedaction.delete(key)
-            }
+          try {
+            await react.mutateAsync({ event: event.value, redact: { reactionEvent } })
+          } finally {
+            pendingRedaction.delete(key)
           }
-        },
-        400,
-        { edges: ['leading', 'trailing'] },
-      ),
-    )
+        }
+      }
 
-    function reactTo(reaction: string, shouldReact = true) {
-      if (!event.value || !room.value) return
+      await react.mutateAsync({ event: event.value, reaction: key, redact: false, shortcode })
+      const emoji = getEmojiByReaction(key)
+      if (emoji) bumpRecentReaction(emoji.key)
+    } else {
+      const reactionEvent = isReactingTo(key)
+      if (!reactionEvent) return
 
-      const eventId = event.value.getId()
-      assert(eventId, `eventId was undefined when toggling reaction to ${reaction}`)
+      const id = reactionEvent.getId()!
+      if (pendingRedaction.get(key) === id) return
 
-      getDebouncedReactFn(reaction)(shouldReact)
+      pendingRedaction.set(key, id)
+      try {
+        await react.mutateAsync({ event: event.value, redact: { reactionEvent } })
+      } finally {
+        pendingRedaction.delete(key)
+      }
     }
+  }
 
-    function isUserReactingTo(user: MaybeUserOrId, reaction: string) {
-      if (!room.value || !event.value) return
+  function reactTo(reaction: string, shouldReact = true, shortcode?: string) {
+    if (!event.value || !room.value) return
 
-      return isUserReacting(room.value, event.value, user, reaction)
-    }
+    const eventId = event.value.getId()
+    assert(eventId, `eventId was undefined when toggling reaction to ${reaction}`)
 
-    const getReactors = (reaction: string) => {
-      if (!room.value || !event.value) return
+    getDebouncedReactFn(reaction)(shouldReact, shortcode)
+  }
 
-      const reactions = getEventReactions(room.value, event.value)
-      const reactionEvents = reactions?.get(reaction)
-      if (!reactionEvents) return
+  function isUserReactingTo(user: MaybeUserOrId, reaction: string) {
+    if (!room.value || !event.value) return
 
-      return map(reactionEvents, e => e.getSender()!)
-    }
+    return isUserReacting(room.value, event.value, user, reaction)
+  }
 
-    return {
-      error: react.error,
-      event,
-      getReactors,
-      isReactingTo,
-      isUserReactingTo,
-      reactTo,
-      reactions,
-      room,
-    }
-  },
-)
+  const getReactors = (reaction: string) => {
+    if (!room.value || !event.value) return
+
+    const reactions = getEventReactions(room.value, event.value)
+    const reactionEvents = reactions?.get(reaction)?.events
+    if (!reactionEvents) return
+
+    return map(reactionEvents, e => e.getSender()!)
+  }
+
+  return {
+    error,
+    event,
+    getReactors,
+    isReactingTo,
+    isUserReactingTo,
+    reactTo,
+    reactions,
+  }
+}

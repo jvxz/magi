@@ -45,6 +45,7 @@
     "@tiptap/extension-emoji": "^3.34.0",
     "@tiptap/extension-mention": "^3.34.0",
     "@tiptap/extension-placeholder": "^3.34.0",
+    "@twemoji/api": "^17.0.3",
     "@vite-pwa/nuxt": "^1.1.1",
     "@vueuse/core": "14.4.0",
     "@vueuse/nuxt": "14.4.0",

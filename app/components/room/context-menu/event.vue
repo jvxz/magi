@@ -1,34 +1,32 @@
 <script lang="ts" setup>
-import type { CompactEmoji } from 'emojibase'
-
 import { ContextMenuSubContent } from '#components'
 
 const props = defineProps<ContextMenuRegions['event']>()
 
 const { openDialog } = useGlobalDialog()
 
-const { openReactionViewer } = useRoomEventReactionsViewer()
 const { close } = useContextMenuRegion('event')
 const { self } = useSelf()
 
 const { reactions, reactTo } = useRoomEventReactions(
-  () => props.roomId,
+  () => props.room,
   () => props.event,
 )
 
-function onEmojiPick(emoji: CompactEmoji) {
+function onEmojiPick(emoji: Emoji) {
   if (props.event) {
-    reactTo(emoji.unicode, true)
+    if (emoji.type === 'unicode') reactTo(emoji.unicode, true)
+    else reactTo(emoji.url, true, emoji.shortcode)
   }
 
   close()
 }
 
-const { sortedRecentReactions } = useRecentReactions()
-const firstFourRecentReactions = computed(() => sortedRecentReactions.value.slice(0, 4))
+const recentReactions = useRoomRecentReactions(() => [props.room.roomId])
+const firstFourRecentReactions = computed(() => recentReactions.value.slice(0, 4))
 
 const { canRedactOwnMessages, canRedactMessages } = useRoomMemberPermissions(
-  () => props.roomId,
+  () => props.room,
   () => self.value?.userId,
 )
 
@@ -38,45 +36,48 @@ const canRedact = computed(() =>
 
 const { current } = useMagicKeys()
 const { redact } = useRoomActions(
-  () => props.roomId,
+  () => props.room,
   () => props.event.getId(),
 )
 const handleDeleteMessage = () => {
   if (current.has('shift')) redact.mutate({ reason: undefined })
-  else openDialog('deleteMessage', { eventId: props.event.getId()!, roomId: props.roomId })
+  else openDialog('deleteMessage', { eventId: props.event.getId()!, roomId: props.room.roomId })
 }
+
+// lazy, only calculates if node structure item is selected
+const { messageNodes } = useMessageBodyNodes(props.event)
 </script>
 
 <template>
   <template v-if="event && MATRIX__REACTABLE_EVENT_TYPES.includes(event.getType())">
     <div class="flex items-center justify-around">
-      <ContextMenuItem v-for="(reaction, i) in firstFourRecentReactions" :key="i" as-child>
+      <ContextMenuItem v-for="emoji in firstFourRecentReactions" :key="emoji.key" as-child>
         <UButton
+          :title="resolveEmojiReadableName(emoji)"
           size="icon"
           variant="ghost"
           class="grow h-full aspect-square cursor-default"
-          @click="
-            () => {
-              reactTo(reaction.key)
-              close()
-            }
-          "
+          @click="onEmojiPick(emoji)"
         >
-          <Twemojify class="text-6" :text="reaction.key" />
+          <UEmoji v-if="emoji.type === 'unicode'" class="text-4" :unicode="emoji.unicode" />
+          <UEmoji v-else class="text-4" :url="emoji.url" :alt="emoji.shortcode" />
         </UButton>
       </ContextMenuItem>
     </div>
     <UContextMenuSub>
       <UContextMenuSubTrigger> Add reaction </UContextMenuSubTrigger>
 
-      <UEmojiPickerRoot :as="ContextMenuSubContent" @pick="onEmojiPick">
+      <UEmojiPickerRoot :as="ContextMenuSubContent" :room-ids="[room.roomId]" :space-ids="[]" @pick="onEmojiPick">
         <UEmojiPickerSearch />
         <ContextMenuItem as-child>
           <UEmojiPickerList />
         </ContextMenuItem>
       </UEmojiPickerRoot>
     </UContextMenuSub>
-    <UContextMenuItem :disabled="!reactions || !reactions.size" @select="openReactionViewer(roomId, event)">
+    <UContextMenuItem
+      :disabled="!reactions || !reactions.size"
+      @select="openDialog('reactionsViewer', { event, room })"
+    >
       View reactions
     </UContextMenuItem>
 
@@ -91,6 +92,12 @@ const handleDeleteMessage = () => {
         @select="openDialog('codeViewer', { lang: 'json', code: JSON.stringify(props.event, null, 2) })"
       >
         View source
+      </UContextMenuItem>
+
+      <UContextMenuItem
+        @select="openDialog('codeViewer', { lang: 'json', code: JSON.stringify(messageNodes, null, 2) })"
+      >
+        View node structure
       </UContextMenuItem>
     </template>
   </template>

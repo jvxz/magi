@@ -38,6 +38,169 @@ export function getEventContent(event: MatrixEvent | undefined): IContent {
   return content
 }
 
+const BLOCK_TAGS = new Set([
+  'body',
+  'blockquote',
+  'div',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'li',
+  'ol',
+  'p',
+  'pre',
+  'table',
+  'tbody',
+  'thead',
+  'tr',
+  'ul',
+])
+
+type AllowedTag = (typeof MATRIX__ALLOWED_TAGS)[number]
+
+export type MessageNode =
+  | { type: 'text'; value: string }
+  | { type: 'emoji'; unicode: string }
+  | { type: 'custom-emoji'; url: string; shortcode: string | undefined; alt: string | undefined }
+  | { type: 'codeblock'; value: string; language: string | undefined }
+  | { type: 'codespan'; value: string }
+  | { type: 'mention'; mentionType: MentionType; value: string; text: string | undefined }
+  | { type: 'link'; href: string; children: MessageNode[] }
+  | {
+      type: 'element'
+      tag: AllowedTag
+      attrs?: {
+        href?: string
+        target?: string
+        start?: number
+      }
+      children: MessageNode[]
+    }
+  | { type: 'spoiler'; reason?: string; children: MessageNode[] }
+  | { type: 'math'; latex: string; fallback: MessageNode[] }
+  | { type: 'image'; mxcUrl: string; alt?: string; width?: number; height?: number }
+
+export function splitEmojiText(text: string): MessageNode[] {
+  // odd indices are always emoji unicode
+  return text
+    .split(REGEX__EMOJI_STRICT)
+    .flatMap((part, i): MessageNode[] =>
+      !part ? [] : i % 2 ? [{ type: 'emoji', unicode: part }] : [{ type: 'text', value: part }],
+    )
+}
+
+const EMOJI_WRAPPER_TAGS = new Set<AllowedTag>(['p', 'span', 'div'])
+export function isEmojiOnly(nodes: MessageNode[], max = 27): boolean {
+  const flat = nodes
+    .flatMap(n => (n.type === 'element' && EMOJI_WRAPPER_TAGS.has(n.tag) ? n.children : n))
+    .filter(n => n.type !== 'text' || n.value.trim())
+  return flat.length > 0 && flat.length <= max && flat.every(n => n.type === 'emoji' || n.type === 'custom-emoji')
+}
+
+export function createMessageNodes(el: HTMLElement) {
+  const nodes: MessageNode[] = []
+
+  function transform(el: HTMLElement) {
+    const isBlock = BLOCK_TAGS.has(el.tagName.toLowerCase())
+
+    for (const node of el.childNodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const value = node.nodeValue ?? ''
+        if (isBlock && !value.trim()) continue
+
+        nodes.push(...splitEmojiText(value))
+
+        continue
+      }
+
+      if (!(node instanceof HTMLElement)) continue
+
+      // codespan
+      if (node.tagName.toLowerCase() === 'code') {
+        nodes.push({
+          type: 'codespan',
+          value: node.textContent ?? '',
+        })
+      }
+
+      // codeblock
+      else if (node.tagName.toLowerCase() === 'pre') {
+        const code = node.querySelector('code')
+        nodes.push({
+          language: code?.classList
+            .values()
+            .find(cls => cls.startsWith('language-'))
+            ?.replace('language-', ''),
+          type: 'codeblock',
+          value: (code ?? node).textContent ?? '',
+        })
+      }
+
+      // mention
+      else if (node.tagName.toLowerCase() === 'a') {
+        const href = decode(node.getAttribute('href') ?? '')
+        const { type, value } = resolveMentionHref(href)
+        if (type !== 'unknown') {
+          nodes.push({
+            mentionType: type,
+            text: node.textContent,
+            type: 'mention',
+            value,
+          })
+        } else {
+          nodes.push({
+            children: createMessageNodes(node),
+            href,
+            type: 'link',
+          })
+        }
+      }
+
+      // image or custom emoji
+      else if (node.tagName.toLowerCase() === 'img') {
+        const src = node.getAttribute('src')
+        if (!src) continue
+
+        if (node.hasAttribute('data-mx-emoticon')) {
+          const alt = node.getAttribute('alt') ?? undefined
+          const shortcode = alt ?? node.getAttribute('title') ?? undefined
+          nodes.push({
+            alt,
+            shortcode,
+            type: 'custom-emoji',
+            url: src,
+          })
+        } else {
+          nodes.push({
+            alt: node.getAttribute('alt') ?? undefined,
+            height: Number(node.getAttribute('height')) || undefined,
+            mxcUrl: src,
+            type: 'image',
+            width: Number(node.getAttribute('width')) || undefined,
+          })
+        }
+      }
+
+      // default
+      else {
+        nodes.push({
+          attrs: readRenderAttrs(node),
+          children: createMessageNodes(node),
+          tag: node.tagName.toLowerCase() as AllowedTag,
+          type: 'element',
+        })
+      }
+    }
+  }
+
+  transform(el)
+
+  return nodes
+}
+
 export function getEventChildren(room: Room, event: MaybeEventOrId) {
   if (!room) return
 
@@ -56,7 +219,7 @@ export function getEventRelations(room: Room, event: MaybeEventOrId, relationTyp
   return tl.relations.getChildEventsForEvent(eventId, relationType, eventType)
 }
 
-export type EventReactions = Map<string, Set<MatrixEvent>>
+export type EventReactions = Map<string, { events: Set<MatrixEvent>; shortcode?: string }>
 export function getEventReactions(room: Room, event: MaybeEventOrId): EventReactions | undefined {
   const reactions = getEventRelations(room, event, RelationType.Annotation, EventType.Reaction)
   const annotations = reactions?.getSortedAnnotationsByKey()
@@ -66,12 +229,24 @@ export function getEventReactions(room: Room, event: MaybeEventOrId): EventReact
   for (const [reaction, events] of annotations) {
     if (!events.size || typeof reaction !== 'string') continue
 
-    const dedupedMemberEvents = new Map<string, MatrixEvent>() // userId → most recent event
+    let shortcode: string | undefined
+
+    const dedupedMemberEvents = new Map<string, MatrixEvent>()
     for (const event of events) {
       if (event.isRedacted()) continue
 
       const sender = event.getSender()
       if (!sender) continue
+
+      if (!shortcode) {
+        if (REGEX__EMOJI_STRICT.test(reaction)) {
+          shortcode = getShortcodesFromUnicode(reaction)[0]
+        } else {
+          const content = event.getContent<{ shortcode?: string; 'com.beeper.reaction.shortcode'?: string }>()
+          const raw = content.shortcode ?? content['com.beeper.reaction.shortcode']
+          if (raw) shortcode = raw.replace(REGEX__EMOJI_CUSTOM, '')
+        }
+      }
 
       const storedEvent = dedupedMemberEvents.get(sender)
       const storedTs = storedEvent?.getTs()
@@ -81,7 +256,8 @@ export function getEventReactions(room: Room, event: MaybeEventOrId): EventReact
       }
     }
 
-    if (dedupedMemberEvents.size) filteredAnnotations.set(reaction, new Set(dedupedMemberEvents.values()))
+    if (dedupedMemberEvents.size)
+      filteredAnnotations.set(reaction, { events: new Set(dedupedMemberEvents.values()), shortcode })
   }
 
   return filteredAnnotations
@@ -106,7 +282,7 @@ export function isUserReacting(
   if (!annotation) return
 
   let userReactionEvent: MatrixEvent | undefined
-  annotation.forEach(event => {
+  annotation.events.forEach(event => {
     if (event.getSender() === userId) userReactionEvent = event
   })
 

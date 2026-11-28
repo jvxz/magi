@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 const getEmojiData = async () => {
-  const emojiData = useEmojiData()
+  const emojiData = useEmojibase()
   await vi.waitUntil(() => !emojiData.isLoading.value)
   return emojiData
 }

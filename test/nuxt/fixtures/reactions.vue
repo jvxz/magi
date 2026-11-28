@@ -6,9 +6,18 @@ import { provideRoomInstanceContext } from '~/components/room/instance.vue'
 
 const props = defineProps<{ event: MatrixEvent; room: Room }>()
 
-provideRoomInstanceContext({ room: toRef(props, 'room') })
+const room = toRef(props, 'room')
+const space = useCurrentSpace()
+provideRoomInstanceContext({
+  ...useRoomInput(room),
+  ...useRoomMembersTyping(room),
+  react: useRoomActions(room).react,
+  room,
+  space,
+})
 
 provideEventListItemContext({
+  ...useRoomEventReactions(room, () => props.event),
   event: toRef(props, 'event'),
   eventMember: useRoomMember(
     () => props.room,

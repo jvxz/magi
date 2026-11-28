@@ -3,7 +3,7 @@ import { injectRoomInstanceContext } from '../instance.vue'
 
 const { room } = injectRoomInstanceContext()
 
-const { areMembersTyping, typingMembers } = useRoomMembersTyping.inject()
+const { areMembersTyping, typingMembers } = useRoomMembersTyping(room)
 
 const first3TypingMembers = computed(() => [...typingMembers.value].slice(0, 3))
 const typingMembersDiff = computed(() => Math.max(0, typingMembers.value.size - 3))

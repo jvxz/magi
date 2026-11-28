@@ -2,8 +2,6 @@ import type { StateEvents } from 'matrix-js-sdk'
 
 import { HistoryVisibility, AuthType, EventType, JoinRule } from 'matrix-js-sdk'
 
-import type { AvatarImageSize } from '../utils/matrix/types'
-
 // https://github.com/cinnyapp/cinny/blob/5e00d517ebd6b77663e41bcbe888b37df6d3b3d9/src/app/hooks/useAccountManagement.ts#L6-L11
 export const MATRIX__ACCOUNT_MANAGEMENT_ACTIONS = {
   ACCOUNT_DEACTIVATE: 'org.matrix.account_deactivate',
@@ -35,7 +33,7 @@ export const MATRIX__ALLOWED_ATTRS_PER_TAG = {
   a: ['target', 'href'],
   code: ['class'],
   div: ['data-mx-maths'],
-  img: ['width', 'height', 'alt', 'title', 'src'],
+  img: ['width', 'height', 'alt', 'title', 'src', 'data-mx-emoticon'],
   ol: ['start'],
   span: ['data-mx-bg-color', 'data-mx-color', 'data-mx-spoiler', 'data-mx-maths'],
 } as const
@@ -153,8 +151,8 @@ export const MATRIX__POWER_LEVEL_EDITABLE_EVENTS = [
   EventType.RoomPowerLevels,
   EventType.RoomTombstone,
 ] as const
-
 export const MATRIX__POWERLEVEL_MAX = 9007199254740991
+
 export const MATRIX__POWERLEVEL_MIN = -MATRIX__POWERLEVEL_MAX
 
 export const MATRIX__REACTABLE_EVENT_TYPES: (

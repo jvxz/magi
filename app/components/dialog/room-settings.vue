@@ -3,7 +3,7 @@ import type { Room } from 'matrix-js-sdk'
 
 import type { GlobalDialogMap } from '~/composables/use-global-dialog'
 
-import { DialogRoomSettingsGeneral, DialogRoomSettingsPermissions } from '#components'
+import { DialogRoomSettingsEmojisStickers, DialogRoomSettingsGeneral, DialogRoomSettingsPermissions } from '#components'
 
 import type { SidebarLayoutGroupItem } from '../u/dialog/sidebar-layout-group-item.vue'
 
@@ -11,11 +11,18 @@ export type RoomSettingKey = (typeof roomSettingsTabs)[number]['key']
 const roomSettingsTabs = [
   {
     icon: ICON__SETTINGS,
-    key: 'General',
+    key: 'general',
+    title: 'General',
   },
   {
     icon: ICON__PERMISSION,
-    key: 'Permissions',
+    key: 'permissions',
+    title: 'Permissions',
+  },
+  {
+    icon: ICON__EMOJI,
+    key: 'emoji',
+    title: 'Emojis & stickers',
   },
 ] as const satisfies SidebarLayoutGroupItem[]
 
@@ -34,14 +41,19 @@ export const [injectRoomSettingsDialogContext, provideRoomSettingsDialogContext]
 const props = defineProps<GlobalDialogMap['roomSettings']>()
 
 const roomSettingComponents = {
-  General: DialogRoomSettingsGeneral,
-  Permissions: DialogRoomSettingsPermissions,
+  emoji: DialogRoomSettingsEmojisStickers,
+  general: DialogRoomSettingsGeneral,
+  permissions: DialogRoomSettingsPermissions,
 } as const satisfies Record<RoomSettingKey, Component>
 
 const room = toRef(props, 'room')
 const isRoomSpace = useRoomComputed(room, isSpace)
 
 const selection = ref<RoomSettingKey>(roomSettingsTabs[0].key)
+const selectionTitle = computed(() => {
+  const selectedTab = roomSettingsTabs.find(tab => tab.key === selection.value)
+  return selectedTab ? selectedTab.title : ''
+})
 
 const { self } = useSelf()
 const permissions = useRoomMemberPermissions(room, () => self.value?.userId)
@@ -85,7 +97,7 @@ const unsavedChangesCard = useTemplateRef('unsavedChanges')
     "
   >
     <UDialogContent size="md" class="p-0 of-clip">
-      <UDialogSidebarLayout>
+      <UDialogSidebarLayout :get-title="() => selectionTitle">
         <template #sidebar>
           <div class="flex flex-col gap-2 size-full">
             <div class="p-1 flex gap-2 items-center">
@@ -100,7 +112,7 @@ const unsavedChangesCard = useTemplateRef('unsavedChanges')
                 :value="setting.key"
               >
                 <Icon :name="setting.icon" />
-                <span>{{ setting.key }}</span>
+                <span>{{ setting.title }}</span>
               </UDialogSidebarLayoutGroupItem>
             </UDialogSidebarLayoutGroup>
           </div>

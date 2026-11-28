@@ -11,6 +11,7 @@ import type {
   Visibility,
 } from 'matrix-js-sdk'
 import type { MatrixClient } from 'matrix-js-sdk/lib/client'
+import type { ImageInfo } from 'matrix-js-sdk/lib/types'
 import type { RoomPowerLevelsEventContent } from 'matrix-js-sdk/lib/types'
 
 export type EmitterListener<T extends EventEmitterEvents | EmittedEvents> = Listener<
@@ -77,5 +78,35 @@ export interface RoomSettings extends StateRoomSettings {
   localAliases: string[]
   [EventType.RoomPowerLevels]: RoomPowerLevelsEventContent & {
     events: Partial<Record<EventType, number>>
+  }
+}
+
+export type ImagePackUsage = 'emoticon' | 'sticker'
+
+export interface ImagePackImage {
+  url: string
+  body?: string
+  info?: ImageInfo
+}
+
+export interface ImagePackMeta {
+  display_name?: string
+  avatar_url?: string
+  usage?: ImagePackUsage[]
+  attribution?: string
+}
+
+export interface ImagePackContent {
+  pack?: ImagePackMeta
+  images: Record<string, ImagePackImage>
+}
+
+export interface ImagePackRoomsContent {
+  rooms: Record<string, Record<string, object>>
+}
+
+export interface UserRoomImagePackContent {
+  rooms: {
+    [roomId: string]: Record<string, object>
   }
 }

@@ -1,4 +1,4 @@
-import type { Room, RoomMember } from 'matrix-js-sdk'
+import type { MatrixEvent, Room, RoomMember } from 'matrix-js-sdk'
 
 export interface GlobalDialogMap {
   invite: { room: string }
@@ -31,6 +31,10 @@ export interface GlobalDialogMap {
      * @param file undefined if delection request
      */
     onAction: (avatarUrl: string | undefined, file: File | undefined) => void
+  }
+  reactionsViewer: {
+    event: MatrixEvent
+    room: MaybeRoomOrId
   }
 }
 export type GlobalDialog = keyof GlobalDialogMap
