@@ -1,6 +1,5 @@
 <script lang="ts">
 import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
-import type { CompactEmoji } from 'emojibase'
 import type { PrimitiveProps } from 'reka-ui'
 
 import { useForwardPropsEmits } from 'reka-ui'
